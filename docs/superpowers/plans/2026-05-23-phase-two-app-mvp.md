@@ -1,6 +1,6 @@
 # Screen Note Phase 2 App MVP Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development`. 并行批次中的任务包必须交给独立子代理处理；协调者负责分发完整任务上下文、合流审查和最终回归。Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 完成阶段二 App 内 MVP，让用户能在 App 中 3 秒完成创建、查看、编辑、完成、删除、恢复，并把首页、详情、新建、历史和设置入口全部对齐 `Pencil` 设计源。
 
@@ -58,6 +58,36 @@ test/
 - `lib/src/settings/presentation/pages/widget_settings_page.dart`：锁屏显示设置页的 App 内预览基线。
 - `lib/src/settings/presentation/pages/privacy_settings_page.dart`：隐私设置页。
 - `docs/screen-note-phase2-pencil-mapping-2026-05-23.md`：`Pencil` 节点到 Flutter 组件的映射说明。
+
+## 并行开发总览
+
+### 并行协作原则
+
+- 阶段二以 App 内 MVP 为目标，路由、页面职责、设计节点和应用层用例先定契约，再分页面并行实现。
+- 设计源码先行：任何首页、新建页、详情页、历史页、设置页、组件或弹层实现前，必须先由设计子代理在 `designs/screen_note_stage2.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase2-pencil-mapping-2026-05-23.md`。
+- 首页、历史页、设置页必须拆给独立子代理并行处理；新建页和详情页依赖编辑表单、放弃修改和状态切换契约，不能抢先自定义流程。
+- 页面层只触发用户意图，不直接写库、不直接刷新快照、不绕过应用层用例。
+- 设计任务包先冻结页面状态和组件映射；显示层任务包发现缺稿时回流到设计任务包，不在 Flutter 中临时改版。
+- 测试任务可以提前按契约写骨架，但断言必须在页面和用例合流后统一校准。
+- 同一批次内的并行任务必须由不同子代理领取；子代理只能处理被分配的页面、用例或测试包。
+- 每个子代理完成后必须先做规格符合性审查，再做代码质量审查，审查通过后才能进入批次合流。
+
+### 批次划分
+
+| 批次 | 子代理任务包 | 前置条件 | 合流产物 |
+| --- | --- | --- | --- |
+| P0 路由与设计契约 | `Task 1`、`Task 2`、`Task 8` | 阶段一完成 | 阶段二路由、页面状态稿、数据接入接口 |
+| P1 页面并行 | `Task 3`、`Task 6`、`Task 7` | P0 对应契约冻结 | 首页、历史页、设置页与共享组件 |
+| P2 编辑闭环 | `Task 4`、`Task 5` | P0 设计与用例接口可用 | 新建/编辑页、详情页与状态操作闭环 |
+| P3 测试验收 | `Task 9`、`Task 10` | P1/P2 页面链路可运行 | 测试矩阵、MVP 验收、阶段三输入 |
+
+### 子代理领取规则
+
+- `Task 1` 拥有路由和页面边界；其他任务包新增入口前必须先同步 route path。
+- `Task 2` 拥有 `.pen` 页面、状态和组件映射；它必须先于对应 Flutter 页面实现完成，页面实现只消费映射文档，不自行拆组件边界。
+- `Task 8` 拥有应用层数据接入和排序状态解析；页面任务不得直接依赖 DAO 或三方包实例。
+- `Task 3`、`Task 6`、`Task 7` 必须由不同子代理并行领取，需复用同一套 `TaskCard`、`EmptyStateCard`、`ErrorStateCard`。
+- `Task 4`、`Task 5` 涉及同一事项编辑语义，必须约定表单状态、保存、放弃修改和恢复动作的共享接口后，再交给两个独立子代理处理。
 
 ### Task 1: 阶段二路由与页面边界
 
@@ -426,17 +456,35 @@ Expected: 阶段二 App 内 MVP 链路可回归，且所有用户可见文案来
 - 锁屏隐私模式最终实现
 - Widget 刷新失败最后快照兜底
 
-## 并行建议
+## 并行合流门禁
 
-可以并行的任务：
+### P0 路由与设计契约门禁
 
-- `Task 2 + Task 8`：设计源与数据用例可并行推进。
-- `Task 3 + Task 6 + Task 7`：首页、历史页、设置页共享组件可分工实现。
+- `Task 1` 必须先冻结 `/task/new`、`/settings`、`/settings/widget`、`/settings/privacy` 和详情/历史路由参数协议。
+- `Task 2` 必须先在 `designs/screen_note_stage2.pen` 冻结首页、新建页、详情页、历史页、设置页的 `loading / empty / error / content` 状态稿，并同步映射文档。
+- `Task 8` 必须先冻结页面读取、创建、编辑、完成、删除、恢复和快照触发的应用层接口。
+- P0 合流后，页面任务才能进入完整实现；如果 `.pen` 节点或映射缺失，必须先退回 `Task 2` 设计子代理补齐，任何新增用户可见文案必须先进入 ARB。
 
-必须串行的依赖：
+### P1 页面并行门禁
 
-- `Task 4` 和 `Task 5` 依赖 `Task 2` 的设计源冻结。
-- `Task 9` 依赖页面与用例主链路基本完成后再写。
+- `Task 3` 负责首页、快速创建和当前事项列表。
+- `Task 6` 负责最近完成、最近删除和恢复入口。
+- `Task 7` 负责设置页、Widget 预览基线和隐私设置。
+- 三个任务包必须由三个独立子代理并行处理，并共用 `SettingsGroup`、`SettingsTile`、`TaskCard`、`TaskStatusChip`、空态和错误态组件边界。
+- P1 合流时必须验证首页创建、历史恢复和设置页跳转互不阻塞。
+
+### P2 编辑闭环门禁
+
+- `Task 4` 负责完整新建与编辑表单，必须复用 P0 的数据接口和 P1 的共享输入组件。
+- `Task 5` 负责详情页读取、编辑、完成、删除、恢复和危险操作确认。
+- 两个任务包交给子代理并行处理前，必须统一草稿保护、保存回流、状态切换和弹层命名，避免新建页与详情页出现两套编辑模型。
+- P2 合流时必须覆盖 active、completed、deleted 三类详情展示与编辑边界。
+
+### P3 测试验收门禁
+
+- `Task 9` 必须按首页、编辑页、详情页、历史页、设置页拆给多个测试子代理处理，但 fixture 和 Provider override 要统一维护。
+- `Task 10` 负责范围核对、Pencil 对齐和阶段三前置物记录，只能在全量回归通过后收口。
+- 最终合流必须运行 `rtk flutter test`、`rtk flutter analyze`、`rtk flutter gen-l10n`，并确认用户可见文案全部来自国际化资源。
 
 ## 阶段二完成定义
 

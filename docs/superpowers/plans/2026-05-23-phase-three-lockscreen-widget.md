@@ -1,6 +1,6 @@
 # Screen Note Phase 3 Lock Screen Widget Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development`. 并行批次中的任务包必须交给独立子代理处理；协调者负责分发完整任务上下文、合流审查和最终回归。Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 完成阶段三锁屏小组件能力，让 Widget 只读取稳定快照即可可靠展示单条、三条、今日和隐私模式内容，并在刷新失败时保留最后有效内容。
 
@@ -52,6 +52,36 @@ test/
 - `lib/src/settings/presentation/pages/widget_settings_page.dart`：App 内 Widget 预览与展示模式入口。
 - `docs/screen-note-phase3-pencil-mapping-2026-05-23.md`：`Pencil` 节点到 Flutter 组件和 Widget 模式的映射说明。
 - `ios/WidgetExtension/`：iOS Widget 展示工程壳层。
+
+## 并行开发总览
+
+### 并行协作原则
+
+- Widget 只消费稳定快照，任何查询、排序、状态推导和业务写入都由主 App 与 `widget_bridge/` 完成。
+- 设计源码先行：任何 Widget 预览、真实 Widget 布局、展示模式或设置入口实现前，必须先由设计子代理在 `designs/screen_note_stage3.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase3-pencil-mapping-2026-05-23.md`。
+- 快照模型、展示模式、隐私字段和 fallback 规则先冻结，再让 App 预览和 iOS Widget 并行消费。
+- 原生 Widget、Flutter 预览和 `Pencil` 设计必须拆给独立子代理并行处理，但必须共享同一套 `WidgetDisplayMode` 和快照字段。
+- 刷新失败只能降级，不得阻断事项主链路；所有刷新接入点必须留在应用层用例末尾。
+- 原生工程任务和 Flutter 桥接任务互不直接改对方实现，只通过共享快照契约合流。
+- 同一批次内的并行任务必须由不同子代理领取；子代理只能处理被分配的桥接、预览、原生或测试任务包。
+- 每个子代理完成后必须先做规格符合性审查，再做代码质量审查，审查通过后才能进入批次合流。
+
+### 批次划分
+
+| 批次 | 子代理任务包 | 前置条件 | 合流产物 |
+| --- | --- | --- | --- |
+| P0 快照契约 | `Task 1`、`Task 3` | 阶段二完成 | Widget 快照模型、展示模式、设计源 |
+| P1 刷新与预览 | `Task 2`、`Task 4`、`Task 6` | P0 契约冻结 | 刷新编排、App 内预览、隐私和 fallback 规则 |
+| P2 原生接入 | `Task 5`、`Task 7` | P0/P1 共享契约可用 | iOS Widget 壳层、主 App 用例触发 |
+| P3 测试验收 | `Task 8`、`Task 9` | P2 链路可运行 | Widget 测试矩阵、验收和阶段四输入 |
+
+### 子代理领取规则
+
+- `Task 1` 拥有快照模型和存储接口；其他任务包不得向 Widget 侧传完整 `Task` 实体。
+- `Task 3` 拥有 Widget `.pen` 设计源码和模式映射；它必须先于 App 预览和原生 Widget 布局实现完成，原生与 Flutter 预览必须按映射文档实现。
+- `Task 2` 与 `Task 6` 共同处理刷新降级语义，需先统一 `WidgetRefreshResult` 和失败日志策略。
+- `Task 5` 只做 iOS Widget 工程与快照读取，不接入数据库和业务排序。
+- `Task 7` 只在应用层用例末尾接刷新触发，不让页面层负责刷新。
 
 ### Task 1: Widget 快照模型与共享存储
 
@@ -406,18 +436,33 @@ Expected: 阶段三锁屏小组件链路可回归，且失败不会阻断主 App
 - 控制中心与锁屏系统入口
 - 快速添加草稿回流
 
-## 并行建议
+## 并行合流门禁
 
-可以并行的任务：
+### P0 快照契约门禁
 
-- `Task 1 + Task 2`：快照模型与刷新链路可并行设计。
-- `Task 3 + Task 4`：`Pencil` 设计源和 App 内预览可并行推进。
-- `Task 5 + Task 6`：原生壳层和隐私降级可并行实现。
+- `Task 1` 必须冻结 `WidgetSnapshot`、`WidgetSnapshotItem`、`WidgetDisplayMode` 和共享存储接口。
+- `Task 3` 必须在 `designs/screen_note_stage3.pen` 冻结单条、三条、今日、隐私、空态和 fallback 的 `Pencil` 节点与映射文档。
+- P0 合流后，App 预览、刷新编排和原生 Widget 才能消费快照与设计源码；未冻结字段不得进入 Swift 或页面实现，缺失 `.pen` 节点时不得用代码临时补布局。
 
-必须串行的依赖：
+### P1 刷新与预览门禁
 
-- `Task 5` 依赖 `Task 1` 的快照结构冻结。
-- `Task 8` 依赖前面链路基本完成后再写。
+- `Task 2` 负责刷新触发、结果模型和非阻塞降级。
+- `Task 4` 负责 App 内 Widget 预览、模式切换和安装引导。
+- `Task 6` 负责隐私遮罩、失败兜底和错误边界。
+- 三个任务包必须由三个独立子代理并行处理，并使用同一套 `WidgetDisplayMode`、隐私遮罩规则和 fallback 展示语义。
+- P1 合流时必须验证刷新失败不影响创建、编辑、完成、删除和恢复主链路。
+
+### P2 原生接入门禁
+
+- `Task 5` 只能读取共享快照并按展示模式渲染，不得连接数据库或重新排序。
+- `Task 7` 只能在应用层用例末尾统一接刷新触发，不得让页面层调用 Widget 原生接口。
+- P2 合流时必须验证 App 内预览、真实 Widget 和 `Pencil` 模式命名一致。
+
+### P3 测试验收门禁
+
+- `Task 8` 必须按快照生成、存储、刷新降级、设置页、隐私规则拆给多个测试子代理补测。
+- `Task 9` 负责阶段范围、Pencil 对齐、稳定性门禁和阶段四前置物记录。
+- 最终合流必须运行 `rtk flutter test`、`rtk flutter analyze`、`rtk flutter gen-l10n`，原生 Widget 工程还需确认 Xcode 项目引用可编译。
 
 ## 阶段三完成定义
 

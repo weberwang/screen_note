@@ -1,6 +1,6 @@
 # Screen Note Phase 1 Foundation and Reliability Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development`. 并行批次中的任务包必须交给独立子代理处理；协调者负责分发完整任务上下文、合流审查和最终回归。Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 完成阶段一可交付范围，先建立 `Pencil` 设计源与 Flutter 工程基线，再交付“事项不消失、可恢复、可追踪”的可靠性闭环。
 
@@ -58,6 +58,35 @@ test/
 - `lib/src/widget_bridge/application/widget_snapshot_refresher.dart`：阶段一快照刷新占位接口。
 - `designs/screen_note_stage1.pen`：阶段一 `Pencil` 设计源。
 - `docs/screen-note-phase1-pencil-mapping-2026-05-23.md`：`Pencil` 节点到 Flutter 组件的映射说明。
+
+## 并行开发总览
+
+### 并行协作原则
+
+- 先冻结契约，再并行实现：路由、领域模型、设计节点和快照刷新接口必须在各自批次合流前明确。
+- 设计源码先行：任何页面、组件、弹层或预览实现前，必须先由设计子代理在 `designs/screen_note_stage1.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase1-pencil-mapping-2026-05-23.md`。
+- 每个任务包只拥有自己的主文件集合；涉及共用文件时，先由契约任务包落接口和占位实现，再由消费方接入。
+- `Pencil` 与 Flutter 分开推进，但 Flutter 显示层只能消费已冻结的 `Pencil` 节点和映射文档。
+- 数据层、应用层、显示层必须拆给独立子代理并行开发，但状态流转、日志写入和快照刷新触发只能在应用层合流。
+- 同一批次内的并行任务必须由不同子代理领取；子代理只能处理被分配的文件和任务包，不跨包抢改共享契约。
+- 每个子代理完成后必须先做规格符合性审查，再做代码质量审查，审查通过后才能进入批次合流。
+- 每个批次结束都要跑本批次最小验证，最终合流再跑完整回归。
+
+### 批次划分
+
+| 批次 | 子代理任务包 | 前置条件 | 合流产物 |
+| --- | --- | --- | --- |
+| P0 契约冻结 | `Task 1`、`Task 2`、`Task 4` | 无 | 路由骨架、设计 token/组件、Task/TaskEvent 持久模型 |
+| P1 核心并行 | `Task 3`、`Task 5` | P0 对应契约冻结 | 页面/弹层设计源、生命周期用例、排序与状态解析 |
+| P2 页面合流 | `Task 6` | P1 设计源和用例接口可用 | 阶段一验证页面与共享组件 |
+| P3 验收收口 | `Task 7`、`Task 8` | P2 页面链路可运行 | 测试矩阵、范围复核、阶段二输入 |
+
+### 子代理领取规则
+
+- `Task 1` 是工程边界拥有者；其他任务包不要直接重写路由和应用壳层。
+- `Task 2` 与 `Task 3` 是 `.pen` 设计源码拥有者；它们必须先于对应 Flutter 页面和组件实现完成，显示层缺少状态稿时先回补设计和映射文档。
+- `Task 4` 与 `Task 5` 是数据和应用契约拥有者；页面任务只通过用例接口表达用户意图。
+- `Task 7` 必须按领域、应用、数据、页面拆给多个测试子代理处理，最终由一个测试合流负责人统一跑全量回归。
 
 ### Task 1: 工程骨架与阶段一路由
 
@@ -543,17 +572,34 @@ Expected: 阶段一所有规则、页面和国际化链路可稳定回归。
 - 通知权限与调度实现
 - 设置页与 Widget 预览完整页面
 
-## 并行建议
+## 并行合流门禁
 
-可以并行的任务只有两组：
+### P0 契约冻结门禁
 
-- `Task 2 + Task 3`：由设计侧在 `Pencil` 中先完成变量、组件、页面和弹层标准稿。
-- `Task 4 + Task 5`：由开发侧先完成领域模型、数据结构、用例和排序规则。
+- `Task 1` 输出 `/home`、`/task/:id`、`/history/completed`、`/history/deleted` 路由和统一页面骨架。
+- `Task 2` 输出 `designs/screen_note_stage1.pen` 中的可复用设计 token、核心组件节点和映射文档初稿。
+- `Task 4` 输出 `Task.status = active / completed / deleted` 持久契约、`TaskEvent` 操作集合、drift 表和 DAO。
+- P0 合流后只允许应用层和数据层继续推进；页面、组件、弹层实现必须继续等待 `Task 3` 在 `.pen` 中完成页面与弹层设计源码并冻结映射文档。
 
-必须串行的依赖：
+### P1 核心并行门禁
 
-- `Task 6` 必须等待 `Task 2 + Task 3` 的 `Pencil` 设计源先冻结。
-- `Task 7` 必须等待 `Task 4 + Task 6` 的代码闭环基本成型。
+- `Task 3` 负责冻结首页、详情、最近完成、最近删除和可靠性弹层状态稿。
+- `Task 5` 负责冻结创建、更新、完成、删除、恢复、排序、展示状态和快照刷新触发接口。
+- `Task 3` 和 `Task 5` 必须由两个独立子代理并行领取；`Task 5` 不依赖页面布局，`Task 3` 不定义业务状态流转。
+- `Task 3` 未完成 `.pen` 页面/弹层节点和映射文档前，`Task 6` 不得启动 Flutter 显示层实现。
+- P1 合流时必须核对 `Pencil` 状态名、应用层展示状态名和测试断言使用同一套术语。
+
+### P2 页面合流门禁
+
+- `Task 6` 只在 P1 合流后开始完整接页面，避免显示层临时发明状态和组件边界。
+- 页面任务必须按 `HomePage`、`TaskDetailPage`、`History Pages`、`Overlays` 拆给独立子代理处理，并共用同一套 shared loading/error/empty 组件。
+- 每个页面子任务完成后至少跑对应 widget test 或 `rtk flutter analyze`，最终由页面合流负责人跑阶段一页面回归。
+
+### P3 验收收口门禁
+
+- `Task 7` 必须按领域规则、排序、持久化、页面行为拆给多个测试子代理补测，但测试命名和 fixture 必须统一。
+- `Task 8` 只能在完整回归通过后收口，负责移除越界范围并记录阶段二前置物。
+- 最终合流必须运行 `rtk flutter test`、`rtk flutter analyze`、`rtk flutter gen-l10n`，并确认没有新增用户可见硬编码文案。
 
 ## 阶段一完成定义
 

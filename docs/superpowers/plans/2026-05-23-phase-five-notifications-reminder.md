@@ -1,6 +1,6 @@
 # Screen Note Phase 5 Notifications and Persistent Reminder Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development`. 并行批次中的任务包必须交给独立子代理处理；协调者负责分发完整任务上下文、合流审查和最终回归。Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 完成阶段五通知基础链路，让 App 能调度普通提醒、处理通知点击跳转、在事项完成/删除/改期时取消或重排提醒，并为强提醒保留接口但不破坏免费主链路。
 
@@ -57,6 +57,37 @@ test/
 - `lib/src/notifications/data/local_notification_adapter.dart`：flutter_local_notifications 适配层。
 - `lib/src/settings/presentation/pages/notification_settings_page.dart`：权限与提醒说明页。
 - `docs/screen-note-phase5-pencil-mapping-2026-05-23.md`：`Pencil` 节点到 Flutter 组件和通知状态的映射说明。
+
+## 并行开发总览
+
+### 并行协作原则
+
+- 通知能力统一放在 `notifications/` 边界内，页面只展示权限状态和触发用户意图。
+- 设计源码先行：任何通知设置页、权限说明弹层、提醒预览、降级提示或强提醒边界展示实现前，必须先由设计子代理在 `designs/screen_note_stage5.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase5-pencil-mapping-2026-05-23.md`。
+- 权限、调度、取消重排、点击解析必须拆给独立子代理并行处理，但必须共享通知目标、提醒模式和调度标识。
+- 通知权限拒绝、调度失败、点击找不到事项都只能降级，不能阻断事项创建、编辑、完成、删除和恢复。
+- 普通提醒先落地；强提醒仅保留策略边界，不进入默认调度链路。
+- 通知文案、权限说明和降级提示必须先进入 `Pencil` 与国际化资源，再进入页面。
+- 同一批次内的并行任务必须由不同子代理领取；子代理只能处理被分配的权限、调度、点击解析、页面或测试任务包。
+- 每个子代理完成后必须先做规格符合性审查，再做代码质量审查，审查通过后才能进入批次合流。
+
+### 批次划分
+
+| 批次 | 子代理任务包 | 前置条件 | 合流产物 |
+| --- | --- | --- | --- |
+| P0 通知契约 | `Task 1`、`Task 5` | 阶段四完成 | 通知模型、提醒模式、通知设计源 |
+| P1 服务并行 | `Task 2`、`Task 3`、`Task 4` | P0 契约冻结 | 权限服务、普通提醒调度、点击跳转解析 |
+| P2 页面与生命周期 | `Task 6`、`Task 7` | P1 服务接口可用 | 通知设置页、事项生命周期联动 |
+| P3 测试验收 | `Task 8`、`Task 9` | P2 链路可运行 | 通知测试矩阵、验收和阶段六输入 |
+
+### 子代理领取规则
+
+- `Task 1` 拥有通知领域模型和仓储接口；其他任务包不得新增散落的通知 ID 生成规则。
+- `Task 2` 拥有权限读取、请求和降级语义；页面只消费状态，不直接调三方包。
+- `Task 3` 拥有普通提醒调度、取消和重排；生命周期任务只调用统一接口。
+- `Task 4` 拥有通知点击路由解析；不得把跳转规则分散到页面或原生回调里。
+- `Task 5` 拥有通知 `.pen` 设计源码和映射；它必须先于通知设置页、权限说明和提醒预览实现完成。
+- `Task 6` 与 `Task 7` 交给两个独立子代理并行处理前，必须统一权限说明文案、失败提示和非阻塞策略。
 
 ### Task 1: 通知领域模型与调度标识
 
@@ -391,18 +422,34 @@ Expected: 阶段五通知链路可回归，且权限拒绝不阻断主链路。
 - 强提醒视觉边界
 - 同步能力预埋
 
-## 并行建议
+## 并行合流门禁
 
-可以并行的任务：
+### P0 通知契约门禁
 
-- `Task 1 + Task 2`：通知模型与权限链路可并行设计。
-- `Task 3 + Task 4`：调度重排和点击跳转可并行实现。
-- `Task 5 + Task 6`：`Pencil` 设计源和设置页可并行推进。
+- `Task 1` 必须冻结 `NotificationReminderMode`、`NotificationTarget`、调度仓储和权限仓储接口。
+- `Task 5` 必须在 `designs/screen_note_stage5.pen` 冻结通知设置页、权限说明、提醒预览、降级提示和强提醒边界设计源码，并同步映射文档。
+- P0 合流后，权限、调度、点击跳转和设置页才能消费同一套通知术语、状态名和设计源码；缺失 `.pen` 节点时不得用页面代码临时补 UI。
 
-必须串行的依赖：
+### P1 服务并行门禁
 
-- `Task 3` 依赖 `Task 1` 的通知模型冻结。
-- `Task 8` 依赖前面链路基本完成后再写。
+- `Task 2` 负责权限读取、请求、拒绝和非阻塞降级。
+- `Task 3` 负责普通提醒调度、取消和改期重排。
+- `Task 4` 负责通知点击 payload 解析和 `go_router` 跳转目标。
+- 三个任务包必须由三个独立子代理并行处理，并统一错误模型、日志策略和“失败不阻断主链路”的返回语义。
+- P1 合流时必须验证权限拒绝、调度失败和点击目标缺失都能降级。
+
+### P2 页面与生命周期门禁
+
+- `Task 6` 负责通知设置页、权限说明弹层和提醒方式入口。
+- `Task 7` 负责创建后调度、完成/删除取消、改期重排和恢复后重新调度。
+- 两个任务包交给子代理并行处理时，不得让设置页直接操作事项用例，也不得让事项用例直接读取页面状态。
+- P2 合流时必须验证通知能力不影响事项主链路，且用户可见文案都来自国际化资源。
+
+### P3 测试验收门禁
+
+- `Task 8` 必须按权限、调度、取消、点击跳转、设置页拆给多个测试子代理补测。
+- `Task 9` 负责阶段范围、Pencil 对齐、主链路门禁和阶段六前置物记录。
+- 最终合流必须运行 `rtk flutter test`、`rtk flutter analyze`、`rtk flutter gen-l10n`，并确认强提醒没有成为默认调度行为。
 
 ## 阶段五完成定义
 
