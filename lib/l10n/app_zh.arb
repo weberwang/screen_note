@@ -1,0 +1,7 @@
+{
+  "@@locale": "zh",
+  "appTitle": "屏幕便签",
+  "@appTitle": {
+    "description": "应用标题，用于应用外壳与首页展示。"
+  }
+}

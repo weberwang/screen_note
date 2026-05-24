@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "Screen Note",
+  "@appTitle": {
+    "description": "Application title shown in the app chrome and home screen."
+  }
+}
