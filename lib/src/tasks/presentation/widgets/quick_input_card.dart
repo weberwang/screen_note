@@ -11,9 +11,11 @@ class QuickInputCard extends HookWidget {
     super.key,
     required this.isSubmitting,
     required this.onSubmit,
+    this.onSecondaryAction,
     this.onCancel,
     this.errorText,
     this.initialValue,
+    this.secondaryActionLabel,
   });
 
   /// 是否正在提交。
@@ -21,6 +23,9 @@ class QuickInputCard extends HookWidget {
 
   /// 提交动作。
   final Future<void> Function(String value) onSubmit;
+
+  /// 次动作，阶段二首页用于进入完整新建页。
+  final VoidCallback? onSecondaryAction;
 
   /// 取消或清空当前草稿的动作。
   final VoidCallback? onCancel;
@@ -30,6 +35,9 @@ class QuickInputCard extends HookWidget {
 
   /// 初始值。
   final String? initialValue;
+
+  /// 次按钮文案，留空时回退到通用取消。
+  final String? secondaryActionLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +66,15 @@ class QuickInputCard extends HookWidget {
     void handleCancel() {
       controller.clear();
       onCancel?.call();
+    }
+
+    void handleSecondaryAction() {
+      if (onSecondaryAction != null) {
+        onSecondaryAction!();
+        return;
+      }
+
+      handleCancel();
     }
 
     return Container(
@@ -143,8 +160,8 @@ class QuickInputCard extends HookWidget {
               ),
               const SizedBox(width: 12),
               FilledButton.tonal(
-                onPressed: isSubmitting ? null : handleCancel,
-                child: Text(localizations.cancelAction),
+                onPressed: isSubmitting ? null : handleSecondaryAction,
+                child: Text(secondaryActionLabel ?? localizations.cancelAction),
               ),
             ],
           ),

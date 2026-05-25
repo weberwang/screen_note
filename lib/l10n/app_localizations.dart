@@ -170,6 +170,18 @@ abstract class AppLocalizations {
   /// **'Recently deleted'**
   String get deletedHistoryEntry;
 
+  /// Entry label used on the home page to open the full task editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Full editor'**
+  String get taskEditorEntry;
+
+  /// Entry label used on the home page to open settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsEntry;
+
   /// Empty state title when there are no active tasks.
   ///
   /// In en, this message translates to:
@@ -230,6 +242,18 @@ abstract class AppLocalizations {
   /// **'Task details'**
   String get taskDetailTitle;
 
+  /// Title for the full task editor page.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get taskEditorTitle;
+
+  /// Helper copy shown near the top of the full task editor page.
+  ///
+  /// In en, this message translates to:
+  /// **'The full editor handles title, note, due time, pinning, privacy, and reminder mode in one place.'**
+  String get taskEditorHelperText;
+
   /// Fallback message when a task cannot be loaded.
   ///
   /// In en, this message translates to:
@@ -272,11 +296,35 @@ abstract class AppLocalizations {
   /// **'Hide on lock screen'**
   String get taskPrivateLabel;
 
+  /// Label for the reminder mode row in the full editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder mode'**
+  String get taskReminderModeLabel;
+
+  /// Label for the normal reminder mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal reminder'**
+  String get taskReminderModeNormal;
+
+  /// Label for the persistent reminder mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent reminder'**
+  String get taskReminderModePersistent;
+
   /// Primary button label to save task changes.
   ///
   /// In en, this message translates to:
   /// **'Save changes'**
   String get taskSaveChanges;
+
+  /// Primary button label used on the full task editor page.
+  ///
+  /// In en, this message translates to:
+  /// **'Save task'**
+  String get taskSaveAction;
 
   /// Action label used to complete a task.
   ///
@@ -499,6 +547,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Private tasks won\'t show their original text on lock screen previews or other outward surfaces.'**
   String get privacyExplainBody;
+
+  /// Title for the phase two settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsPageTitle;
+
+  /// Helper copy shown on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase two only keeps lock screen display and privacy settings. Notifications, Pro, and system entries stay out of scope.'**
+  String get settingsPageHelperText;
+
+  /// Title for the display-related settings group.
+  ///
+  /// In en, this message translates to:
+  /// **'Display preferences'**
+  String get settingsDisplayGroupTitle;
+
+  /// Trailing action label shown on settings tiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get settingsOpenAction;
+
+  /// Title for the fallback principle block on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Fallback rule'**
+  String get settingsFallbackTitle;
+
+  /// Body for the fallback principle block on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Any settings failure should only degrade this page. It must not block home creation, history restore, or detail state changes.'**
+  String get settingsFallbackBody;
+
+  /// Title for the lock screen preview settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock screen display'**
+  String get widgetSettingsTitle;
+
+  /// Helper copy shown on the lock screen preview settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview the lock screen baseline inside the app. Phase two does not connect to real widget refresh.'**
+  String get widgetSettingsSubtitle;
+
+  /// Title for the private preview toggle on the widget settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide private task body in previews'**
+  String get widgetPreviewMaskPrivateTitle;
+
+  /// Body for the private preview toggle on the widget settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock screen, widget, and other outward surfaces should not expose private task text by default.'**
+  String get widgetPreviewMaskPrivateBody;
+
+  /// Primary preview label shown when private preview mode is enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Private task body hidden'**
+  String get widgetPreviewPrivateState;
+
+  /// Default body copy used in the widget preview card.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows time, state, and a safe summary.'**
+  String get widgetPreviewDefaultBody;
+
+  /// Title for the privacy settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy settings'**
+  String get privacySettingsTitle;
+
+  /// Helper copy shown on the privacy settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Only manage basic display preferences here. No complex permission flow in phase two.'**
+  String get privacySettingsSubtitle;
+
+  /// Title for the primary toggle on the privacy settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide private task body in outward previews'**
+  String get privacySettingsMaskTitle;
+
+  /// Body for the primary toggle on the privacy settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock screen, widget, notifications, and shortcut entries should not directly expose private task text.'**
+  String get privacySettingsMaskBody;
+
+  /// Title for the conservative fallback block on the privacy settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Conservative default'**
+  String get privacySettingsSafeTitle;
+
+  /// Body for the conservative fallback block on the privacy settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'If privacy settings fail, the app must keep the safer outward behavior instead of revealing more text.'**
+  String get privacySettingsSafeBody;
 }
 
 class _AppLocalizationsDelegate

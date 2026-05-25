@@ -16,9 +16,9 @@ import 'package:screen_note/src/tasks/presentation/widgets/quick_input_card.dart
 import 'package:screen_note/src/tasks/presentation/widgets/task_card.dart';
 import 'package:screen_note/src/tasks/presentation/widgets/task_list_section.dart';
 
-/// 阶段一首页。
+/// 阶段二首页。
 class HomePage extends ConsumerStatefulWidget {
-  /// 创建阶段一首页。
+  /// 创建阶段二首页。
   const HomePage({super.key});
 
   @override
@@ -52,12 +52,25 @@ class _HomePageState extends ConsumerState<HomePage> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () => context.go(RoutePaths.settings),
+                  child: Text(localizations.settingsEntry),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
             QuickInputCard(
               isSubmitting: _isSubmitting,
               initialValue: _draftValue,
               errorText: _inlineError,
               onSubmit: _createTask,
+              onSecondaryAction: () => context.push(RoutePaths.taskNew),
               onCancel: _clearQuickInputDraft,
+              secondaryActionLabel: localizations.taskEditorEntry,
             ),
             const SizedBox(height: 24),
             TaskListSection(

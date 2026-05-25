@@ -4,10 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:screen_note/src/app/route_paths.dart';
 import 'package:screen_note/src/history/presentation/pages/completed_history_page.dart';
 import 'package:screen_note/src/history/presentation/pages/deleted_history_page.dart';
+import 'package:screen_note/src/settings/presentation/pages/privacy_settings_page.dart';
+import 'package:screen_note/src/settings/presentation/pages/settings_page.dart';
+import 'package:screen_note/src/settings/presentation/pages/widget_settings_page.dart';
 import 'package:screen_note/src/tasks/presentation/pages/home_page.dart';
 import 'package:screen_note/src/tasks/presentation/pages/task_detail_page.dart';
+import 'package:screen_note/src/tasks/presentation/pages/task_editor_page.dart';
 
-/// 创建应用路由实例，阶段一仅注册工程入口要求的最小页面骨架。
+/// 创建应用路由实例，统一装配阶段二首页、编辑、历史和设置入口。
 GoRouter createAppRouter({String initialLocation = RoutePaths.home}) {
   return GoRouter(
     initialLocation: initialLocation,
@@ -15,6 +19,11 @@ GoRouter createAppRouter({String initialLocation = RoutePaths.home}) {
       GoRoute(
         path: RoutePaths.home,
         builder: (BuildContext context, GoRouterState state) => const HomePage(),
+      ),
+      GoRoute(
+        path: RoutePaths.taskNew,
+        builder: (BuildContext context, GoRouterState state) =>
+            const TaskEditorPage(),
       ),
       GoRoute(
         path: RoutePaths.taskDetail,
@@ -32,6 +41,21 @@ GoRouter createAppRouter({String initialLocation = RoutePaths.home}) {
         path: RoutePaths.historyDeleted,
         builder: (BuildContext context, GoRouterState state) =>
             const DeletedHistoryPage(),
+      ),
+      GoRoute(
+        path: RoutePaths.settings,
+        builder: (BuildContext context, GoRouterState state) =>
+            const SettingsPage(),
+      ),
+      GoRoute(
+        path: RoutePaths.settingsWidget,
+        builder: (BuildContext context, GoRouterState state) =>
+            const WidgetSettingsPage(),
+      ),
+      GoRoute(
+        path: RoutePaths.settingsPrivacy,
+        builder: (BuildContext context, GoRouterState state) =>
+            const PrivacySettingsPage(),
       ),
     ],
   );

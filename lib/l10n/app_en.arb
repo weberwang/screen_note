@@ -48,6 +48,14 @@
   "@deletedHistoryEntry": {
     "description": "Entry label to open the deleted history page."
   },
+  "taskEditorEntry": "Full editor",
+  "@taskEditorEntry": {
+    "description": "Entry label used on the home page to open the full task editor."
+  },
+  "settingsEntry": "Settings",
+  "@settingsEntry": {
+    "description": "Entry label used on the home page to open settings."
+  },
   "emptyActiveTasksTitle": "Nothing to remember yet",
   "@emptyActiveTasksTitle": {
     "description": "Empty state title when there are no active tasks."
@@ -88,6 +96,14 @@
   "@taskDetailTitle": {
     "description": "Title for the task detail page."
   },
+  "taskEditorTitle": "New task",
+  "@taskEditorTitle": {
+    "description": "Title for the full task editor page."
+  },
+  "taskEditorHelperText": "The full editor handles title, note, due time, pinning, privacy, and reminder mode in one place.",
+  "@taskEditorHelperText": {
+    "description": "Helper copy shown near the top of the full task editor page."
+  },
   "taskDetailMissing": "This task isn't available right now.",
   "@taskDetailMissing": {
     "description": "Fallback message when a task cannot be loaded."
@@ -116,9 +132,25 @@
   "@taskPrivateLabel": {
     "description": "Switch label for marking a task as private."
   },
+  "taskReminderModeLabel": "Reminder mode",
+  "@taskReminderModeLabel": {
+    "description": "Label for the reminder mode row in the full editor."
+  },
+  "taskReminderModeNormal": "Normal reminder",
+  "@taskReminderModeNormal": {
+    "description": "Label for the normal reminder mode."
+  },
+  "taskReminderModePersistent": "Persistent reminder",
+  "@taskReminderModePersistent": {
+    "description": "Label for the persistent reminder mode."
+  },
   "taskSaveChanges": "Save changes",
   "@taskSaveChanges": {
     "description": "Primary button label to save task changes."
+  },
+  "taskSaveAction": "Save task",
+  "@taskSaveAction": {
+    "description": "Primary button label used on the full task editor page."
   },
   "taskCompleteAction": "Complete",
   "@taskCompleteAction": {
@@ -272,5 +304,77 @@
   "privacyExplainBody": "Private tasks won't show their original text on lock screen previews or other outward surfaces.",
   "@privacyExplainBody": {
     "description": "Body for the privacy explanation bottom sheet."
+  },
+  "settingsPageTitle": "Settings",
+  "@settingsPageTitle": {
+    "description": "Title for the phase two settings page."
+  },
+  "settingsPageHelperText": "Phase two only keeps lock screen display and privacy settings. Notifications, Pro, and system entries stay out of scope.",
+  "@settingsPageHelperText": {
+    "description": "Helper copy shown on the settings page."
+  },
+  "settingsDisplayGroupTitle": "Display preferences",
+  "@settingsDisplayGroupTitle": {
+    "description": "Title for the display-related settings group."
+  },
+  "settingsOpenAction": "Open",
+  "@settingsOpenAction": {
+    "description": "Trailing action label shown on settings tiles."
+  },
+  "settingsFallbackTitle": "Fallback rule",
+  "@settingsFallbackTitle": {
+    "description": "Title for the fallback principle block on the settings page."
+  },
+  "settingsFallbackBody": "Any settings failure should only degrade this page. It must not block home creation, history restore, or detail state changes.",
+  "@settingsFallbackBody": {
+    "description": "Body for the fallback principle block on the settings page."
+  },
+  "widgetSettingsTitle": "Lock screen display",
+  "@widgetSettingsTitle": {
+    "description": "Title for the lock screen preview settings page."
+  },
+  "widgetSettingsSubtitle": "Preview the lock screen baseline inside the app. Phase two does not connect to real widget refresh.",
+  "@widgetSettingsSubtitle": {
+    "description": "Helper copy shown on the lock screen preview settings page."
+  },
+  "widgetPreviewMaskPrivateTitle": "Hide private task body in previews",
+  "@widgetPreviewMaskPrivateTitle": {
+    "description": "Title for the private preview toggle on the widget settings page."
+  },
+  "widgetPreviewMaskPrivateBody": "Lock screen, widget, and other outward surfaces should not expose private task text by default.",
+  "@widgetPreviewMaskPrivateBody": {
+    "description": "Body for the private preview toggle on the widget settings page."
+  },
+  "widgetPreviewPrivateState": "Private task body hidden",
+  "@widgetPreviewPrivateState": {
+    "description": "Primary preview label shown when private preview mode is enabled."
+  },
+  "widgetPreviewDefaultBody": "Shows time, state, and a safe summary.",
+  "@widgetPreviewDefaultBody": {
+    "description": "Default body copy used in the widget preview card."
+  },
+  "privacySettingsTitle": "Privacy settings",
+  "@privacySettingsTitle": {
+    "description": "Title for the privacy settings page."
+  },
+  "privacySettingsSubtitle": "Only manage basic display preferences here. No complex permission flow in phase two.",
+  "@privacySettingsSubtitle": {
+    "description": "Helper copy shown on the privacy settings page."
+  },
+  "privacySettingsMaskTitle": "Hide private task body in outward previews",
+  "@privacySettingsMaskTitle": {
+    "description": "Title for the primary toggle on the privacy settings page."
+  },
+  "privacySettingsMaskBody": "Lock screen, widget, notifications, and shortcut entries should not directly expose private task text.",
+  "@privacySettingsMaskBody": {
+    "description": "Body for the primary toggle on the privacy settings page."
+  },
+  "privacySettingsSafeTitle": "Conservative default",
+  "@privacySettingsSafeTitle": {
+    "description": "Title for the conservative fallback block on the privacy settings page."
+  },
+  "privacySettingsSafeBody": "If privacy settings fail, the app must keep the safer outward behavior instead of revealing more text.",
+  "@privacySettingsSafeBody": {
+    "description": "Body for the conservative fallback block on the privacy settings page."
   }
 }

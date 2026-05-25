@@ -12,6 +12,7 @@ class HistoryTaskCard extends StatelessWidget {
     super.key,
     required this.task,
     required this.onViewDetail,
+    this.onRestore,
   });
 
   /// 已完成事项。
@@ -19,6 +20,9 @@ class HistoryTaskCard extends StatelessWidget {
 
   /// 查看原记录动作。
   final VoidCallback onViewDetail;
+
+  /// 恢复动作，阶段二最近完成页会显式暴露该入口。
+  final VoidCallback? onRestore;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,20 @@ class HistoryTaskCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          TextButton(onPressed: onViewDetail, child: Text(localizations.viewOriginalRecordAction)),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              if (onRestore != null)
+                TextButton(
+                  onPressed: onRestore,
+                  child: Text(localizations.taskRestoreItemAction),
+                ),
+              TextButton(
+                onPressed: onViewDetail,
+                child: Text(localizations.viewOriginalRecordAction),
+              ),
+            ],
+          ),
         ],
       ),
     );

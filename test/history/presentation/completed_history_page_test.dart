@@ -7,9 +7,9 @@ import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart
 import 'package:screen_note/src/tasks/domain/entities/task.dart';
 import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
 
-/// 验证最近完成页保持“可追踪历史”而不是“恢复入口”语义。
+/// 验证最近完成页在阶段二支持恢复与详情双入口。
 void main() {
-  testWidgets('最近完成页不会直接展示恢复动作', (WidgetTester tester) async {
+  testWidgets('最近完成页展示恢复动作和详情入口', (WidgetTester tester) async {
     final DateTime now = DateTime(2026, 5, 25, 10);
     final Task task = Task(
       id: 'task-1',
@@ -33,7 +33,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('恢复事项'), findsNothing);
+    expect(find.text('恢复事项'), findsOneWidget);
     expect(find.text('查看原记录'), findsOneWidget);
   });
 }

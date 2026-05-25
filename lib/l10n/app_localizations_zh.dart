@@ -45,6 +45,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deletedHistoryEntry => '最近删除';
 
   @override
+  String get taskEditorEntry => '完整新建';
+
+  @override
+  String get settingsEntry => '设置';
+
+  @override
   String get emptyActiveTasksTitle => '现在还没有要记的事';
 
   @override
@@ -75,6 +81,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskDetailTitle => '事项详情';
 
   @override
+  String get taskEditorTitle => '新建事项';
+
+  @override
+  String get taskEditorHelperText => '完整新建页负责标题、备注、时间、置顶、隐私与提醒模式的统一录入。';
+
+  @override
   String get taskDetailMissing => '这条事项暂时不可用。';
 
   @override
@@ -96,7 +108,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskPrivateLabel => '在锁屏隐藏正文';
 
   @override
+  String get taskReminderModeLabel => '提醒模式';
+
+  @override
+  String get taskReminderModeNormal => '普通提醒';
+
+  @override
+  String get taskReminderModePersistent => '强提醒';
+
+  @override
   String get taskSaveChanges => '保存修改';
+
+  @override
+  String get taskSaveAction => '保存事项';
 
   @override
   String get taskCompleteAction => '完成';
@@ -217,4 +241,58 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get privacyExplainBody => '隐私事项不会在锁屏预览或其他外露场景里显示原始正文。';
+
+  @override
+  String get settingsPageTitle => '设置';
+
+  @override
+  String get settingsPageHelperText => '阶段二只保留锁屏显示与隐私设置，不提前扩展通知、Pro 或系统入口。';
+
+  @override
+  String get settingsDisplayGroupTitle => '展示偏好';
+
+  @override
+  String get settingsOpenAction => '进入';
+
+  @override
+  String get settingsFallbackTitle => '降级原则';
+
+  @override
+  String get settingsFallbackBody => '任何设置异常都只能影响当前页展示，不允许阻断首页创建、历史恢复或详情页状态切换。';
+
+  @override
+  String get widgetSettingsTitle => '锁屏显示';
+
+  @override
+  String get widgetSettingsSubtitle => '在 App 内预览锁屏展示基线，阶段二不接真实 Widget 刷新。';
+
+  @override
+  String get widgetPreviewMaskPrivateTitle => '预览里隐藏隐私事项正文';
+
+  @override
+  String get widgetPreviewMaskPrivateBody => '锁屏、小组件和其他外露入口默认不泄露隐私事项正文。';
+
+  @override
+  String get widgetPreviewPrivateState => '隐私事项内容已隐藏';
+
+  @override
+  String get widgetPreviewDefaultBody => '显示时间、状态和安全摘要。';
+
+  @override
+  String get privacySettingsTitle => '隐私设置';
+
+  @override
+  String get privacySettingsSubtitle => '只管理基础展示偏好，不引入复杂权限流程。';
+
+  @override
+  String get privacySettingsMaskTitle => '外露预览里隐藏隐私事项正文';
+
+  @override
+  String get privacySettingsMaskBody => '锁屏、小组件、通知和系统快捷入口默认不直接泄露隐私正文。';
+
+  @override
+  String get privacySettingsSafeTitle => '保守默认值';
+
+  @override
+  String get privacySettingsSafeBody => '隐私设置异常时必须维持保守默认值，而不是放宽外露展示。';
 }

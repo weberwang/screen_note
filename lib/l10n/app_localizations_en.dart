@@ -49,6 +49,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deletedHistoryEntry => 'Recently deleted';
 
   @override
+  String get taskEditorEntry => 'Full editor';
+
+  @override
+  String get settingsEntry => 'Settings';
+
+  @override
   String get emptyActiveTasksTitle => 'Nothing to remember yet';
 
   @override
@@ -82,6 +88,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskDetailTitle => 'Task details';
 
   @override
+  String get taskEditorTitle => 'New task';
+
+  @override
+  String get taskEditorHelperText =>
+      'The full editor handles title, note, due time, pinning, privacy, and reminder mode in one place.';
+
+  @override
   String get taskDetailMissing => 'This task isn\'t available right now.';
 
   @override
@@ -103,7 +116,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskPrivateLabel => 'Hide on lock screen';
 
   @override
+  String get taskReminderModeLabel => 'Reminder mode';
+
+  @override
+  String get taskReminderModeNormal => 'Normal reminder';
+
+  @override
+  String get taskReminderModePersistent => 'Persistent reminder';
+
+  @override
   String get taskSaveChanges => 'Save changes';
+
+  @override
+  String get taskSaveAction => 'Save task';
 
   @override
   String get taskCompleteAction => 'Complete';
@@ -229,4 +254,68 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get privacyExplainBody =>
       'Private tasks won\'t show their original text on lock screen previews or other outward surfaces.';
+
+  @override
+  String get settingsPageTitle => 'Settings';
+
+  @override
+  String get settingsPageHelperText =>
+      'Phase two only keeps lock screen display and privacy settings. Notifications, Pro, and system entries stay out of scope.';
+
+  @override
+  String get settingsDisplayGroupTitle => 'Display preferences';
+
+  @override
+  String get settingsOpenAction => 'Open';
+
+  @override
+  String get settingsFallbackTitle => 'Fallback rule';
+
+  @override
+  String get settingsFallbackBody =>
+      'Any settings failure should only degrade this page. It must not block home creation, history restore, or detail state changes.';
+
+  @override
+  String get widgetSettingsTitle => 'Lock screen display';
+
+  @override
+  String get widgetSettingsSubtitle =>
+      'Preview the lock screen baseline inside the app. Phase two does not connect to real widget refresh.';
+
+  @override
+  String get widgetPreviewMaskPrivateTitle =>
+      'Hide private task body in previews';
+
+  @override
+  String get widgetPreviewMaskPrivateBody =>
+      'Lock screen, widget, and other outward surfaces should not expose private task text by default.';
+
+  @override
+  String get widgetPreviewPrivateState => 'Private task body hidden';
+
+  @override
+  String get widgetPreviewDefaultBody =>
+      'Shows time, state, and a safe summary.';
+
+  @override
+  String get privacySettingsTitle => 'Privacy settings';
+
+  @override
+  String get privacySettingsSubtitle =>
+      'Only manage basic display preferences here. No complex permission flow in phase two.';
+
+  @override
+  String get privacySettingsMaskTitle =>
+      'Hide private task body in outward previews';
+
+  @override
+  String get privacySettingsMaskBody =>
+      'Lock screen, widget, notifications, and shortcut entries should not directly expose private task text.';
+
+  @override
+  String get privacySettingsSafeTitle => 'Conservative default';
+
+  @override
+  String get privacySettingsSafeBody =>
+      'If privacy settings fail, the app must keep the safer outward behavior instead of revealing more text.';
 }

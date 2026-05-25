@@ -9,6 +9,7 @@ import 'package:screen_note/src/shared/presentation/widgets/screen_note_error_vi
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_loading_view.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_scaffold.dart';
 import 'package:screen_note/src/tasks/domain/entities/task.dart';
+import 'package:screen_note/src/tasks/presentation/overlays/restore_task_dialog.dart';
 import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
 import '../widgets/history_task_card.dart';
 
@@ -42,6 +43,7 @@ class CompletedHistoryPage extends ConsumerWidget {
               final Task task = tasks[index];
               return HistoryTaskCard(
                 task: task,
+                onRestore: () => _restoreTask(context, ref, task.id),
                 onViewDetail: () => context.go(RoutePaths.taskDetailPath(task.id)),
               );
             },
@@ -59,6 +61,27 @@ class CompletedHistoryPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// 最近完成页恢复事项时，先二次确认再回到当前事项列表。
+  Future<void> _restoreTask(BuildContext context, WidgetRef ref, String taskId) async {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) => const RestoreTaskDialog(),
+    );
+    if (confirmed != true) {
+      return;
+    }
+
+    await ref.read(restoreTaskUseCaseProvider).call(taskId);
+    if (!context.mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(localizations.taskRestoreSuccess)));
   }
 }
 

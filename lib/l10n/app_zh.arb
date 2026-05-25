@@ -48,6 +48,14 @@
   "@deletedHistoryEntry": {
     "description": "进入最近删除页的入口文案。"
   },
+  "taskEditorEntry": "完整新建",
+  "@taskEditorEntry": {
+    "description": "首页进入完整新建页的入口文案。"
+  },
+  "settingsEntry": "设置",
+  "@settingsEntry": {
+    "description": "首页进入设置页的入口文案。"
+  },
   "emptyActiveTasksTitle": "现在还没有要记的事",
   "@emptyActiveTasksTitle": {
     "description": "当前事项为空时的标题。"
@@ -88,6 +96,14 @@
   "@taskDetailTitle": {
     "description": "事项详情页标题。"
   },
+  "taskEditorTitle": "新建事项",
+  "@taskEditorTitle": {
+    "description": "完整新建页标题。"
+  },
+  "taskEditorHelperText": "完整新建页负责标题、备注、时间、置顶、隐私与提醒模式的统一录入。",
+  "@taskEditorHelperText": {
+    "description": "完整新建页的辅助说明文案。"
+  },
   "taskDetailMissing": "这条事项暂时不可用。",
   "@taskDetailMissing": {
     "description": "事项详情加载不到数据时的占位说明。"
@@ -116,9 +132,25 @@
   "@taskPrivateLabel": {
     "description": "事项隐私开关标签。"
   },
+  "taskReminderModeLabel": "提醒模式",
+  "@taskReminderModeLabel": {
+    "description": "事项提醒模式行标签。"
+  },
+  "taskReminderModeNormal": "普通提醒",
+  "@taskReminderModeNormal": {
+    "description": "普通提醒模式文案。"
+  },
+  "taskReminderModePersistent": "强提醒",
+  "@taskReminderModePersistent": {
+    "description": "强提醒模式文案。"
+  },
   "taskSaveChanges": "保存修改",
   "@taskSaveChanges": {
     "description": "保存事项详情修改的主按钮文案。"
+  },
+  "taskSaveAction": "保存事项",
+  "@taskSaveAction": {
+    "description": "完整新建页保存事项的主按钮文案。"
   },
   "taskCompleteAction": "完成",
   "@taskCompleteAction": {
@@ -272,5 +304,77 @@
   "privacyExplainBody": "隐私事项不会在锁屏预览或其他外露场景里显示原始正文。",
   "@privacyExplainBody": {
     "description": "隐私说明底部弹层正文。"
+  },
+  "settingsPageTitle": "设置",
+  "@settingsPageTitle": {
+    "description": "设置页标题。"
+  },
+  "settingsPageHelperText": "阶段二只保留锁屏显示与隐私设置，不提前扩展通知、Pro 或系统入口。",
+  "@settingsPageHelperText": {
+    "description": "设置页辅助说明文案。"
+  },
+  "settingsDisplayGroupTitle": "展示偏好",
+  "@settingsDisplayGroupTitle": {
+    "description": "设置页展示分组标题。"
+  },
+  "settingsOpenAction": "进入",
+  "@settingsOpenAction": {
+    "description": "设置条目尾部进入动作文案。"
+  },
+  "settingsFallbackTitle": "降级原则",
+  "@settingsFallbackTitle": {
+    "description": "设置页降级说明标题。"
+  },
+  "settingsFallbackBody": "任何设置异常都只能影响当前页展示，不允许阻断首页创建、历史恢复或详情页状态切换。",
+  "@settingsFallbackBody": {
+    "description": "设置页降级说明正文。"
+  },
+  "widgetSettingsTitle": "锁屏显示",
+  "@widgetSettingsTitle": {
+    "description": "锁屏显示设置页标题。"
+  },
+  "widgetSettingsSubtitle": "在 App 内预览锁屏展示基线，阶段二不接真实 Widget 刷新。",
+  "@widgetSettingsSubtitle": {
+    "description": "锁屏显示设置页辅助说明。"
+  },
+  "widgetPreviewMaskPrivateTitle": "预览里隐藏隐私事项正文",
+  "@widgetPreviewMaskPrivateTitle": {
+    "description": "Widget 预览页隐私开关标题。"
+  },
+  "widgetPreviewMaskPrivateBody": "锁屏、小组件和其他外露入口默认不泄露隐私事项正文。",
+  "@widgetPreviewMaskPrivateBody": {
+    "description": "Widget 预览页隐私开关说明。"
+  },
+  "widgetPreviewPrivateState": "隐私事项内容已隐藏",
+  "@widgetPreviewPrivateState": {
+    "description": "Widget 预览页开启隐私模式后的主预览文案。"
+  },
+  "widgetPreviewDefaultBody": "显示时间、状态和安全摘要。",
+  "@widgetPreviewDefaultBody": {
+    "description": "Widget 预览页普通模式下的预览说明。"
+  },
+  "privacySettingsTitle": "隐私设置",
+  "@privacySettingsTitle": {
+    "description": "隐私设置页标题。"
+  },
+  "privacySettingsSubtitle": "只管理基础展示偏好，不引入复杂权限流程。",
+  "@privacySettingsSubtitle": {
+    "description": "隐私设置页辅助说明。"
+  },
+  "privacySettingsMaskTitle": "外露预览里隐藏隐私事项正文",
+  "@privacySettingsMaskTitle": {
+    "description": "隐私设置页主开关标题。"
+  },
+  "privacySettingsMaskBody": "锁屏、小组件、通知和系统快捷入口默认不直接泄露隐私正文。",
+  "@privacySettingsMaskBody": {
+    "description": "隐私设置页主开关说明。"
+  },
+  "privacySettingsSafeTitle": "保守默认值",
+  "@privacySettingsSafeTitle": {
+    "description": "隐私设置页补充说明标题。"
+  },
+  "privacySettingsSafeBody": "隐私设置异常时必须维持保守默认值，而不是放宽外露展示。",
+  "@privacySettingsSafeBody": {
+    "description": "隐私设置页补充说明正文。"
   }
 }
