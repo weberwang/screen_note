@@ -3,5 +3,246 @@
   "appTitle": "Screen Note",
   "@appTitle": {
     "description": "Application title shown in the app chrome and home screen."
+  },
+  "homePageTitle": "Today, don't forget",
+  "@homePageTitle": {
+    "description": "Primary title shown on the phase one home page."
+  },
+  "homePageSubtitle": "Put the important little things where they stay visible.",
+  "@homePageSubtitle": {
+    "description": "Supporting subtitle shown on the phase one home page."
+  },
+  "quickInputPlaceholder": "Write down the little thing you can't forget",
+  "@quickInputPlaceholder": {
+    "description": "Placeholder in the quick input card."
+  },
+  "quickInputSubmit": "Add",
+  "@quickInputSubmit": {
+    "description": "Primary action label used to create a task quickly."
+  },
+  "taskTitleRequired": "Write something important first.",
+  "@taskTitleRequired": {
+    "description": "Validation message shown when task title is empty."
+  },
+  "taskCreateSuccess": "Added to your lock screen reminder.",
+  "@taskCreateSuccess": {
+    "description": "Feedback shown after a task is created successfully."
+  },
+  "taskCreateFailed": "Couldn't save it yet. Your text is still here.",
+  "@taskCreateFailed": {
+    "description": "Feedback shown when quick creation fails."
+  },
+  "activeTasksSectionTitle": "Current tasks",
+  "@activeTasksSectionTitle": {
+    "description": "Section title for active tasks on the home page."
+  },
+  "completedHistoryEntry": "Recently completed",
+  "@completedHistoryEntry": {
+    "description": "Entry label to open the completed history page."
+  },
+  "deletedHistoryEntry": "Recently deleted",
+  "@deletedHistoryEntry": {
+    "description": "Entry label to open the deleted history page."
+  },
+  "emptyActiveTasksTitle": "Nothing to remember yet",
+  "@emptyActiveTasksTitle": {
+    "description": "Empty state title when there are no active tasks."
+  },
+  "emptyActiveTasksBody": "Write one down and it will stay visible here.",
+  "@emptyActiveTasksBody": {
+    "description": "Empty state message when there are no active tasks."
+  },
+  "emptyCompletedTasksTitle": "No completed tasks yet",
+  "@emptyCompletedTasksTitle": {
+    "description": "Empty state title for completed history."
+  },
+  "emptyCompletedTasksBody": "Completed tasks will show up here so they stay traceable.",
+  "@emptyCompletedTasksBody": {
+    "description": "Empty state message for completed history."
+  },
+  "emptyDeletedTasksTitle": "Nothing in recently deleted",
+  "@emptyDeletedTasksTitle": {
+    "description": "Empty state title for deleted history."
+  },
+  "emptyDeletedTasksBody": "Deleted tasks stay here for 30 days so you can restore them.",
+  "@emptyDeletedTasksBody": {
+    "description": "Empty state message for deleted history."
+  },
+  "deletedRetentionHint": "Deleted tasks stay here for 30 days.",
+  "@deletedRetentionHint": {
+    "description": "Hint shown above deleted history list."
+  },
+  "historyCompletedTitle": "Recently completed",
+  "@historyCompletedTitle": {
+    "description": "Title for the completed history page."
+  },
+  "historyDeletedTitle": "Recently deleted",
+  "@historyDeletedTitle": {
+    "description": "Title for the deleted history page."
+  },
+  "taskDetailTitle": "Task details",
+  "@taskDetailTitle": {
+    "description": "Title for the task detail page."
+  },
+  "taskDetailMissing": "This task isn't available right now.",
+  "@taskDetailMissing": {
+    "description": "Fallback message when a task cannot be loaded."
+  },
+  "taskTitleLabel": "Title",
+  "@taskTitleLabel": {
+    "description": "Label for the task title field."
+  },
+  "taskNoteLabel": "Note",
+  "@taskNoteLabel": {
+    "description": "Label for the task note field."
+  },
+  "taskDueLabel": "Due time",
+  "@taskDueLabel": {
+    "description": "Label for the task due time row."
+  },
+  "taskDueEmpty": "No due time yet",
+  "@taskDueEmpty": {
+    "description": "Placeholder shown when a task has no due time."
+  },
+  "taskPinnedLabel": "Pin this task",
+  "@taskPinnedLabel": {
+    "description": "Switch label for pinning a task."
+  },
+  "taskPrivateLabel": "Hide on lock screen",
+  "@taskPrivateLabel": {
+    "description": "Switch label for marking a task as private."
+  },
+  "taskSaveChanges": "Save changes",
+  "@taskSaveChanges": {
+    "description": "Primary button label to save task changes."
+  },
+  "taskCompleteAction": "Complete",
+  "@taskCompleteAction": {
+    "description": "Action label used to complete a task."
+  },
+  "taskDeleteAction": "Delete",
+  "@taskDeleteAction": {
+    "description": "Action label used to soft delete a task."
+  },
+  "taskRestoreAction": "Restore",
+  "@taskRestoreAction": {
+    "description": "Action label used to restore a task."
+  },
+  "taskRestoreSuccess": "Restored to current tasks.",
+  "@taskRestoreSuccess": {
+    "description": "Feedback shown after restoring a task."
+  },
+  "taskDeleteSuccess": "Deleted. You can restore it from recently deleted.",
+  "@taskDeleteSuccess": {
+    "description": "Feedback shown after deleting a task."
+  },
+  "taskCompleteSuccess": "Moved to recently completed.",
+  "@taskCompleteSuccess": {
+    "description": "Feedback shown after completing a task."
+  },
+  "taskUpdateSuccess": "Saved your changes.",
+  "@taskUpdateSuccess": {
+    "description": "Feedback shown after saving task details."
+  },
+  "taskLoadFailed": "Couldn't load tasks right now.",
+  "@taskLoadFailed": {
+    "description": "General task list error message."
+  },
+  "taskHistoryLoadFailed": "Couldn't load history right now.",
+  "@taskHistoryLoadFailed": {
+    "description": "General history list error message."
+  },
+  "retryAction": "Retry",
+  "@retryAction": {
+    "description": "Generic retry action label."
+  },
+  "statusPinned": "Pinned",
+  "@statusPinned": {
+    "description": "Chip label for pinned tasks."
+  },
+  "statusOverdue": "Overdue",
+  "@statusOverdue": {
+    "description": "Chip label for overdue tasks."
+  },
+  "statusToday": "Today",
+  "@statusToday": {
+    "description": "Chip label for tasks due today."
+  },
+  "statusPrivate": "Private",
+  "@statusPrivate": {
+    "description": "Chip label for private tasks."
+  },
+  "statusCompleted": "Completed",
+  "@statusCompleted": {
+    "description": "Chip label for completed tasks."
+  },
+  "statusDeleted": "Deleted",
+  "@statusDeleted": {
+    "description": "Chip label for deleted tasks."
+  },
+  "privateMaskedTitle": "Private task",
+  "@privateMaskedTitle": {
+    "description": "Placeholder title shown when task content must be masked."
+  },
+  "remainingDaysLabel": "{days, plural, =0{Expires today} =1{1 day left} other{{days} days left}}",
+  "@remainingDaysLabel": {
+    "description": "Remaining retention time label for deleted tasks.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteDialogTitle": "Delete this task?",
+  "@deleteDialogTitle": {
+    "description": "Title of the delete confirmation dialog."
+  },
+  "deleteDialogBody": "You can restore it from recently deleted within 30 days.",
+  "@deleteDialogBody": {
+    "description": "Body of the delete confirmation dialog."
+  },
+  "restoreDialogTitle": "Restore to current tasks?",
+  "@restoreDialogTitle": {
+    "description": "Title of the restore confirmation dialog."
+  },
+  "restoreDialogBody": "After restoring, it will join the home list and lock screen ranking again.",
+  "@restoreDialogBody": {
+    "description": "Body of the restore confirmation dialog."
+  },
+  "discardDialogTitle": "Discard unsaved changes?",
+  "@discardDialogTitle": {
+    "description": "Title of the discard changes confirmation dialog."
+  },
+  "discardDialogBody": "Your edits on this page won't be saved.",
+  "@discardDialogBody": {
+    "description": "Body of the discard changes confirmation dialog."
+  },
+  "cancelAction": "Cancel",
+  "@cancelAction": {
+    "description": "Generic cancel action label."
+  },
+  "discardAction": "Discard",
+  "@discardAction": {
+    "description": "Generic discard action label."
+  },
+  "dueTimeDialogTitle": "Choose due time",
+  "@dueTimeDialogTitle": {
+    "description": "Title shown in the due time picker dialog."
+  },
+  "dueTimeSetAction": "Set time",
+  "@dueTimeSetAction": {
+    "description": "Action label to confirm due time selection."
+  },
+  "dueTimeClearAction": "Clear time",
+  "@dueTimeClearAction": {
+    "description": "Action label to clear an existing due time."
+  },
+  "privacyExplainTitle": "How privacy works",
+  "@privacyExplainTitle": {
+    "description": "Title for the privacy explanation bottom sheet."
+  },
+  "privacyExplainBody": "Private tasks won't show their original text on lock screen previews or other outward surfaces.",
+  "@privacyExplainBody": {
+    "description": "Body for the privacy explanation bottom sheet."
   }
 }

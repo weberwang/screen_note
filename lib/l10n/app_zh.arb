@@ -3,5 +3,246 @@
   "appTitle": "屏幕便签",
   "@appTitle": {
     "description": "应用标题，用于应用外壳与首页展示。"
+  },
+  "homePageTitle": "今天别忘了",
+  "@homePageTitle": {
+    "description": "阶段一首页主标题。"
+  },
+  "homePageSubtitle": "把不能忘的小事放到一直看得见的地方。",
+  "@homePageSubtitle": {
+    "description": "阶段一首页副标题。"
+  },
+  "quickInputPlaceholder": "写下不能忘的小事",
+  "@quickInputPlaceholder": {
+    "description": "首页快速输入卡占位文案。"
+  },
+  "quickInputSubmit": "添加",
+  "@quickInputSubmit": {
+    "description": "首页快速创建事项的主按钮文案。"
+  },
+  "taskTitleRequired": "先写下一件重要的事。",
+  "@taskTitleRequired": {
+    "description": "事项标题为空时的校验提示。"
+  },
+  "taskCreateSuccess": "已放到锁屏提醒。",
+  "@taskCreateSuccess": {
+    "description": "创建事项成功后的反馈文案。"
+  },
+  "taskCreateFailed": "暂时还没保存成功，但输入内容还在。",
+  "@taskCreateFailed": {
+    "description": "快速创建失败后的反馈文案。"
+  },
+  "activeTasksSectionTitle": "当前事项",
+  "@activeTasksSectionTitle": {
+    "description": "首页当前事项分组标题。"
+  },
+  "completedHistoryEntry": "最近完成",
+  "@completedHistoryEntry": {
+    "description": "进入最近完成页的入口文案。"
+  },
+  "deletedHistoryEntry": "最近删除",
+  "@deletedHistoryEntry": {
+    "description": "进入最近删除页的入口文案。"
+  },
+  "emptyActiveTasksTitle": "现在还没有要记的事",
+  "@emptyActiveTasksTitle": {
+    "description": "当前事项为空时的标题。"
+  },
+  "emptyActiveTasksBody": "写下一件事，它就会稳定留在这里。",
+  "@emptyActiveTasksBody": {
+    "description": "当前事项为空时的说明。"
+  },
+  "emptyCompletedTasksTitle": "还没有最近完成",
+  "@emptyCompletedTasksTitle": {
+    "description": "最近完成为空时的标题。"
+  },
+  "emptyCompletedTasksBody": "完成过的事项会留在这里，方便之后追溯。",
+  "@emptyCompletedTasksBody": {
+    "description": "最近完成为空时的说明。"
+  },
+  "emptyDeletedTasksTitle": "最近删除还是空的",
+  "@emptyDeletedTasksTitle": {
+    "description": "最近删除为空时的标题。"
+  },
+  "emptyDeletedTasksBody": "删除的事项会在这里保留 30 天，方便你恢复。",
+  "@emptyDeletedTasksBody": {
+    "description": "最近删除为空时的说明。"
+  },
+  "deletedRetentionHint": "删除事项会在这里保留 30 天。",
+  "@deletedRetentionHint": {
+    "description": "最近删除列表顶部的保留说明。"
+  },
+  "historyCompletedTitle": "最近完成",
+  "@historyCompletedTitle": {
+    "description": "最近完成页标题。"
+  },
+  "historyDeletedTitle": "最近删除",
+  "@historyDeletedTitle": {
+    "description": "最近删除页标题。"
+  },
+  "taskDetailTitle": "事项详情",
+  "@taskDetailTitle": {
+    "description": "事项详情页标题。"
+  },
+  "taskDetailMissing": "这条事项暂时不可用。",
+  "@taskDetailMissing": {
+    "description": "事项详情加载不到数据时的占位说明。"
+  },
+  "taskTitleLabel": "标题",
+  "@taskTitleLabel": {
+    "description": "事项标题输入框标签。"
+  },
+  "taskNoteLabel": "备注",
+  "@taskNoteLabel": {
+    "description": "事项备注输入框标签。"
+  },
+  "taskDueLabel": "截止时间",
+  "@taskDueLabel": {
+    "description": "事项截止时间行标签。"
+  },
+  "taskDueEmpty": "还没设置截止时间",
+  "@taskDueEmpty": {
+    "description": "事项没有截止时间时的占位文案。"
+  },
+  "taskPinnedLabel": "置顶这条事项",
+  "@taskPinnedLabel": {
+    "description": "事项置顶开关标签。"
+  },
+  "taskPrivateLabel": "在锁屏隐藏正文",
+  "@taskPrivateLabel": {
+    "description": "事项隐私开关标签。"
+  },
+  "taskSaveChanges": "保存修改",
+  "@taskSaveChanges": {
+    "description": "保存事项详情修改的主按钮文案。"
+  },
+  "taskCompleteAction": "完成",
+  "@taskCompleteAction": {
+    "description": "完成事项动作文案。"
+  },
+  "taskDeleteAction": "删除",
+  "@taskDeleteAction": {
+    "description": "软删除事项动作文案。"
+  },
+  "taskRestoreAction": "恢复",
+  "@taskRestoreAction": {
+    "description": "恢复事项动作文案。"
+  },
+  "taskRestoreSuccess": "已恢复到当前事项。",
+  "@taskRestoreSuccess": {
+    "description": "恢复事项成功后的反馈文案。"
+  },
+  "taskDeleteSuccess": "已删除，可在最近删除里恢复。",
+  "@taskDeleteSuccess": {
+    "description": "删除事项成功后的反馈文案。"
+  },
+  "taskCompleteSuccess": "已移到最近完成。",
+  "@taskCompleteSuccess": {
+    "description": "完成事项成功后的反馈文案。"
+  },
+  "taskUpdateSuccess": "修改已经保存。",
+  "@taskUpdateSuccess": {
+    "description": "保存事项详情成功后的反馈文案。"
+  },
+  "taskLoadFailed": "暂时无法加载事项列表。",
+  "@taskLoadFailed": {
+    "description": "事项列表加载失败时的通用错误文案。"
+  },
+  "taskHistoryLoadFailed": "暂时无法加载历史记录。",
+  "@taskHistoryLoadFailed": {
+    "description": "历史列表加载失败时的通用错误文案。"
+  },
+  "retryAction": "重试",
+  "@retryAction": {
+    "description": "通用重试按钮文案。"
+  },
+  "statusPinned": "置顶",
+  "@statusPinned": {
+    "description": "事项置顶标签文案。"
+  },
+  "statusOverdue": "过期",
+  "@statusOverdue": {
+    "description": "事项过期标签文案。"
+  },
+  "statusToday": "今天",
+  "@statusToday": {
+    "description": "事项今天截止标签文案。"
+  },
+  "statusPrivate": "隐私",
+  "@statusPrivate": {
+    "description": "事项隐私标签文案。"
+  },
+  "statusCompleted": "已完成",
+  "@statusCompleted": {
+    "description": "事项完成标签文案。"
+  },
+  "statusDeleted": "已删除",
+  "@statusDeleted": {
+    "description": "事项删除标签文案。"
+  },
+  "privateMaskedTitle": "隐私事项",
+  "@privateMaskedTitle": {
+    "description": "需要隐藏正文时的占位标题。"
+  },
+  "remainingDaysLabel": "{days, plural, =0{今天到期} =1{还剩 1 天} other{还剩 {days} 天}}",
+  "@remainingDaysLabel": {
+    "description": "最近删除列表中剩余保留天数文案。",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteDialogTitle": "删除这条事项？",
+  "@deleteDialogTitle": {
+    "description": "删除确认对话框标题。"
+  },
+  "deleteDialogBody": "删除后 30 天内可在最近删除恢复。",
+  "@deleteDialogBody": {
+    "description": "删除确认对话框说明文案。"
+  },
+  "restoreDialogTitle": "恢复到当前事项？",
+  "@restoreDialogTitle": {
+    "description": "恢复确认对话框标题。"
+  },
+  "restoreDialogBody": "恢复后会重新出现在首页和锁屏排序中。",
+  "@restoreDialogBody": {
+    "description": "恢复确认对话框说明文案。"
+  },
+  "discardDialogTitle": "放弃还没保存的修改？",
+  "@discardDialogTitle": {
+    "description": "放弃修改确认对话框标题。"
+  },
+  "discardDialogBody": "这页上的编辑内容不会被保存。",
+  "@discardDialogBody": {
+    "description": "放弃修改确认对话框说明文案。"
+  },
+  "cancelAction": "取消",
+  "@cancelAction": {
+    "description": "通用取消动作文案。"
+  },
+  "discardAction": "放弃修改",
+  "@discardAction": {
+    "description": "通用放弃动作文案。"
+  },
+  "dueTimeDialogTitle": "选择截止时间",
+  "@dueTimeDialogTitle": {
+    "description": "截止时间选择对话框标题。"
+  },
+  "dueTimeSetAction": "设置时间",
+  "@dueTimeSetAction": {
+    "description": "确认截止时间选择的动作文案。"
+  },
+  "dueTimeClearAction": "清除时间",
+  "@dueTimeClearAction": {
+    "description": "清除截止时间的动作文案。"
+  },
+  "privacyExplainTitle": "隐私模式说明",
+  "@privacyExplainTitle": {
+    "description": "隐私说明底部弹层标题。"
+  },
+  "privacyExplainBody": "隐私事项不会在锁屏预览或其他外露场景里显示原始正文。",
+  "@privacyExplainBody": {
+    "description": "隐私说明底部弹层正文。"
   }
 }
