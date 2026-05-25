@@ -59,6 +59,7 @@ test/
 
 - Widget 只消费稳定快照，任何查询、排序、状态推导和业务写入都由主 App 与 `widget_bridge/` 完成。
 - 设计源码先行：任何 Widget 预览、真实 Widget 布局、展示模式或设置入口实现前，必须先由设计子代理在 `designs/screen_note_stage3.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase3-pencil-mapping-2026-05-23.md`。
+- `.pen` 文件创建约束：凡是计划中要求新建或补齐的 `designs/*.pen` 设计源文件，必须通过 `Pencil` MCP 创建与编辑，禁止手写空白 `.pen` 文件、复制已有 `.pen` 文件充当新稿，或绕过 `Pencil` 直接生成设计源。
 - 快照模型、展示模式、隐私字段和 fallback 规则先冻结，再让 App 预览和 iOS Widget 并行消费。
 - 原生 Widget、Flutter 预览和 `Pencil` 设计必须拆给独立子代理并行处理，但必须共享同一套 `WidgetDisplayMode` 和快照字段。
 - 刷新失败只能降级，不得阻断事项主链路；所有刷新接入点必须留在应用层用例末尾。
