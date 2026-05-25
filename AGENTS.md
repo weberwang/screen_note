@@ -43,7 +43,8 @@
 ## 代码实现约定
 
 - 代码实现优先使用注解与代码生成链路，减少样板 DTO、不可变模型和数据库映射的手写重复代码。
-- 显示层默认优先使用 `hooks_riverpod` 组织页面、表单、局部状态和副作用，除非有明确理由，不要回退到样板更重的状态写法。
+- 显示层默认优先使用 `hooks_riverpod` 组织页面、表单、局部状态和副作用；Riverpod 相关 Provider、Notifier 与状态装配必须优先使用注解生成方案实现，除非注解链路明确无法覆盖，否则不要回退到手写样板。
+- `data/`、`domain/` 下的实体类必须优先使用 `freezed` 注解定义，通过代码生成统一维护不可变能力、值相等和 `copyWith`，不要长期保留手写实体样板。
 - 页面层只负责展示、输入和导航；业务规则、状态流转、日志写入、快照刷新、通知调度必须下沉到应用层或数据层。
 - 任何新增目录或模块都应优先贴合项目既定分层：`app/`、`tasks/`、`history/`、`settings/`、`widget_bridge/`、`notifications/`、`shared/`。
 - 编写实现文档或落地显示层任务时，必须以 `Pencil` 设计稿作为唯一设计标准；如果 `Pencil` 与当前理解不一致，以 `Pencil` 为准；必要时只调整实现，不擅自修改设计源。
@@ -70,14 +71,14 @@
 - `domain/` 禁止直接使用三方包；只保留业务实体、值对象、规则和仓储接口。
 - `application/` 不直接调用三方依赖；只负责用例编排、状态聚合、日志写入和流程推进。
 - `presentation/` 不直接持有三方包实例；页面和组件只负责触发用户意图、订阅状态和展示结果。
-- `presentation/` 默认优先使用 `hooks_riverpod` 组织显示层代码，目标是压缩样板、统一副作用管理并保持页面实现简洁一致。
+- `presentation/` 默认优先使用 `hooks_riverpod` 与 Riverpod 注解生成链路组织显示层代码，目标是压缩样板、统一副作用管理并保持页面实现简洁一致。
 - `data/` 是业务插件的主要落点；`widget_bridge/` 只承接小组件快照桥接；`notifications/` 只承接提醒调度与权限适配；`app/bootstrap/` 只承接全局初始化型依赖。
 
 ### 现有第三方包清单
 
-- `flutter_riverpod`：默认状态管理与依赖注入入口；新增页面状态、异步状态和模块装配优先基于它实现，不要回退到全局单例或裸 `InheritedWidget`。
+- `flutter_riverpod`：默认状态管理与依赖注入入口；新增页面状态、异步状态和模块装配优先基于注解生成的 Provider 实现，不要回退到全局单例或裸 `InheritedWidget`。
 - `flutter_hooks`：显示层 Hook 基础能力；局部控制器、输入状态、生命周期副作用优先通过 Hook 管理，不要散落手写 `StatefulWidget` 样板。
-- `hooks_riverpod`：显示层默认 Riverpod 入口；页面、弹层、表单和局部交互优先使用 `HookConsumerWidget`、`HookWidget` 等 Hook 方案实现。
+- `hooks_riverpod`：显示层默认 Riverpod 入口；页面、弹层、表单和局部交互优先使用 `HookConsumerWidget`、`HookWidget` 与 Riverpod 注解生成方案实现。
 - `go_router`：默认路由和跳转能力；启动分发、详情跳转、设置子页和系统入口回流统一走它，不要再并行维护另一套路由状态机。
 - `collection`：集合工具包；列表分组、排序辅助、安全查找等通用集合操作优先复用它。
 - `drift`：结构化本地数据默认落点；事项、事项日志、最近删除和稳定快照元数据优先用它，不要堆在内存列表或松散 JSON 里。
@@ -90,7 +91,7 @@
 - `timezone`：时区感知的时间计算与通知调度基础包；真实定时提醒和跨时区时间推算优先用它，不要只靠本地 `DateTime` 硬算。
 - `flutter_timezone`：系统时区读取默认入口；通知调度、小组件时间展示和跨时区处理需要系统时区时优先用它。
 - `device_info_plus`：设备环境读取；仅在诊断、平台差异分流、反馈信息补充时使用，不提前侵入业务流程。
-- `freezed_annotation`：不可变模型注解入口；领域模型、表单状态、ViewState 需要值语义和 `copyWith` 时优先配合 `freezed` 使用。
+- `freezed_annotation`：不可变模型注解入口；`data/`、`domain/` 实体类、领域模型、表单状态和 ViewState 默认必须优先配合 `freezed` 使用。
 - `json_annotation`：JSON 模型注解入口；缓存结构、快照 DTO、系统桥接 DTO 需要 JSON 映射时优先用它。
 - `intl`：时间、数字和文案格式化默认工具；日期展示、本地化格式化、相对时间和格式化字符串优先用它。
 - `package_info_plus`：应用版本和包信息读取；仅在关于页、诊断页、升级检查和反馈附加信息时使用。
@@ -98,7 +99,7 @@
 - `build_runner`：统一代码生成入口；所有 `freezed`、`json_serializable`、`drift` 相关生成流程统一通过它执行。
 - `flutter_lints`：项目静态检查基线；新增代码默认遵守，不允许为了省事批量关闭规则。
 - `drift_dev`：`drift` 代码生成与开发工具入口；数据库表、DAO 和迁移脚手架统一通过它生成。
-- `freezed`：不可变模型生成器；需要值相等、`copyWith`、联合类型时优先用它，不再长期手写样板模型。
+- `freezed`：不可变模型生成器；`data/`、`domain/` 实体类以及需要值相等、`copyWith`、联合类型的模型必须优先用它，不再长期手写样板模型。
 - `json_serializable`：JSON 代码生成器；需要稳定 Map/JSON 映射时优先使用，不要长期手写脆弱的转换代码。
 
 ## 国际化通用约束
@@ -123,7 +124,7 @@
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **screen_note** (450 symbols, 553 relationships, 0 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **screen_note** (1352 symbols, 2352 relationships, 28 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
