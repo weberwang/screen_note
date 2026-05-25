@@ -20,6 +20,10 @@
   "@quickInputSubmit": {
     "description": "Primary action label used to create a task quickly."
   },
+  "quickInputHelperText": "Keep the title first, then add due time, pinning, and privacy only when needed.",
+  "@quickInputHelperText": {
+    "description": "Supporting helper text inside the quick input card."
+  },
   "taskTitleRequired": "Write something important first.",
   "@taskTitleRequired": {
     "description": "Validation message shown when task title is empty."
@@ -128,6 +132,18 @@
   "@taskRestoreAction": {
     "description": "Action label used to restore a task."
   },
+  "taskRestoreItemAction": "Restore task",
+  "@taskRestoreItemAction": {
+    "description": "Longer restore label used in detail and deleted history views."
+  },
+  "valueEnabled": "On",
+  "@valueEnabled": {
+    "description": "Boolean value label used when a detail setting is enabled."
+  },
+  "valueDisabled": "Off",
+  "@valueDisabled": {
+    "description": "Boolean value label used when a detail setting is disabled."
+  },
   "taskRestoreSuccess": "Restored to current tasks.",
   "@taskRestoreSuccess": {
     "description": "Feedback shown after restoring a task."
@@ -183,6 +199,18 @@
   "privateMaskedTitle": "Private task",
   "@privateMaskedTitle": {
     "description": "Placeholder title shown when task content must be masked."
+  },
+  "taskPrivateMaskedBody": "This private task is hidden here and only visible in the detail page.",
+  "@taskPrivateMaskedBody": {
+    "description": "Masked body copy used in private task cards."
+  },
+  "viewTaskDetailAction": "View details",
+  "@viewTaskDetailAction": {
+    "description": "Action label used to open the task detail page from list cards."
+  },
+  "viewOriginalRecordAction": "View original record",
+  "@viewOriginalRecordAction": {
+    "description": "Action label used on completed history cards to open the original record."
   },
   "remainingDaysLabel": "{days, plural, =0{Expires today} =1{1 day left} other{{days} days left}}",
   "@remainingDaysLabel": {

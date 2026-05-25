@@ -57,6 +57,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               initialValue: _draftValue,
               errorText: _inlineError,
               onSubmit: _createTask,
+              onCancel: _clearQuickInputDraft,
             ),
             const SizedBox(height: 24),
             TaskListSection(
@@ -187,6 +188,13 @@ class _HomePageState extends ConsumerState<HomePage> {
         });
       }
     }
+  }
+
+  void _clearQuickInputDraft() {
+    setState(() {
+      _draftValue = '';
+      _inlineError = null;
+    });
   }
 
   Future<void> _completeTask(String taskId) async {

@@ -20,6 +20,10 @@
   "@quickInputSubmit": {
     "description": "首页快速创建事项的主按钮文案。"
   },
+  "quickInputHelperText": "默认先保留标题，截止时间、置顶和隐私作为轻量补充。",
+  "@quickInputHelperText": {
+    "description": "首页快速输入卡的辅助说明文案。"
+  },
   "taskTitleRequired": "先写下一件重要的事。",
   "@taskTitleRequired": {
     "description": "事项标题为空时的校验提示。"
@@ -128,6 +132,18 @@
   "@taskRestoreAction": {
     "description": "恢复事项动作文案。"
   },
+  "taskRestoreItemAction": "恢复事项",
+  "@taskRestoreItemAction": {
+    "description": "详情页和最近删除卡片使用的恢复事项动作文案。"
+  },
+  "valueEnabled": "开启",
+  "@valueEnabled": {
+    "description": "详情页中布尔开关开启时的值文案。"
+  },
+  "valueDisabled": "关闭",
+  "@valueDisabled": {
+    "description": "详情页中布尔开关关闭时的值文案。"
+  },
   "taskRestoreSuccess": "已恢复到当前事项。",
   "@taskRestoreSuccess": {
     "description": "恢复事项成功后的反馈文案。"
@@ -183,6 +199,18 @@
   "privateMaskedTitle": "隐私事项",
   "@privateMaskedTitle": {
     "description": "需要隐藏正文时的占位标题。"
+  },
+  "taskPrivateMaskedBody": "隐私事项内容已隐藏，仅在详情页内可见。",
+  "@taskPrivateMaskedBody": {
+    "description": "隐私事项在列表卡片中的正文遮罩说明。"
+  },
+  "viewTaskDetailAction": "查看详情",
+  "@viewTaskDetailAction": {
+    "description": "列表态进入事项详情页的动作文案。"
+  },
+  "viewOriginalRecordAction": "查看原记录",
+  "@viewOriginalRecordAction": {
+    "description": "最近完成卡片进入原事项记录的动作文案。"
   },
   "remainingDaysLabel": "{days, plural, =0{今天到期} =1{还剩 1 天} other{还剩 {days} 天}}",
   "@remainingDaysLabel": {

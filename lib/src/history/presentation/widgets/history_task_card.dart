@@ -11,14 +11,14 @@ class HistoryTaskCard extends StatelessWidget {
   const HistoryTaskCard({
     super.key,
     required this.task,
-    required this.onRestore,
+    required this.onViewDetail,
   });
 
   /// 已完成事项。
   final Task task;
 
-  /// 恢复动作。
-  final VoidCallback onRestore;
+  /// 查看原记录动作。
+  final VoidCallback onViewDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +32,7 @@ class HistoryTaskCard extends StatelessWidget {
         border: Border.all(color: ScreenNoteColors.lineSoft),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: Column(
@@ -51,14 +52,22 @@ class HistoryTaskCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
+                if (task.note case final String note when note.trim().isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 12),
+                  Text(
+                    note,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: ScreenNoteColors.inkPrimary,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
           const SizedBox(width: 12),
-          TextButton(
-            onPressed: onRestore,
-            child: Text(localizations.taskRestoreAction),
-          ),
+          TextButton(onPressed: onViewDetail, child: Text(localizations.viewOriginalRecordAction)),
         ],
       ),
     );

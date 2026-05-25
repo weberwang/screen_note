@@ -41,13 +41,14 @@ class TaskCard extends ConsumerWidget {
     );
     final TaskDisplayState state = resolver.resolve(task, now: now);
     final List<TaskStatusChipKind> chips = resolver.resolveChips(task, now: now);
-
-    final String title = task.isPrivate
-        ? localizations.privateMaskedTitle
-        : task.title;
-    final String? subtitle = task.dueAt == null
-        ? task.note
+    final bool isMasked = task.isPrivate;
+    final String title = isMasked ? localizations.privateMaskedTitle : task.title;
+    final String? dueText = task.dueAt == null
+        ? null
         : ScreenNoteDateTimeFormatter.formatDateTime(task.dueAt!);
+    final String? bodyText = isMasked
+        ? localizations.taskPrivateMaskedBody
+        : task.note;
     final Color accentColor = switch (state) {
       TaskDisplayState.overdue => ScreenNoteColors.statusOverdue,
       TaskDisplayState.completed => ScreenNoteColors.statusDone,
@@ -70,6 +71,15 @@ class TaskCard extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(
+                width: 80,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+              const SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -81,7 +91,7 @@ class TaskCard extends ConsumerWidget {
                           title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: state == TaskDisplayState.completed
                                 ? ScreenNoteColors.inkSecondary
                                 : ScreenNoteColors.inkPrimary,
@@ -90,10 +100,10 @@ class TaskCard extends ConsumerWidget {
                                 : null,
                           ),
                         ),
-                        if (subtitle != null && subtitle.isNotEmpty) ...<Widget>[
+                        if (dueText != null) ...<Widget>[
                           const SizedBox(height: 8),
                           Text(
-                            subtitle,
+                            dueText,
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: state == TaskDisplayState.overdue
                                   ? ScreenNoteColors.statusOverdue
@@ -105,21 +115,23 @@ class TaskCard extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Column(
-                    children: <Widget>[
-                      FilledButton.tonal(
-                        onPressed: onComplete,
-                        child: Text(localizations.taskCompleteAction),
-                      ),
-                      const SizedBox(height: 8),
-                      TextButton(
-                        onPressed: onDelete,
-                        child: Text(localizations.taskDeleteAction),
-                      ),
-                    ],
-                  ),
+                  if (_resolvePrimaryBadgeKind(state, task) case final TaskStatusChipKind kind)
+                    _TaskCardPrimaryBadge(kind: kind),
                 ],
               ),
+              if (bodyText != null && bodyText.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 12),
+                Text(
+                  bodyText,
+                  maxLines: isMasked ? 2 : 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: isMasked
+                        ? ScreenNoteColors.inkSecondary
+                        : ScreenNoteColors.inkPrimary,
+                  ),
+                ),
+              ],
               if (chips.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 12),
                 Wrap(
@@ -130,8 +142,113 @@ class TaskCard extends ConsumerWidget {
                       .toList(growable: false),
                 ),
               ],
+              const SizedBox(height: 12),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      isMasked
+                          ? localizations.taskPrivateMaskedBody
+                          : localizations.homePageSubtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  if (!isMasked) ...<Widget>[
+                    TextButton(
+                      onPressed: onDelete,
+                      child: Text(localizations.taskDeleteAction),
+                    ),
+                    const SizedBox(width: 4),
+                  ],
+                  TextButton(
+                    onPressed: isMasked ? onTap : onComplete,
+                    child: Text(
+                      isMasked
+                          ? localizations.viewTaskDetailAction
+                          : localizations.taskCompleteAction,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  TaskStatusChipKind? _resolvePrimaryBadgeKind(
+    TaskDisplayState state,
+    Task task,
+  ) {
+    if (task.isPrivate) {
+      return TaskStatusChipKind.privateItem;
+    }
+
+    if (state == TaskDisplayState.overdue) {
+      return TaskStatusChipKind.overdue;
+    }
+
+    if (task.isPinned) {
+      return TaskStatusChipKind.pinned;
+    }
+
+    if (state == TaskDisplayState.today) {
+      return TaskStatusChipKind.today;
+    }
+
+    return null;
+  }
+}
+
+/// 列表卡片右上角的单一主状态标签，避免和底部标签区重复拥挤。
+class _TaskCardPrimaryBadge extends StatelessWidget {
+  const _TaskCardPrimaryBadge({required this.kind});
+
+  final TaskStatusChipKind kind;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ({String label, Color color}) config = switch (kind) {
+      TaskStatusChipKind.pinned => (
+        label: localizations.statusPinned,
+        color: ScreenNoteColors.statusDone,
+      ),
+      TaskStatusChipKind.overdue => (
+        label: localizations.statusOverdue,
+        color: ScreenNoteColors.statusOverdue,
+      ),
+      TaskStatusChipKind.today => (
+        label: localizations.statusToday,
+        color: ScreenNoteColors.accentAmber,
+      ),
+      TaskStatusChipKind.privateItem => (
+        label: localizations.statusPrivate,
+        color: ScreenNoteColors.statusPrivate,
+      ),
+      TaskStatusChipKind.completed => (
+        label: localizations.statusCompleted,
+        color: ScreenNoteColors.statusDone,
+      ),
+      TaskStatusChipKind.deleted => (
+        label: localizations.statusDeleted,
+        color: ScreenNoteColors.inkSecondary,
+      ),
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: config.color.withValues(alpha: 0.12),
+        borderRadius: ScreenNoteRadii.small,
+      ),
+      child: Text(
+        config.label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: config.color,
         ),
       ),
     );

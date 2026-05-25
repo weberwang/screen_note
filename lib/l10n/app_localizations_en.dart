@@ -26,6 +26,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quickInputSubmit => 'Add';
 
   @override
+  String get quickInputHelperText =>
+      'Keep the title first, then add due time, pinning, and privacy only when needed.';
+
+  @override
   String get taskTitleRequired => 'Write something important first.';
 
   @override
@@ -111,6 +115,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskRestoreAction => 'Restore';
 
   @override
+  String get taskRestoreItemAction => 'Restore task';
+
+  @override
+  String get valueEnabled => 'On';
+
+  @override
+  String get valueDisabled => 'Off';
+
+  @override
   String get taskRestoreSuccess => 'Restored to current tasks.';
 
   @override
@@ -152,6 +165,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privateMaskedTitle => 'Private task';
+
+  @override
+  String get taskPrivateMaskedBody =>
+      'This private task is hidden here and only visible in the detail page.';
+
+  @override
+  String get viewTaskDetailAction => 'View details';
+
+  @override
+  String get viewOriginalRecordAction => 'View original record';
 
   @override
   String remainingDaysLabel(int days) {

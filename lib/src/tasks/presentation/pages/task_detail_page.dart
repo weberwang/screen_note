@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/src/app/route_paths.dart';
 import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_error_view.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_loading_view.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_scaffold.dart';
 import 'package:screen_note/src/shared/utils/date_time_formatter.dart';
+import 'package:screen_note/src/tasks/application/services/task_display_state_resolver.dart';
 import 'package:screen_note/src/tasks/application/use_cases/update_task_use_case.dart';
 import 'package:screen_note/src/tasks/domain/entities/task.dart';
+import 'package:screen_note/src/tasks/presentation/widgets/task_status_chip.dart';
 import 'package:screen_note/src/tasks/presentation/overlays/delete_task_dialog.dart';
 import 'package:screen_note/src/tasks/presentation/overlays/discard_changes_dialog.dart';
 import 'package:screen_note/src/tasks/presentation/overlays/due_time_sheet.dart';
@@ -58,6 +62,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
         }
 
         _hydrate(task);
+        final bool isActive = task.status == TaskStatus.active;
         final NavigatorState navigator = Navigator.of(context);
         return PopScope(
           canPop: false,
@@ -78,77 +83,28 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextField(
-                    controller: _titleController,
-                    decoration: InputDecoration(
-                      labelText: localizations.taskTitleLabel,
-                    ),
-                  ),
                   const SizedBox(height: 16),
-                  TextField(
-                    controller: _noteController,
-                    decoration: InputDecoration(
-                      labelText: localizations.taskNoteLabel,
-                    ),
-                    minLines: 3,
-                    maxLines: 6,
-                  ),
+                  _TaskDetailSummaryCard(task: task),
                   const SizedBox(height: 16),
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(localizations.taskDueLabel),
-                    subtitle: Text(
-                      _dueAt == null
+                  if (isActive) ...<Widget>[
+                    _buildEditableContent(localizations),
+                    const SizedBox(height: 16),
+                    _buildActiveActions(localizations, task),
+                  ] else ...<Widget>[
+                    _TaskDetailMetaCard(
+                      dueText: _dueAt == null
                           ? localizations.taskDueEmpty
                           : ScreenNoteDateTimeFormatter.formatDateTime(_dueAt!),
+                      pinnedLabel: _isPinned
+                          ? localizations.valueEnabled
+                          : localizations.valueDisabled,
+                      privateLabel: _isPrivate
+                          ? localizations.valueEnabled
+                          : localizations.valueDisabled,
                     ),
-                    onTap: _pickDueTime,
-                  ),
-                  SwitchListTile(
-                    value: _isPinned,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(localizations.taskPinnedLabel),
-                    onChanged: (bool value) => setState(() => _isPinned = value),
-                  ),
-                  SwitchListTile(
-                    value: _isPrivate,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(localizations.taskPrivateLabel),
-                    onChanged: (bool value) => setState(() => _isPrivate = value),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: _showPrivacyExplain,
-                      child: Text(localizations.privacyExplainTitle),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () => _saveTask(task),
-                    child: Text(localizations.taskSaveChanges),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    children: <Widget>[
-                      if (task.status == TaskStatus.active)
-                        FilledButton.tonal(
-                          onPressed: () => _completeTask(task.id),
-                          child: Text(localizations.taskCompleteAction),
-                        ),
-                      if (task.status != TaskStatus.deleted)
-                        TextButton(
-                          onPressed: () => _deleteTask(task.id),
-                          child: Text(localizations.taskDeleteAction),
-                        ),
-                      if (task.status != TaskStatus.active)
-                        TextButton(
-                          onPressed: () => _restoreTask(task.id),
-                          child: Text(localizations.taskRestoreAction),
-                        ),
-                    ],
-                  ),
+                    const SizedBox(height: 16),
+                    _buildReadOnlyActions(localizations, task),
+                  ],
                 ],
               ),
             ),
@@ -200,6 +156,136 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
     await showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => const PrivacyExplainSheet(),
+    );
+  }
+
+  Widget _buildEditableContent(AppLocalizations localizations) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
+          decoration: BoxDecoration(
+            color: ScreenNoteColors.surfaceCard,
+            borderRadius: ScreenNoteRadii.card,
+            border: Border.all(color: ScreenNoteColors.lineSoft),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(labelText: localizations.taskTitleLabel),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _noteController,
+                decoration: InputDecoration(labelText: localizations.taskNoteLabel),
+                minLines: 3,
+                maxLines: 6,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
+          decoration: BoxDecoration(
+            color: ScreenNoteColors.surfaceCard,
+            borderRadius: ScreenNoteRadii.card,
+            border: Border.all(color: ScreenNoteColors.lineSoft),
+          ),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(localizations.taskDueLabel),
+                subtitle: Text(
+                  _dueAt == null
+                      ? localizations.taskDueEmpty
+                      : ScreenNoteDateTimeFormatter.formatDateTime(_dueAt!),
+                ),
+                onTap: _pickDueTime,
+              ),
+              SwitchListTile(
+                value: _isPinned,
+                contentPadding: EdgeInsets.zero,
+                title: Text(localizations.taskPinnedLabel),
+                onChanged: (bool value) => setState(() => _isPinned = value),
+              ),
+              SwitchListTile(
+                value: _isPrivate,
+                contentPadding: EdgeInsets.zero,
+                title: Text(localizations.taskPrivateLabel),
+                onChanged: (bool value) => setState(() => _isPrivate = value),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: _showPrivacyExplain,
+                  child: Text(localizations.privacyExplainTitle),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActiveActions(AppLocalizations localizations, Task task) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: FilledButton(
+                onPressed: () => _saveTask(task),
+                child: Text(localizations.taskSaveChanges),
+              ),
+            ),
+            const SizedBox(width: 12),
+            FilledButton.tonal(
+              onPressed: () => _deleteTask(task.id),
+              child: Text(localizations.taskDeleteAction),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () => _completeTask(task.id),
+            child: Text(localizations.taskCompleteAction),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReadOnlyActions(AppLocalizations localizations, Task task) {
+    final String secondaryLabel = task.status == TaskStatus.completed
+        ? localizations.historyCompletedTitle
+        : localizations.historyDeletedTitle;
+    final String secondaryPath = task.status == TaskStatus.completed
+        ? RoutePaths.historyCompleted
+        : RoutePaths.historyDeleted;
+
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: FilledButton(
+            onPressed: () => _restoreTask(task.id),
+            child: Text(localizations.taskRestoreItemAction),
+          ),
+        ),
+        const SizedBox(width: 12),
+        FilledButton.tonal(
+          onPressed: () => context.go(secondaryPath),
+          child: Text(secondaryLabel),
+        ),
+      ],
     );
   }
 
@@ -302,5 +388,110 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
       builder: (BuildContext dialogContext) => const DiscardChangesDialog(),
     );
     return discard ?? false;
+  }
+}
+
+/// 详情页头部摘要卡，统一承载状态、标题和主说明。
+class _TaskDetailSummaryCard extends StatelessWidget {
+  const _TaskDetailSummaryCard({required this.task});
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    final TaskStatusChipKind? statusKind = switch (task.status) {
+      TaskStatus.active => task.isPrivate ? TaskStatusChipKind.privateItem : null,
+      TaskStatus.completed => TaskStatusChipKind.completed,
+      TaskStatus.deleted => TaskStatusChipKind.deleted,
+    };
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
+      decoration: BoxDecoration(
+        color: task.status == TaskStatus.deleted
+            ? ScreenNoteColors.surfaceMuted
+            : ScreenNoteColors.surfaceCard,
+        borderRadius: ScreenNoteRadii.card,
+        border: Border.all(color: ScreenNoteColors.lineSoft),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (statusKind != null) ...<Widget>[
+            TaskStatusChip(kind: statusKind),
+            const SizedBox(height: 12),
+          ],
+          Text(task.title, style: Theme.of(context).textTheme.titleMedium),
+          if (task.note case final String note when note.trim().isNotEmpty) ...<Widget>[
+            const SizedBox(height: 8),
+            Text(note, style: Theme.of(context).textTheme.bodyMedium),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// 详情页只读信息卡，避免完成态和删除态仍暴露可编辑控件。
+class _TaskDetailMetaCard extends StatelessWidget {
+  const _TaskDetailMetaCard({
+    required this.dueText,
+    required this.pinnedLabel,
+    required this.privateLabel,
+  });
+
+  final String dueText;
+  final String pinnedLabel;
+  final String privateLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
+      decoration: BoxDecoration(
+        color: ScreenNoteColors.surfaceCard,
+        borderRadius: ScreenNoteRadii.card,
+        border: Border.all(color: ScreenNoteColors.lineSoft),
+      ),
+      child: Column(
+        children: <Widget>[
+          _TaskDetailMetaRow(label: localizations.taskDueLabel, value: dueText),
+          const SizedBox(height: 12),
+          _TaskDetailMetaRow(
+            label: localizations.taskPinnedLabel,
+            value: pinnedLabel,
+          ),
+          const SizedBox(height: 12),
+          _TaskDetailMetaRow(
+            label: localizations.taskPrivateLabel,
+            value: privateLabel,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 详情页信息行。
+class _TaskDetailMetaRow extends StatelessWidget {
+  const _TaskDetailMetaRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
+        ),
+        const SizedBox(width: 12),
+        Text(value, style: Theme.of(context).textTheme.bodyLarge),
+      ],
+    );
   }
 }

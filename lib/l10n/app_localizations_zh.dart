@@ -24,6 +24,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quickInputSubmit => '添加';
 
   @override
+  String get quickInputHelperText => '默认先保留标题，截止时间、置顶和隐私作为轻量补充。';
+
+  @override
   String get taskTitleRequired => '先写下一件重要的事。';
 
   @override
@@ -105,6 +108,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskRestoreAction => '恢复';
 
   @override
+  String get taskRestoreItemAction => '恢复事项';
+
+  @override
+  String get valueEnabled => '开启';
+
+  @override
+  String get valueDisabled => '关闭';
+
+  @override
   String get taskRestoreSuccess => '已恢复到当前事项。';
 
   @override
@@ -145,6 +157,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get privateMaskedTitle => '隐私事项';
+
+  @override
+  String get taskPrivateMaskedBody => '隐私事项内容已隐藏，仅在详情页内可见。';
+
+  @override
+  String get viewTaskDetailAction => '查看详情';
+
+  @override
+  String get viewOriginalRecordAction => '查看原记录';
 
   @override
   String remainingDaysLabel(int days) {

@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Add'**
   String get quickInputSubmit;
 
+  /// Supporting helper text inside the quick input card.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the title first, then add due time, pinning, and privacy only when needed.'**
+  String get quickInputHelperText;
+
   /// Validation message shown when task title is empty.
   ///
   /// In en, this message translates to:
@@ -290,6 +296,24 @@ abstract class AppLocalizations {
   /// **'Restore'**
   String get taskRestoreAction;
 
+  /// Longer restore label used in detail and deleted history views.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore task'**
+  String get taskRestoreItemAction;
+
+  /// Boolean value label used when a detail setting is enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get valueEnabled;
+
+  /// Boolean value label used when a detail setting is disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get valueDisabled;
+
   /// Feedback shown after restoring a task.
   ///
   /// In en, this message translates to:
@@ -373,6 +397,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Private task'**
   String get privateMaskedTitle;
+
+  /// Masked body copy used in private task cards.
+  ///
+  /// In en, this message translates to:
+  /// **'This private task is hidden here and only visible in the detail page.'**
+  String get taskPrivateMaskedBody;
+
+  /// Action label used to open the task detail page from list cards.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewTaskDetailAction;
+
+  /// Action label used on completed history cards to open the original record.
+  ///
+  /// In en, this message translates to:
+  /// **'View original record'**
+  String get viewOriginalRecordAction;
 
   /// Remaining retention time label for deleted tasks.
   ///
