@@ -2,6 +2,7 @@ import '../../domain/entities/task.dart';
 import '../../domain/entities/task_event.dart';
 import '../../domain/repositories/task_event_repository.dart';
 import '../../domain/repositories/task_repository.dart';
+import '../../../widget_bridge/application/widget_refresh_guard.dart';
 import '../../../widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 删除事项用例。
@@ -43,7 +44,11 @@ final class DeleteTaskUseCase {
         createdAt: timestamp,
       ),
     );
-    await _widgetSnapshotRefresher.refresh();
+    // 软删除成功后，Widget 刷新异常只允许降级，不能阻断最近删除保留链路。
+    await runNonBlockingWidgetRefresh(
+      refresher: _widgetSnapshotRefresher,
+      actionName: 'delete_task',
+    );
     return deletedTask;
   }
 

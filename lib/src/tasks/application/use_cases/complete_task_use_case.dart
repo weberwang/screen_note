@@ -2,6 +2,7 @@ import '../../domain/entities/task.dart';
 import '../../domain/entities/task_event.dart';
 import '../../domain/repositories/task_event_repository.dart';
 import '../../domain/repositories/task_repository.dart';
+import '../../../widget_bridge/application/widget_refresh_guard.dart';
 import '../../../widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 完成事项用例。
@@ -44,7 +45,11 @@ final class CompleteTaskUseCase {
         createdAt: timestamp,
       ),
     );
-    await _widgetSnapshotRefresher.refresh();
+    // 完成事项后即使 Widget 同步失败，也不能影响最近完成主链路。
+    await runNonBlockingWidgetRefresh(
+      refresher: _widgetSnapshotRefresher,
+      actionName: 'complete_task',
+    );
     return completedTask;
   }
 

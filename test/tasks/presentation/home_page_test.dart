@@ -10,6 +10,7 @@ import 'package:screen_note/src/tasks/domain/repositories/task_event_repository.
 import 'package:screen_note/src/tasks/domain/repositories/task_repository.dart';
 import 'package:screen_note/src/tasks/presentation/pages/home_page.dart';
 import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
+import 'package:screen_note/src/widget_bridge/application/widget_refresh_result.dart';
 import 'package:screen_note/src/widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 验证首页关键行为。
@@ -107,5 +108,7 @@ class _NoopTaskEventRepository implements TaskEventRepository {
 
 class _NoopWidgetRefresher implements WidgetSnapshotRefresher {
   @override
-  Future<void> refresh() async {}
+  Future<WidgetRefreshResult> refresh() async {
+    return WidgetRefreshResult.success;
+  }
 }

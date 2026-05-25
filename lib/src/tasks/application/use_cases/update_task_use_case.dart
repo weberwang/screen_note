@@ -2,6 +2,7 @@ import '../../domain/entities/task.dart';
 import '../../domain/entities/task_event.dart';
 import '../../domain/repositories/task_event_repository.dart';
 import '../../domain/repositories/task_repository.dart';
+import '../../../widget_bridge/application/widget_refresh_guard.dart';
 import '../../../widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 更新事项入参。
@@ -87,7 +88,11 @@ final class UpdateTaskUseCase {
         createdAt: timestamp,
       ),
     );
-    await _widgetSnapshotRefresher.refresh();
+    // 更新已经成功写入后，Widget 失败只能做日志降级，不能让详情页保存回滚。
+    await runNonBlockingWidgetRefresh(
+      refresher: _widgetSnapshotRefresher,
+      actionName: 'update_task',
+    );
     return updatedTask;
   }
 

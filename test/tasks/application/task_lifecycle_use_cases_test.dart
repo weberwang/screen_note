@@ -3,10 +3,12 @@ import 'package:screen_note/src/tasks/application/use_cases/complete_task_use_ca
 import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/src/tasks/application/use_cases/delete_task_use_case.dart';
 import 'package:screen_note/src/tasks/application/use_cases/restore_task_use_case.dart';
+import 'package:screen_note/src/tasks/application/use_cases/update_task_use_case.dart';
 import 'package:screen_note/src/tasks/domain/entities/task.dart';
 import 'package:screen_note/src/tasks/domain/entities/task_event.dart';
 import 'package:screen_note/src/tasks/domain/repositories/task_event_repository.dart';
 import 'package:screen_note/src/tasks/domain/repositories/task_repository.dart';
+import 'package:screen_note/src/widget_bridge/application/widget_refresh_result.dart';
 import 'package:screen_note/src/widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 验证事项生命周期用例。
@@ -79,6 +81,85 @@ void main() {
     );
     expect(refresher.refreshCount, 4);
   });
+
+  test('刷新失败不会阻断事项主链路', () async {
+    final InMemoryTaskRepository taskRepository = InMemoryTaskRepository();
+    final InMemoryTaskEventRepository taskEventRepository =
+        InMemoryTaskEventRepository();
+    final ThrowingWidgetSnapshotRefresher refresher =
+        ThrowingWidgetSnapshotRefresher();
+    int idSeed = 0;
+    String nextId() => 'id-${idSeed++}';
+
+    final CreateTaskUseCase createTaskUseCase = CreateTaskUseCase(
+      taskRepository: taskRepository,
+      taskEventRepository: taskEventRepository,
+      widgetSnapshotRefresher: refresher,
+      now: () => now,
+      idGenerator: nextId,
+    );
+    final CompleteTaskUseCase completeTaskUseCase = CompleteTaskUseCase(
+      taskRepository: taskRepository,
+      taskEventRepository: taskEventRepository,
+      widgetSnapshotRefresher: refresher,
+      now: () => now,
+      idGenerator: nextId,
+    );
+    final DeleteTaskUseCase deleteTaskUseCase = DeleteTaskUseCase(
+      taskRepository: taskRepository,
+      taskEventRepository: taskEventRepository,
+      widgetSnapshotRefresher: refresher,
+      now: () => now,
+      idGenerator: nextId,
+    );
+    final RestoreTaskUseCase restoreTaskUseCase = RestoreTaskUseCase(
+      taskRepository: taskRepository,
+      taskEventRepository: taskEventRepository,
+      widgetSnapshotRefresher: refresher,
+      now: () => now,
+      idGenerator: nextId,
+    );
+    final UpdateTaskUseCase updateTaskUseCase = UpdateTaskUseCase(
+      taskRepository: taskRepository,
+      taskEventRepository: taskEventRepository,
+      widgetSnapshotRefresher: refresher,
+      now: () => now,
+      idGenerator: nextId,
+    );
+
+    final Task createdTask = await createTaskUseCase(
+      const CreateTaskInput(title: 'buy milk'),
+    );
+    final Task updatedTask = await updateTaskUseCase(
+      UpdateTaskInput(
+        id: createdTask.id,
+        title: 'buy milk and bread',
+        isPinned: false,
+        isPrivate: false,
+        reminderMode: TaskReminderMode.normal,
+      ),
+    );
+    final Task completedTask = await completeTaskUseCase(createdTask.id);
+    final Task deletedTask = await deleteTaskUseCase(createdTask.id);
+    final Task restoredTask = await restoreTaskUseCase(createdTask.id);
+
+    expect(createdTask.status, TaskStatus.active);
+    expect(updatedTask.title, 'buy milk and bread');
+    expect(completedTask.status, TaskStatus.completed);
+    expect(deletedTask.status, TaskStatus.deleted);
+    expect(restoredTask.status, TaskStatus.active);
+    expect(
+      taskEventRepository.events.map((TaskEvent event) => event.action).toList(),
+      <TaskEventAction>[
+        TaskEventAction.create,
+        TaskEventAction.update,
+        TaskEventAction.complete,
+        TaskEventAction.delete,
+        TaskEventAction.restore,
+      ],
+    );
+    expect(refresher.refreshCount, 5);
+  });
 }
 
 class InMemoryTaskRepository implements TaskRepository {
@@ -136,7 +217,18 @@ class RecordingWidgetSnapshotRefresher implements WidgetSnapshotRefresher {
   int refreshCount = 0;
 
   @override
-  Future<void> refresh() async {
+  Future<WidgetRefreshResult> refresh() async {
     refreshCount += 1;
+    return WidgetRefreshResult.success;
+  }
+}
+
+class ThrowingWidgetSnapshotRefresher implements WidgetSnapshotRefresher {
+  int refreshCount = 0;
+
+  @override
+  Future<WidgetRefreshResult> refresh() async {
+    refreshCount += 1;
+    throw StateError('refresh_failed');
   }
 }

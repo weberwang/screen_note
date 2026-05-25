@@ -1,4 +1,3958 @@
 {
   "version": "2.11",
-  "children": []
+  "children": [
+    {
+      "type": "frame",
+      "id": "ueYB4",
+      "x": 40,
+      "y": 40,
+      "name": "Foundations",
+      "width": 360,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius20",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "J2h7cI",
+          "name": "FoundationsTitle",
+          "fill": "$inkPrimary",
+          "content": "Screen Note Phase 2 Foundations",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "OQeDw",
+          "name": "FoundationsBody",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "延续阶段一的纸质便签语义，阶段二增加完整编辑、设置入口和 App 内预览基线。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "owWlh",
+          "name": "ColorRow",
+          "width": "fill_container",
+          "gap": "$space12",
+          "children": [
+            {
+              "type": "frame",
+              "id": "mJGoj",
+              "name": "Paper",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space8",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": "$radius12",
+                  "id": "urt3n",
+                  "fill": "$surfacePaper",
+                  "width": "fill_container",
+                  "height": 48,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$lineSoft"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "qfpmQ",
+                  "fill": "$inkSecondary",
+                  "content": "Paper",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "$fontWeightMedium"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gw8nG",
+              "name": "Card",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space8",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": "$radius12",
+                  "id": "m0CAvC",
+                  "fill": "$surfaceCard",
+                  "width": "fill_container",
+                  "height": 48,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$lineSoft"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "z0pTG",
+                  "fill": "$inkSecondary",
+                  "content": "Card",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "$fontWeightMedium"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "d5nxYH",
+              "name": "Muted",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space8",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": "$radius12",
+                  "id": "ny9Lf",
+                  "fill": "$surfaceMuted",
+                  "width": "fill_container",
+                  "height": 48,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$lineSoft"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "f6fYMz",
+                  "fill": "$inkSecondary",
+                  "content": "Muted",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "$fontWeightMedium"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GqvYK",
+              "name": "Accent",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space8",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": "$radius12",
+                  "id": "CvI5k",
+                  "fill": "$accentAmber",
+                  "width": "fill_container",
+                  "height": 48,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$lineSoft"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "QAzWD",
+                  "fill": "$inkSecondary",
+                  "content": "Accent",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "$fontWeightMedium"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "wVPsY",
+          "name": "TypeScale",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space8",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "Miy2m",
+              "fill": "$inkPrimary",
+              "content": "32 / Display",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontDisplay",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "qODAy",
+              "fill": "$inkSecondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "18 / Section  ·  16 / Body  ·  14 / Helper  ·  12 / Caption",
+              "lineHeight": 1.4,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "AEu5D",
+      "x": 440,
+      "y": 40,
+      "name": "Components",
+      "width": 420,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius20",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space20",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "wVOFz",
+          "name": "ComponentsTitle",
+          "fill": "$inkPrimary",
+          "content": "Phase 2 Reusable Components",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "qDcyh",
+          "name": "ComponentsBody",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "页面实现只能消费这些冻结组件，不再在页面里临时展开卡片与设置条目。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "Dixs9",
+          "name": "PrimaryActionButton",
+          "reusable": true,
+          "width": 180,
+          "fill": "$accentAmber",
+          "cornerRadius": "$radius12",
+          "padding": [
+            14,
+            18
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "GxWiu",
+              "name": "ButtonLabel",
+              "fill": "$surfaceCard",
+              "content": "保存事项",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBody",
+              "fontWeight": "$fontWeightSemibold"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Y1ssR",
+          "name": "SecondaryActionButton",
+          "reusable": true,
+          "width": 180,
+          "fill": "$surfaceMuted",
+          "cornerRadius": "$radius12",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "padding": [
+            14,
+            18
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "VDUAG",
+              "name": "ButtonLabel",
+              "fill": "$inkPrimary",
+              "content": "取消",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBody",
+              "fontWeight": "$fontWeightMedium"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "BksAe",
+          "name": "TaskStatusChip",
+          "reusable": true,
+          "fill": "$surfaceMuted",
+          "cornerRadius": "$radiusPill",
+          "padding": [
+            6,
+            10
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "e5PMJ1",
+              "name": "ChipLabel",
+              "fill": "$statusDone",
+              "content": "置顶",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightMedium"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "q7dajR",
+          "name": "ScreenNoteTextField",
+          "reusable": true,
+          "width": 340,
+          "layout": "vertical",
+          "gap": "$space8",
+          "children": [
+            {
+              "type": "text",
+              "id": "JUZSS",
+              "name": "FieldLabel",
+              "fill": "$inkPrimary",
+              "content": "事项标题",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "$fontWeightMedium"
+            },
+            {
+              "type": "frame",
+              "id": "YxOo6",
+              "name": "FieldSurface",
+              "width": "fill_container",
+              "fill": "$surfaceCard",
+              "cornerRadius": "$radius12",
+              "stroke": {
+                "thickness": 1,
+                "fill": "$lineSoft"
+              },
+              "layout": "vertical",
+              "gap": "$space4",
+              "padding": [
+                14,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "k5mE8d",
+                  "name": "FieldValue",
+                  "fill": "$inkPrimary",
+                  "content": "写下今天最先要完成的事",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBody",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "HN1uL",
+              "name": "FieldHelper",
+              "fill": "$inkSecondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "默认只要求标题，其他配置保持轻量补充。",
+              "lineHeight": 1.4,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "OHatW",
+          "name": "QuickInputCard",
+          "reusable": true,
+          "width": 360,
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius20",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "mnaOH",
+              "name": "CardTitle",
+              "fill": "$inkPrimary",
+              "content": "3 秒记下不能忘的小事",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontSection",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "M8ti3",
+              "name": "CardHelper",
+              "fill": "$inkSecondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "先写标题，更多字段再进入完整编辑。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "KZvBP",
+              "type": "ref",
+              "ref": "q7dajR",
+              "name": "QuickField",
+              "width": "fill_container",
+              "descendants": {
+                "JUZSS": {
+                  "content": "快速输入"
+                },
+                "k5mE8d": {
+                  "content": "今晚下班前把药带回家"
+                },
+                "HN1uL": {
+                  "content": "输入提交后立刻刷新首页列表。"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "eJh4O",
+              "name": "HintRow",
+              "width": "fill_container",
+              "gap": "$space8",
+              "children": [
+                {
+                  "id": "iJrOu",
+                  "type": "ref",
+                  "ref": "BksAe",
+                  "name": "今天",
+                  "descendants": {
+                    "e5PMJ1": {
+                      "content": "今天",
+                      "fill": "$accentAmber"
+                    }
+                  }
+                },
+                {
+                  "id": "kdx7D",
+                  "type": "ref",
+                  "ref": "BksAe",
+                  "name": "置顶",
+                  "descendants": {
+                    "e5PMJ1": {
+                      "content": "置顶",
+                      "fill": "$statusDone"
+                    }
+                  }
+                },
+                {
+                  "id": "h8Hxhf",
+                  "type": "ref",
+                  "ref": "BksAe",
+                  "name": "隐私",
+                  "descendants": {
+                    "e5PMJ1": {
+                      "content": "隐私",
+                      "fill": "$statusPrivate"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LycOJ",
+              "name": "ActionRow",
+              "width": "fill_container",
+              "gap": "$space12",
+              "children": [
+                {
+                  "id": "mv4y9",
+                  "type": "ref",
+                  "ref": "Dixs9",
+                  "name": "SubmitAction",
+                  "width": "fill_container",
+                  "descendants": {
+                    "GxWiu": {
+                      "content": "添加"
+                    }
+                  }
+                },
+                {
+                  "id": "p5Jut",
+                  "type": "ref",
+                  "ref": "Y1ssR",
+                  "name": "CancelAction",
+                  "width": "fill_container",
+                  "descendants": {
+                    "VDUAG": {
+                      "content": "完整新建"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "cOHuf",
+          "name": "TaskCard",
+          "reusable": true,
+          "width": 360,
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "frame",
+              "id": "X42n8i",
+              "name": "Header",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "U0A3WG",
+                  "name": "TitleColumn",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space8",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "qxj3r",
+                      "name": "TaskTitle",
+                      "fill": "$inkPrimary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "今晚八点前把药带回家",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontSection",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Cu7eB",
+                      "name": "TaskMeta",
+                      "fill": "$inkSecondary",
+                      "content": "今天 19:30 · 首页当前事项",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "id": "iobTM",
+                  "type": "ref",
+                  "ref": "BksAe",
+                  "name": "TaskBadge",
+                  "descendants": {
+                    "e5PMJ1": {
+                      "content": "今天",
+                      "fill": "$accentAmber"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "MYMtw",
+              "name": "TaskBody",
+              "fill": "$inkPrimary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "保留备注与时间，但列表态默认只展示最必要的信息。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "W5rfKm",
+              "name": "ChipRow",
+              "width": "fill_container",
+              "gap": "$space8",
+              "children": [
+                {
+                  "id": "O3wLS",
+                  "type": "ref",
+                  "ref": "BksAe",
+                  "name": "置顶",
+                  "descendants": {
+                    "e5PMJ1": {
+                      "content": "置顶",
+                      "fill": "$statusDone"
+                    }
+                  }
+                },
+                {
+                  "id": "lB5YS",
+                  "type": "ref",
+                  "ref": "BksAe",
+                  "name": "隐私",
+                  "descendants": {
+                    "e5PMJ1": {
+                      "content": "隐私",
+                      "fill": "$statusPrivate"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "t4qr9J",
+              "name": "ActionRow",
+              "width": "fill_container",
+              "gap": "$space12",
+              "children": [
+                {
+                  "id": "d7n5Dt",
+                  "type": "ref",
+                  "ref": "Y1ssR",
+                  "name": "DeleteAction",
+                  "width": "fill_container",
+                  "descendants": {
+                    "VDUAG": {
+                      "content": "删除"
+                    }
+                  }
+                },
+                {
+                  "id": "G9bZe",
+                  "type": "ref",
+                  "ref": "Dixs9",
+                  "name": "CompleteAction",
+                  "width": "fill_container",
+                  "descendants": {
+                    "GxWiu": {
+                      "content": "完成"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Gq9E5",
+          "name": "TaskListSection",
+          "reusable": true,
+          "width": 360,
+          "layout": "vertical",
+          "gap": "$space12",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Woyew",
+              "name": "SectionHead",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UIVuQ",
+                  "name": "SectionTitle",
+                  "fill": "$inkPrimary",
+                  "content": "当前事项",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "D8qTwG",
+                  "name": "SectionMeta",
+                  "fill": "$actionBlue",
+                  "content": "查看历史",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "k2aD0h",
+              "name": "BodySlot",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space12",
+              "children": [
+                {
+                  "id": "HxyfH",
+                  "type": "ref",
+                  "ref": "cOHuf",
+                  "name": "SampleTask",
+                  "width": "fill_container"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "EyBBX",
+          "name": "SettingsTile",
+          "reusable": true,
+          "width": 360,
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "padding": "$space16",
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "w0m2r",
+              "name": "CopyColumn",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space4",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uz1dU",
+                  "name": "TileTitle",
+                  "fill": "$inkPrimary",
+                  "content": "锁屏显示",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBody",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "Wbj5e",
+                  "name": "TileSubtitle",
+                  "fill": "$inkSecondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "管理 App 内预览与展示偏好",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "KyaQI",
+              "name": "TileValue",
+              "fill": "$actionBlue",
+              "content": "进入",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WJh5b",
+          "name": "SettingsGroup",
+          "reusable": true,
+          "width": 360,
+          "layout": "vertical",
+          "gap": "$space12",
+          "children": [
+            {
+              "type": "text",
+              "id": "gHE0s",
+              "name": "GroupTitle",
+              "fill": "$inkPrimary",
+              "content": "展示偏好",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontSection",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "M562bJ",
+              "name": "TileStack",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$space12",
+              "children": [
+                {
+                  "id": "fOTxC",
+                  "type": "ref",
+                  "ref": "EyBBX",
+                  "name": "PrimaryTile",
+                  "width": "fill_container"
+                },
+                {
+                  "id": "S4IsHt",
+                  "type": "ref",
+                  "ref": "EyBBX",
+                  "name": "SecondaryTile",
+                  "width": "fill_container",
+                  "descendants": {
+                    "uz1dU": {
+                      "content": "隐私设置"
+                    },
+                    "Wbj5e": {
+                      "content": "控制外露场景中的隐私展示"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "vsKYv",
+          "name": "WidgetPreviewCard",
+          "reusable": true,
+          "width": 360,
+          "fill": "$surfaceMuted",
+          "cornerRadius": "$radius18",
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "f5MGvv",
+              "name": "PreviewTitle",
+              "fill": "$inkPrimary",
+              "content": "锁屏预览",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontSection",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "T8ElHK",
+              "name": "PreviewSubtitle",
+              "fill": "$inkSecondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "阶段二只在 App 内模拟预览，不接真实 Widget 刷新。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "wJSmU",
+              "name": "PreviewSurface",
+              "width": "fill_container",
+              "fill": "$surfaceCard",
+              "cornerRadius": "$radius18",
+              "stroke": {
+                "thickness": 1,
+                "fill": "$lineSoft"
+              },
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kQe7h",
+                  "name": "PreviewHeadline",
+                  "fill": "$inkPrimary",
+                  "content": "今晚八点前把药带回家",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBody",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "G3AhA3",
+                  "name": "PreviewDetail",
+                  "fill": "$inkSecondary",
+                  "content": "隐私事项内容已隐藏",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SUZTU",
+          "name": "EmptyStateCard",
+          "reusable": true,
+          "width": 360,
+          "fill": "$surfaceMuted",
+          "cornerRadius": "$radius18",
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space20",
+          "children": [
+            {
+              "type": "text",
+              "id": "WfFFN",
+              "name": "StateTitle",
+              "fill": "$inkPrimary",
+              "content": "这里暂时还是空的",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontSection",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "j5Qyu",
+              "name": "StateBody",
+              "fill": "$inkSecondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "完成或删除后的事项会回到对应历史页，不会直接消失。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "kLUEN",
+              "type": "ref",
+              "ref": "Y1ssR",
+              "name": "StateAction",
+              "descendants": {
+                "VDUAG": {
+                  "content": "返回首页"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "JrwOd",
+          "name": "ErrorStateCard",
+          "reusable": true,
+          "width": 360,
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$statusOverdue"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space20",
+          "children": [
+            {
+              "type": "text",
+              "id": "OYHBh",
+              "name": "StateTitle",
+              "fill": "$inkPrimary",
+              "content": "这部分暂时没能加载",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontSection",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "wsOF3",
+              "name": "StateBody",
+              "fill": "$inkSecondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "任何异常都只能降级展示，不能阻断创建、完成、删除和恢复主链路。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "i8iKYf",
+              "type": "ref",
+              "ref": "Dixs9",
+              "name": "StateAction",
+              "descendants": {
+                "GxWiu": {
+                  "content": "重试"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "QHoDo",
+      "x": 920,
+      "y": 40,
+      "name": "HomePage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "e2Fuo",
+          "fill": "$inkPrimary",
+          "content": "HomePage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "n8ckra",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "首页把快速创建放在最显眼位置，只展示 active 事项，不把历史项混入主列表。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "eXTWt",
+          "name": "HomePage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "rvet9",
+              "name": "HomePage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "p7XTH",
+              "type": "ref",
+              "ref": "OHatW",
+              "width": "fill_container",
+              "descendants": {
+                "mnaOH": {
+                  "content": "3 秒写下不能忘的小事"
+                },
+                "M8ti3": {
+                  "content": "提交后立即回到首页主列表，完整字段进入新建页继续补充。"
+                },
+                "KZvBP/JUZSS": {
+                  "content": "快速输入"
+                },
+                "KZvBP/k5mE8d": {
+                  "content": "今晚八点前把药带回家"
+                },
+                "p5Jut/VDUAG": {
+                  "content": "完整新建"
+                }
+              }
+            },
+            {
+              "id": "nqoGd",
+              "type": "ref",
+              "ref": "Gq9E5",
+              "width": "fill_container",
+              "descendants": {
+                "UIVuQ": {
+                  "content": "当前事项"
+                },
+                "D8qTwG": {
+                  "content": "最近完成 / 最近删除"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "C1hpXy",
+          "name": "HomePage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "yDJrZ",
+              "name": "HomePage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "l7yg0",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "当前事项还是空的"
+                },
+                "j5Qyu": {
+                  "content": "创建后的 active 事项会直接出现在首页，完成和删除后自动移出这里。"
+                },
+                "kLUEN/VDUAG": {
+                  "content": "完整新建"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "K9vbM",
+          "name": "HomePage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "zzL1c",
+              "name": "HomePage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "lKLAV",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "当前事项没能正常加载"
+                },
+                "wsOF3": {
+                  "content": "首页异常只能降级为错误态，不能阻断快速输入与完整新建入口。"
+                },
+                "i8iKYf/GxWiu": {
+                  "content": "重新加载"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "T524Ai",
+          "name": "HomePage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "tXRxQ",
+              "name": "HomePage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "ir5XI",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "nzO6V",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "M93ezd",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "casrO",
+          "name": "HomePage.widgetGuide",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "CpOPT",
+              "name": "HomePage.widgetGuide.label",
+              "fill": "$inkSecondary",
+              "content": "widgetGuide",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "aKc7k",
+              "type": "ref",
+              "ref": "vsKYv",
+              "width": "fill_container",
+              "descendants": {
+                "f5MGvv": {
+                  "content": "锁屏显示预览"
+                },
+                "T8ElHK": {
+                  "content": "阶段二先在 App 内校准视觉和隐私语义，真实 Widget 留给阶段三。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hIi68",
+          "name": "HomePage.permissionHint",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "uQqpI",
+              "name": "HomePage.permissionHint.label",
+              "fill": "$inkSecondary",
+              "content": "permissionHint",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "p9XUdX",
+              "fill": "$inkPrimary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "通知、Widget 或系统能力异常时只做能力降级，不允许打断首页创建、完成、删除和恢复主链路。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Oz7l6",
+      "x": 1340,
+      "y": 40,
+      "name": "TaskEditorPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "b8zbH",
+          "fill": "$inkPrimary",
+          "content": "TaskEditorPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "mQTmg",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "完整新建与编辑共用一套表单语义：标题、备注、时间、置顶、隐私与提醒模式，但阶段二不接真实通知调度。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "sNvUD",
+          "name": "TaskEditorPage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "Zx3BN",
+              "name": "TaskEditorPage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "ae2IG",
+              "type": "ref",
+              "ref": "q7dajR",
+              "width": "fill_container",
+              "descendants": {
+                "JUZSS": {
+                  "content": "事项标题"
+                },
+                "k5mE8d": {
+                  "content": "今晚八点前把药带回家"
+                },
+                "HN1uL": {
+                  "content": "标题为空时保存按钮禁用。"
+                }
+              }
+            },
+            {
+              "id": "QKVrs",
+              "type": "ref",
+              "ref": "q7dajR",
+              "width": "fill_container",
+              "descendants": {
+                "JUZSS": {
+                  "content": "备注"
+                },
+                "k5mE8d": {
+                  "content": "回家前记得先去取药，再顺手买第二天早餐。"
+                },
+                "HN1uL": {
+                  "content": "备注、时间、隐私都在当前页完成，不需要拆到二级设置。"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "poBPs",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "lbbpB",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "mxrXT",
+                      "fill": "$inkPrimary",
+                      "content": "截止时间",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "thuoo",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "底部弹层选择时间，不在页面主体展开复杂配置。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "imf3Y",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "gLKf7",
+                      "fill": "$inkPrimary",
+                      "content": "隐私模式",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xzvk4",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "底部弹层切换外露隐藏，锁屏预览只展示安全摘要。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "G26DfK",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "h14JM4",
+                      "fill": "$inkPrimary",
+                      "content": "提醒模式",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "eU5me",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "阶段二只保留普通/强提醒的表单语义，不接真实调度。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HPV4P",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "E6Cep",
+                      "fill": "$inkPrimary",
+                      "content": "置顶",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "BQn3M",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "置顶只影响 active 列表排序，不改变历史与删除状态。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Xva0K",
+              "width": "fill_container",
+              "gap": "$space12",
+              "children": [
+                {
+                  "id": "Q8YLU",
+                  "type": "ref",
+                  "ref": "Y1ssR",
+                  "width": "fill_container",
+                  "descendants": {
+                    "VDUAG": {
+                      "content": "取消"
+                    }
+                  }
+                },
+                {
+                  "id": "jtivG",
+                  "type": "ref",
+                  "ref": "Dixs9",
+                  "width": "fill_container",
+                  "descendants": {
+                    "GxWiu": {
+                      "content": "保存事项"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XgfkA",
+          "name": "TaskEditorPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "oJ0rO",
+              "name": "TaskEditorPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "BWw5z",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "还没有可编辑内容"
+                },
+                "j5Qyu": {
+                  "content": "只有在新建页或详情页真正载入事项后，表单才进入可编辑状态。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "l2iAn",
+          "name": "TaskEditorPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "nDk6j",
+              "name": "TaskEditorPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "ooTO9",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "编辑页暂时不可用"
+                },
+                "wsOF3": {
+                  "content": "表单异常只允许当前页降级，不影响首页与历史页继续工作。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Te3qe",
+          "name": "TaskEditorPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "x23LP",
+              "name": "TaskEditorPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "Gel97",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "JoOux",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "vYNWn",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "B5FlH",
+          "name": "TaskEditorPage.discardChanges",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "nL8yk",
+              "name": "TaskEditorPage.discardChanges.label",
+              "fill": "$inkSecondary",
+              "content": "discardChanges",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "AXmyW",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Ew8Rx",
+                  "fill": "$inkPrimary",
+                  "content": "放弃还没保存的修改？",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "EX07s",
+                  "fill": "$inkSecondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "有未保存改动时返回必须拦截，避免标题、备注或隐私配置直接丢失。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "SP4Wn",
+                  "width": "fill_container",
+                  "gap": "$space12",
+                  "children": [
+                    {
+                      "id": "YTaKK",
+                      "type": "ref",
+                      "ref": "Y1ssR",
+                      "width": "fill_container",
+                      "descendants": {
+                        "VDUAG": {
+                          "content": "继续编辑"
+                        }
+                      }
+                    },
+                    {
+                      "id": "rHODR",
+                      "type": "ref",
+                      "ref": "Dixs9",
+                      "width": "fill_container",
+                      "descendants": {
+                        "GxWiu": {
+                          "content": "放弃修改"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "E1bqKX",
+      "x": 1760,
+      "y": 40,
+      "name": "TaskDetailPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "iLncs",
+          "fill": "$inkPrimary",
+          "content": "TaskDetailPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "nrg8K",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "详情页必须按 active、completed、deleted 三种持久状态切换展示和动作，不把过期做成第四种落库状态。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "naeM8",
+          "name": "TaskDetailPage.active",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "nTupG",
+              "name": "TaskDetailPage.active.label",
+              "fill": "$inkSecondary",
+              "content": "active",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "rFUcV",
+              "type": "ref",
+              "ref": "cOHuf",
+              "width": "fill_container",
+              "descendants": {
+                "qxj3r": {
+                  "content": "今晚八点前把药带回家"
+                },
+                "Cu7eB": {
+                  "content": "active · 今天 19:30"
+                },
+                "MYMtw": {
+                  "content": "详情页支持继续编辑标题、备注、时间、置顶和隐私，并统一走应用层用例。"
+                },
+                "d7n5Dt/VDUAG": {
+                  "content": "删除"
+                },
+                "G9bZe/GxWiu": {
+                  "content": "完成"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sabWP",
+          "name": "TaskDetailPage.completed",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "Xivah",
+              "name": "TaskDetailPage.completed.label",
+              "fill": "$inkSecondary",
+              "content": "completed",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "KThiL",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "lOSCB",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "已经完成：把药带回家",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "zC2ls",
+                  "fill": "$inkSecondary",
+                  "content": "completed · 2026-05-25 20:05",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uUAQM",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "完成态保留记录和恢复动作，但不再展示可编辑输入控件。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "jLoFd",
+                  "width": "fill_container",
+                  "gap": "$space12",
+                  "children": [
+                    {
+                      "id": "Uwq6q",
+                      "type": "ref",
+                      "ref": "Y1ssR",
+                      "width": "fill_container",
+                      "descendants": {
+                        "VDUAG": {
+                          "content": "查看最近完成"
+                        }
+                      }
+                    },
+                    {
+                      "id": "a8fpN",
+                      "type": "ref",
+                      "ref": "Dixs9",
+                      "width": "fill_container",
+                      "descendants": {
+                        "GxWiu": {
+                          "content": "恢复事项"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "zYGrb",
+          "name": "TaskDetailPage.deleted",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "IFMEz",
+              "name": "TaskDetailPage.deleted.label",
+              "fill": "$inkSecondary",
+              "content": "deleted",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "v8BMu",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "w2xdOH",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "已删除：把药带回家",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "UV2HH",
+                  "fill": "$inkSecondary",
+                  "content": "deleted · 2026-05-25 20:15",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "BbSxk",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "删除必须是软删除，并明确恢复后会回到 active 列表与首页排序。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "oQHgL",
+                  "width": "fill_container",
+                  "gap": "$space12",
+                  "children": [
+                    {
+                      "id": "JvprJ",
+                      "type": "ref",
+                      "ref": "Y1ssR",
+                      "width": "fill_container",
+                      "descendants": {
+                        "VDUAG": {
+                          "content": "查看最近删除"
+                        }
+                      }
+                    },
+                    {
+                      "id": "OlQtD",
+                      "type": "ref",
+                      "ref": "Dixs9",
+                      "width": "fill_container",
+                      "descendants": {
+                        "GxWiu": {
+                          "content": "恢复事项"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "M7Q55C",
+                  "fill": "$statusOverdue",
+                  "content": "剩余保留 28 天",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "FHnGL",
+          "name": "TaskDetailPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "BL4Tu",
+              "name": "TaskDetailPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "aNZNz",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "这条事项暂时不可用"
+                },
+                "j5Qyu": {
+                  "content": "详情页未找到事项时进入 empty，而不是直接崩溃或写库补救。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "rqyV2",
+          "name": "TaskDetailPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "nrWIf",
+              "name": "TaskDetailPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "OWUXw",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "详情页加载失败"
+                },
+                "wsOF3": {
+                  "content": "恢复、删除、完成等危险动作必须等数据可用后再开放。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SXUAp",
+          "name": "TaskDetailPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "U5CaK6",
+              "name": "TaskDetailPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "Gku6s",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "fJL2E",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "BxoLl",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "ZA8Ue",
+      "x": 2180,
+      "y": 40,
+      "name": "CompletedHistoryPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "rJmZU",
+          "fill": "$inkPrimary",
+          "content": "CompletedHistoryPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "Hnawl",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "最近完成页按完成时间倒序展示，阶段二补齐从历史页直接恢复到 active 的链路。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "eEheE",
+          "name": "CompletedHistoryPage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "gR2DK",
+              "name": "CompletedHistoryPage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "a8bgY",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YLl9l",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "已经把水电费交完",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "K6i05t",
+                  "fill": "$inkSecondary",
+                  "content": "completed · 今天 09:20",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Vm1kx",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "保留完成记录，但允许恢复回首页主列表继续处理。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "b2OKm",
+                  "width": "fill_container",
+                  "gap": "$space12",
+                  "children": [
+                    {
+                      "id": "ETqNL",
+                      "type": "ref",
+                      "ref": "Y1ssR",
+                      "width": "fill_container",
+                      "descendants": {
+                        "VDUAG": {
+                          "content": "查看原记录"
+                        }
+                      }
+                    },
+                    {
+                      "id": "b2AeqM",
+                      "type": "ref",
+                      "ref": "Dixs9",
+                      "width": "fill_container",
+                      "descendants": {
+                        "GxWiu": {
+                          "content": "恢复事项"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LdXgp",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "JAt3y",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "早上补完采购清单",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "sIhBp",
+                  "fill": "$inkSecondary",
+                  "content": "completed · 昨天 21:30",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "vBy2T",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "恢复后详情页状态必须同步回到 active，不允许停留在 completed 只改 UI。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "gSbZ1",
+                  "width": "fill_container",
+                  "gap": "$space12",
+                  "children": [
+                    {
+                      "id": "z40gzp",
+                      "type": "ref",
+                      "ref": "Y1ssR",
+                      "width": "fill_container",
+                      "descendants": {
+                        "VDUAG": {
+                          "content": "查看原记录"
+                        }
+                      }
+                    },
+                    {
+                      "id": "PL9IT",
+                      "type": "ref",
+                      "ref": "Dixs9",
+                      "width": "fill_container",
+                      "descendants": {
+                        "GxWiu": {
+                          "content": "恢复事项"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "X89fI",
+          "name": "CompletedHistoryPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "u5avcd",
+              "name": "CompletedHistoryPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "B7hbk",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "最近完成还是空的"
+                },
+                "j5Qyu": {
+                  "content": "完成一条事项后，它会按完成时间倒序出现在这里，并允许恢复回 active。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QNf10",
+          "name": "CompletedHistoryPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "tXGEr",
+              "name": "CompletedHistoryPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "kXj8D",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "最近完成没能加载"
+                },
+                "wsOF3": {
+                  "content": "历史页错误只能阻断当前页展示，不能影响首页继续创建和完成事项。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "DYJKf",
+          "name": "CompletedHistoryPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "SdFrZ",
+              "name": "CompletedHistoryPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "bNxmI",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "DlEa3",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "nanDk",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "K7PtWa",
+      "x": 2600,
+      "y": 40,
+      "name": "DeletedHistoryPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "PuCl5",
+          "fill": "$inkPrimary",
+          "content": "DeletedHistoryPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "ynT7d",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "最近删除页按删除时间倒序展示软删除事项，并显式提示剩余保留时间。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "wF4JN",
+          "name": "DeletedHistoryPage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "PGa4t",
+              "name": "DeletedHistoryPage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "vWrFr",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "eYhiH",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "已删除：把药带回家",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontSection",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "qGT18",
+                  "fill": "$inkSecondary",
+                  "content": "deleted · 今天 20:15",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "chh4t",
+                  "fill": "$inkPrimary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "恢复后重新回到首页 active 列表，并继续沿用阶段一排序规则。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBodySmall",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "L5vQSD",
+                  "width": "fill_container",
+                  "gap": "$space12",
+                  "children": [
+                    {
+                      "id": "wyd1g",
+                      "type": "ref",
+                      "ref": "Y1ssR",
+                      "width": "fill_container",
+                      "descendants": {
+                        "VDUAG": {
+                          "content": "查看详情"
+                        }
+                      }
+                    },
+                    {
+                      "id": "rv2vM",
+                      "type": "ref",
+                      "ref": "Dixs9",
+                      "width": "fill_container",
+                      "descendants": {
+                        "GxWiu": {
+                          "content": "恢复事项"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "MXypq",
+                  "fill": "$statusOverdue",
+                  "content": "剩余保留 28 天",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WF6Mg",
+          "name": "DeletedHistoryPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "zOlWk",
+              "name": "DeletedHistoryPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "j5n27f",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "最近删除还是空的"
+                },
+                "j5Qyu": {
+                  "content": "删除后的事项会暂存在这里，直到恢复或超过保留期。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Z0FhCb",
+          "name": "DeletedHistoryPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "gbAN4",
+              "name": "DeletedHistoryPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "p5R8L",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "最近删除没能加载"
+                },
+                "wsOF3": {
+                  "content": "软删除历史异常时只允许当前页降级，不允许跳过确认直接物理删除。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "G8e4T",
+          "name": "DeletedHistoryPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "Jy6e3",
+              "name": "DeletedHistoryPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "TRWgi",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "M0fbvD",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "ueMF4",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "yyNMM",
+          "name": "DeletedHistoryPage.retentionHint",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "r1hCj",
+              "name": "DeletedHistoryPage.retentionHint.label",
+              "fill": "$inkSecondary",
+              "content": "retentionHint",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "text",
+              "id": "tGNaX",
+              "fill": "$inkPrimary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "保留提示：删除默认必须走软删除；这里只负责展示剩余保留时间与恢复入口，不承担真正的物理清理逻辑。",
+              "lineHeight": 1.5,
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontBodySmall",
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "qwXxw",
+      "x": 920,
+      "y": 1180,
+      "name": "SettingsPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "Zg81R",
+          "fill": "$inkPrimary",
+          "content": "SettingsPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "yR9Hq",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "设置页只承载阶段二需要的低频入口，不提前塞通知、Pro 和系统入口。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "NSCTK",
+          "name": "SettingsPage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "sX30j",
+              "name": "SettingsPage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "MkQ1v",
+              "type": "ref",
+              "ref": "WJh5b",
+              "width": "fill_container",
+              "descendants": {
+                "gHE0s": {
+                  "content": "展示偏好"
+                },
+                "fOTxC/uz1dU": {
+                  "content": "锁屏显示"
+                },
+                "fOTxC/Wbj5e": {
+                  "content": "管理 App 内锁屏预览基线"
+                },
+                "S4IsHt/uz1dU": {
+                  "content": "隐私设置"
+                },
+                "S4IsHt/Wbj5e": {
+                  "content": "控制外露场景中的隐私正文隐藏"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "XNAhD",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "WV0Vt",
+                  "fill": "$inkPrimary",
+                  "content": "降级原则",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBody",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "O2DyR",
+                  "fill": "$inkSecondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "任何设置异常都只能影响当前页展示，不允许阻断首页创建、历史恢复或详情页状态切换。",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "OyLCK",
+          "name": "SettingsPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "DNXQX",
+              "name": "SettingsPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "AVxNV",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "暂时没有更多设置"
+                },
+                "j5Qyu": {
+                  "content": "阶段二只保留锁屏显示和隐私设置入口，其他低频能力留到后续阶段。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "J7fpLy",
+          "name": "SettingsPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "PlENb",
+              "name": "SettingsPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "yVLSf",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "设置页暂时不可用"
+                },
+                "wsOF3": {
+                  "content": "入口异常时只允许当前页降级，不影响主链路继续可用。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XJOfN",
+          "name": "SettingsPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "DxMyw",
+              "name": "SettingsPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "ANLIM",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "ciFCt",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "z3jRt",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "moJLE",
+      "x": 1340,
+      "y": 1180,
+      "name": "WidgetSettingsPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "KWub6",
+          "fill": "$inkPrimary",
+          "content": "WidgetSettingsPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "pUh9D",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "阶段二只在 App 内模拟锁屏展示模式，冻结视觉与隐私基线，为阶段三真实 Widget 渲染留接口。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "fhkMG",
+          "name": "WidgetSettingsPage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "IEy5k",
+              "name": "WidgetSettingsPage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "bvcsL",
+              "type": "ref",
+              "ref": "vsKYv",
+              "width": "fill_container",
+              "descendants": {
+                "f5MGvv": {
+                  "content": "默认锁屏预览"
+                },
+                "T8ElHK": {
+                  "content": "列表和单条模式都只读稳定快照，不在 Widget 里承载复杂查询和状态推导。"
+                },
+                "kQe7h": {
+                  "content": "今晚八点前把药带回家"
+                },
+                "G3AhA3": {
+                  "content": "显示时间、状态和安全摘要"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "AWbUv",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space8",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nFN0F",
+                  "fill": "$inkPrimary",
+                  "content": "预览里隐藏隐私事项正文",
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontBody",
+                  "fontWeight": "$fontWeightSemibold"
+                },
+                {
+                  "type": "text",
+                  "id": "B4Z3F",
+                  "fill": "$inkSecondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "锁屏、小组件和其他外露入口都不直接泄露隐私事项正文。",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$fontFamilyBase",
+                  "fontSize": "$fontCaption",
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "knyRA",
+          "name": "WidgetSettingsPage.privatePreview",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "veP1p",
+              "name": "WidgetSettingsPage.privatePreview.label",
+              "fill": "$inkSecondary",
+              "content": "privatePreview",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "I0PoC",
+              "type": "ref",
+              "ref": "vsKYv",
+              "width": "fill_container",
+              "descendants": {
+                "f5MGvv": {
+                  "content": "隐私预览"
+                },
+                "T8ElHK": {
+                  "content": "启用隐私模式后，预览只展示安全提示和数量，不暴露正文。"
+                },
+                "kQe7h": {
+                  "content": "隐私事项内容已隐藏"
+                },
+                "G3AhA3": {
+                  "content": "仍然保留可恢复的时间和状态提示"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UTM0w",
+          "name": "WidgetSettingsPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "d68KF",
+              "name": "WidgetSettingsPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "dz2Jv",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "还没有预览配置"
+                },
+                "j5Qyu": {
+                  "content": "后续真实 Widget 能力接入前，先通过 App 内预览验证显示语义。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Awx6i",
+          "name": "WidgetSettingsPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "B7wCU4",
+              "name": "WidgetSettingsPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "P8cQaY",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "预览暂时没能生成"
+                },
+                "wsOF3": {
+                  "content": "预览失败时保留最后一版设计语义，不阻断设置页与主链路。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Z3SFZ",
+          "name": "WidgetSettingsPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "rqNbV",
+              "name": "WidgetSettingsPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "f2tabH",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "QFgY6",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "hg4Fe",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "u7Cfw6",
+      "x": 1760,
+      "y": 1180,
+      "name": "PrivacySettingsPage",
+      "clip": true,
+      "width": 390,
+      "fill": "$surfacePaper",
+      "cornerRadius": "$radius28",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$lineSoft"
+      },
+      "layout": "vertical",
+      "gap": "$space16",
+      "padding": "$space20",
+      "children": [
+        {
+          "type": "text",
+          "id": "X4eVL",
+          "fill": "$inkPrimary",
+          "content": "PrivacySettingsPage",
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontTitle",
+          "fontWeight": "$fontWeightSemibold"
+        },
+        {
+          "type": "text",
+          "id": "vPbcg",
+          "fill": "$inkSecondary",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "隐私设置只管理基础展示偏好，不在阶段二引入复杂权限流程或系统级授权依赖。",
+          "lineHeight": 1.5,
+          "fontFamily": "$fontFamilyBase",
+          "fontSize": "$fontBodySmall",
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "lKjoI",
+          "name": "PrivacySettingsPage.content",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "S9APCo",
+              "name": "PrivacySettingsPage.content.label",
+              "fill": "$inkSecondary",
+              "content": "content",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "frame",
+              "id": "teKYq",
+              "width": "fill_container",
+              "fill": "$surfaceMuted",
+              "cornerRadius": "$radius18",
+              "layout": "vertical",
+              "gap": "$space12",
+              "padding": "$space16",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "GJi0m",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rt7xa",
+                      "fill": "$inkPrimary",
+                      "content": "外露预览里隐藏隐私事项正文",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "E5FwcA",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "锁屏、小组件、通知和系统快捷入口默认不泄露正文。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LbFD7",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fTpUW",
+                      "fill": "$inkPrimary",
+                      "content": "详情页仍允许本人查看完整内容",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vNXzq",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "隐私规则高于展示便利，但不能阻断用户在 App 内查看和编辑。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Z06aH",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$space4",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "am81m",
+                      "fill": "$inkPrimary",
+                      "content": "恢复与删除不绕过隐私语义",
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontBody",
+                      "fontWeight": "$fontWeightSemibold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "sSQsv",
+                      "fill": "$inkSecondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "历史页和详情页恢复后继续沿用事项原始隐私标记。",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$fontFamilyBase",
+                      "fontSize": "$fontCaption",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "AeBos",
+          "name": "PrivacySettingsPage.empty",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "fScMx",
+              "name": "PrivacySettingsPage.empty.label",
+              "fill": "$inkSecondary",
+              "content": "empty",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "pEZ1r",
+              "type": "ref",
+              "ref": "SUZTU",
+              "width": "fill_container",
+              "descendants": {
+                "WfFFN": {
+                  "content": "隐私偏好还是默认值"
+                },
+                "j5Qyu": {
+                  "content": "阶段二只有基础显示偏好，不做更复杂的系统权限编排。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Pq4op",
+          "name": "PrivacySettingsPage.error",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "n112j",
+              "name": "PrivacySettingsPage.error.label",
+              "fill": "$inkSecondary",
+              "content": "error",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "id": "q32xq8",
+              "type": "ref",
+              "ref": "JrwOd",
+              "width": "fill_container",
+              "descendants": {
+                "OYHBh": {
+                  "content": "隐私设置暂时不可用"
+                },
+                "wsOF3": {
+                  "content": "隐私设置异常时必须维持保守默认值，而不是放宽外露展示。"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "I1S5nk",
+          "name": "PrivacySettingsPage.loading",
+          "width": "fill_container",
+          "fill": "$surfaceCard",
+          "cornerRadius": "$radius18",
+          "stroke": {
+            "thickness": 1,
+            "fill": "$lineSoft"
+          },
+          "layout": "vertical",
+          "gap": "$space12",
+          "padding": "$space16",
+          "children": [
+            {
+              "type": "text",
+              "id": "c62Gm",
+              "name": "PrivacySettingsPage.loading.label",
+              "fill": "$inkSecondary",
+              "content": "loading",
+              "fontFamily": "$fontFamilyBase",
+              "fontSize": "$fontCaption",
+              "fontWeight": "$fontWeightSemibold"
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "XGDXG",
+              "fill": "$surfaceMuted",
+              "width": "fill_container",
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "DFyFH",
+              "fill": "$surfaceMuted",
+              "width": 280,
+              "height": 14
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": "$radius12",
+              "id": "H0LMa",
+              "fill": "$surfaceMuted",
+              "width": 220,
+              "height": 14
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "accentAmber": {
+      "type": "color",
+      "value": "#D9822B"
+    },
+    "actionBlue": {
+      "type": "color",
+      "value": "#3366CC"
+    },
+    "fontBody": {
+      "type": "number",
+      "value": 16
+    },
+    "fontBodySmall": {
+      "type": "number",
+      "value": 14
+    },
+    "fontCaption": {
+      "type": "number",
+      "value": 12
+    },
+    "fontDisplay": {
+      "type": "number",
+      "value": 32
+    },
+    "fontFamilyBase": {
+      "type": "string",
+      "value": "Inter"
+    },
+    "fontSection": {
+      "type": "number",
+      "value": 18
+    },
+    "fontTitle": {
+      "type": "number",
+      "value": 24
+    },
+    "fontWeightMedium": {
+      "type": "string",
+      "value": "500"
+    },
+    "fontWeightRegular": {
+      "type": "string",
+      "value": "400"
+    },
+    "fontWeightSemibold": {
+      "type": "string",
+      "value": "600"
+    },
+    "inkPrimary": {
+      "type": "color",
+      "value": "#211B14"
+    },
+    "inkSecondary": {
+      "type": "color",
+      "value": "#6F6254"
+    },
+    "lineSoft": {
+      "type": "color",
+      "value": "#E2D6C7"
+    },
+    "radius12": {
+      "type": "number",
+      "value": 12
+    },
+    "radius18": {
+      "type": "number",
+      "value": 18
+    },
+    "radius20": {
+      "type": "number",
+      "value": 20
+    },
+    "radius28": {
+      "type": "number",
+      "value": 28
+    },
+    "radiusPill": {
+      "type": "number",
+      "value": 999
+    },
+    "space12": {
+      "type": "number",
+      "value": 12
+    },
+    "space16": {
+      "type": "number",
+      "value": 16
+    },
+    "space20": {
+      "type": "number",
+      "value": 20
+    },
+    "space24": {
+      "type": "number",
+      "value": 24
+    },
+    "space32": {
+      "type": "number",
+      "value": 32
+    },
+    "space4": {
+      "type": "number",
+      "value": 4
+    },
+    "space8": {
+      "type": "number",
+      "value": 8
+    },
+    "statusDone": {
+      "type": "color",
+      "value": "#4F8A62"
+    },
+    "statusOverdue": {
+      "type": "color",
+      "value": "#B94A3A"
+    },
+    "statusPrivate": {
+      "type": "color",
+      "value": "#6D6A75"
+    },
+    "surfaceCard": {
+      "type": "color",
+      "value": "#FFFBF4"
+    },
+    "surfaceMuted": {
+      "type": "color",
+      "value": "#EFE7DA"
+    },
+    "surfacePaper": {
+      "type": "color",
+      "value": "#F8F3EA"
+    }
+  }
 }

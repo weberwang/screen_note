@@ -2,6 +2,7 @@ import '../../domain/entities/task.dart';
 import '../../domain/entities/task_event.dart';
 import '../../domain/repositories/task_event_repository.dart';
 import '../../domain/repositories/task_repository.dart';
+import '../../../widget_bridge/application/widget_refresh_guard.dart';
 import '../../../widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 恢复事项用例。
@@ -44,7 +45,11 @@ final class RestoreTaskUseCase {
         createdAt: timestamp,
       ),
     );
-    await _widgetSnapshotRefresher.refresh();
+    // 恢复成功后必须优先保证事项重新可用，Widget 同步失败只能记录日志。
+    await runNonBlockingWidgetRefresh(
+      refresher: _widgetSnapshotRefresher,
+      actionName: 'restore_task',
+    );
     return restoredTask;
   }
 

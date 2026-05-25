@@ -2,6 +2,7 @@ import '../../domain/entities/task.dart';
 import '../../domain/entities/task_event.dart';
 import '../../domain/repositories/task_event_repository.dart';
 import '../../domain/repositories/task_repository.dart';
+import '../../../widget_bridge/application/widget_refresh_guard.dart';
 import '../../../widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 创建事项入参。
@@ -85,7 +86,11 @@ final class CreateTaskUseCase {
         createdAt: timestamp,
       ),
     );
-    await _widgetSnapshotRefresher.refresh();
+    // Widget 刷新失败只能降级，不能回滚已经成功落库的事项创建。
+    await runNonBlockingWidgetRefresh(
+      refresher: _widgetSnapshotRefresher,
+      actionName: 'create_task',
+    );
     return task;
   }
 }

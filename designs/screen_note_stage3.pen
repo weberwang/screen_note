@@ -1,0 +1,14 @@
+{
+  "version": "2.11",
+  "children": [
+    {
+      "type": "rectangle",
+      "id": "dlkBY",
+      "x": -123,
+      "y": -217,
+      "fill": "#CCCCCC",
+      "width": 156,
+      "height": 206
+    }
+  ]
+}
