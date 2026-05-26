@@ -4,7 +4,7 @@
 
 **Goal:** 完成阶段一可交付范围，先建立 `Pencil` 设计源与 Flutter 工程基线，再交付“事项不消失、可恢复、可追踪”的可靠性闭环。
 
-**Architecture:** 当前仓库仍是 Flutter 示例级骨架，阶段一不能直接堆页面逻辑；必须先拆出 `app/`、`tasks/`、`history/`、`shared/`、`widget_bridge/` 等边界，再把状态流转、日志写入、排序和快照刷新触发统一下沉到应用层。`Pencil` 设计稿是显示层唯一设计源，本阶段先完成可靠性相关页面、组件和状态稿，再让 Flutter 用最小验证页面对齐这些设计源。
+**Architecture:** 当前仓库仍是 Flutter 示例级骨架，阶段一不能直接堆页面逻辑；必须先拆出 `app/`、`tasks/`、`history/`、`shared/`、`widget_bridge/` 等边界，再把状态流转、日志写入、排序和快照刷新触发统一下沉到应用层。`Pencil` 设计稿是显示层唯一设计源，本阶段必须先完成可靠性相关页面、组件和状态 `.pen` 设计稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准 token、层级和组件骨架，最后再让 Flutter 用最小验证页面对齐这些设计源。
 
 **Tech Stack:** Flutter、hooks_riverpod、go_router、drift、freezed、json_serializable、intl、home_widget、flutter_local_notifications、Pencil
 
@@ -64,7 +64,7 @@ test/
 ### 并行协作原则
 
 - 先冻结契约，再并行实现：路由、领域模型、设计节点和快照刷新接口必须在各自批次合流前明确。
-- 设计源码先行：任何页面、组件、弹层或预览实现前，必须先由设计子代理在 `designs/screen_note_stage1.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase1-pencil-mapping-2026-05-23.md`。
+- 设计源码先行：任何页面、组件、弹层或预览实现前，必须先由设计子代理在 `designs/screen_note_stage1.pen` 完成对应节点和状态 `.pen` 稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 完成风格校准，并同步 `docs/screen-note-phase1-pencil-mapping-2026-05-23.md`；未完成设计稿或风格校准，不得进入 Flutter 实现。
 - `.pen` 文件创建约束：凡是计划中要求新建或补齐的 `designs/*.pen` 设计源文件，必须通过 `Pencil` MCP 创建与编辑，禁止手写空白 `.pen` 文件、复制已有 `.pen` 文件充当新稿，或绕过 `Pencil` 直接生成设计源。
 - 每个任务包只拥有自己的主文件集合；涉及共用文件时，先由契约任务包落接口和占位实现，再由消费方接入。
 - `Pencil` 与 Flutter 分开推进，但 Flutter 显示层只能消费已冻结的 `Pencil` 节点和映射文档。
@@ -85,7 +85,7 @@ test/
 ### 子代理领取规则
 
 - `Task 1` 是工程边界拥有者；其他任务包不要直接重写路由和应用壳层。
-- `Task 2` 与 `Task 3` 是 `.pen` 设计源码拥有者；它们必须先于对应 Flutter 页面和组件实现完成，显示层缺少状态稿时先回补设计和映射文档。
+- `Task 2` 与 `Task 3` 是 `.pen` 设计源码拥有者；它们必须先完成对应 `.pen` 设计稿并参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 完成风格校准，之后对应 Flutter 页面和组件实现才能启动；显示层缺少状态稿时先回补设计和映射文档。
 - `Task 4` 与 `Task 5` 是数据和应用契约拥有者；页面任务只通过用例接口表达用户意图。
 - `Task 7` 必须按领域、应用、数据、页面拆给多个测试子代理处理，最终由一个测试合流负责人统一跑全量回归。
 
@@ -578,9 +578,9 @@ Expected: 阶段一所有规则、页面和国际化链路可稳定回归。
 ### P0 契约冻结门禁
 
 - `Task 1` 输出 `/home`、`/task/:id`、`/history/completed`、`/history/deleted` 路由和统一页面骨架。
-- `Task 2` 输出 `designs/screen_note_stage1.pen` 中的可复用设计 token、核心组件节点和映射文档初稿。
+- `Task 2` 输出 `designs/screen_note_stage1.pen` 中的可复用设计 token、核心组件节点，并参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 完成首轮风格校准和映射文档初稿。
 - `Task 4` 输出 `Task.status = active / completed / deleted` 持久契约、`TaskEvent` 操作集合、drift 表和 DAO。
-- P0 合流后只允许应用层和数据层继续推进；页面、组件、弹层实现必须继续等待 `Task 3` 在 `.pen` 中完成页面与弹层设计源码并冻结映射文档。
+- P0 合流后只允许应用层和数据层继续推进；页面、组件、弹层实现必须继续等待 `Task 3` 在 `.pen` 中完成页面与弹层设计源码、按 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 完成风格校准并冻结映射文档。
 
 ### P1 核心并行门禁
 

@@ -4,7 +4,7 @@
 
 **Goal:** 完成阶段三锁屏小组件能力，让 Widget 只读取稳定快照即可可靠展示单条、三条、今日和隐私模式内容，并在刷新失败时保留最后有效内容。
 
-**Architecture:** 阶段三只做 Widget 展示链路，不把复杂查询、排序、状态推导和业务写入放进 Widget 工程。主 App 负责排序、快照生成和状态派生，`widget_bridge/` 负责共享快照写入，Widget 只负责读取和渲染；所有展示样式先有 `Pencil` 设计源，再进入 Flutter 预览与 iOS Widget 实现。
+**Architecture:** 阶段三只做 Widget 展示链路，不把复杂查询、排序、状态推导和业务写入放进 Widget 工程。主 App 负责排序、快照生成和状态派生，`widget_bridge/` 负责共享快照写入，Widget 只负责读取和渲染；所有展示样式必须先完成对应 `.pen` 设计稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准风格，最后进入 Flutter 预览与 iOS Widget 实现。
 
 **Tech Stack:** Flutter、home_widget、WidgetKit、App Group、drift、json_serializable、freezed、Pencil
 
@@ -58,7 +58,7 @@ test/
 ### 并行协作原则
 
 - Widget 只消费稳定快照，任何查询、排序、状态推导和业务写入都由主 App 与 `widget_bridge/` 完成。
-- 设计源码先行：任何 Widget 预览、真实 Widget 布局、展示模式或设置入口实现前，必须先由设计子代理在 `designs/screen_note_stage3.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase3-pencil-mapping-2026-05-23.md`。
+- 设计源码先行：任何 Widget 预览、真实 Widget 布局、展示模式或设置入口实现前，必须先由设计子代理在 `designs/screen_note_stage3.pen` 完成对应节点和状态 `.pen` 稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准卡片骨架、隐私表达和层级节奏，并同步 `docs/screen-note-phase3-pencil-mapping-2026-05-23.md`；未完成设计稿或风格校准，不得进入 Flutter 或原生实现。
 - `.pen` 文件创建约束：凡是计划中要求新建或补齐的 `designs/*.pen` 设计源文件，必须通过 `Pencil` MCP 创建与编辑，禁止手写空白 `.pen` 文件、复制已有 `.pen` 文件充当新稿，或绕过 `Pencil` 直接生成设计源。
 - 快照模型、展示模式、隐私字段和 fallback 规则先冻结，再让 App 预览和 iOS Widget 并行消费。
 - 原生 Widget、Flutter 预览和 `Pencil` 设计必须拆给独立子代理并行处理，但必须共享同一套 `WidgetDisplayMode` 和快照字段。
@@ -79,7 +79,7 @@ test/
 ### 子代理领取规则
 
 - `Task 1` 拥有快照模型和存储接口；其他任务包不得向 Widget 侧传完整 `Task` 实体。
-- `Task 3` 拥有 Widget `.pen` 设计源码和模式映射；它必须先于 App 预览和原生 Widget 布局实现完成，原生与 Flutter 预览必须按映射文档实现。
+- `Task 3` 拥有 Widget `.pen` 设计源码和模式映射；它必须先完成对应 `.pen` 设计稿并参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 完成风格校准，之后 App 预览和原生 Widget 布局实现才能开始，原生与 Flutter 预览必须按映射文档实现。
 - `Task 2` 与 `Task 6` 共同处理刷新降级语义，需先统一 `WidgetRefreshResult` 和失败日志策略。
 - `Task 5` 只做 iOS Widget 工程与快照读取，不接入数据库和业务排序。
 - `Task 7` 只在应用层用例末尾接刷新触发，不让页面层负责刷新。
@@ -186,6 +186,8 @@ failedButNonBlocking
 **Files:**
 - Create: `designs/screen_note_stage3.pen`
 - Create: `docs/screen-note-phase3-pencil-mapping-2026-05-23.md`
+
+执行顺序：先完成 Widget 相关 `.pen` 设计稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准风格，最后补齐映射文档；不要先写 Flutter 预览或 iOS Widget 展示代码。
 
 - [ ] **Step 1: 建立 Widget 页面总稿**
 
@@ -443,7 +445,7 @@ Expected: 阶段三锁屏小组件链路可回归，且失败不会阻断主 App
 
 - `Task 1` 必须冻结 `WidgetSnapshot`、`WidgetSnapshotItem`、`WidgetDisplayMode` 和共享存储接口。
 - `Task 3` 必须在 `designs/screen_note_stage3.pen` 冻结单条、三条、今日、隐私、空态和 fallback 的 `Pencil` 节点与映射文档。
-- P0 合流后，App 预览、刷新编排和原生 Widget 才能消费快照与设计源码；未冻结字段不得进入 Swift 或页面实现，缺失 `.pen` 节点时不得用代码临时补布局。
+- P0 合流后，只有在对应 `.pen` 设计稿与风格校准完成的前提下，App 预览、刷新编排和原生 Widget 才能消费快照与设计源码；未冻结字段不得进入 Swift 或页面实现，缺失 `.pen` 节点时不得用代码临时补布局。
 
 ### P1 刷新与预览门禁
 

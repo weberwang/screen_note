@@ -4,7 +4,7 @@
 
 **Goal:** 完成阶段五通知基础链路，让 App 能调度普通提醒、处理通知点击跳转、在事项完成/删除/改期时取消或重排提醒，并为强提醒保留接口但不破坏免费主链路。
 
-**Architecture:** 阶段五只做通知权限、普通提醒和点击跳转，不把通知逻辑散落到页面里，也不把强提醒做成默认行为。`notifications/` 模块负责权限、调度、取消、重排和点击解析，页面只展示状态和授权入口；所有通知相关文案和说明先有 `Pencil` 设计源，再进入 Flutter 和原生实现。
+**Architecture:** 阶段五只做通知权限、普通提醒和点击跳转，不把通知逻辑散落到页面里，也不把强提醒做成默认行为。`notifications/` 模块负责权限、调度、取消、重排和点击解析，页面只展示状态和授权入口；所有通知相关文案和说明必须先完成对应 `.pen` 设计稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准风格，最后进入 Flutter 和原生实现。
 
 **Tech Stack:** Flutter、flutter_local_notifications、timezone、flutter_timezone、go_router、hooks_riverpod、Pencil
 
@@ -63,7 +63,7 @@ test/
 ### 并行协作原则
 
 - 通知能力统一放在 `notifications/` 边界内，页面只展示权限状态和触发用户意图。
-- 设计源码先行：任何通知设置页、权限说明弹层、提醒预览、降级提示或强提醒边界展示实现前，必须先由设计子代理在 `designs/screen_note_stage5.pen` 完成对应节点和状态稿，并同步 `docs/screen-note-phase5-pencil-mapping-2026-05-23.md`。
+- 设计源码先行：任何通知设置页、权限说明弹层、提醒预览、降级提示或强提醒边界展示实现前，必须先由设计子代理在 `designs/screen_note_stage5.pen` 完成对应节点和状态 `.pen` 稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准状态表达、文案语气和说明层级，并同步 `docs/screen-note-phase5-pencil-mapping-2026-05-23.md`；未完成设计稿或风格校准，不得进入 Flutter 或原生实现。
 - `.pen` 文件创建约束：凡是计划中要求新建或补齐的 `designs/*.pen` 设计源文件，必须通过 `Pencil` MCP 创建与编辑，禁止手写空白 `.pen` 文件、复制已有 `.pen` 文件充当新稿，或绕过 `Pencil` 直接生成设计源。
 - 权限、调度、取消重排、点击解析必须拆给独立子代理并行处理，但必须共享通知目标、提醒模式和调度标识。
 - 通知权限拒绝、调度失败、点击找不到事项都只能降级，不能阻断事项创建、编辑、完成、删除和恢复。
@@ -87,7 +87,7 @@ test/
 - `Task 2` 拥有权限读取、请求和降级语义；页面只消费状态，不直接调三方包。
 - `Task 3` 拥有普通提醒调度、取消和重排；生命周期任务只调用统一接口。
 - `Task 4` 拥有通知点击路由解析；不得把跳转规则分散到页面或原生回调里。
-- `Task 5` 拥有通知 `.pen` 设计源码和映射；它必须先于通知设置页、权限说明和提醒预览实现完成。
+- `Task 5` 拥有通知 `.pen` 设计源码和映射；它必须先完成对应 `.pen` 设计稿并参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 完成风格校准，之后通知设置页、权限说明和提醒预览实现才能开始。
 - `Task 6` 与 `Task 7` 交给两个独立子代理并行处理前，必须统一权限说明文案、失败提示和非阻塞策略。
 
 ### Task 1: 通知领域模型与调度标识
@@ -236,6 +236,8 @@ permanentlyDenied
 **Files:**
 - Create: `designs/screen_note_stage5.pen`
 - Create: `docs/screen-note-phase5-pencil-mapping-2026-05-23.md`
+
+执行顺序：先完成通知相关 `.pen` 设计稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准风格，最后补齐映射文档；不要先写 Flutter 或原生通知展示代码。
 
 - [ ] **Step 1: 建立通知设置页总稿**
 
@@ -429,7 +431,7 @@ Expected: 阶段五通知链路可回归，且权限拒绝不阻断主链路。
 
 - `Task 1` 必须冻结 `NotificationReminderMode`、`NotificationTarget`、调度仓储和权限仓储接口。
 - `Task 5` 必须在 `designs/screen_note_stage5.pen` 冻结通知设置页、权限说明、提醒预览、降级提示和强提醒边界设计源码，并同步映射文档。
-- P0 合流后，权限、调度、点击跳转和设置页才能消费同一套通知术语、状态名和设计源码；缺失 `.pen` 节点时不得用页面代码临时补 UI。
+- P0 合流后，只有在对应 `.pen` 设计稿与风格校准完成的前提下，权限、调度、点击跳转和设置页才能消费同一套通知术语、状态名和设计源码；缺失 `.pen` 节点时不得用页面代码临时补 UI。
 
 ### P1 服务并行门禁
 
