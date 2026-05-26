@@ -4,13 +4,14 @@ import 'package:go_router/go_router.dart';
 
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/src/app/route_paths.dart';
+import 'package:screen_note/src/quick_add/application/quick_add_flow_result.dart';
 import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_error_view.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_loading_view.dart';
 import 'package:screen_note/src/shared/presentation/widgets/screen_note_scaffold.dart';
-import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/src/tasks/domain/entities/task.dart';
 import 'package:screen_note/src/tasks/presentation/overlays/delete_task_dialog.dart';
+import 'package:screen_note/src/tasks/presentation/overlays/quick_add_sheet.dart';
 import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
 import 'package:screen_note/src/tasks/presentation/widgets/quick_input_card.dart';
 import 'package:screen_note/src/tasks/presentation/widgets/task_card.dart';
@@ -28,7 +29,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   String? _draftValue;
   String? _inlineError;
-  bool _isSubmitting = false;
+  final bool _isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               isSubmitting: _isSubmitting,
               initialValue: _draftValue,
               errorText: _inlineError,
-              onSubmit: _createTask,
+              onSubmit: _openQuickAddSheet,
               onSecondaryAction: () => context.push(RoutePaths.taskNew),
               onCancel: _clearQuickInputDraft,
               secondaryActionLabel: localizations.taskEditorEntry,
@@ -147,7 +148,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  Future<void> _createTask(String value) async {
+  Future<void> _openQuickAddSheet(String value) async {
     final AppLocalizations localizations = AppLocalizations.of(context);
     setState(() {
       _draftValue = value;
@@ -161,45 +162,39 @@ class _HomePageState extends ConsumerState<HomePage> {
       return;
     }
 
-    setState(() {
-      _isSubmitting = true;
-    });
+    final QuickAddFlowResult? result =
+        await showModalBottomSheet<QuickAddFlowResult>(
+          context: context,
+          isScrollControlled: true,
+          showDragHandle: false,
+          backgroundColor: ScreenNoteColors.surfacePaper,
+          builder: (BuildContext context) => QuickAddSheet(initialText: value),
+        );
+    if (!mounted || result == null) {
+      return;
+    }
 
-    try {
-      await ref.read(createTaskUseCaseProvider).call(CreateTaskInput(title: value));
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _draftValue = '';
-        _inlineError = null;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(localizations.taskCreateSuccess)),
-      );
-    } on StateError {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _inlineError = localizations.taskTitleRequired;
-      });
-    } catch (_) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _inlineError = localizations.taskCreateFailed;
-      });
-    } finally {
-      if (mounted) {
+    switch (result.status) {
+      case QuickAddFlowStatus.createdTask:
         setState(() {
-          _isSubmitting = false;
+          _draftValue = '';
+          _inlineError = null;
         });
-      }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(localizations.taskCreateSuccess)));
+      case QuickAddFlowStatus.savedDraft:
+        setState(() {
+          _draftValue = result.draft?.draftText ?? value;
+        });
+      case QuickAddFlowStatus.failedButRecovered:
+        setState(() {
+          _draftValue = result.draft?.draftText ?? value;
+          _inlineError = localizations.taskCreateFailed;
+        });
+      case QuickAddFlowStatus.openedQuickAdd ||
+            QuickAddFlowStatus.returnedToApp:
+        break;
     }
   }
 

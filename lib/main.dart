@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:screen_note/src/app/app.dart';
 
 /// 启动应用并挂载根壳层。
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: ScreenNoteApp()));
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/src/quick_add/data/quick_add_draft_store.dart';
+import 'package:screen_note/src/quick_add/presentation/providers/quick_add_providers.dart';
 import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/src/tasks/domain/entities/task.dart';
@@ -9,14 +13,15 @@ import 'package:screen_note/src/tasks/domain/entities/task_event.dart';
 import 'package:screen_note/src/tasks/domain/repositories/task_event_repository.dart';
 import 'package:screen_note/src/tasks/domain/repositories/task_repository.dart';
 import 'package:screen_note/src/tasks/presentation/overlays/quick_add_sheet.dart';
-import 'package:screen_note/src/tasks/presentation/pages/home_page.dart';
 import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
 import 'package:screen_note/src/widget_bridge/application/widget_refresh_result.dart';
 import 'package:screen_note/src/widget_bridge/application/widget_snapshot_refresher.dart';
 
-/// 验证首页关键行为。
+/// 验证首页轻入口快速添加底部弹层行为。
 void main() {
-  testWidgets('首页创建失败不会丢输入', (WidgetTester tester) async {
+  testWidgets('快速添加底部弹层在创建失败时保留输入并展示失败提示', (
+    WidgetTester tester,
+  ) async {
     final CreateTaskUseCase createTaskUseCase = CreateTaskUseCase(
       taskRepository: _ThrowingTaskRepository(),
       taskEventRepository: _NoopTaskEventRepository(),
@@ -29,31 +34,23 @@ void main() {
       ProviderScope(
         overrides: [
           createTaskUseCaseProvider.overrideWithValue(createTaskUseCase),
-          activeTasksProvider.overrideWith((Ref ref) => Stream.value(<Task>[])),
+          quickAddDraftStoreProvider.overrideWithValue(_MemoryQuickAddDraftStore()),
         ],
-        child: const _TestApp(child: HomePage()),
+        child: const _TestApp(
+          child: Scaffold(body: QuickAddSheet(initialText: 'take umbrella')),
+        ),
       ),
     );
     await tester.pump();
-
-    await tester.enterText(find.byType(TextField).first, 'take umbrella');
-    await tester.tap(find.byType(FilledButton).first);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    final Finder sheetAddButton = find.descendant(
+    await tester.tap(find.descendant(
       of: find.byType(QuickAddSheet),
       matching: find.widgetWithText(FilledButton, '添加'),
-    );
-    await tester.dragUntilVisible(
-      sheetAddButton,
-      find.byType(SingleChildScrollView).last,
-      const Offset(0, -120),
-    );
-    await tester.tap(sheetAddButton);
+    ));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.text('take umbrella'), findsWidgets);
+    expect(find.text('暂时还没保存成功，但输入内容还在。'), findsOneWidget);
   });
 }
 
@@ -72,6 +69,23 @@ class _TestApp extends StatelessWidget {
       darkTheme: buildScreenNoteDarkTheme(),
       home: child,
     );
+  }
+}
+
+class _MemoryQuickAddDraftStore implements QuickAddDraftStore {
+  QuickAddDraft? _draft;
+
+  @override
+  Future<void> clear() async {
+    _draft = null;
+  }
+
+  @override
+  Future<QuickAddDraft?> read() async => _draft;
+
+  @override
+  Future<void> save(QuickAddDraft draft) async {
+    _draft = draft;
   }
 }
 

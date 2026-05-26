@@ -6,6 +6,9 @@ abstract final class RoutePaths {
   /// 完整新建页路由。
   static const String taskNew = '/task/new';
 
+  /// 快速添加兜底页路由。
+  static const String quickAdd = '/quick-add';
+
   /// 任务详情路由模板，占位阶段只负责注册与参数透传。
   static const String taskDetail = '/task/:id';
 

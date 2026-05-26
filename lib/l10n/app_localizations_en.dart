@@ -30,6 +30,69 @@ class AppLocalizationsEn extends AppLocalizations {
       'Keep the title first, then add due time, pinning, and privacy only when needed.';
 
   @override
+  String get quickAddPageTitle => 'Quick add';
+
+  @override
+  String get quickAddPageBody =>
+      'This page catches drafts from failed system entries so you can finish the note and continue without starting over.';
+
+  @override
+  String get quickAddSheetBody =>
+      'The home quick add sheet keeps just one line of input and a few defaults so creation stays within a few seconds.';
+
+  @override
+  String get quickAddInputLabel => 'Task content';
+
+  @override
+  String get quickAddDefaultPinnedTitle => 'Pin by default';
+
+  @override
+  String get quickAddDefaultPrivacyTitle => 'Private by default';
+
+  @override
+  String get quickAddDefaultEnableAction => 'Enable';
+
+  @override
+  String get quickAddDefaultDisableAction => 'Disable';
+
+  @override
+  String get quickAddNonBlockingTitle =>
+      'Entry failures never block the main flow';
+
+  @override
+  String get quickAddNonBlockingBody =>
+      'If the system entry can\'t finish creation directly, the app keeps your content and lets you continue here.';
+
+  @override
+  String get quickAddSheetHintBody =>
+      'This sheet never expands into the full editor. If creation fails, the app still keeps the draft for later.';
+
+  @override
+  String get quickAddDraftRestoredBody =>
+      'Your previous draft is already restored here, so you can finish it and submit right away.';
+
+  @override
+  String get quickAddSourceHome => 'From home';
+
+  @override
+  String get quickAddSourceAppIntent => 'From App Intent';
+
+  @override
+  String get quickAddSourceControlCenter => 'From Control Center';
+
+  @override
+  String get quickAddSourceLockScreen => 'From Lock Screen';
+
+  @override
+  String get quickAddSourceActionButton => 'From Action Button';
+
+  @override
+  String get quickAddSourceDeepLink => 'From deep link';
+
+  @override
+  String get quickAddSourceFallback => 'From fallback recovery';
+
+  @override
   String get taskTitleRequired => 'Write something important first.';
 
   @override

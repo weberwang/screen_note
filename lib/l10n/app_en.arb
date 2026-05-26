@@ -24,6 +24,82 @@
   "@quickInputHelperText": {
     "description": "Supporting helper text inside the quick input card."
   },
+  "quickAddPageTitle": "Quick add",
+  "@quickAddPageTitle": {
+    "description": "Title for the phase four quick add fallback page."
+  },
+  "quickAddPageBody": "This page catches drafts from failed system entries so you can finish the note and continue without starting over.",
+  "@quickAddPageBody": {
+    "description": "Top helper copy shown on the phase four quick add fallback page."
+  },
+  "quickAddSheetBody": "The home quick add sheet keeps just one line of input and a few defaults so creation stays within a few seconds.",
+  "@quickAddSheetBody": {
+    "description": "Top helper copy shown on the home quick add bottom sheet."
+  },
+  "quickAddInputLabel": "Task content",
+  "@quickAddInputLabel": {
+    "description": "Field label used above the quick add input area."
+  },
+  "quickAddDefaultPinnedTitle": "Pin by default",
+  "@quickAddDefaultPinnedTitle": {
+    "description": "Title for the quick add default pinned row."
+  },
+  "quickAddDefaultPrivacyTitle": "Private by default",
+  "@quickAddDefaultPrivacyTitle": {
+    "description": "Title for the quick add default privacy row."
+  },
+  "quickAddDefaultEnableAction": "Enable",
+  "@quickAddDefaultEnableAction": {
+    "description": "Action label used to enable a quick add default option."
+  },
+  "quickAddDefaultDisableAction": "Disable",
+  "@quickAddDefaultDisableAction": {
+    "description": "Action label used to disable a quick add default option."
+  },
+  "quickAddNonBlockingTitle": "Entry failures never block the main flow",
+  "@quickAddNonBlockingTitle": {
+    "description": "Title for the quick add non-blocking fallback hint."
+  },
+  "quickAddNonBlockingBody": "If the system entry can't finish creation directly, the app keeps your content and lets you continue here.",
+  "@quickAddNonBlockingBody": {
+    "description": "Body for the quick add non-blocking fallback hint."
+  },
+  "quickAddSheetHintBody": "This sheet never expands into the full editor. If creation fails, the app still keeps the draft for later.",
+  "@quickAddSheetHintBody": {
+    "description": "Body for the non-blocking hint shown inside the home quick add bottom sheet."
+  },
+  "quickAddDraftRestoredBody": "Your previous draft is already restored here, so you can finish it and submit right away.",
+  "@quickAddDraftRestoredBody": {
+    "description": "Body shown when the quick add page restores a saved draft."
+  },
+  "quickAddSourceHome": "From home",
+  "@quickAddSourceHome": {
+    "description": "Quick add source chip label for the in-app home entry."
+  },
+  "quickAddSourceAppIntent": "From App Intent",
+  "@quickAddSourceAppIntent": {
+    "description": "Quick add source chip label for the App Intent entry."
+  },
+  "quickAddSourceControlCenter": "From Control Center",
+  "@quickAddSourceControlCenter": {
+    "description": "Quick add source chip label for the Control Center entry."
+  },
+  "quickAddSourceLockScreen": "From Lock Screen",
+  "@quickAddSourceLockScreen": {
+    "description": "Quick add source chip label for the lock screen entry."
+  },
+  "quickAddSourceActionButton": "From Action Button",
+  "@quickAddSourceActionButton": {
+    "description": "Quick add source chip label for the hardware action button entry."
+  },
+  "quickAddSourceDeepLink": "From deep link",
+  "@quickAddSourceDeepLink": {
+    "description": "Quick add source chip label for deep-link fallback entries."
+  },
+  "quickAddSourceFallback": "From fallback recovery",
+  "@quickAddSourceFallback": {
+    "description": "Quick add source chip label for unified fallback recovery."
+  },
   "taskTitleRequired": "Write something important first.",
   "@taskTitleRequired": {
     "description": "Validation message shown when task title is empty."

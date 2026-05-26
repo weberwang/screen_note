@@ -24,6 +24,82 @@
   "@quickInputHelperText": {
     "description": "首页快速输入卡的辅助说明文案。"
   },
+  "quickAddPageTitle": "快速添加",
+  "@quickAddPageTitle": {
+    "description": "阶段四快速添加兜底页标题。"
+  },
+  "quickAddPageBody": "这里接住系统入口失败后的草稿，你可以补一句话内容并继续创建，不需要重新开始。",
+  "@quickAddPageBody": {
+    "description": "阶段四快速添加兜底页顶部说明文案。"
+  },
+  "quickAddSheetBody": "首页轻入口只保留一句话输入和少量默认值，方便你在 3 秒内完成创建。",
+  "@quickAddSheetBody": {
+    "description": "首页快速添加底部弹层的顶部说明文案。"
+  },
+  "quickAddInputLabel": "事项内容",
+  "@quickAddInputLabel": {
+    "description": "快速添加统一输入区域的字段标签。"
+  },
+  "quickAddDefaultPinnedTitle": "默认置顶",
+  "@quickAddDefaultPinnedTitle": {
+    "description": "快速添加默认置顶配置行标题。"
+  },
+  "quickAddDefaultPrivacyTitle": "默认隐私",
+  "@quickAddDefaultPrivacyTitle": {
+    "description": "快速添加默认隐私配置行标题。"
+  },
+  "quickAddDefaultEnableAction": "开启",
+  "@quickAddDefaultEnableAction": {
+    "description": "快速添加默认值行里的开启动作文案。"
+  },
+  "quickAddDefaultDisableAction": "关闭",
+  "@quickAddDefaultDisableAction": {
+    "description": "快速添加默认值行里的关闭动作文案。"
+  },
+  "quickAddNonBlockingTitle": "入口失败也不拦主链路",
+  "@quickAddNonBlockingTitle": {
+    "description": "快速添加非阻断提示标题。"
+  },
+  "quickAddNonBlockingBody": "如果系统入口没有直接完成创建，我们会先把内容留在应用层，回到 App 后继续补全。",
+  "@quickAddNonBlockingBody": {
+    "description": "快速添加非阻断提示正文。"
+  },
+  "quickAddSheetHintBody": "这里不会展开完整编辑流程，失败时也会把草稿先留住，方便你稍后继续。",
+  "@quickAddSheetHintBody": {
+    "description": "首页快速添加底部弹层里的非阻断提示正文。"
+  },
+  "quickAddDraftRestoredBody": "刚才的草稿已经恢复到这里，你可以直接继续补完并提交。",
+  "@quickAddDraftRestoredBody": {
+    "description": "快速添加页在恢复草稿后显示的提示正文。"
+  },
+  "quickAddSourceHome": "来自首页",
+  "@quickAddSourceHome": {
+    "description": "快速添加来源标签，表示来自首页轻入口。"
+  },
+  "quickAddSourceAppIntent": "来自 App Intent",
+  "@quickAddSourceAppIntent": {
+    "description": "快速添加来源标签，表示来自 App Intent。"
+  },
+  "quickAddSourceControlCenter": "来自控制中心",
+  "@quickAddSourceControlCenter": {
+    "description": "快速添加来源标签，表示来自控制中心。"
+  },
+  "quickAddSourceLockScreen": "来自锁屏入口",
+  "@quickAddSourceLockScreen": {
+    "description": "快速添加来源标签，表示来自锁屏入口。"
+  },
+  "quickAddSourceActionButton": "来自 Action Button",
+  "@quickAddSourceActionButton": {
+    "description": "快速添加来源标签，表示来自 Action Button。"
+  },
+  "quickAddSourceDeepLink": "来自深链回流",
+  "@quickAddSourceDeepLink": {
+    "description": "快速添加来源标签，表示来自深链或外部回流。"
+  },
+  "quickAddSourceFallback": "来自失败兜底",
+  "@quickAddSourceFallback": {
+    "description": "快速添加来源标签，表示来自统一失败兜底链路。"
+  },
   "taskTitleRequired": "先写下一件重要的事。",
   "@taskTitleRequired": {
     "description": "事项标题为空时的校验提示。"

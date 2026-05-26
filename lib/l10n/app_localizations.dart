@@ -134,6 +134,120 @@ abstract class AppLocalizations {
   /// **'Keep the title first, then add due time, pinning, and privacy only when needed.'**
   String get quickInputHelperText;
 
+  /// Title for the phase four quick add fallback page.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick add'**
+  String get quickAddPageTitle;
+
+  /// Top helper copy shown on the phase four quick add fallback page.
+  ///
+  /// In en, this message translates to:
+  /// **'This page catches drafts from failed system entries so you can finish the note and continue without starting over.'**
+  String get quickAddPageBody;
+
+  /// Top helper copy shown on the home quick add bottom sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'The home quick add sheet keeps just one line of input and a few defaults so creation stays within a few seconds.'**
+  String get quickAddSheetBody;
+
+  /// Field label used above the quick add input area.
+  ///
+  /// In en, this message translates to:
+  /// **'Task content'**
+  String get quickAddInputLabel;
+
+  /// Title for the quick add default pinned row.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin by default'**
+  String get quickAddDefaultPinnedTitle;
+
+  /// Title for the quick add default privacy row.
+  ///
+  /// In en, this message translates to:
+  /// **'Private by default'**
+  String get quickAddDefaultPrivacyTitle;
+
+  /// Action label used to enable a quick add default option.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get quickAddDefaultEnableAction;
+
+  /// Action label used to disable a quick add default option.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get quickAddDefaultDisableAction;
+
+  /// Title for the quick add non-blocking fallback hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry failures never block the main flow'**
+  String get quickAddNonBlockingTitle;
+
+  /// Body for the quick add non-blocking fallback hint.
+  ///
+  /// In en, this message translates to:
+  /// **'If the system entry can\'t finish creation directly, the app keeps your content and lets you continue here.'**
+  String get quickAddNonBlockingBody;
+
+  /// Body for the non-blocking hint shown inside the home quick add bottom sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'This sheet never expands into the full editor. If creation fails, the app still keeps the draft for later.'**
+  String get quickAddSheetHintBody;
+
+  /// Body shown when the quick add page restores a saved draft.
+  ///
+  /// In en, this message translates to:
+  /// **'Your previous draft is already restored here, so you can finish it and submit right away.'**
+  String get quickAddDraftRestoredBody;
+
+  /// Quick add source chip label for the in-app home entry.
+  ///
+  /// In en, this message translates to:
+  /// **'From home'**
+  String get quickAddSourceHome;
+
+  /// Quick add source chip label for the App Intent entry.
+  ///
+  /// In en, this message translates to:
+  /// **'From App Intent'**
+  String get quickAddSourceAppIntent;
+
+  /// Quick add source chip label for the Control Center entry.
+  ///
+  /// In en, this message translates to:
+  /// **'From Control Center'**
+  String get quickAddSourceControlCenter;
+
+  /// Quick add source chip label for the lock screen entry.
+  ///
+  /// In en, this message translates to:
+  /// **'From Lock Screen'**
+  String get quickAddSourceLockScreen;
+
+  /// Quick add source chip label for the hardware action button entry.
+  ///
+  /// In en, this message translates to:
+  /// **'From Action Button'**
+  String get quickAddSourceActionButton;
+
+  /// Quick add source chip label for deep-link fallback entries.
+  ///
+  /// In en, this message translates to:
+  /// **'From deep link'**
+  String get quickAddSourceDeepLink;
+
+  /// Quick add source chip label for unified fallback recovery.
+  ///
+  /// In en, this message translates to:
+  /// **'From fallback recovery'**
+  String get quickAddSourceFallback;
+
   /// Validation message shown when task title is empty.
   ///
   /// In en, this message translates to:

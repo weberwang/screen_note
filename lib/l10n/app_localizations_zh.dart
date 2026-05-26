@@ -27,6 +27,64 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quickInputHelperText => '默认先保留标题，截止时间、置顶和隐私作为轻量补充。';
 
   @override
+  String get quickAddPageTitle => '快速添加';
+
+  @override
+  String get quickAddPageBody => '这里接住系统入口失败后的草稿，你可以补一句话内容并继续创建，不需要重新开始。';
+
+  @override
+  String get quickAddSheetBody => '首页轻入口只保留一句话输入和少量默认值，方便你在 3 秒内完成创建。';
+
+  @override
+  String get quickAddInputLabel => '事项内容';
+
+  @override
+  String get quickAddDefaultPinnedTitle => '默认置顶';
+
+  @override
+  String get quickAddDefaultPrivacyTitle => '默认隐私';
+
+  @override
+  String get quickAddDefaultEnableAction => '开启';
+
+  @override
+  String get quickAddDefaultDisableAction => '关闭';
+
+  @override
+  String get quickAddNonBlockingTitle => '入口失败也不拦主链路';
+
+  @override
+  String get quickAddNonBlockingBody =>
+      '如果系统入口没有直接完成创建，我们会先把内容留在应用层，回到 App 后继续补全。';
+
+  @override
+  String get quickAddSheetHintBody => '这里不会展开完整编辑流程，失败时也会把草稿先留住，方便你稍后继续。';
+
+  @override
+  String get quickAddDraftRestoredBody => '刚才的草稿已经恢复到这里，你可以直接继续补完并提交。';
+
+  @override
+  String get quickAddSourceHome => '来自首页';
+
+  @override
+  String get quickAddSourceAppIntent => '来自 App Intent';
+
+  @override
+  String get quickAddSourceControlCenter => '来自控制中心';
+
+  @override
+  String get quickAddSourceLockScreen => '来自锁屏入口';
+
+  @override
+  String get quickAddSourceActionButton => '来自 Action Button';
+
+  @override
+  String get quickAddSourceDeepLink => '来自深链回流';
+
+  @override
+  String get quickAddSourceFallback => '来自失败兜底';
+
+  @override
   String get taskTitleRequired => '先写下一件重要的事。';
 
   @override
