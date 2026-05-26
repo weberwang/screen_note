@@ -294,8 +294,80 @@ class AppLocalizationsEn extends AppLocalizations {
   String get widgetPreviewPrivateState => 'Private task body hidden';
 
   @override
+  String get widgetPreviewEmptyHint =>
+      'Nothing is pinned to the lock screen yet';
+
+  @override
+  String get widgetPreviewFallbackHint => 'Showing the last valid snapshot';
+
+  @override
+  String widgetPreviewPrivateSummary(int itemCount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      itemCount,
+      locale: localeName,
+      other: '$itemCount tasks hidden',
+      one: '1 task hidden',
+      zero: 'Private content hidden',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get widgetPreviewDefaultBody =>
       'Shows time, state, and a safe summary.';
+
+  @override
+  String get widgetDisplayModeSingle => 'Single';
+
+  @override
+  String get widgetDisplayModeList3 => 'Three items';
+
+  @override
+  String get widgetDisplayModeToday => 'Today';
+
+  @override
+  String get widgetDisplayModePrivate => 'Private';
+
+  @override
+  String get widgetDisplayModeEmpty => 'Empty';
+
+  @override
+  String get widgetInstallGuideTitle => 'Add it to your lock screen';
+
+  @override
+  String get widgetInstallGuideBody =>
+      'Add the Screen Note widget from the system lock screen editor. The app only prepares stable snapshots here and does not promise instant refresh.';
+
+  @override
+  String get widgetFallbackPreviewTitle =>
+      'Fallback keeps the last safe content';
+
+  @override
+  String get widgetPreviewSingleTitle => 'Finish the lock screen widget review';
+
+  @override
+  String get widgetPreviewListItemOne => 'Confirm the three-item layout rhythm';
+
+  @override
+  String get widgetPreviewListItemTwo =>
+      'Export the latest valid fallback snapshot';
+
+  @override
+  String get widgetPreviewListItemThree =>
+      'Keep the privacy copy unreadable outside the app';
+
+  @override
+  String get widgetPreviewTodayTitle => 'Tasks due today stay visible';
+
+  @override
+  String get widgetPreviewDueToday => 'Today 18:00';
+
+  @override
+  String get widgetPreviewDueYesterday => 'Yesterday 20:00';
+
+  @override
+  String get widgetPreviewEmptyBody =>
+      'Create or restore a task and the lock screen will pick up the next stable snapshot.';
 
   @override
   String get privacySettingsTitle => 'Privacy settings';

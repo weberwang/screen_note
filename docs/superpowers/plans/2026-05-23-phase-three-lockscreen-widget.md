@@ -94,7 +94,7 @@ test/
 - Create: `lib/src/widget_bridge/application/widget_snapshot_builder.dart`
 - Create: `lib/src/widget_bridge/data/widget_snapshot_store_impl.dart`
 
-- [ ] **Step 1: 固化 Widget 快照结构**
+- [x] **Step 1: 固化 Widget 快照结构**
 
 Widget 快照只保留锁屏展示所需字段，不包含完整事项实体：
 
@@ -108,7 +108,7 @@ hasFallbackContent
 version
 ```
 
-- [ ] **Step 2: 固化快照条目结构**
+- [x] **Step 2: 固化快照条目结构**
 
 `WidgetSnapshotItem` 只保留：
 
@@ -124,7 +124,7 @@ rank
 
 不在 Widget 条目里存备注、长文本或业务状态机。
 
-- [ ] **Step 3: 固化展示模式枚举**
+- [x] **Step 3: 固化展示模式枚举**
 
 `WidgetDisplayMode` 只允许：
 
@@ -136,11 +136,11 @@ private
 empty
 ```
 
-- [ ] **Step 4: 实现快照生成器**
+- [x] **Step 4: 实现快照生成器**
 
 `widget_snapshot_builder.dart` 负责把首页排序结果转成 Widget 快照，并在隐私模式下替换正文为模糊文案或数量文案。
 
-- [ ] **Step 5: 实现共享存储接口**
+- [x] **Step 5: 实现共享存储接口**
 
 `widget_snapshot_store_impl.dart` 负责写入 App Group 共享存储，并保留最后有效快照，避免刷新失败后空白。
 
@@ -151,11 +151,11 @@ empty
 - Create: `lib/src/widget_bridge/application/widget_refresh_scheduler.dart`
 - Create: `lib/src/widget_bridge/application/widget_refresh_result.dart`
 
-- [ ] **Step 1: 固化刷新触发点**
+- [x] **Step 1: 固化刷新触发点**
 
 事项创建、编辑、完成、删除、恢复后都必须触发 Widget 刷新编排，但刷新失败不能阻断主链路。
 
-- [ ] **Step 2: 固化刷新结果模型**
+- [x] **Step 2: 固化刷新结果模型**
 
 `WidgetRefreshResult` 至少区分：
 
@@ -165,15 +165,15 @@ savedFallback
 failedButNonBlocking
 ```
 
-- [ ] **Step 3: 固化降级策略**
+- [x] **Step 3: 固化降级策略**
 
 若写入失败，保留上一次有效快照；若完全没有快照，则回退为空状态，不展示错误栈或空白页。
 
-- [ ] **Step 4: 把刷新失败视为降级而非阻塞**
+- [x] **Step 4: 把刷新失败视为降级而非阻塞**
 
 任何刷新失败都只能记录日志和提示，不允许影响创建、编辑、完成、删除、恢复。
 
-- [ ] **Step 5: 做刷新链路测试**
+- [x] **Step 5: 做刷新链路测试**
 
 测试至少覆盖：
 
@@ -189,7 +189,7 @@ failedButNonBlocking
 
 执行顺序：先完成 Widget 相关 `.pen` 设计稿，再参考 [screen-note-stage1-style-extraction-2026-05-26.md](../screen-note-stage1-style-extraction-2026-05-26.md) 校准风格，最后补齐映射文档；不要先写 Flutter 预览或 iOS Widget 展示代码。
 
-- [ ] **Step 1: 建立 Widget 页面总稿**
+- [x] **Step 1: 建立 Widget 页面总稿**
 
 在 `screen_note_stage3.pen` 中完成这些 Widget frame：
 
@@ -202,7 +202,7 @@ WidgetEmptyMode
 WidgetPreviewCard
 ```
 
-- [ ] **Step 2: 建立 Widget 组件稿**
+- [x] **Step 2: 建立 Widget 组件稿**
 
 至少补齐这些可复用节点：
 
@@ -225,7 +225,7 @@ WidgetFallbackHint
 - `private`
 - `fallback`
 
-- [ ] **Step 4: 锁定 App 预览与真实 Widget 一致性**
+- [x] **Step 4: 锁定 App 预览与真实 Widget 一致性**
 
 `docs/screen-note-phase3-pencil-mapping-2026-05-23.md` 必须明确：
 
@@ -235,7 +235,7 @@ WidgetFallbackHint
 - `WidgetTodayMode` 对应锁屏今日模式
 - `WidgetPrivateMode` 对应隐私模式
 
-- [ ] **Step 5: 导出设计验收图**
+- [x] **Step 5: 导出设计验收图**
 
 至少导出：
 
@@ -254,23 +254,23 @@ WidgetFallbackHint
 - Create: `lib/src/settings/presentation/widgets/widget_mode_selector.dart`
 - Create: `lib/src/settings/presentation/widgets/widget_install_guide_card.dart`
 
-- [ ] **Step 1: 实现 App 内预览卡片**
+- [x] **Step 1: 实现 App 内预览卡片**
 
 `WidgetPreviewCard` 必须能模拟单条、三条、今日、隐私和空态，作为设计验收与设置页预览。
 
-- [ ] **Step 2: 实现展示模式切换**
+- [x] **Step 2: 实现展示模式切换**
 
 展示模式切换只修改本地设置，不直接操作 Widget 原生工程。
 
-- [ ] **Step 3: 实现安装引导卡片**
+- [x] **Step 3: 实现安装引导卡片**
 
 引导用户理解 Widget 需要系统操作才能出现在锁屏上，但文案不能承诺实时刷新。
 
-- [ ] **Step 4: 实现隐私预览**
+- [x] **Step 4: 实现隐私预览**
 
 隐私预览必须隐藏正文，只保留数量或模糊文案。
 
-- [ ] **Step 5: 验证预览一致性**
+- [x] **Step 5: 验证预览一致性**
 
 App 预览与 `Pencil` 设计稿必须完全一致，设置页不得自行改布局。
 
@@ -285,19 +285,19 @@ App 预览与 `Pencil` 设计稿必须完全一致，设置页不得自行改布
 - Create: `ios/WidgetExtension/WidgetSnapshotLoader.swift`
 - Modify: `ios/Runner.xcodeproj/project.pbxproj`
 
-- [ ] **Step 1: 建立 Widget Extension 工程壳**
+- [x] **Step 1: 建立 Widget Extension 工程壳**
 
 创建独立 Widget Extension，保证主 App 和 Widget 的边界分离。
 
-- [ ] **Step 2: 实现快照读取**
+- [x] **Step 2: 实现快照读取**
 
 `WidgetSnapshotLoader` 只做共享快照读取，不直接连数据库。
 
-- [ ] **Step 3: 实现时间线提供者**
+- [x] **Step 3: 实现时间线提供者**
 
 `WidgetTimelineProvider` 只基于共享快照构建 timeline，不做业务排序。
 
-- [ ] **Step 4: 实现展示视图**
+- [x] **Step 4: 实现展示视图**
 
 `WidgetEntryView` 只按照 `WidgetDisplayMode` 选择展示结构，不临时发明 UI。
 
@@ -312,23 +312,23 @@ App 预览与 `Pencil` 设计稿必须完全一致，设置页不得自行改布
 - Modify: `lib/src/widget_bridge/application/widget_snapshot_refresher.dart`
 - Modify: `lib/src/widget_bridge/data/widget_snapshot_store_impl.dart`
 
-- [ ] **Step 1: 固化隐私规则**
+- [x] **Step 1: 固化隐私规则**
 
 隐私模式下 Widget 只能展示数量、模糊文案或安全状态标签，不能展示正文、备注或可推断敏感内容。
 
-- [ ] **Step 2: 固化失败兜底规则**
+- [x] **Step 2: 固化失败兜底规则**
 
 Widget 失败时优先保留最后有效快照，没有快照才显示空态。
 
-- [ ] **Step 3: 固化错误边界**
+- [x] **Step 3: 固化错误边界**
 
 刷新失败、读取失败、时间线构建失败都只能降级，不允许冒泡为主链路失败。
 
-- [ ] **Step 4: 记录失败日志**
+- [x] **Step 4: 记录失败日志**
 
 失败应写入可排查日志，但不在 Widget 上暴露技术错误。
 
-- [ ] **Step 5: 验证隐私不泄露**
+- [x] **Step 5: 验证隐私不泄露**
 
 测试至少覆盖隐私模式下正文不出现在 Widget、预览和空态中。
 
@@ -341,23 +341,23 @@ Widget 失败时优先保留最后有效快照，没有快照才显示空态。
 - Modify: `lib/src/tasks/application/use_cases/delete_task_use_case.dart`
 - Modify: `lib/src/tasks/application/use_cases/restore_task_use_case.dart`
 
-- [ ] **Step 1: 把 Widget 刷新接入用例末尾**
+- [x] **Step 1: 把 Widget 刷新接入用例末尾**
 
 事项变更后统一调用刷新编排，避免页面层各自触发。
 
-- [ ] **Step 2: 保持刷新非阻塞**
+- [x] **Step 2: 保持刷新非阻塞**
 
 任何 Widget 刷新异常都不能回滚事项操作。
 
-- [ ] **Step 3: 保持排序与快照一致**
+- [x] **Step 3: 保持排序与快照一致**
 
 Widget 快照必须复用主 App 的排序结果，不在 Widget 侧重新排序。
 
-- [ ] **Step 4: 保持展示模式一致**
+- [x] **Step 4: 保持展示模式一致**
 
 主 App 预览、真实 Widget 和设计稿必须使用同一套模式定义。
 
-- [ ] **Step 5: 验证主链路不受影响**
+- [x] **Step 5: 验证主链路不受影响**
 
 测试保证创建、编辑、完成、删除、恢复在 Widget 刷新失败时仍然可用。
 
@@ -370,7 +370,7 @@ Widget 快照必须复用主 App 的排序结果，不在 Widget 侧重新排序
 - Create: `test/settings/presentation/widget_settings_page_test.dart`
 - Create: `test/widget_bridge/widget_privacy_test.dart`
 
-- [ ] **Step 1: 覆盖快照生成**
+- [x] **Step 1: 覆盖快照生成**
 
 测试至少覆盖：
 
@@ -380,15 +380,15 @@ Widget 快照必须复用主 App 的排序结果，不在 Widget 侧重新排序
 - 隐私模式
 - 空状态
 
-- [ ] **Step 2: 覆盖快照存储**
+- [x] **Step 2: 覆盖快照存储**
 
 测试至少覆盖共享存储写入、读取和最后有效内容保留。
 
-- [ ] **Step 3: 覆盖刷新降级**
+- [x] **Step 3: 覆盖刷新降级**
 
 测试至少覆盖刷新成功、刷新失败保留 fallback、完全无快照时空态展示。
 
-- [ ] **Step 4: 覆盖隐私规则**
+- [x] **Step 4: 覆盖隐私规则**
 
 测试至少覆盖隐私模式下正文不泄露到预览、快照和 Widget 展示。
 

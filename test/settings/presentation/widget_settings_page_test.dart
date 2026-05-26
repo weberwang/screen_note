@@ -30,19 +30,60 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('锁屏显示'), findsWidgets);
-    expect(find.text('单条'), findsOneWidget);
-    expect(find.text('三条'), findsOneWidget);
-    expect(find.text('今天'), findsOneWidget);
-    expect(find.text('隐私'), findsOneWidget);
-    expect(find.text('空态'), findsOneWidget);
-    expect(find.text('安装到锁屏'), findsOneWidget);
+    expect(find.widgetWithText(ChoiceChip, '单条'), findsOneWidget);
+    expect(find.widgetWithText(ChoiceChip, '三条'), findsOneWidget);
+    expect(find.widgetWithText(ChoiceChip, '今日'), findsOneWidget);
+    expect(find.widgetWithText(ChoiceChip, '隐私'), findsOneWidget);
+    expect(find.widgetWithText(ChoiceChip, '空态'), findsOneWidget);
+    expect(find.text('把它加到锁屏上'), findsOneWidget);
 
     await tester.tap(find.text('隐私'));
     await tester.pumpAndSettle();
 
     expect(repository.savedModes, <WidgetDisplayMode>[WidgetDisplayMode.private]);
-    expect(find.text('已隐藏 3 条事项'), findsOneWidget);
+    expect(find.text('已隐藏 3 条隐私事项'), findsOneWidget);
     expect(find.text('银行卡密码 2580'), findsNothing);
+  });
+
+  testWidgets('锁屏显示设置页在不同模式下切换预览内容', (
+    WidgetTester tester,
+  ) async {
+    final _FakeWidgetDisplayModeRepository repository =
+        _FakeWidgetDisplayModeRepository(
+          initialMode: WidgetDisplayMode.single,
+        );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          widgetDisplayModeRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: const ScreenNoteApp(
+          locale: Locale('zh'),
+          initialLocation: '/settings/widget',
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('完成锁屏小组件验收'), findsOneWidget);
+    expect(find.text('置顶'), findsOneWidget);
+
+    await tester.tap(find.text('三条'));
+    await tester.pumpAndSettle();
+    expect(find.text('确认三条模式的节奏'), findsOneWidget);
+    expect(find.text('导出最后一次有效快照'), findsOneWidget);
+    expect(find.text('确保隐私正文不外露'), findsOneWidget);
+
+    await tester.tap(find.text('今日'));
+    await tester.pumpAndSettle();
+    expect(find.text('今天到期的事项保持可见'), findsOneWidget);
+    expect(find.text('今天 18:00'), findsWidgets);
+
+    await tester.tap(find.text('空态'));
+    await tester.pumpAndSettle();
+    expect(find.text('锁屏上还没有可展示的事项'), findsOneWidget);
+    expect(find.text('刷新失败时保留最后有效内容'), findsOneWidget);
   });
 }
 

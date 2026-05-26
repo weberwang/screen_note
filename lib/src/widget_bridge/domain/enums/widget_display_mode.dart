@@ -23,3 +23,7 @@ enum WidgetDisplayMode {
   @JsonValue('empty')
   empty,
 }
+
+// 通过显式引用生成的枚举映射，避免只依赖手写分支时被分析器误判为未使用。
+const Map<WidgetDisplayMode, String> widgetDisplayModeJsonMap =
+    _$WidgetDisplayModeEnumMap;

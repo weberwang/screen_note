@@ -349,9 +349,90 @@
   "@widgetPreviewPrivateState": {
     "description": "Primary preview label shown when private preview mode is enabled."
   },
+  "widgetPreviewEmptyHint": "Nothing is pinned to the lock screen yet",
+  "@widgetPreviewEmptyHint": {
+    "description": "Title shown when the widget has no safe content to display."
+  },
+  "widgetPreviewFallbackHint": "Showing the last valid snapshot",
+  "@widgetPreviewFallbackHint": {
+    "description": "Hint shown when widget refresh fails and the last valid snapshot is kept."
+  },
+  "widgetPreviewPrivateSummary": "{itemCount, plural, =0{Private content hidden} =1{1 task hidden} other{{itemCount} tasks hidden}}",
+  "@widgetPreviewPrivateSummary": {
+    "description": "Summary shown in widget snapshots when private mode hides task bodies.",
+    "placeholders": {
+      "itemCount": {
+        "type": "int"
+      }
+    }
+  },
   "widgetPreviewDefaultBody": "Shows time, state, and a safe summary.",
   "@widgetPreviewDefaultBody": {
     "description": "Default body copy used in the widget preview card."
+  },
+  "widgetDisplayModeSingle": "Single",
+  "@widgetDisplayModeSingle": {
+    "description": "Label for the single item widget display mode."
+  },
+  "widgetDisplayModeList3": "Three items",
+  "@widgetDisplayModeList3": {
+    "description": "Label for the three item widget display mode."
+  },
+  "widgetDisplayModeToday": "Today",
+  "@widgetDisplayModeToday": {
+    "description": "Label for the today-only widget display mode."
+  },
+  "widgetDisplayModePrivate": "Private",
+  "@widgetDisplayModePrivate": {
+    "description": "Label for the privacy-first widget display mode."
+  },
+  "widgetDisplayModeEmpty": "Empty",
+  "@widgetDisplayModeEmpty": {
+    "description": "Label for the empty state widget display mode."
+  },
+  "widgetInstallGuideTitle": "Add it to your lock screen",
+  "@widgetInstallGuideTitle": {
+    "description": "Title for the widget installation guide card."
+  },
+  "widgetInstallGuideBody": "Add the Screen Note widget from the system lock screen editor. The app only prepares stable snapshots here and does not promise instant refresh.",
+  "@widgetInstallGuideBody": {
+    "description": "Body copy for the widget installation guide card."
+  },
+  "widgetFallbackPreviewTitle": "Fallback keeps the last safe content",
+  "@widgetFallbackPreviewTitle": {
+    "description": "Preview title used when demonstrating widget fallback behavior."
+  },
+  "widgetPreviewSingleTitle": "Finish the lock screen widget review",
+  "@widgetPreviewSingleTitle": {
+    "description": "Sample title shown in single widget preview mode."
+  },
+  "widgetPreviewListItemOne": "Confirm the three-item layout rhythm",
+  "@widgetPreviewListItemOne": {
+    "description": "First sample item title shown in list widget preview mode."
+  },
+  "widgetPreviewListItemTwo": "Export the latest valid fallback snapshot",
+  "@widgetPreviewListItemTwo": {
+    "description": "Second sample item title shown in list widget preview mode."
+  },
+  "widgetPreviewListItemThree": "Keep the privacy copy unreadable outside the app",
+  "@widgetPreviewListItemThree": {
+    "description": "Third sample item title shown in list widget preview mode."
+  },
+  "widgetPreviewTodayTitle": "Tasks due today stay visible",
+  "@widgetPreviewTodayTitle": {
+    "description": "Sample title shown in today widget preview mode."
+  },
+  "widgetPreviewDueToday": "Today 18:00",
+  "@widgetPreviewDueToday": {
+    "description": "Sample due label shown in widget previews for items due today."
+  },
+  "widgetPreviewDueYesterday": "Yesterday 20:00",
+  "@widgetPreviewDueYesterday": {
+    "description": "Sample due label shown in widget previews for overdue items."
+  },
+  "widgetPreviewEmptyBody": "Create or restore a task and the lock screen will pick up the next stable snapshot.",
+  "@widgetPreviewEmptyBody": {
+    "description": "Body copy shown in the empty widget preview state."
   },
   "privacySettingsTitle": "Privacy settings",
   "@privacySettingsTitle": {

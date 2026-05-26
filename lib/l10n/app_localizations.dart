@@ -614,11 +614,125 @@ abstract class AppLocalizations {
   /// **'Private task body hidden'**
   String get widgetPreviewPrivateState;
 
+  /// Title shown when the widget has no safe content to display.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is pinned to the lock screen yet'**
+  String get widgetPreviewEmptyHint;
+
+  /// Hint shown when widget refresh fails and the last valid snapshot is kept.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing the last valid snapshot'**
+  String get widgetPreviewFallbackHint;
+
+  /// Summary shown in widget snapshots when private mode hides task bodies.
+  ///
+  /// In en, this message translates to:
+  /// **'{itemCount, plural, =0{Private content hidden} =1{1 task hidden} other{{itemCount} tasks hidden}}'**
+  String widgetPreviewPrivateSummary(int itemCount);
+
   /// Default body copy used in the widget preview card.
   ///
   /// In en, this message translates to:
   /// **'Shows time, state, and a safe summary.'**
   String get widgetPreviewDefaultBody;
+
+  /// Label for the single item widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Single'**
+  String get widgetDisplayModeSingle;
+
+  /// Label for the three item widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Three items'**
+  String get widgetDisplayModeList3;
+
+  /// Label for the today-only widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get widgetDisplayModeToday;
+
+  /// Label for the privacy-first widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get widgetDisplayModePrivate;
+
+  /// Label for the empty state widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get widgetDisplayModeEmpty;
+
+  /// Title for the widget installation guide card.
+  ///
+  /// In en, this message translates to:
+  /// **'Add it to your lock screen'**
+  String get widgetInstallGuideTitle;
+
+  /// Body copy for the widget installation guide card.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the Screen Note widget from the system lock screen editor. The app only prepares stable snapshots here and does not promise instant refresh.'**
+  String get widgetInstallGuideBody;
+
+  /// Preview title used when demonstrating widget fallback behavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Fallback keeps the last safe content'**
+  String get widgetFallbackPreviewTitle;
+
+  /// Sample title shown in single widget preview mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish the lock screen widget review'**
+  String get widgetPreviewSingleTitle;
+
+  /// First sample item title shown in list widget preview mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm the three-item layout rhythm'**
+  String get widgetPreviewListItemOne;
+
+  /// Second sample item title shown in list widget preview mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Export the latest valid fallback snapshot'**
+  String get widgetPreviewListItemTwo;
+
+  /// Third sample item title shown in list widget preview mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the privacy copy unreadable outside the app'**
+  String get widgetPreviewListItemThree;
+
+  /// Sample title shown in today widget preview mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks due today stay visible'**
+  String get widgetPreviewTodayTitle;
+
+  /// Sample due label shown in widget previews for items due today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today 18:00'**
+  String get widgetPreviewDueToday;
+
+  /// Sample due label shown in widget previews for overdue items.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday 20:00'**
+  String get widgetPreviewDueYesterday;
+
+  /// Body copy shown in the empty widget preview state.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or restore a task and the lock screen will pick up the next stable snapshot.'**
+  String get widgetPreviewEmptyBody;
 
   /// Title for the privacy settings page.
   ///

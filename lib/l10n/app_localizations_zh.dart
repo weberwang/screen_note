@@ -276,7 +276,74 @@ class AppLocalizationsZh extends AppLocalizations {
   String get widgetPreviewPrivateState => '隐私事项内容已隐藏';
 
   @override
+  String get widgetPreviewEmptyHint => '锁屏上还没有可展示的事项';
+
+  @override
+  String get widgetPreviewFallbackHint => '当前保留最后一次有效快照';
+
+  @override
+  String widgetPreviewPrivateSummary(int itemCount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      itemCount,
+      locale: localeName,
+      other: '已隐藏 $itemCount 条隐私事项',
+      one: '已隐藏 1 条隐私事项',
+      zero: '隐私内容已隐藏',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get widgetPreviewDefaultBody => '显示时间、状态和安全摘要。';
+
+  @override
+  String get widgetDisplayModeSingle => '单条';
+
+  @override
+  String get widgetDisplayModeList3 => '三条';
+
+  @override
+  String get widgetDisplayModeToday => '今日';
+
+  @override
+  String get widgetDisplayModePrivate => '隐私';
+
+  @override
+  String get widgetDisplayModeEmpty => '空态';
+
+  @override
+  String get widgetInstallGuideTitle => '把它加到锁屏上';
+
+  @override
+  String get widgetInstallGuideBody =>
+      '请在系统锁屏编辑器里添加 Screen Note 小组件。App 这里只准备稳定快照，不承诺实时刷新。';
+
+  @override
+  String get widgetFallbackPreviewTitle => '刷新失败时保留最后有效内容';
+
+  @override
+  String get widgetPreviewSingleTitle => '完成锁屏小组件验收';
+
+  @override
+  String get widgetPreviewListItemOne => '确认三条模式的节奏';
+
+  @override
+  String get widgetPreviewListItemTwo => '导出最后一次有效快照';
+
+  @override
+  String get widgetPreviewListItemThree => '确保隐私正文不外露';
+
+  @override
+  String get widgetPreviewTodayTitle => '今天到期的事项保持可见';
+
+  @override
+  String get widgetPreviewDueToday => '今天 18:00';
+
+  @override
+  String get widgetPreviewDueYesterday => '昨天 20:00';
+
+  @override
+  String get widgetPreviewEmptyBody => '新增或恢复一条事项后，锁屏会读取下一次稳定快照。';
 
   @override
   String get privacySettingsTitle => '隐私设置';

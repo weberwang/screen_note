@@ -1,7 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../widget_bridge/application/widget_refresh_scheduler.dart';
+import '../../../widget_bridge/application/widget_snapshot_builder.dart';
 import '../../../widget_bridge/application/widget_snapshot_refresher.dart';
+import '../../../widget_bridge/data/app_widget_snapshot_text_resolver.dart';
+import '../../../widget_bridge/presentation/providers/widget_bridge_providers.dart';
 import '../../application/services/task_display_state_resolver.dart';
 import '../../application/services/task_sorting_service.dart';
 import '../../application/use_cases/complete_task_use_case.dart';
@@ -40,7 +44,7 @@ final Provider<String Function()> idGeneratorProvider = Provider<String Function
 /// 小组件快照刷新器提供器。
 final Provider<WidgetSnapshotRefresher> widgetSnapshotRefresherProvider =
     Provider<WidgetSnapshotRefresher>((Ref ref) {
-      return const NoopWidgetSnapshotRefresher();
+      return ref.watch(widgetRefreshSchedulerProvider);
     });
 
 /// 数据库提供器。
@@ -85,6 +89,39 @@ final Provider<TaskSortingService> taskSortingServiceProvider =
 final Provider<TaskDisplayStateResolver> taskDisplayStateResolverProvider =
     Provider<TaskDisplayStateResolver>((Ref ref) {
       return TaskDisplayStateResolver();
+    });
+
+/// Widget 快照文本解析器提供器。
+final Provider<WidgetSnapshotTextResolver> widgetSnapshotTextResolverProvider =
+    Provider<WidgetSnapshotTextResolver>((Ref ref) {
+      return AppWidgetSnapshotTextResolver();
+    });
+
+/// Widget 快照生成器提供器。
+final Provider<WidgetSnapshotBuilder> widgetSnapshotBuilderProvider =
+    Provider<WidgetSnapshotBuilder>((Ref ref) {
+      return WidgetSnapshotBuilder(
+        displayStateResolver: ref.watch(taskDisplayStateResolverProvider),
+        textResolver: ref.watch(widgetSnapshotTextResolverProvider),
+        now: ref.watch(nowProvider),
+        snapshotIdGenerator: ref.watch(idGeneratorProvider),
+      );
+    });
+
+/// Widget 刷新调度器提供器。
+///
+/// 主应用统一从这里装配排序服务、展示模式和共享快照存储，
+/// 保证所有状态变更都走同一条非阻塞刷新链路。
+final Provider<WidgetRefreshScheduler> widgetRefreshSchedulerProvider =
+    Provider<WidgetRefreshScheduler>((Ref ref) {
+      return WidgetRefreshScheduler(
+        taskRepository: ref.watch(taskRepositoryProvider),
+        taskSortingService: ref.watch(taskSortingServiceProvider),
+        displayModeRepository: ref.watch(widgetDisplayModeRepositoryProvider),
+        snapshotBuilder: ref.watch(widgetSnapshotBuilderProvider),
+        snapshotStore: ref.watch(widgetSnapshotStoreProvider),
+        now: ref.watch(nowProvider),
+      );
     });
 
 /// 创建事项用例提供器。
