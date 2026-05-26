@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:screen_note/src/app/route_paths.dart';
 import 'package:screen_note/src/history/presentation/pages/completed_history_page.dart';
 import 'package:screen_note/src/history/presentation/pages/deleted_history_page.dart';
+import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
 import 'package:screen_note/src/quick_add/presentation/pages/quick_add_page.dart';
 import 'package:screen_note/src/settings/presentation/pages/privacy_settings_page.dart';
 import 'package:screen_note/src/settings/presentation/pages/settings_page.dart';
@@ -28,8 +29,11 @@ GoRouter createAppRouter({String initialLocation = RoutePaths.home}) {
       ),
       GoRoute(
         path: RoutePaths.quickAdd,
-        builder: (BuildContext context, GoRouterState state) =>
-            const QuickAddPage(),
+        builder: (BuildContext context, GoRouterState state) {
+          final QuickAddDraft? initialDraft =
+              state.extra is QuickAddDraft ? state.extra as QuickAddDraft : null;
+          return QuickAddPage(initialDraft: initialDraft);
+        },
       ),
       GoRoute(
         path: RoutePaths.taskDetail,

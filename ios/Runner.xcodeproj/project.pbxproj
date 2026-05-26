@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10000000000000000000011 /* QuickAddIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000043 /* QuickAddIntent.swift */; };
+		B10000000000000000000012 /* QuickAddBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000044 /* QuickAddBridge.swift */; };
+		B10000000000000000000013 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10000000000000000000042 /* AppIntents.framework */; };
+		B10000000000000000000014 /* QuickAddIntent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B10000000000000000000041 /* QuickAddIntent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A00000000000000000000011 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000045 /* Widget.swift */; };
 		A00000000000000000000012 /* WidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000046 /* WidgetEntryView.swift */; };
 		A00000000000000000000013 /* WidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000047 /* WidgetTimelineProvider.swift */; };
@@ -24,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B10000000000000000000021 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B10000000000000000000071;
+			remoteInfo = QuickAddIntent;
+		};
 		331C8085294A63A400263BE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
@@ -47,6 +58,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				B10000000000000000000014 /* QuickAddIntent.appex in Embed App Extensions */,
 				A00000000000000000000017 /* WidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -65,6 +77,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10000000000000000000041 /* QuickAddIntent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QuickAddIntent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000042 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
+		B10000000000000000000043 /* QuickAddIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddIntent.swift; sourceTree = "<group>"; };
+		B10000000000000000000044 /* QuickAddBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddBridge.swift; sourceTree = "<group>"; };
+		B10000000000000000000045 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B10000000000000000000046 /* QuickAddIntent.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickAddIntent.entitlements; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
@@ -93,6 +111,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B10000000000000000000051 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000013 /* AppIntents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A00000000000000000000051 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -112,6 +138,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B10000000000000000000062 /* QuickAddIntent */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000043 /* QuickAddIntent.swift */,
+				B10000000000000000000044 /* QuickAddBridge.swift */,
+				B10000000000000000000045 /* Info.plist */,
+				B10000000000000000000046 /* QuickAddIntent.entitlements */,
+			);
+			path = QuickAddIntent;
+			sourceTree = "<group>";
+		};
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +160,7 @@
 		A00000000000000000000061 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B10000000000000000000042 /* AppIntents.framework */,
 				A00000000000000000000043 /* WidgetKit.framework */,
 				A00000000000000000000044 /* SwiftUI.framework */,
 			);
@@ -158,6 +196,7 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
+				B10000000000000000000062 /* QuickAddIntent */,
 				A00000000000000000000062 /* WidgetExtension */,
 				A00000000000000000000061 /* Frameworks */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -169,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
+				B10000000000000000000041 /* QuickAddIntent.appex */,
 				A00000000000000000000042 /* WidgetExtension.appex */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
 			);
@@ -194,6 +234,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B10000000000000000000071 /* QuickAddIntent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B100000000000000000000C1 /* Build configuration list for PBXNativeTarget "QuickAddIntent" */;
+			buildPhases = (
+				B10000000000000000000091 /* Sources */,
+				B10000000000000000000051 /* Frameworks */,
+				B10000000000000000000081 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuickAddIntent;
+			productName = QuickAddIntent;
+			productReference = B10000000000000000000041 /* QuickAddIntent.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		331C8080294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */;
@@ -243,6 +300,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B100000000000000000000A1 /* PBXTargetDependency */,
 				A000000000000000000000A1 /* PBXTargetDependency */,
 			);
 			name = Runner;
@@ -260,6 +318,9 @@
 				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
+					B10000000000000000000071 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 					331C8080294A63A400263BE5 = {
 						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 97C146ED1CF9000F007C117D;
@@ -287,6 +348,7 @@
 			projectRoot = "";
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
+				B10000000000000000000071 /* QuickAddIntent */,
 				A00000000000000000000071 /* WidgetExtension */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
 			);
@@ -294,6 +356,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B10000000000000000000081 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A00000000000000000000081 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -356,6 +425,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B10000000000000000000091 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000011 /* QuickAddIntent.swift in Sources */,
+				B10000000000000000000012 /* QuickAddBridge.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A00000000000000000000091 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -387,6 +465,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B100000000000000000000A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B10000000000000000000071 /* QuickAddIntent */;
+			targetProxy = B10000000000000000000021 /* PBXContainerItemProxy */;
+		};
 		331C8086294A63A400263BE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
@@ -419,6 +502,83 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B100000000000000000000B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = QuickAddIntent/QuickAddIntent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = QuickAddIntent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.screenNote.QuickAddIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B100000000000000000000B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = QuickAddIntent/QuickAddIntent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = QuickAddIntent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.screenNote.QuickAddIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B100000000000000000000B3 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = QuickAddIntent/QuickAddIntent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = QuickAddIntent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.screenNote.QuickAddIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Profile;
+		};
 		249021D3217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -777,6 +937,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B100000000000000000000C1 /* Build configuration list for PBXNativeTarget "QuickAddIntent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B100000000000000000000B1 /* Debug */,
+				B100000000000000000000B2 /* Release */,
+				B100000000000000000000B3 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

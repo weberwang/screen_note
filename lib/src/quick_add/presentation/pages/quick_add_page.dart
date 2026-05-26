@@ -46,6 +46,19 @@ class _QuickAddPageState extends ConsumerState<QuickAddPage> {
     _restoreDraftIfNeeded();
   }
 
+  @override
+  void didUpdateWidget(covariant QuickAddPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDraft != null && widget.initialDraft != oldWidget.initialDraft) {
+      // 系统入口重复回流时优先采用最新草稿，避免页面停留在旧的恢复态。
+      setState(() {
+        _draft = widget.initialDraft;
+        _restoredFromStore = true;
+        _errorMessage = null;
+      });
+    }
+  }
+
   Future<void> _restoreDraftIfNeeded() async {
     if (_draft != null) {
       return;

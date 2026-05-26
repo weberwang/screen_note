@@ -33,17 +33,26 @@ class ScreenNoteApp extends ConsumerStatefulWidget {
   ConsumerState<ScreenNoteApp> createState() => _ScreenNoteAppState();
 }
 
-class _ScreenNoteAppState extends ConsumerState<ScreenNoteApp> {
+/// 应用根壳状态，负责在启动与恢复前台时承接系统入口写入的待处理草稿。
+class _ScreenNoteAppState extends ConsumerState<ScreenNoteApp>
+    with WidgetsBindingObserver {
   late GoRouter _router;
+  bool _isConsumingPendingQuickAddDraft = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _router = createAppRouter(initialLocation: widget.initialLocation);
     _consumePendingQuickAddDraft();
   }
 
   Future<void> _consumePendingQuickAddDraft() async {
+    if (_isConsumingPendingQuickAddDraft) {
+      return;
+    }
+
+    _isConsumingPendingQuickAddDraft = true;
     try {
       final pendingDraft = await ref
           .read(quickAddIntentBridgeProvider)
@@ -56,9 +65,11 @@ class _ScreenNoteAppState extends ConsumerState<ScreenNoteApp> {
         pendingDraft,
         status: QuickAddFlowStatus.failedButRecovered,
       );
-      _router.go(RoutePaths.quickAdd);
+      _router.go(RoutePaths.quickAdd, extra: pendingDraft);
     } catch (_) {
-      // 系统入口桥接失败只能降级，不能阻断主应用冷启动。
+      // 系统入口桥接失败只能降级，不能阻断主应用冷启动或前台恢复。
+    } finally {
+      _isConsumingPendingQuickAddDraft = false;
     }
   }
 
@@ -68,6 +79,20 @@ class _ScreenNoteAppState extends ConsumerState<ScreenNoteApp> {
     if (oldWidget.initialLocation != widget.initialLocation) {
       _router = createAppRouter(initialLocation: widget.initialLocation);
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // 原生系统入口可能在应用已存活时再次写入草稿，这里统一补一次消费。
+      _consumePendingQuickAddDraft();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
