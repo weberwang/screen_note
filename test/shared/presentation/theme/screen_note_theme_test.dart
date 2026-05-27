@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 验证阶段一主题同时提供亮暗两套运行时调色板。
 void main() {

@@ -3,16 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
-import 'package:screen_note/src/app/app.dart';
-import 'package:screen_note/src/app/route_paths.dart';
-import 'package:screen_note/src/app/router.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_entry_source.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_draft_store.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_intent_bridge.dart';
-import 'package:screen_note/src/quick_add/presentation/providers/quick_add_providers.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
-import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
+import 'package:screen_note/app/app.dart';
+import 'package:screen_note/app/route_paths.dart';
+import 'package:screen_note/app/router.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_entry_source.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_draft_store.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_intent_bridge.dart';
+import 'package:screen_note/features/quick_add/presentation/providers/quick_add_providers.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/presentation/providers/task_feature_providers.dart';
 
 /// 验证应用壳层与路由骨架装配正常。
 void main() {

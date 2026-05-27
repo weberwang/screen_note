@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
-import 'package:screen_note/src/shared/presentation/widgets/screen_note_scaffold.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_scaffold.dart';
 
 /// 验证共享壳层背景跟随当前主题切换，避免暗色模式仍停留在亮色纸面。
 void main() {

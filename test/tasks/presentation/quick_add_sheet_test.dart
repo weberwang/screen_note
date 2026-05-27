@@ -3,19 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:screen_note/l10n/app_localizations.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_draft_store.dart';
-import 'package:screen_note/src/quick_add/presentation/providers/quick_add_providers.dart';
-import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
-import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
-import 'package:screen_note/src/tasks/domain/entities/task_event.dart';
-import 'package:screen_note/src/tasks/domain/repositories/task_event_repository.dart';
-import 'package:screen_note/src/tasks/domain/repositories/task_repository.dart';
-import 'package:screen_note/src/tasks/presentation/overlays/quick_add_sheet.dart';
-import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_refresh_result.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_snapshot_refresher.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_draft_store.dart';
+import 'package:screen_note/features/quick_add/presentation/providers/quick_add_providers.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/features/tasks/application/use_cases/create_task_use_case.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/domain/entities/task_event.dart';
+import 'package:screen_note/features/tasks/domain/repositories/task_event_repository.dart';
+import 'package:screen_note/features/tasks/domain/repositories/task_repository.dart';
+import 'package:screen_note/features/tasks/presentation/overlays/quick_add_sheet.dart';
+import 'package:screen_note/features/tasks/presentation/providers/task_feature_providers.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_refresh_result.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 验证首页轻入口快速添加底部弹层行为。
 void main() {

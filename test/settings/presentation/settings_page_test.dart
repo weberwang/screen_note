@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:screen_note/src/app/app.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
-import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
+import 'package:screen_note/app/app.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/presentation/providers/task_feature_providers.dart';
 
 /// 验证设置页入口与分组。
 void main() {

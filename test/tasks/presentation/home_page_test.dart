@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
-import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
-import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
-import 'package:screen_note/src/tasks/domain/entities/task_event.dart';
-import 'package:screen_note/src/tasks/domain/repositories/task_event_repository.dart';
-import 'package:screen_note/src/tasks/domain/repositories/task_repository.dart';
-import 'package:screen_note/src/tasks/presentation/overlays/quick_add_sheet.dart';
-import 'package:screen_note/src/tasks/presentation/pages/home_page.dart';
-import 'package:screen_note/src/tasks/presentation/providers/task_feature_providers.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_refresh_result.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_snapshot_refresher.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/features/tasks/application/use_cases/create_task_use_case.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/domain/entities/task_event.dart';
+import 'package:screen_note/features/tasks/domain/repositories/task_event_repository.dart';
+import 'package:screen_note/features/tasks/domain/repositories/task_repository.dart';
+import 'package:screen_note/features/tasks/presentation/overlays/quick_add_sheet.dart';
+import 'package:screen_note/features/tasks/presentation/pages/home_page.dart';
+import 'package:screen_note/features/tasks/presentation/providers/task_feature_providers.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_refresh_result.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 验证首页关键行为。
 void main() {

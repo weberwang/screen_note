@@ -1,8 +1,8 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/tasks/data/local/database/app_database.dart';
-import 'package:screen_note/src/tasks/data/repositories/drift_task_repository.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/data/local/database/app_database.dart';
+import 'package:screen_note/features/tasks/data/repositories/drift_task_repository.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
 
 /// 验证 Drift 仓储的持久化行为。
 void main() {

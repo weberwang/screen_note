@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/tasks/application/services/task_display_state_resolver.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_snapshot_builder.dart';
-import 'package:screen_note/src/widget_bridge/domain/enums/widget_display_mode.dart';
+import 'package:screen_note/features/tasks/application/services/task_display_state_resolver.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_snapshot_builder.dart';
+import 'package:screen_note/features/widget_bridge/domain/enums/widget_display_mode.dart';
 
 /// 验证 Widget 快照生成规则。
 void main() {

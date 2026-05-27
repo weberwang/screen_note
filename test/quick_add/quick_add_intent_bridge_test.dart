@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_entry_source.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_intent_bridge.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_entry_source.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_intent_bridge.dart';
 
 /// 验证系统入口待处理草稿桥接。
 void main() {

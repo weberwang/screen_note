@@ -9,4 +9,4 @@
 - infrastructure
 - presentation
 
-当前真实运行代码仍位于 `lib/src/tasks`、`lib/src/history`、`lib/src/settings`、`lib/src/quick_add`、`lib/src/widget_bridge`。后续只在 feature 被实质性重做时再迁入此目录。
+当前真实运行代码已位于 `lib/features/tasks`、`lib/features/history`、`lib/features/settings`、`lib/features/quick_add`、`lib/features/widget_bridge`。后续新增业务模块也默认在此目录下继续扩展。

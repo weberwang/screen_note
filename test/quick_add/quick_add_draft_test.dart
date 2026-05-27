@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_defaults.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_entry_source.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_defaults.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_entry_source.dart';
 
 /// 验证快速添加草稿契约、默认值与修改痕迹。
 void main() {

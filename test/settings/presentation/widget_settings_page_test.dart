@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:screen_note/src/app/app.dart';
-import 'package:screen_note/src/widget_bridge/domain/enums/widget_display_mode.dart';
-import 'package:screen_note/src/widget_bridge/domain/repositories/widget_display_mode_repository.dart';
-import 'package:screen_note/src/widget_bridge/presentation/providers/widget_bridge_providers.dart';
+import 'package:screen_note/app/app.dart';
+import 'package:screen_note/features/widget_bridge/domain/enums/widget_display_mode.dart';
+import 'package:screen_note/features/widget_bridge/domain/repositories/widget_display_mode_repository.dart';
+import 'package:screen_note/features/widget_bridge/presentation/providers/widget_bridge_providers.dart';
 
 /// 验证锁屏显示设置页的模式切换、预览和安装引导。
 void main() {

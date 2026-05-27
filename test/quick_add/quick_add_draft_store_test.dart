@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_defaults.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_entry_source.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_draft_store.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_defaults.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_entry_source.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_draft_store.dart';
 
 /// 验证快速添加草稿存储接口与默认实现。
 void main() {

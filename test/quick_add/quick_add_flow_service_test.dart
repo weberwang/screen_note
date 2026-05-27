@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/app/route_paths.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_defaults.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_entry_source.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_flow_result.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_flow_service.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_draft_store.dart';
-import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
+import 'package:screen_note/app/route_paths.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_defaults.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_entry_source.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_flow_result.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_flow_service.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_draft_store.dart';
+import 'package:screen_note/features/tasks/application/use_cases/create_task_use_case.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
 
 /// 验证快速添加统一流程编排。
 void main() {

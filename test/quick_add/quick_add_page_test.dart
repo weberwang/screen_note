@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:screen_note/l10n/app_localizations.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_draft.dart';
-import 'package:screen_note/src/quick_add/application/quick_add_entry_source.dart';
-import 'package:screen_note/src/quick_add/data/quick_add_draft_store.dart';
-import 'package:screen_note/src/quick_add/presentation/pages/quick_add_page.dart';
-import 'package:screen_note/src/quick_add/presentation/providers/quick_add_providers.dart';
-import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_draft.dart';
+import 'package:screen_note/features/quick_add/application/quick_add_entry_source.dart';
+import 'package:screen_note/features/quick_add/data/quick_add_draft_store.dart';
+import 'package:screen_note/features/quick_add/presentation/pages/quick_add_page.dart';
+import 'package:screen_note/features/quick_add/presentation/providers/quick_add_providers.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 验证 `/quick-add` 统一失败兜底页。
 void main() {

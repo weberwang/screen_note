@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/tasks/application/use_cases/complete_task_use_case.dart';
-import 'package:screen_note/src/tasks/application/use_cases/create_task_use_case.dart';
-import 'package:screen_note/src/tasks/application/use_cases/delete_task_use_case.dart';
-import 'package:screen_note/src/tasks/application/use_cases/restore_task_use_case.dart';
-import 'package:screen_note/src/tasks/application/use_cases/update_task_use_case.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
-import 'package:screen_note/src/tasks/domain/entities/task_event.dart';
-import 'package:screen_note/src/tasks/domain/repositories/task_event_repository.dart';
-import 'package:screen_note/src/tasks/domain/repositories/task_repository.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_refresh_result.dart';
-import 'package:screen_note/src/widget_bridge/application/widget_snapshot_refresher.dart';
+import 'package:screen_note/features/tasks/application/use_cases/complete_task_use_case.dart';
+import 'package:screen_note/features/tasks/application/use_cases/create_task_use_case.dart';
+import 'package:screen_note/features/tasks/application/use_cases/delete_task_use_case.dart';
+import 'package:screen_note/features/tasks/application/use_cases/restore_task_use_case.dart';
+import 'package:screen_note/features/tasks/application/use_cases/update_task_use_case.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/domain/entities/task_event.dart';
+import 'package:screen_note/features/tasks/domain/repositories/task_event_repository.dart';
+import 'package:screen_note/features/tasks/domain/repositories/task_repository.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_refresh_result.dart';
+import 'package:screen_note/features/widget_bridge/application/widget_snapshot_refresher.dart';
 
 /// 验证事项生命周期用例。
 void main() {

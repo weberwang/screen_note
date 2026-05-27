@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
-import 'package:screen_note/src/shared/presentation/theme/screen_note_theme.dart';
-import 'package:screen_note/src/tasks/presentation/widgets/quick_input_card.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/quick_input_card.dart';
 
 /// 验证快速输入卡保留设计稿里的次级取消动作。
 void main() {

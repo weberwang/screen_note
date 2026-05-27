@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/tasks/application/services/task_sorting_service.dart';
-import 'package:screen_note/src/tasks/domain/entities/task.dart';
+import 'package:screen_note/features/tasks/application/services/task_sorting_service.dart';
+import 'package:screen_note/features/tasks/domain/entities/task.dart';
 
 /// 验证事项排序规则。
 void main() {

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:screen_note/src/widget_bridge/data/widget_snapshot_storage_driver.dart';
-import 'package:screen_note/src/widget_bridge/data/widget_snapshot_store_impl.dart';
-import 'package:screen_note/src/widget_bridge/domain/enums/widget_display_mode.dart';
-import 'package:screen_note/src/widget_bridge/domain/models/widget_snapshot.dart';
-import 'package:screen_note/src/widget_bridge/domain/models/widget_snapshot_item.dart';
+import 'package:screen_note/features/widget_bridge/data/widget_snapshot_storage_driver.dart';
+import 'package:screen_note/features/widget_bridge/data/widget_snapshot_store_impl.dart';
+import 'package:screen_note/features/widget_bridge/domain/enums/widget_display_mode.dart';
+import 'package:screen_note/features/widget_bridge/domain/models/widget_snapshot.dart';
+import 'package:screen_note/features/widget_bridge/domain/models/widget_snapshot_item.dart';
 
 /// 验证 Widget 快照共享存储实现。
 void main() {
