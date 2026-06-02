@@ -1,26 +1,26 @@
 ```yaml
 artifact_type: flutter_workflow_record
 workflow_status: active
-current_stage: uiux_draft
+current_stage: global_guidelines_frozen
 current_module: not_selected
 confirmation_status: pending_confirmation
 next_skill: none
-pending_next_stage: global_guidelines_frozen
-pending_next_skill: flutter-design-freeze-gate
+pending_next_stage: design_freeze_ready
+pending_next_skill: flutter-rd-module-splitter
 ```
 
 ## workflow_summary
 
-- 用户已于 2026-06-02 明确指定 `style-01` 作为本轮全局设计参考方向，项目不再处于多方向未定状态。
-- 已基于 `style-01` 多屏预览、`app.pen` 与全局技术基线生成项目级全局 UI/UX 设计包。
-- 已产出 `global-design-guidelines.md` 与明暗主题冻结文件，作为后续设计冻结、Pencil 与 Flutter 实现的全局设计源。
-- 当前仍停留在最后一个已确认阶段 `uiux_draft`，等待用户确认本轮全局设计产物后，才能正式切入 `global_guidelines_frozen -> flutter-design-freeze-gate`。
+- 用户已于 2026-06-02 先后通过“参考 style1”“执行下一步”完成本轮全局设计方向与冻结产物的显式确认。
+- 项目当前已正式进入 `global_guidelines_frozen`，说明全局 UI/UX 设计包与主题冻结文件已成为后续阶段的设计源。
+- 已重新执行设计冻结检查，结果为 `frozen_for_pen`，说明设计证据已足以继续进入下游设计工作。
+- 当前下一个候选阶段是 `design_freeze_ready -> flutter-rd-module-splitter`，但仍需用户确认后才能真正切换。
 
 ## current_stage_detail
 
-- 当前阶段记录为 `uiux_draft`，原因不是设计仍缺输入，而是本轮刚生成新的全局设计产物，尚未得到用户确认。
-- `D:\Projects\Flutter\screen_note\docs\rd\01-global-technical-baseline.md` 继续作为全局工程基线；`D:\Projects\Flutter\screen_note\docs\rd\03-global-uiux-design-packet.md` 则成为当前项目级设计说明包。
-- 只有在用户确认本轮设计包与冻结文件后，工作流才允许把候选状态推进为 `global_guidelines_frozen`，再进入正式 `flutter-design-freeze-gate` 检查。
+- 当前阶段记录为 `global_guidelines_frozen`，原因是用户已明确确认 `style-01` 方向与本轮冻结产物，工作流已从待确认状态正式推进。
+- `D:\Projects\Flutter\screen_note\docs\rd\03-global-uiux-design-packet.md`、`D:\Projects\Flutter\screen_note\docs\rd\global-design-guidelines.md`、`D:\Projects\Flutter\screen_note\docs\rd\light-theme-freeze.yaml` 与 `D:\Projects\Flutter\screen_note\docs\rd\dark-theme-freeze.yaml` 现已成为项目级冻结设计源。
+- 最新冻结检查结果为 `frozen_for_pen`，说明当前阶段可以向下游模块拆分推进，但仍需先完成这次路由确认。
 
 ## current_module_detail
 
@@ -30,8 +30,9 @@ pending_next_skill: flutter-design-freeze-gate
 ## next_action
 
 - next_skill: `none`
-- why: 当前存在待审阅的全局设计包与冻结文件，按工作流门禁必须先等用户确认，不能直接继续执行 `flutter-design-freeze-gate`。
+- why: 设计冻结检查已经完成并产出可复核结果，按工作流门禁必须等待用户确认切入模块拆分，而不能自动启动 `flutter-rd-module-splitter`。
 - minimum_required_inputs:
+  - `D:\Projects\Flutter\screen_note\docs\rd\02-design-freeze-gate.md`
   - `D:\Projects\Flutter\screen_note\docs\rd\03-global-uiux-design-packet.md`
   - `D:\Projects\Flutter\screen_note\docs\rd\global-design-guidelines.md`
   - `D:\Projects\Flutter\screen_note\docs\rd\light-theme-freeze.yaml`
@@ -40,15 +41,14 @@ pending_next_skill: flutter-design-freeze-gate
 ## confirmation_gate
 
 - confirmation_status: `pending_confirmation`
-- reason: 本轮已完成 `style-01` 全局设计包与主题冻结文件，但这些产物尚未获得用户明确确认，不能自动推进到下一个工作流过程。
-- pending_next_stage: `global_guidelines_frozen`
-- pending_next_skill: `flutter-design-freeze-gate`
-- confirmation_target: `style-01` 全局设计包与冻结后的全局设计规范 / 主题文件
+- reason: 用户已确认全局设计源，本轮新的待确认对象已切换为“是否根据冻结检查结果进入模块拆分阶段”。
+- pending_next_stage: `design_freeze_ready`
+- pending_next_skill: `flutter-rd-module-splitter`
+- confirmation_target: `frozen_for_pen` 的设计冻结检查结果与后续模块拆分切换
 
 ## blockers
 
 - `waiting_for_user_confirmation`
-- `explicit_design_approval_missing`
 
 ## global_artifact_index
 
@@ -74,7 +74,7 @@ pending_next_skill: flutter-design-freeze-gate
 
 | module | current_state | confirmation_status | next_skill | pending_next_stage | pending_next_skill | uiux_rd | impl_rd | global_guidelines | light_theme | dark_theme | pen_file | init_status | blockers |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| not_selected | uiux_draft | pending_confirmation | none | global_guidelines_frozen | flutter-design-freeze-gate | D:\Projects\Flutter\screen_note\docs\rd\03-global-uiux-design-packet.md | not_provided | D:\Projects\Flutter\screen_note\docs\rd\global-design-guidelines.md | D:\Projects\Flutter\screen_note\docs\rd\light-theme-freeze.yaml | D:\Projects\Flutter\screen_note\docs\rd\dark-theme-freeze.yaml | D:\Projects\Flutter\screen_note\designs\app.pen | scaffold_exists_but_workflow_not_regularized | waiting_for_user_confirmation; explicit_design_approval_missing |
+| not_selected | global_guidelines_frozen | pending_confirmation | none | design_freeze_ready | flutter-rd-module-splitter | D:\Projects\Flutter\screen_note\docs\rd\03-global-uiux-design-packet.md | not_provided | D:\Projects\Flutter\screen_note\docs\rd\global-design-guidelines.md | D:\Projects\Flutter\screen_note\docs\rd\light-theme-freeze.yaml | D:\Projects\Flutter\screen_note\docs\rd\dark-theme-freeze.yaml | D:\Projects\Flutter\screen_note\designs\app.pen | scaffold_exists_but_workflow_not_regularized | waiting_for_user_confirmation |
 
 ## decision_log
 
@@ -85,3 +85,5 @@ pending_next_skill: flutter-design-freeze-gate
 - 2026-06-02: 已执行设计冻结检查并生成 `D:\Projects\Flutter\screen_note\docs\rd\02-design-freeze-gate.md`。由于缺少 UI/UX RD、设计说明包、状态矩阵、冻结卡与设计审批记录，当前路由切换为 `mobile-ui-design-coach`。
 - 2026-06-02: 用户明确指定 `style-01` 作为全局设计参考基线。已新增 `D:\Projects\Flutter\screen_note\docs\rd\03-global-uiux-design-packet.md`，补齐 UI/UX RD、设计说明包、状态矩阵与设计冻结卡。
 - 2026-06-02: 已新增 `D:\Projects\Flutter\screen_note\docs\rd\global-design-guidelines.md`、`D:\Projects\Flutter\screen_note\docs\rd\light-theme-freeze.yaml` 与 `D:\Projects\Flutter\screen_note\docs\rd\dark-theme-freeze.yaml`。根据工作流规则，当前保持在 `uiux_draft`，并将 `global_guidelines_frozen -> flutter-design-freeze-gate` 作为待确认后的下一跳。
+- 2026-06-02: 用户通过“执行下一步”明确确认当前全局设计产物，工作流正式从 `uiux_draft` 推进到 `global_guidelines_frozen`，并执行 `flutter-design-freeze-gate`。
+- 2026-06-02: 设计冻结检查结果更新为 `frozen_for_pen`。由于项目仍缺模块索引与模块级成对 RD，下一候选阶段登记为 `design_freeze_ready -> flutter-rd-module-splitter`，等待用户确认。
