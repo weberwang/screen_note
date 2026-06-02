@@ -1,0 +1,89 @@
+artifact_type: theme_freeze
+theme_id: dark
+platform_baseline: ios_hig
+color_roles:
+  primary: "#88975B"
+  on_primary: "#12150F"
+  secondary: "#A79268"
+  on_secondary: "#14140F"
+  accent: "#D4875E"
+surface_roles:
+  background: "#171A13"
+  surface: "#1F231A"
+  surface_subtle: "#252A20"
+  surface_elevated: "#2C3126"
+  surface_inverse: "#F6F0E4"
+text_roles:
+  text_primary: "#F3ECDD"
+  text_secondary: "#C7BFAA"
+  text_tertiary: "#9B947F"
+  text_inverse: "#1F2419"
+icon_roles:
+  icon_primary: "#E9E2D4"
+  icon_secondary: "#B8B099"
+  icon_inverse: "#1F2419"
+border_roles:
+  border_subtle: "#343A2F"
+  border_strong: "#59624C"
+  divider: "#2B3026"
+status_roles:
+  success: "#8EA667"
+  on_success: "#12150F"
+  warning: "#D4875E"
+  on_warning: "#1C140F"
+  error: "#CF6C58"
+  on_error: "#1C100F"
+  info: "#8BA2AE"
+  on_info: "#101416"
+shadow_or_overlay_roles:
+  shadow_color: "rgba(0, 0, 0, 0.46)"
+  overlay_scrim: "rgba(8, 9, 7, 0.58)"
+  focus_ring: "#A7B874"
+component_state_roles:
+  primary_button:
+    background: "#88975B"
+    text: "#12150F"
+    pressed_background: "#77864D"
+    disabled_background: "#454C3F"
+    disabled_text: "#A7A08D"
+  secondary_button:
+    background: "#242920"
+    text: "#F3ECDD"
+    border: "#48503F"
+    pressed_background: "#2D3328"
+    disabled_background: "#21251D"
+    disabled_text: "#7E7768"
+  input_field:
+    background: "#21261D"
+    text: "#F3ECDD"
+    placeholder: "#8B846F"
+    border: "#343A2F"
+    focus_border: "#88975B"
+    disabled_background: "#1A1E17"
+  card:
+    background: "#252B21"
+    text: "#F3ECDD"
+    border: "#3B4334"
+    shadow: "rgba(0, 0, 0, 0.36)"
+  sticky_note_card:
+    background: "#2B3127"
+    text: "#F3ECDD"
+    pin: "#99A66A"
+    meta_text: "#D7A583"
+    expired_background: "#22261F"
+  toggle_switch:
+    track_on: "#88975B"
+    track_off: "#484E43"
+    thumb: "#F6F0E4"
+    disabled_track: "#32362E"
+contrast_rules:
+  body_text_on_background: ">= 4.5:1"
+  body_text_on_surface: ">= 4.5:1"
+  text_on_primary: ">= 4.5:1"
+  essential_iconography: ">= 3:1"
+  helper_text_on_surface: ">= 3:1"
+forbidden_overrides:
+  - "Do not derive dark surfaces by simply inverting light theme values."
+  - "Do not add neon glow or cold blue highlights to the warm note system."
+  - "Do not brighten elevated surfaces until they compete with the sticky note card."
+  - "Do not swap accent and warning semantics in local widgets."

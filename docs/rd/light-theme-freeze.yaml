@@ -1,0 +1,89 @@
+artifact_type: theme_freeze
+theme_id: light
+platform_baseline: ios_hig
+color_roles:
+  primary: "#6B7544"
+  on_primary: "#FFFDF6"
+  secondary: "#E7D7A8"
+  on_secondary: "#332C1F"
+  accent: "#C97147"
+surface_roles:
+  background: "#F6F0E4"
+  surface: "#FFF9EF"
+  surface_subtle: "#F0E6D2"
+  surface_elevated: "#FFFDF7"
+  surface_inverse: "#3F4630"
+text_roles:
+  text_primary: "#1F2419"
+  text_secondary: "#6E685B"
+  text_tertiary: "#9A917E"
+  text_inverse: "#FFF9EF"
+icon_roles:
+  icon_primary: "#303726"
+  icon_secondary: "#7D7667"
+  icon_inverse: "#FFF9EF"
+border_roles:
+  border_subtle: "#DDD1B8"
+  border_strong: "#A59674"
+  divider: "#E8DDC7"
+status_roles:
+  success: "#6A7B46"
+  on_success: "#FFFDF7"
+  warning: "#C97147"
+  on_warning: "#FFF8F3"
+  error: "#B6543D"
+  on_error: "#FFF8F6"
+  info: "#6F828A"
+  on_info: "#F7FBFC"
+shadow_or_overlay_roles:
+  shadow_color: "rgba(60, 48, 24, 0.14)"
+  overlay_scrim: "rgba(34, 28, 20, 0.34)"
+  focus_ring: "#93A163"
+component_state_roles:
+  primary_button:
+    background: "#6B7544"
+    text: "#FFFDF6"
+    pressed_background: "#5B6539"
+    disabled_background: "#C8C1AF"
+    disabled_text: "#F4F0E4"
+  secondary_button:
+    background: "#FFF9EF"
+    text: "#1F2419"
+    border: "#D6C8A9"
+    pressed_background: "#F1E6D2"
+    disabled_background: "#F5EEDF"
+    disabled_text: "#AAA18E"
+  input_field:
+    background: "#FFFDF7"
+    text: "#1F2419"
+    placeholder: "#A79D89"
+    border: "#DDD1B8"
+    focus_border: "#6B7544"
+    disabled_background: "#F2ECDD"
+  card:
+    background: "#F7E9C7"
+    text: "#1F2419"
+    border: "#E6D8B4"
+    shadow: "rgba(75, 58, 28, 0.12)"
+  sticky_note_card:
+    background: "#F6E8BE"
+    text: "#1F2419"
+    pin: "#7B8152"
+    meta_text: "#8D6A4E"
+    expired_background: "#ECE5D8"
+  toggle_switch:
+    track_on: "#6B7544"
+    track_off: "#D8D0C0"
+    thumb: "#FFFDF7"
+    disabled_track: "#E8E0D0"
+contrast_rules:
+  body_text_on_background: ">= 4.5:1"
+  body_text_on_surface: ">= 4.5:1"
+  text_on_primary: ">= 4.5:1"
+  essential_iconography: ">= 3:1"
+  helper_text_on_surface: ">= 3:1"
+forbidden_overrides:
+  - "Do not replace semantic primary with ad-hoc gradients."
+  - "Do not change sticky note cards into plain white list cells."
+  - "Do not use accent orange as the primary action color."
+  - "Do not lower disabled contrast until state distinction becomes ambiguous."
