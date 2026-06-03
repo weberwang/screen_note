@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Current tasks'**
   String get activeTasksSectionTitle;
 
+  /// Section title for secondary tasks shown below the focus card on the home page.
+  ///
+  /// In en, this message translates to:
+  /// **'Up next'**
+  String get homeUpNextTitle;
+
   /// Entry label to open the completed history page.
   ///
   /// In en, this message translates to:
@@ -386,6 +392,12 @@ abstract class AppLocalizations {
   /// **'Note'**
   String get taskNoteLabel;
 
+  /// Placeholder value shown when the task note has not been filled yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add notes'**
+  String get taskNoteEmpty;
+
   /// Label for the task due time row.
   ///
   /// In en, this message translates to:
@@ -427,6 +439,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Persistent reminder'**
   String get taskReminderModePersistent;
+
+  /// Title for the lock screen preview section on task detail and editor pages.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock screen preview'**
+  String get taskPreviewTitle;
+
+  /// Title for the hidden-content option in the lock screen preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide content'**
+  String get taskPreviewHideContentTitle;
+
+  /// Body for the hidden-content option in the lock screen preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Only show a safe summary.'**
+  String get taskPreviewHideContentBody;
+
+  /// Title for the visible-content option in the lock screen preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Show content'**
+  String get taskPreviewShowContentTitle;
+
+  /// Body for the visible-content option in the lock screen preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the full content visible inside the app.'**
+  String get taskPreviewShowContentBody;
+
+  /// Title for the privacy summary at the bottom of the lock screen preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Only visible to you'**
+  String get taskPreviewPrivateOnlyTitle;
+
+  /// Body for the privacy summary at the bottom of the lock screen preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Outward surfaces hide the original text by default.'**
+  String get taskPreviewPrivateOnlyBody;
 
   /// Primary button label to save task changes.
   ///

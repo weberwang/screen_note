@@ -1,77 +1,104 @@
 import 'package:flutter/material.dart';
 
-/// 屏记阶段一的浅色静态设计 token。
+/// 屏记冻结后的亮色语义色值。
 abstract final class ScreenNoteColors {
   /// 纸感页面背景色。
-  static const Color surfacePaper = Color(0xFFF8F3EA);
+  static const Color surfacePaper = Color(0xFFF8F2E7);
 
-  /// 主卡片背景色。
-  static const Color surfaceCard = Color(0xFFFFFBF4);
+  /// 主容器背景色。
+  static const Color surfaceCard = Color(0xFFFFF9F0);
 
-  /// 次级卡片和弱化区块背景色。
-  static const Color surfaceMuted = Color(0xFFEFE7DA);
+  /// 次级容器背景色。
+  static const Color surfaceMuted = Color(0xFFF1E8D9);
+
+  /// 提升层背景色。
+  static const Color surfaceRaised = Color(0xFFFFFDF7);
+
+  /// 首页焦点事项卡底色。
+  static const Color surfaceFocusCard = Color(0xFF73795A);
 
   /// 主文案颜色。
-  static const Color inkPrimary = Color(0xFF211B14);
+  static const Color inkPrimary = Color(0xFF232117);
 
   /// 次文案颜色。
-  static const Color inkSecondary = Color(0xFF6F6254);
+  static const Color inkSecondary = Color(0xFF6A6458);
 
-  /// 轻分隔线颜色。
-  static const Color lineSoft = Color(0xFFE2D6C7);
+  /// 第三级弱化文案颜色。
+  static const Color inkTertiary = Color(0xFF978F80);
 
-  /// 主操作强调色。
-  static const Color accentAmber = Color(0xFFD9822B);
+  /// 深色卡面上的主文案颜色。
+  static const Color inkOnFocus = Color(0xFFFBF8EF);
 
-  /// 过期强调色。
-  static const Color statusOverdue = Color(0xFFB94A3A);
+  /// 深色卡面上的次文案颜色。
+  static const Color inkOnFocusSecondary = Color(0xFFE8D7C5);
 
-  /// 完成强调色。
-  static const Color statusDone = Color(0xFF4F8A62);
+  /// 轻描边颜色。
+  static const Color lineSoft = Color(0xFFDED3BE);
 
-  /// 隐私强调色。
-  static const Color statusPrivate = Color(0xFF6D6A75);
+  /// 强分隔颜色。
+  static const Color lineStrong = Color(0xFFA59673);
 
-  /// 系统跳转强调色。
-  static const Color actionBlue = Color(0xFF3366CC);
+  /// 主操作色，冻结为橄榄绿轴。
+  static const Color accentAmber = Color(0xFF798155);
+
+  /// 辅助强调色，承担到期和提醒语义。
+  static const Color accentTerracotta = Color(0xFFCD7B58);
+
+  /// 过期状态色。
+  static const Color statusOverdue = Color(0xFFB95944);
+
+  /// 完成与确认状态色。
+  static const Color statusDone = Color(0xFF72814F);
+
+  /// 隐私状态色。
+  static const Color statusPrivate = Color(0xFF7B8152);
+
+  /// 系统跳转和文本动作色。
+  static const Color actionBlue = Color(0xFF798155);
+
+  /// 统一阴影色。
+  static const Color shadowSoft = Color(0x243E311C);
 }
 
-/// 屏记阶段一共享圆角。
+/// 屏记共享圆角。
 abstract final class ScreenNoteRadii {
-  /// 小型按钮圆角。
-  static const BorderRadius small = BorderRadius.all(Radius.circular(12));
+  /// 小型标签和次级按钮圆角。
+  static const BorderRadius small = BorderRadius.all(Radius.circular(16));
 
-  /// 事项卡片圆角。
-  static const BorderRadius card = BorderRadius.all(Radius.circular(18));
+  /// 常规卡片圆角。
+  static const BorderRadius card = BorderRadius.all(Radius.circular(24));
 
-  /// 快速输入卡片圆角。
-  static const BorderRadius input = BorderRadius.all(Radius.circular(20));
+  /// 快速输入条圆角。
+  static const BorderRadius input = BorderRadius.all(Radius.circular(26));
 
   /// 底部弹层圆角。
   static const BorderRadius sheet = BorderRadius.vertical(
-    top: Radius.circular(28),
+    top: Radius.circular(32),
   );
+
+  /// 焦点事项圆形动作按钮圆角。
+  static const BorderRadius circular = BorderRadius.all(Radius.circular(999));
 }
 
-/// 屏记阶段一共享间距。
+/// 屏记共享间距。
 abstract final class ScreenNoteSpacing {
   /// 页面左右默认边距。
-  static const double pageHorizontal = 20;
+  static const double pageHorizontal = 24;
 
   /// 页面上下默认边距。
-  static const double pageVertical = 20;
+  static const double pageVertical = 24;
 
   /// 卡片默认内边距。
-  static const double cardPadding = 16;
+  static const double cardPadding = 20;
 
-  /// 组间默认间距。
-  static const double sectionGap = 24;
+  /// 大区块间距。
+  static const double sectionGap = 28;
 
   /// 紧凑元素间距。
   static const double compactGap = 12;
 }
 
-/// 运行时主题调色板，承载亮暗模式下的语义色。
+/// 运行时主题调色板，统一承载亮暗模式下的语义色。
 @immutable
 class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
   /// 创建运行时调色板。
@@ -79,16 +106,24 @@ class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
     required this.surfacePaper,
     required this.surfaceCard,
     required this.surfaceMuted,
+    required this.surfaceRaised,
+    required this.surfaceFocusCard,
     required this.inkPrimary,
     required this.inkSecondary,
+    required this.inkTertiary,
+    required this.inkOnFocus,
+    required this.inkOnFocusSecondary,
     required this.lineSoft,
+    required this.lineStrong,
     required this.accentAmber,
+    required this.accentTerracotta,
     required this.statusOverdue,
     required this.statusDone,
     required this.statusPrivate,
     required this.actionBlue,
     required this.backgroundTop,
     required this.backgroundBottom,
+    required this.shadowSoft,
   });
 
   /// 页面主背景色。
@@ -100,28 +135,49 @@ class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
   /// 二级卡片背景色。
   final Color surfaceMuted;
 
+  /// 提升层背景色。
+  final Color surfaceRaised;
+
+  /// 首页焦点事项卡背景色。
+  final Color surfaceFocusCard;
+
   /// 主文字色。
   final Color inkPrimary;
 
   /// 次文字色。
   final Color inkSecondary;
 
+  /// 第三级文案色。
+  final Color inkTertiary;
+
+  /// 深色卡面主文字色。
+  final Color inkOnFocus;
+
+  /// 深色卡面次文字色。
+  final Color inkOnFocusSecondary;
+
   /// 分隔线和描边色。
   final Color lineSoft;
+
+  /// 强分隔或选中描边色。
+  final Color lineStrong;
 
   /// 主强调色。
   final Color accentAmber;
 
-  /// 过期强调色。
+  /// 辅助强调色。
+  final Color accentTerracotta;
+
+  /// 过期状态色。
   final Color statusOverdue;
 
-  /// 完成强调色。
+  /// 完成状态色。
   final Color statusDone;
 
-  /// 隐私强调色。
+  /// 隐私状态色。
   final Color statusPrivate;
 
-  /// 系统动作色。
+  /// 文本动作色。
   final Color actionBlue;
 
   /// 页面背景渐变起始色。
@@ -130,36 +186,56 @@ class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
   /// 页面背景渐变结束色。
   final Color backgroundBottom;
 
+  /// 统一阴影色。
+  final Color shadowSoft;
+
   @override
   ScreenNoteThemePalette copyWith({
     Color? surfacePaper,
     Color? surfaceCard,
     Color? surfaceMuted,
+    Color? surfaceRaised,
+    Color? surfaceFocusCard,
     Color? inkPrimary,
     Color? inkSecondary,
+    Color? inkTertiary,
+    Color? inkOnFocus,
+    Color? inkOnFocusSecondary,
     Color? lineSoft,
+    Color? lineStrong,
     Color? accentAmber,
+    Color? accentTerracotta,
     Color? statusOverdue,
     Color? statusDone,
     Color? statusPrivate,
     Color? actionBlue,
     Color? backgroundTop,
     Color? backgroundBottom,
+    Color? shadowSoft,
   }) {
     return ScreenNoteThemePalette(
       surfacePaper: surfacePaper ?? this.surfacePaper,
       surfaceCard: surfaceCard ?? this.surfaceCard,
       surfaceMuted: surfaceMuted ?? this.surfaceMuted,
+      surfaceRaised: surfaceRaised ?? this.surfaceRaised,
+      surfaceFocusCard: surfaceFocusCard ?? this.surfaceFocusCard,
       inkPrimary: inkPrimary ?? this.inkPrimary,
       inkSecondary: inkSecondary ?? this.inkSecondary,
+      inkTertiary: inkTertiary ?? this.inkTertiary,
+      inkOnFocus: inkOnFocus ?? this.inkOnFocus,
+      inkOnFocusSecondary:
+          inkOnFocusSecondary ?? this.inkOnFocusSecondary,
       lineSoft: lineSoft ?? this.lineSoft,
+      lineStrong: lineStrong ?? this.lineStrong,
       accentAmber: accentAmber ?? this.accentAmber,
+      accentTerracotta: accentTerracotta ?? this.accentTerracotta,
       statusOverdue: statusOverdue ?? this.statusOverdue,
       statusDone: statusDone ?? this.statusDone,
       statusPrivate: statusPrivate ?? this.statusPrivate,
       actionBlue: actionBlue ?? this.actionBlue,
       backgroundTop: backgroundTop ?? this.backgroundTop,
       backgroundBottom: backgroundBottom ?? this.backgroundBottom,
+      shadowSoft: shadowSoft ?? this.shadowSoft,
     );
   }
 
@@ -176,58 +252,85 @@ class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
       surfacePaper: Color.lerp(surfacePaper, other.surfacePaper, t)!,
       surfaceCard: Color.lerp(surfaceCard, other.surfaceCard, t)!,
       surfaceMuted: Color.lerp(surfaceMuted, other.surfaceMuted, t)!,
+      surfaceRaised: Color.lerp(surfaceRaised, other.surfaceRaised, t)!,
+      surfaceFocusCard:
+          Color.lerp(surfaceFocusCard, other.surfaceFocusCard, t)!,
       inkPrimary: Color.lerp(inkPrimary, other.inkPrimary, t)!,
       inkSecondary: Color.lerp(inkSecondary, other.inkSecondary, t)!,
+      inkTertiary: Color.lerp(inkTertiary, other.inkTertiary, t)!,
+      inkOnFocus: Color.lerp(inkOnFocus, other.inkOnFocus, t)!,
+      inkOnFocusSecondary:
+          Color.lerp(inkOnFocusSecondary, other.inkOnFocusSecondary, t)!,
       lineSoft: Color.lerp(lineSoft, other.lineSoft, t)!,
+      lineStrong: Color.lerp(lineStrong, other.lineStrong, t)!,
       accentAmber: Color.lerp(accentAmber, other.accentAmber, t)!,
+      accentTerracotta:
+          Color.lerp(accentTerracotta, other.accentTerracotta, t)!,
       statusOverdue: Color.lerp(statusOverdue, other.statusOverdue, t)!,
       statusDone: Color.lerp(statusDone, other.statusDone, t)!,
       statusPrivate: Color.lerp(statusPrivate, other.statusPrivate, t)!,
       actionBlue: Color.lerp(actionBlue, other.actionBlue, t)!,
       backgroundTop: Color.lerp(backgroundTop, other.backgroundTop, t)!,
       backgroundBottom: Color.lerp(backgroundBottom, other.backgroundBottom, t)!,
+      shadowSoft: Color.lerp(shadowSoft, other.shadowSoft, t)!,
     );
   }
 }
 
-/// 统一维护亮暗两套主题调色板，避免页面直接拼写分散色值。
+/// 统一维护亮暗两套调色板。
 abstract final class ScreenNotePalettes {
-  /// 亮色调色板，对齐“清晨纸片”设计方向。
+  /// 亮色调色板，对齐冻结后的暖纸感设计。
   static const ScreenNoteThemePalette light = ScreenNoteThemePalette(
-    surfacePaper: Color(0xFFF8F3EA),
-    surfaceCard: Color(0xFFFFFBF4),
-    surfaceMuted: Color(0xFFEFE7DA),
-    inkPrimary: Color(0xFF211B14),
-    inkSecondary: Color(0xFF6F6254),
-    lineSoft: Color(0xFFE2D6C7),
-    accentAmber: Color(0xFFD9822B),
-    statusOverdue: Color(0xFFB94A3A),
-    statusDone: Color(0xFF4F8A62),
-    statusPrivate: Color(0xFF6D6A75),
-    actionBlue: Color(0xFF3366CC),
-    backgroundTop: Color(0xFFF8F3EA),
-    backgroundBottom: Color(0xFFFDF8F0),
+    surfacePaper: ScreenNoteColors.surfacePaper,
+    surfaceCard: ScreenNoteColors.surfaceCard,
+    surfaceMuted: ScreenNoteColors.surfaceMuted,
+    surfaceRaised: ScreenNoteColors.surfaceRaised,
+    surfaceFocusCard: ScreenNoteColors.surfaceFocusCard,
+    inkPrimary: ScreenNoteColors.inkPrimary,
+    inkSecondary: ScreenNoteColors.inkSecondary,
+    inkTertiary: ScreenNoteColors.inkTertiary,
+    inkOnFocus: ScreenNoteColors.inkOnFocus,
+    inkOnFocusSecondary: ScreenNoteColors.inkOnFocusSecondary,
+    lineSoft: ScreenNoteColors.lineSoft,
+    lineStrong: ScreenNoteColors.lineStrong,
+    accentAmber: ScreenNoteColors.accentAmber,
+    accentTerracotta: ScreenNoteColors.accentTerracotta,
+    statusOverdue: ScreenNoteColors.statusOverdue,
+    statusDone: ScreenNoteColors.statusDone,
+    statusPrivate: ScreenNoteColors.statusPrivate,
+    actionBlue: ScreenNoteColors.actionBlue,
+    backgroundTop: Color(0xFFF8F2E7),
+    backgroundBottom: Color(0xFFFFF8EF),
+    shadowSoft: ScreenNoteColors.shadowSoft,
   );
 
-  /// 暗色调色板，保留纸感层级而不是简单反色。
+  /// 暗色调色板，保留暖暗纸面的层级关系。
   static const ScreenNoteThemePalette dark = ScreenNoteThemePalette(
-    surfacePaper: Color(0xFF171613),
-    surfaceCard: Color(0xFF24211C),
-    surfaceMuted: Color(0xFF302B24),
-    inkPrimary: Color(0xFFF7EFE3),
-    inkSecondary: Color(0xFFBEB0A1),
-    lineSoft: Color(0xFF40382F),
-    accentAmber: Color(0xFFD9822B),
-    statusOverdue: Color(0xFFD56C5C),
-    statusDone: Color(0xFF72AE85),
-    statusPrivate: Color(0xFFB5ADBE),
-    actionBlue: Color(0xFF7EA7FF),
-    backgroundTop: Color(0xFF171613),
-    backgroundBottom: Color(0xFF1F1C18),
+    surfacePaper: Color(0xFF181A14),
+    surfaceCard: Color(0xFF1E221A),
+    surfaceMuted: Color(0xFF252A21),
+    surfaceRaised: Color(0xFF2D3328),
+    surfaceFocusCard: Color(0xFF4D553E),
+    inkPrimary: Color(0xFFF4EDDE),
+    inkSecondary: Color(0xFFC7C0AB),
+    inkTertiary: Color(0xFF9A937E),
+    inkOnFocus: Color(0xFFF8F2E7),
+    inkOnFocusSecondary: Color(0xFFE4B59B),
+    lineSoft: Color(0xFF34392F),
+    lineStrong: Color(0xFF5B644F),
+    accentAmber: Color(0xFF8D9863),
+    accentTerracotta: Color(0xFFD58A64),
+    statusOverdue: Color(0xFFCF6D58),
+    statusDone: Color(0xFF90A86B),
+    statusPrivate: Color(0xFFA5B174),
+    actionBlue: Color(0xFF8D9863),
+    backgroundTop: Color(0xFF181A14),
+    backgroundBottom: Color(0xFF1F241B),
+    shadowSoft: Color(0x75000000),
   );
 }
 
-/// 运行时读取屏记调色板，避免共享壳层再写死亮色资源。
+/// 运行时读取屏记调色板。
 extension ScreenNoteThemePaletteX on BuildContext {
   /// 返回当前主题下的屏记调色板。
   ScreenNoteThemePalette get screenNotePalette =>
@@ -258,19 +361,20 @@ ThemeData _buildScreenNoteTheme({
   required Brightness brightness,
   required ScreenNoteThemePalette palette,
 }) {
+  const List<String> serifFallback = <String>['Georgia', 'Times New Roman', 'serif'];
   final ColorScheme colorScheme = ColorScheme.fromSeed(
     seedColor: palette.accentAmber,
     brightness: brightness,
   ).copyWith(
     primary: palette.accentAmber,
-    onPrimary: Colors.white,
-    secondary: palette.actionBlue,
-    onSecondary: Colors.white,
-    surface: palette.surfacePaper,
+    onPrimary: palette.inkOnFocus,
+    secondary: palette.accentTerracotta,
+    onSecondary: palette.inkOnFocus,
+    surface: palette.surfaceCard,
     onSurface: palette.inkPrimary,
     outline: palette.lineSoft,
     error: palette.statusOverdue,
-    onError: Colors.white,
+    onError: palette.inkOnFocus,
   );
 
   final TextTheme baseTextTheme = (brightness == Brightness.dark
@@ -281,6 +385,84 @@ ThemeData _buildScreenNoteTheme({
         displayColor: palette.inkPrimary,
       );
 
+  final TextTheme textTheme = baseTextTheme.copyWith(
+    displayLarge: baseTextTheme.displayLarge?.copyWith(
+      fontSize: 42,
+      height: 1.05,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -1.2,
+      fontFamily: serifFallback.first,
+      fontFamilyFallback: serifFallback,
+    ),
+    displayMedium: baseTextTheme.displayMedium?.copyWith(
+      fontSize: 34,
+      height: 1.08,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.9,
+      fontFamily: serifFallback.first,
+      fontFamilyFallback: serifFallback,
+    ),
+    displaySmall: baseTextTheme.displaySmall?.copyWith(
+      fontSize: 28,
+      height: 1.1,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.8,
+      fontFamily: serifFallback.first,
+      fontFamilyFallback: serifFallback,
+    ),
+    headlineMedium: baseTextTheme.headlineMedium?.copyWith(
+      fontSize: 22,
+      height: 1.15,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.4,
+      fontFamily: serifFallback.first,
+      fontFamilyFallback: serifFallback,
+    ),
+    titleLarge: baseTextTheme.titleLarge?.copyWith(
+      fontSize: 20,
+      height: 1.2,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.3,
+      fontFamily: serifFallback.first,
+      fontFamilyFallback: serifFallback,
+    ),
+    titleMedium: baseTextTheme.titleMedium?.copyWith(
+      fontSize: 17,
+      height: 1.28,
+      fontWeight: FontWeight.w600,
+      color: palette.inkPrimary,
+    ),
+    bodyLarge: baseTextTheme.bodyLarge?.copyWith(
+      fontSize: 16,
+      height: 1.45,
+      color: palette.inkPrimary,
+    ),
+    bodyMedium: baseTextTheme.bodyMedium?.copyWith(
+      fontSize: 14,
+      height: 1.45,
+      color: palette.inkSecondary,
+    ),
+    labelLarge: baseTextTheme.labelLarge?.copyWith(
+      fontSize: 15,
+      height: 1.2,
+      fontWeight: FontWeight.w600,
+      color: palette.inkPrimary,
+    ),
+    labelMedium: baseTextTheme.labelMedium?.copyWith(
+      fontSize: 13,
+      height: 1.2,
+      fontWeight: FontWeight.w600,
+      color: palette.inkSecondary,
+    ),
+    labelSmall: baseTextTheme.labelSmall?.copyWith(
+      fontSize: 11,
+      height: 1.2,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.2,
+      color: palette.inkPrimary,
+    ),
+  );
+
   return ThemeData(
     brightness: brightness,
     colorScheme: colorScheme,
@@ -288,45 +470,16 @@ ThemeData _buildScreenNoteTheme({
     cardColor: palette.surfaceCard,
     useMaterial3: true,
     extensions: <ThemeExtension<dynamic>>[palette],
-    textTheme: baseTextTheme.copyWith(
-      displaySmall: baseTextTheme.displaySmall?.copyWith(
-        fontSize: 32,
-        height: 38 / 32,
-        fontWeight: FontWeight.w700,
-      ),
-      titleLarge: baseTextTheme.titleLarge?.copyWith(
-        fontSize: 24,
-        height: 30 / 24,
-        fontWeight: FontWeight.w700,
-      ),
-      titleMedium: baseTextTheme.titleMedium?.copyWith(
-        fontSize: 18,
-        height: 24 / 18,
-        fontWeight: FontWeight.w600,
-      ),
-      bodyLarge: baseTextTheme.bodyLarge?.copyWith(
-        fontSize: 16,
-        height: 24 / 16,
-        color: palette.inkPrimary,
-      ),
-      bodyMedium: baseTextTheme.bodyMedium?.copyWith(
-        fontSize: 14,
-        height: 20 / 14,
-        color: palette.inkSecondary,
-      ),
-      labelSmall: baseTextTheme.labelSmall?.copyWith(
-        fontSize: 12,
-        height: 16 / 12,
-        fontWeight: FontWeight.w600,
-        color: palette.inkPrimary,
-      ),
-    ),
+    textTheme: textTheme,
+    iconTheme: IconThemeData(color: palette.inkPrimary),
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       foregroundColor: palette.inkPrimary,
       elevation: 0,
       centerTitle: false,
+      scrolledUnderElevation: 0,
       surfaceTintColor: Colors.transparent,
+      titleTextStyle: textTheme.headlineMedium,
     ),
     cardTheme: CardThemeData(
       color: palette.surfaceCard,
@@ -337,13 +490,29 @@ ThemeData _buildScreenNoteTheme({
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: palette.accentAmber,
-        foregroundColor: Colors.white,
+        foregroundColor: palette.inkOnFocus,
+        textStyle: textTheme.labelLarge,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        shape: const RoundedRectangleBorder(borderRadius: ScreenNoteRadii.small),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: palette.actionBlue,
+        textStyle: textTheme.labelLarge,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: palette.inkPrimary,
+        side: BorderSide(color: palette.lineSoft),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         shape: const RoundedRectangleBorder(borderRadius: ScreenNoteRadii.small),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: palette.surfaceCard,
+      fillColor: palette.surfaceRaised,
       border: OutlineInputBorder(
         borderRadius: ScreenNoteRadii.input,
         borderSide: BorderSide(color: palette.lineSoft),
@@ -354,17 +523,33 @@ ThemeData _buildScreenNoteTheme({
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: ScreenNoteRadii.input,
-        borderSide: BorderSide(color: palette.accentAmber),
+        borderSide: BorderSide(color: palette.accentAmber, width: 1.2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: ScreenNoteRadii.input,
         borderSide: BorderSide(color: palette.statusOverdue),
       ),
       contentPadding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
+      hintStyle: textTheme.bodyMedium?.copyWith(color: palette.inkTertiary),
+      labelStyle: textTheme.labelMedium,
     ),
     dividerTheme: DividerThemeData(
       color: palette.lineSoft,
       thickness: 1,
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: palette.surfaceMuted,
+      side: BorderSide.none,
+      shape: const RoundedRectangleBorder(borderRadius: ScreenNoteRadii.small),
+      labelStyle: textTheme.labelSmall ?? const TextStyle(),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: palette.surfaceFocusCard,
+      contentTextStyle: textTheme.bodyMedium?.copyWith(
+        color: palette.inkOnFocus,
+      ),
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }

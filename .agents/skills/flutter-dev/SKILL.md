@@ -27,7 +27,7 @@ Operate on the initialized `screen_note` Flutter app using the project decisions
 - Platforms: `iOS, Android, macOS, Linux, Windows, Web`
 - Environments: `single default environment`
 - Primary features: `tasks, history, settings, quick_add, widget_bridge`
-- Core integrations: `drift, shared_preferences, home_widget, flutter_local_notifications, timezone, flutter gen-l10n`
+- Core integrations: `drift, shared_preferences, flutter_secure_storage, home_widget, flutter_local_notifications, timezone, dio, retrofit, flutter gen-l10n`
 
 ## Workflow
 
@@ -51,8 +51,8 @@ Operate on the initialized `screen_note` Flutter app using the project decisions
 ## Project Conventions
 
 - Route strategy: `继续以 go_router 维护统一路由树，现有运行入口在 lib/app`
-- Networking strategy: `当前首版以本地数据与系统桥接为主，dio + retrofit 仍属于目标基线而非现状`
-- Storage strategy: `结构化数据走 drift，轻量偏好与桥接草稿走 shared_preferences，安全存储尚未落地`
+- Networking strategy: `当前首版仍以本地数据与系统桥接为主，但 core/network 已补齐 dio + retrofit 初始化基座，新远程能力必须直接接在这条链路上`
+- Storage strategy: `结构化数据走 drift，轻量偏好与桥接草稿走 shared_preferences，敏感配置与未来令牌统一走 flutter_secure_storage`
 - Test commands: `rtk flutter analyze` and `rtk flutter test`
 - Build commands: `rtk flutter pub get`, `rtk dart run build_runner build --delete-conflicting-outputs`, `rtk flutter run`
 

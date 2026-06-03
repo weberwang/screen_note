@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+
 /// 事项列表分组容器。
 class TaskListSection extends StatelessWidget {
   /// 创建事项列表分组容器。
@@ -21,21 +23,34 @@ class TaskListSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium,
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: palette.inkPrimary,
               ),
             ),
-            if (trailing != null) trailing!,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: palette.lineSoft,
+              ),
+            ),
+            if (trailing != null) ...<Widget>[
+              const SizedBox(width: 12),
+              trailing!,
+            ],
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 14),
         ...children.expand<Widget>((Widget child) => <Widget>[
           child,
           const SizedBox(height: 12),

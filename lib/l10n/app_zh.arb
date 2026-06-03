@@ -116,6 +116,10 @@
   "@activeTasksSectionTitle": {
     "description": "首页当前事项分组标题。"
   },
+  "homeUpNextTitle": "接下来",
+  "@homeUpNextTitle": {
+    "description": "首页焦点事项下方的次级事项分组标题。"
+  },
   "completedHistoryEntry": "最近完成",
   "@completedHistoryEntry": {
     "description": "进入最近完成页的入口文案。"
@@ -192,6 +196,10 @@
   "@taskNoteLabel": {
     "description": "事项备注输入框标签。"
   },
+  "taskNoteEmpty": "添加备注",
+  "@taskNoteEmpty": {
+    "description": "事项备注尚未填写时的占位值文案。"
+  },
   "taskDueLabel": "截止时间",
   "@taskDueLabel": {
     "description": "事项截止时间行标签。"
@@ -219,6 +227,34 @@
   "taskReminderModePersistent": "强提醒",
   "@taskReminderModePersistent": {
     "description": "强提醒模式文案。"
+  },
+  "taskPreviewTitle": "锁屏预览",
+  "@taskPreviewTitle": {
+    "description": "任务详情与编辑页中的锁屏预览区域标题。"
+  },
+  "taskPreviewHideContentTitle": "隐藏正文",
+  "@taskPreviewHideContentTitle": {
+    "description": "锁屏预览里隐藏正文方案的标题。"
+  },
+  "taskPreviewHideContentBody": "只显示安全摘要。",
+  "@taskPreviewHideContentBody": {
+    "description": "锁屏预览里隐藏正文方案的说明。"
+  },
+  "taskPreviewShowContentTitle": "显示正文",
+  "@taskPreviewShowContentTitle": {
+    "description": "锁屏预览里显示正文方案的标题。"
+  },
+  "taskPreviewShowContentBody": "在应用内可见完整内容。",
+  "@taskPreviewShowContentBody": {
+    "description": "锁屏预览里显示正文方案的说明。"
+  },
+  "taskPreviewPrivateOnlyTitle": "仅你可见",
+  "@taskPreviewPrivateOnlyTitle": {
+    "description": "锁屏预览底部隐私总结标题。"
+  },
+  "taskPreviewPrivateOnlyBody": "外露场景默认隐藏正文。",
+  "@taskPreviewPrivateOnlyBody": {
+    "description": "锁屏预览底部隐私总结说明。"
   },
   "taskSaveChanges": "保存修改",
   "@taskSaveChanges": {

@@ -106,6 +106,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activeTasksSectionTitle => 'Current tasks';
 
   @override
+  String get homeUpNextTitle => 'Up next';
+
+  @override
   String get completedHistoryEntry => 'Recently completed';
 
   @override
@@ -167,6 +170,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskNoteLabel => 'Note';
 
   @override
+  String get taskNoteEmpty => 'Add notes';
+
+  @override
   String get taskDueLabel => 'Due time';
 
   @override
@@ -186,6 +192,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get taskReminderModePersistent => 'Persistent reminder';
+
+  @override
+  String get taskPreviewTitle => 'Lock screen preview';
+
+  @override
+  String get taskPreviewHideContentTitle => 'Hide content';
+
+  @override
+  String get taskPreviewHideContentBody => 'Only show a safe summary.';
+
+  @override
+  String get taskPreviewShowContentTitle => 'Show content';
+
+  @override
+  String get taskPreviewShowContentBody =>
+      'Keep the full content visible inside the app.';
+
+  @override
+  String get taskPreviewPrivateOnlyTitle => 'Only visible to you';
+
+  @override
+  String get taskPreviewPrivateOnlyBody =>
+      'Outward surfaces hide the original text by default.';
 
   @override
   String get taskSaveChanges => 'Save changes';

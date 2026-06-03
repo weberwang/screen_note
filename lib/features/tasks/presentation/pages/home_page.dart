@@ -16,10 +16,11 @@ import 'package:screen_note/features/tasks/presentation/providers/task_feature_p
 import 'package:screen_note/features/tasks/presentation/widgets/quick_input_card.dart';
 import 'package:screen_note/features/tasks/presentation/widgets/task_card.dart';
 import 'package:screen_note/features/tasks/presentation/widgets/task_list_section.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/task_surface_panel.dart';
 
-/// 阶段二首页。
+/// 首页。
 class HomePage extends ConsumerStatefulWidget {
-  /// 创建阶段二首页。
+  /// 创建首页。
   const HomePage({super.key});
 
   @override
@@ -37,114 +38,43 @@ class _HomePageState extends ConsumerState<HomePage> {
     final AsyncValue<List<Task>> tasksAsync = ref.watch(activeTasksProvider);
 
     return ScreenNoteScaffold(
-      title: Text(localizations.appTitle),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(ScreenNoteSpacing.pageHorizontal),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              localizations.homePageTitle,
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              localizations.homePageSubtitle,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () => context.go(RoutePaths.settings),
-                  child: Text(localizations.settingsEntry),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            QuickInputCard(
-              isSubmitting: _isSubmitting,
-              initialValue: _draftValue,
-              errorText: _inlineError,
-              onSubmit: _openQuickAddSheet,
-              onSecondaryAction: () => context.push(RoutePaths.taskNew),
-              onCancel: _clearQuickInputDraft,
-              secondaryActionLabel: localizations.taskEditorEntry,
-            ),
-            const SizedBox(height: 24),
-            TaskListSection(
-              title: localizations.activeTasksSectionTitle,
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () => context.go(RoutePaths.historyCompleted),
-                    child: Text(localizations.completedHistoryEntry),
-                  ),
-                  TextButton(
-                    onPressed: () => context.go(RoutePaths.historyDeleted),
-                    child: Text(localizations.deletedHistoryEntry),
-                  ),
-                ],
-              ),
-              children: <Widget>[tasksAsync.when(
-                data: _buildTaskContent,
-                loading: () => ScreenNoteLoadingView(
-                  message: localizations.taskLoadFailed,
-                ),
-                error: (Object _, StackTrace __) => ScreenNoteErrorView(
-                  message: localizations.taskLoadFailed,
-                  retryLabel: localizations.retryAction,
-                  onRetry: () => ref.invalidate(activeTasksProvider),
-                ),
-              )],
-            ),
-          ],
+      title: Text(
+        localizations.appTitle,
+        style: Theme.of(context).textTheme.displayMedium,
+      ),
+      actions: <Widget>[
+        IconButton(
+          onPressed: () => context.go(RoutePaths.settings),
+          icon: const Icon(Icons.settings_outlined),
+          tooltip: localizations.settingsEntry,
+        ),
+      ],
+      body: tasksAsync.when(
+        data: (List<Task> tasks) => _HomeContent(
+          tasks: tasks,
+          draftValue: _draftValue,
+          inlineError: _inlineError,
+          isSubmitting: _isSubmitting,
+          onSubmit: _openQuickAddSheet,
+          onOpenEditor: () => context.push(RoutePaths.taskNew),
+          onClearDraft: _clearQuickInputDraft,
+          onOpenCompletedHistory: () => context.go(RoutePaths.historyCompleted),
+          onOpenDeletedHistory: () => context.go(RoutePaths.historyDeleted),
+          onOpenTask: (Task task) => context.go(RoutePaths.taskDetailPath(task.id)),
+          onCompleteTask: _completeTask,
+          onDeleteTask: _deleteTask,
+        ),
+        loading: () => ScreenNoteScaffoldBodyState(
+          child: ScreenNoteLoadingView(message: localizations.homePageSubtitle),
+        ),
+        error: (Object _, StackTrace __) => ScreenNoteScaffoldBodyState(
+          child: ScreenNoteErrorView(
+            message: localizations.taskLoadFailed,
+            retryLabel: localizations.retryAction,
+            onRetry: () => ref.invalidate(activeTasksProvider),
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTaskContent(List<Task> tasks) {
-    final AppLocalizations localizations = AppLocalizations.of(context);
-    if (tasks.isEmpty) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
-        decoration: BoxDecoration(
-          color: ScreenNoteColors.surfaceMuted,
-          borderRadius: ScreenNoteRadii.card,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              localizations.emptyActiveTasksTitle,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(localizations.emptyActiveTasksBody),
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      children: tasks
-          .map(
-            (Task task) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: TaskCard(
-                task: task,
-                onTap: () => context.go(RoutePaths.taskDetailPath(task.id)),
-                onComplete: () => _completeTask(task.id),
-                onDelete: () => _deleteTask(task.id),
-              ),
-            ),
-          )
-          .toList(growable: false),
     );
   }
 
@@ -234,6 +164,206 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(localizations.taskDeleteSuccess)),
+    );
+  }
+}
+
+/// 首页主体内容。
+class _HomeContent extends StatelessWidget {
+  /// 创建首页主体内容。
+  const _HomeContent({
+    required this.tasks,
+    required this.draftValue,
+    required this.inlineError,
+    required this.isSubmitting,
+    required this.onSubmit,
+    required this.onOpenEditor,
+    required this.onClearDraft,
+    required this.onOpenCompletedHistory,
+    required this.onOpenDeletedHistory,
+    required this.onOpenTask,
+    required this.onCompleteTask,
+    required this.onDeleteTask,
+  });
+
+  /// 当前事项集合。
+  final List<Task> tasks;
+
+  /// 当前快速录入草稿。
+  final String? draftValue;
+
+  /// 内联错误。
+  final String? inlineError;
+
+  /// 是否正在提交。
+  final bool isSubmitting;
+
+  /// 提交动作。
+  final Future<void> Function(String value) onSubmit;
+
+  /// 打开完整编辑页。
+  final VoidCallback onOpenEditor;
+
+  /// 清理草稿。
+  final VoidCallback onClearDraft;
+
+  /// 打开最近完成页。
+  final VoidCallback onOpenCompletedHistory;
+
+  /// 打开最近删除页。
+  final VoidCallback onOpenDeletedHistory;
+
+  /// 打开任务详情。
+  final void Function(Task task) onOpenTask;
+
+  /// 完成任务。
+  final Future<void> Function(String taskId) onCompleteTask;
+
+  /// 删除任务。
+  final Future<void> Function(String taskId) onDeleteTask;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final List<Task> remainingTasks = tasks.length > 1
+        ? tasks.sublist(1)
+        : const <Task>[];
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(
+        ScreenNoteSpacing.pageHorizontal,
+        8,
+        ScreenNoteSpacing.pageHorizontal,
+        ScreenNoteSpacing.pageVertical,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            localizations.homePageSubtitle,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 6),
+          TextButton(
+            onPressed: () => context.go(RoutePaths.settings),
+            child: Text(localizations.settingsEntry),
+          ),
+          const SizedBox(height: 24),
+          QuickInputCard(
+            isSubmitting: isSubmitting,
+            initialValue: draftValue,
+            errorText: inlineError,
+            onSubmit: onSubmit,
+            onSecondaryAction: onOpenEditor,
+            onCancel: onClearDraft,
+            secondaryActionLabel: localizations.taskEditorEntry,
+          ),
+          const SizedBox(height: ScreenNoteSpacing.sectionGap),
+          if (tasks.isEmpty) ...<Widget>[
+            _HomeEmptyState(onOpenEditor: onOpenEditor),
+          ] else ...<Widget>[
+            TaskCard(
+              task: tasks.first,
+              onTap: () => onOpenTask(tasks.first),
+              onComplete: () => onCompleteTask(tasks.first.id),
+              onDelete: () => onDeleteTask(tasks.first.id),
+            ),
+            if (remainingTasks.isNotEmpty) ...<Widget>[
+              const SizedBox(height: ScreenNoteSpacing.sectionGap),
+              TaskListSection(
+                title: localizations.homeUpNextTitle,
+                trailing: Wrap(
+                  spacing: 4,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: onOpenCompletedHistory,
+                      child: Text(localizations.completedHistoryEntry),
+                    ),
+                    TextButton(
+                      onPressed: onOpenDeletedHistory,
+                      child: Text(localizations.deletedHistoryEntry),
+                    ),
+                  ],
+                ),
+                children: remainingTasks
+                    .map(
+                      (Task task) => TaskCard(
+                        task: task,
+                        variant: TaskCardVariant.compact,
+                        onTap: () => onOpenTask(task),
+                        onComplete: () => onCompleteTask(task.id),
+                        onDelete: () => onDeleteTask(task.id),
+                      ),
+                    )
+                    .toList(growable: false),
+              ),
+            ],
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// 首页空态。
+class _HomeEmptyState extends StatelessWidget {
+  /// 创建首页空态。
+  const _HomeEmptyState({required this.onOpenEditor});
+
+  /// 打开完整新建页。
+  final VoidCallback onOpenEditor;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TaskSurfacePanel(
+          backgroundColor: palette.surfaceMuted,
+          borderColor: palette.lineSoft,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                localizations.emptyActiveTasksTitle,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 10),
+              Text(localizations.emptyActiveTasksBody),
+              const SizedBox(height: 18),
+              OutlinedButton(
+                onPressed: onOpenEditor,
+                child: Text(localizations.taskEditorTitle),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        TextButton(
+          onPressed: () => context.go(RoutePaths.historyCompleted),
+          child: Text(localizations.completedHistoryEntry),
+        ),
+      ],
+    );
+  }
+}
+
+/// 为首页 loading / error 壳层补统一布局，避免直接把状态组件贴到 Scaffold 顶层。
+class ScreenNoteScaffoldBodyState extends StatelessWidget {
+  /// 创建骨架状态页。
+  const ScreenNoteScaffoldBodyState({super.key, required this.child});
+
+  /// 状态内容。
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(ScreenNoteSpacing.pageHorizontal),
+      child: Center(child: child),
     );
   }
 }

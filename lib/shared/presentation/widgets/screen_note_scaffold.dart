@@ -9,6 +9,7 @@ class ScreenNoteScaffold extends StatelessWidget {
     super.key,
     required this.title,
     required this.body,
+    this.actions,
     this.footer,
   });
 
@@ -17,6 +18,9 @@ class ScreenNoteScaffold extends StatelessWidget {
 
   /// 页面主体内容，占位阶段只承载简单可编译视图。
   final Widget body;
+
+  /// 页面右上角操作。
+  final List<Widget>? actions;
 
   /// 页面底部补充内容。
   final Widget? footer;
@@ -38,7 +42,7 @@ class ScreenNoteScaffold extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(title: title),
+        appBar: AppBar(title: title, actions: actions),
         body: SafeArea(
           child: Column(
             children: <Widget>[

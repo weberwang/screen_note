@@ -97,6 +97,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get activeTasksSectionTitle => '当前事项';
 
   @override
+  String get homeUpNextTitle => '接下来';
+
+  @override
   String get completedHistoryEntry => '最近完成';
 
   @override
@@ -154,6 +157,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskNoteLabel => '备注';
 
   @override
+  String get taskNoteEmpty => '添加备注';
+
+  @override
   String get taskDueLabel => '截止时间';
 
   @override
@@ -173,6 +179,27 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get taskReminderModePersistent => '强提醒';
+
+  @override
+  String get taskPreviewTitle => '锁屏预览';
+
+  @override
+  String get taskPreviewHideContentTitle => '隐藏正文';
+
+  @override
+  String get taskPreviewHideContentBody => '只显示安全摘要。';
+
+  @override
+  String get taskPreviewShowContentTitle => '显示正文';
+
+  @override
+  String get taskPreviewShowContentBody => '在应用内可见完整内容。';
+
+  @override
+  String get taskPreviewPrivateOnlyTitle => '仅你可见';
+
+  @override
+  String get taskPreviewPrivateOnlyBody => '外露场景默认隐藏正文。';
 
   @override
   String get taskSaveChanges => '保存修改';

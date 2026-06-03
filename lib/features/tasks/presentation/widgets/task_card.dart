@@ -7,17 +7,27 @@ import 'package:screen_note/shared/utils/date_time_formatter.dart';
 import 'package:screen_note/features/tasks/application/services/task_display_state_resolver.dart';
 import 'package:screen_note/features/tasks/domain/entities/task.dart';
 import 'package:screen_note/features/tasks/presentation/providers/task_feature_providers.dart';
-import 'package:screen_note/features/tasks/presentation/widgets/task_status_chip.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/task_surface_panel.dart';
 
-/// 当前事项卡片。
+/// 首页事项卡片布局类型。
+enum TaskCardVariant {
+  /// 首屏焦点事项卡。
+  focus,
+
+  /// 焦点卡下方的次级事项行。
+  compact,
+}
+
+/// 首页事项卡片。
 class TaskCard extends ConsumerWidget {
-  /// 创建当前事项卡片。
+  /// 创建首页事项卡片。
   const TaskCard({
     super.key,
     required this.task,
     required this.onTap,
     required this.onComplete,
     required this.onDelete,
+    this.variant = TaskCardVariant.focus,
   });
 
   /// 事项实体。
@@ -32,142 +42,215 @@ class TaskCard extends ConsumerWidget {
   /// 删除动作。
   final VoidCallback onDelete;
 
+  /// 当前布局类型。
+  final TaskCardVariant variant;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AppLocalizations localizations = AppLocalizations.of(context);
     final DateTime now = ref.watch(nowProvider)();
     final TaskDisplayStateResolver resolver = ref.watch(
       taskDisplayStateResolverProvider,
     );
     final TaskDisplayState state = resolver.resolve(task, now: now);
-    final List<TaskStatusChipKind> chips = resolver.resolveChips(task, now: now);
-    final bool isMasked = task.isPrivate;
-    final String title = isMasked ? localizations.privateMaskedTitle : task.title;
-    final String? dueText = task.dueAt == null
-        ? null
-        : ScreenNoteDateTimeFormatter.formatDateTime(task.dueAt!);
-    final String? bodyText = isMasked
-        ? localizations.taskPrivateMaskedBody
-        : task.note;
-    final Color accentColor = switch (state) {
-      TaskDisplayState.overdue => ScreenNoteColors.statusOverdue,
-      TaskDisplayState.completed => ScreenNoteColors.statusDone,
-      TaskDisplayState.deleted => ScreenNoteColors.inkSecondary,
-      _ => ScreenNoteColors.lineSoft,
+
+    return switch (variant) {
+      TaskCardVariant.focus => _FocusTaskCard(
+          task: task,
+          state: state,
+          onTap: onTap,
+          onComplete: onComplete,
+          onDelete: onDelete,
+        ),
+      TaskCardVariant.compact => _CompactTaskCard(
+          task: task,
+          state: state,
+          onTap: onTap,
+          onComplete: onComplete,
+          onDelete: onDelete,
+        ),
     };
+  }
+}
+
+/// 首页首屏焦点事项卡。
+class _FocusTaskCard extends StatelessWidget {
+  /// 创建焦点事项卡。
+  const _FocusTaskCard({
+    required this.task,
+    required this.state,
+    required this.onTap,
+    required this.onComplete,
+    required this.onDelete,
+  });
+
+  /// 当前事项。
+  final Task task;
+
+  /// 展示态。
+  final TaskDisplayState state;
+
+  /// 点击卡片动作。
+  final VoidCallback onTap;
+
+  /// 完成动作。
+  final VoidCallback onComplete;
+
+  /// 删除动作。
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    final String title = task.isPrivate
+        ? localizations.privateMaskedTitle
+        : task.title;
+    final String body = task.isPrivate
+        ? localizations.taskPrivateMaskedBody
+        : (task.note?.trim().isNotEmpty ?? false)
+            ? task.note!.trim()
+            : localizations.homePageSubtitle;
+    final String dueText = task.dueAt == null
+        ? localizations.taskDueEmpty
+        : ScreenNoteDateTimeFormatter.formatDateTime(task.dueAt!);
+    final String badgeLabel = _resolveBadgeLabel(localizations);
+    final IconData actionIcon = task.isPrivate
+        ? Icons.arrow_forward_rounded
+        : Icons.check_rounded;
 
     return Material(
-      color: ScreenNoteColors.surfaceCard,
-      borderRadius: ScreenNoteRadii.card,
+      color: Colors.transparent,
       child: InkWell(
         borderRadius: ScreenNoteRadii.card,
         onTap: onTap,
         child: Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
           decoration: BoxDecoration(
+            color: palette.surfaceFocusCard,
             borderRadius: ScreenNoteRadii.card,
-            border: Border.all(color: accentColor.withValues(alpha: 0.35)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: palette.shadowSoft,
+                blurRadius: 28,
+                offset: const Offset(0, 14),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                width: 80,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: accentColor,
-                  borderRadius: BorderRadius.circular(999),
-                ),
-              ),
-              const SizedBox(height: 16),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.14),
+                      borderRadius: ScreenNoteRadii.small,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        Icon(
+                          _resolveBadgeIcon(),
+                          size: 16,
+                          color: palette.inkOnFocus,
+                        ),
+                        const SizedBox(width: 6),
                         Text(
-                          title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: state == TaskDisplayState.completed
-                                ? ScreenNoteColors.inkSecondary
-                                : ScreenNoteColors.inkPrimary,
-                            decoration: state == TaskDisplayState.completed
-                                ? TextDecoration.lineThrough
-                                : null,
+                          badgeLabel,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: palette.inkOnFocus,
                           ),
                         ),
-                        if (dueText != null) ...<Widget>[
-                          const SizedBox(height: 8),
-                          Text(
-                            dueText,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: state == TaskDisplayState.overdue
-                                  ? ScreenNoteColors.statusOverdue
-                                  : ScreenNoteColors.inkSecondary,
-                            ),
-                          ),
-                        ],
                       ],
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  if (_resolvePrimaryBadgeKind(state, task) case final TaskStatusChipKind kind)
-                    _TaskCardPrimaryBadge(kind: kind),
+                  const Spacer(),
+                  PopupMenuButton<_TaskCardMenuAction>(
+                    color: palette.surfaceRaised,
+                    icon: Icon(
+                      Icons.more_horiz_rounded,
+                      color: palette.inkOnFocusSecondary,
+                    ),
+                    onSelected: (_TaskCardMenuAction action) {
+                      switch (action) {
+                        case _TaskCardMenuAction.open:
+                          onTap();
+                        case _TaskCardMenuAction.delete:
+                          onDelete();
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<_TaskCardMenuAction>>[
+                          PopupMenuItem<_TaskCardMenuAction>(
+                            value: _TaskCardMenuAction.open,
+                            child: Text(localizations.viewTaskDetailAction),
+                          ),
+                          PopupMenuItem<_TaskCardMenuAction>(
+                            value: _TaskCardMenuAction.delete,
+                            child: Text(localizations.taskDeleteAction),
+                          ),
+                        ],
+                  ),
                 ],
               ),
-              if (bodyText != null && bodyText.isNotEmpty) ...<Widget>[
-                const SizedBox(height: 12),
-                Text(
-                  bodyText,
-                  maxLines: isMasked ? 2 : 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: isMasked
-                        ? ScreenNoteColors.inkSecondary
-                        : ScreenNoteColors.inkPrimary,
-                  ),
+              const SizedBox(height: 24),
+              Text(
+                title,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: palette.inkOnFocus,
                 ),
-              ],
-              if (chips.isNotEmpty) ...<Widget>[
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: chips
-                      .map((TaskStatusChipKind chip) => TaskStatusChip(kind: chip))
-                      .toList(growable: false),
+              ),
+              const SizedBox(height: 14),
+              Container(
+                width: 42,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: palette.inkOnFocusSecondary,
+                  borderRadius: ScreenNoteRadii.circular,
                 ),
-              ],
-              const SizedBox(height: 12),
+              ),
+              const SizedBox(height: 18),
+              Text(
+                body,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: palette.inkOnFocusSecondary,
+                ),
+              ),
+              const SizedBox(height: 28),
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text(
-                      isMasked
-                          ? localizations.taskPrivateMaskedBody
-                          : localizations.homePageSubtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    child: _FocusMetaItem(
+                      icon: Icons.calendar_today_outlined,
+                      label: dueText,
                     ),
                   ),
-                  if (!isMasked) ...<Widget>[
-                    TextButton(
-                      onPressed: onDelete,
-                      child: Text(localizations.taskDeleteAction),
-                    ),
-                    const SizedBox(width: 4),
-                  ],
-                  TextButton(
-                    onPressed: isMasked ? onTap : onComplete,
-                    child: Text(
-                      isMasked
-                          ? localizations.viewTaskDetailAction
-                          : localizations.taskCompleteAction,
+                  const SizedBox(width: 16),
+                  InkWell(
+                    borderRadius: ScreenNoteRadii.circular,
+                    onTap: task.isPrivate ? onTap : onComplete,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: palette.accentTerracotta,
+                        borderRadius: ScreenNoteRadii.circular,
+                      ),
+                      alignment: Alignment.center,
+                      child: Icon(
+                        actionIcon,
+                        color: palette.inkOnFocus,
+                        size: 28,
+                      ),
                     ),
                   ),
                 ],
@@ -179,78 +262,230 @@ class TaskCard extends ConsumerWidget {
     );
   }
 
-  TaskStatusChipKind? _resolvePrimaryBadgeKind(
-    TaskDisplayState state,
-    Task task,
-  ) {
+  String _resolveBadgeLabel(AppLocalizations localizations) {
     if (task.isPrivate) {
-      return TaskStatusChipKind.privateItem;
-    }
-
-    if (state == TaskDisplayState.overdue) {
-      return TaskStatusChipKind.overdue;
+      return localizations.statusPrivate;
     }
 
     if (task.isPinned) {
-      return TaskStatusChipKind.pinned;
+      return localizations.statusPinned;
     }
 
-    if (state == TaskDisplayState.today) {
-      return TaskStatusChipKind.today;
+    if (state == TaskDisplayState.overdue) {
+      return localizations.statusOverdue;
     }
 
-    return null;
+    return localizations.statusToday;
+  }
+
+  IconData _resolveBadgeIcon() {
+    if (task.isPrivate) {
+      return Icons.visibility_off_outlined;
+    }
+
+    if (task.isPinned) {
+      return Icons.adjust_outlined;
+    }
+
+    if (state == TaskDisplayState.overdue) {
+      return Icons.alarm_outlined;
+    }
+
+    return Icons.track_changes_rounded;
   }
 }
 
-/// 列表卡片右上角的单一主状态标签，避免和底部标签区重复拥挤。
-class _TaskCardPrimaryBadge extends StatelessWidget {
-  const _TaskCardPrimaryBadge({required this.kind});
+/// 焦点事项卡底部信息项。
+class _FocusMetaItem extends StatelessWidget {
+  /// 创建焦点事项卡底部信息项。
+  const _FocusMetaItem({
+    required this.icon,
+    required this.label,
+  });
 
-  final TaskStatusChipKind kind;
+  /// 图标。
+  final IconData icon;
+
+  /// 文案。
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
+    return Row(
+      children: <Widget>[
+        Icon(icon, size: 18, color: palette.inkOnFocus),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: palette.inkOnFocus,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 首页焦点卡下方的次级事项行。
+class _CompactTaskCard extends StatelessWidget {
+  /// 创建次级事项行。
+  const _CompactTaskCard({
+    required this.task,
+    required this.state,
+    required this.onTap,
+    required this.onComplete,
+    required this.onDelete,
+  });
+
+  /// 当前事项。
+  final Task task;
+
+  /// 展示态。
+  final TaskDisplayState state;
+
+  /// 点击卡片动作。
+  final VoidCallback onTap;
+
+  /// 完成动作。
+  final VoidCallback onComplete;
+
+  /// 删除动作。
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-    final ({String label, Color color}) config = switch (kind) {
-      TaskStatusChipKind.pinned => (
-        label: localizations.statusPinned,
-        color: ScreenNoteColors.statusDone,
-      ),
-      TaskStatusChipKind.overdue => (
-        label: localizations.statusOverdue,
-        color: ScreenNoteColors.statusOverdue,
-      ),
-      TaskStatusChipKind.today => (
-        label: localizations.statusToday,
-        color: ScreenNoteColors.accentAmber,
-      ),
-      TaskStatusChipKind.privateItem => (
-        label: localizations.statusPrivate,
-        color: ScreenNoteColors.statusPrivate,
-      ),
-      TaskStatusChipKind.completed => (
-        label: localizations.statusCompleted,
-        color: ScreenNoteColors.statusDone,
-      ),
-      TaskStatusChipKind.deleted => (
-        label: localizations.statusDeleted,
-        color: ScreenNoteColors.inkSecondary,
-      ),
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    final String title = task.isPrivate
+        ? localizations.privateMaskedTitle
+        : task.title;
+    final String dueText = task.dueAt == null
+        ? localizations.taskDueEmpty
+        : ScreenNoteDateTimeFormatter.formatDateTime(task.dueAt!);
+    final Color leadingColor = switch (state) {
+      TaskDisplayState.overdue => palette.accentTerracotta,
+      TaskDisplayState.today => palette.accentAmber,
+      _ => palette.lineSoft,
     };
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: config.color.withValues(alpha: 0.12),
-        borderRadius: ScreenNoteRadii.small,
-      ),
-      child: Text(
-        config.label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: config.color,
+    return TaskSurfacePanel(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: InkWell(
+        borderRadius: ScreenNoteRadii.card,
+        onTap: onTap,
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: palette.surfaceMuted,
+                borderRadius: ScreenNoteRadii.circular,
+              ),
+              alignment: Alignment.center,
+              child: Icon(
+                _resolveLeadingIcon(),
+                color: leadingColor,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: palette.inkPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    dueText,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: state == TaskDisplayState.overdue
+                          ? palette.accentTerracotta
+                          : palette.inkSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            IconButton(
+              onPressed: task.isPrivate ? onTap : onComplete,
+              icon: Icon(
+                task.isPrivate
+                    ? Icons.arrow_forward_rounded
+                    : Icons.radio_button_unchecked_rounded,
+                color: palette.inkTertiary,
+              ),
+            ),
+            PopupMenuButton<_TaskCardMenuAction>(
+              color: palette.surfaceRaised,
+              icon: Icon(
+                Icons.more_horiz_rounded,
+                color: palette.inkTertiary,
+              ),
+              onSelected: (_TaskCardMenuAction action) {
+                switch (action) {
+                  case _TaskCardMenuAction.open:
+                    onTap();
+                  case _TaskCardMenuAction.delete:
+                    onDelete();
+                }
+              },
+              itemBuilder: (BuildContext context) =>
+                  <PopupMenuEntry<_TaskCardMenuAction>>[
+                    PopupMenuItem<_TaskCardMenuAction>(
+                      value: _TaskCardMenuAction.open,
+                      child: Text(localizations.viewTaskDetailAction),
+                    ),
+                    PopupMenuItem<_TaskCardMenuAction>(
+                      value: _TaskCardMenuAction.delete,
+                      child: Text(localizations.taskDeleteAction),
+                    ),
+                  ],
+            ),
+          ],
         ),
       ),
     );
   }
+
+  IconData _resolveLeadingIcon() {
+    if (task.isPrivate) {
+      return Icons.visibility_off_outlined;
+    }
+
+    if (task.isPinned) {
+      return Icons.push_pin_outlined;
+    }
+
+    if (state == TaskDisplayState.overdue) {
+      return Icons.schedule_rounded;
+    }
+
+    return Icons.description_outlined;
+  }
+}
+
+/// 事项卡片菜单动作。
+enum _TaskCardMenuAction {
+  /// 打开详情。
+  open,
+
+  /// 删除事项。
+  delete,
 }

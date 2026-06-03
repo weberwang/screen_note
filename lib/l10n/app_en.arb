@@ -116,6 +116,10 @@
   "@activeTasksSectionTitle": {
     "description": "Section title for active tasks on the home page."
   },
+  "homeUpNextTitle": "Up next",
+  "@homeUpNextTitle": {
+    "description": "Section title for secondary tasks shown below the focus card on the home page."
+  },
   "completedHistoryEntry": "Recently completed",
   "@completedHistoryEntry": {
     "description": "Entry label to open the completed history page."
@@ -192,6 +196,10 @@
   "@taskNoteLabel": {
     "description": "Label for the task note field."
   },
+  "taskNoteEmpty": "Add notes",
+  "@taskNoteEmpty": {
+    "description": "Placeholder value shown when the task note has not been filled yet."
+  },
   "taskDueLabel": "Due time",
   "@taskDueLabel": {
     "description": "Label for the task due time row."
@@ -219,6 +227,34 @@
   "taskReminderModePersistent": "Persistent reminder",
   "@taskReminderModePersistent": {
     "description": "Label for the persistent reminder mode."
+  },
+  "taskPreviewTitle": "Lock screen preview",
+  "@taskPreviewTitle": {
+    "description": "Title for the lock screen preview section on task detail and editor pages."
+  },
+  "taskPreviewHideContentTitle": "Hide content",
+  "@taskPreviewHideContentTitle": {
+    "description": "Title for the hidden-content option in the lock screen preview."
+  },
+  "taskPreviewHideContentBody": "Only show a safe summary.",
+  "@taskPreviewHideContentBody": {
+    "description": "Body for the hidden-content option in the lock screen preview."
+  },
+  "taskPreviewShowContentTitle": "Show content",
+  "@taskPreviewShowContentTitle": {
+    "description": "Title for the visible-content option in the lock screen preview."
+  },
+  "taskPreviewShowContentBody": "Keep the full content visible inside the app.",
+  "@taskPreviewShowContentBody": {
+    "description": "Body for the visible-content option in the lock screen preview."
+  },
+  "taskPreviewPrivateOnlyTitle": "Only visible to you",
+  "@taskPreviewPrivateOnlyTitle": {
+    "description": "Title for the privacy summary at the bottom of the lock screen preview."
+  },
+  "taskPreviewPrivateOnlyBody": "Outward surfaces hide the original text by default.",
+  "@taskPreviewPrivateOnlyBody": {
+    "description": "Body for the privacy summary at the bottom of the lock screen preview."
   },
   "taskSaveChanges": "Save changes",
   "@taskSaveChanges": {

@@ -9,16 +9,18 @@ import 'package:screen_note/shared/presentation/widgets/screen_note_error_view.d
 import 'package:screen_note/shared/presentation/widgets/screen_note_loading_view.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_scaffold.dart';
 import 'package:screen_note/shared/utils/date_time_formatter.dart';
-import 'package:screen_note/features/tasks/application/services/task_display_state_resolver.dart';
 import 'package:screen_note/features/tasks/application/use_cases/update_task_use_case.dart';
 import 'package:screen_note/features/tasks/domain/entities/task.dart';
-import 'package:screen_note/features/tasks/presentation/widgets/task_status_chip.dart';
 import 'package:screen_note/features/tasks/presentation/overlays/delete_task_dialog.dart';
 import 'package:screen_note/features/tasks/presentation/overlays/discard_changes_dialog.dart';
 import 'package:screen_note/features/tasks/presentation/overlays/due_time_sheet.dart';
 import 'package:screen_note/features/tasks/presentation/overlays/privacy_explain_sheet.dart';
 import 'package:screen_note/features/tasks/presentation/overlays/restore_task_dialog.dart';
 import 'package:screen_note/features/tasks/presentation/providers/task_feature_providers.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/task_action_footer.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/task_meta_row.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/task_privacy_preview_card.dart';
+import 'package:screen_note/features/tasks/presentation/widgets/task_surface_panel.dart';
 
 /// 事项详情页。
 class TaskDetailPage extends ConsumerStatefulWidget {
@@ -64,6 +66,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
         _hydrate(task);
         final bool isActive = task.status == TaskStatus.active;
         final NavigatorState navigator = Navigator.of(context);
+
         return PopScope(
           canPop: false,
           onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -79,31 +82,72 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
           child: ScreenNoteScaffold(
             title: Text(localizations.taskDetailTitle),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.all(ScreenNoteSpacing.pageHorizontal),
+              padding: const EdgeInsets.fromLTRB(
+                ScreenNoteSpacing.pageHorizontal,
+                8,
+                ScreenNoteSpacing.pageHorizontal,
+                ScreenNoteSpacing.pageVertical,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 16),
-                  _TaskDetailSummaryCard(task: task),
-                  const SizedBox(height: 16),
+                  _TaskSummaryHeader(task: task),
+                  const SizedBox(height: 20),
                   if (isActive) ...<Widget>[
-                    _buildEditableContent(localizations),
+                    _buildEditableFieldsPanel(localizations),
                     const SizedBox(height: 16),
-                    _buildActiveActions(localizations, task),
-                  ] else ...<Widget>[
-                    _TaskDetailMetaCard(
-                      dueText: _dueAt == null
-                          ? localizations.taskDueEmpty
-                          : ScreenNoteDateTimeFormatter.formatDateTime(_dueAt!),
-                      pinnedLabel: _isPinned
-                          ? localizations.valueEnabled
-                          : localizations.valueDisabled,
-                      privateLabel: _isPrivate
-                          ? localizations.valueEnabled
-                          : localizations.valueDisabled,
+                    _buildMetaPanel(localizations),
+                    const SizedBox(height: 16),
+                    TaskPrivacyPreviewCard(
+                      title: _titleController.text,
+                      isPrivate: _isPrivate,
+                      dueAt: _dueAt,
+                      reminderMode: task.reminderMode,
                     ),
+                    const SizedBox(height: 20),
+                    TaskActionFooter(
+                      primaryLabel: localizations.taskSaveChanges,
+                      onPrimaryPressed: () => _saveTask(task),
+                      primaryEnabled: _titleController.text.trim().isNotEmpty,
+                      secondaryActions: <Widget>[
+                        TextButton(
+                          onPressed: () => _completeTask(task.id),
+                          child: Text(localizations.taskCompleteAction),
+                        ),
+                        OutlinedButton(
+                          onPressed: () => _deleteTask(task.id),
+                          child: Text(localizations.taskDeleteAction),
+                        ),
+                      ],
+                    ),
+                  ] else ...<Widget>[
+                    _buildReadOnlyMetaPanel(localizations),
                     const SizedBox(height: 16),
-                    _buildReadOnlyActions(localizations, task),
+                    TaskPrivacyPreviewCard(
+                      title: task.title,
+                      isPrivate: task.isPrivate,
+                      dueAt: task.dueAt,
+                      reminderMode: task.reminderMode,
+                    ),
+                    const SizedBox(height: 20),
+                    TaskActionFooter(
+                      primaryLabel: localizations.taskRestoreItemAction,
+                      onPrimaryPressed: () => _restoreTask(task.id),
+                      secondaryActions: <Widget>[
+                        TextButton(
+                          onPressed: () => context.go(
+                            task.status == TaskStatus.completed
+                                ? RoutePaths.historyCompleted
+                                : RoutePaths.historyDeleted,
+                          ),
+                          child: Text(
+                            task.status == TaskStatus.completed
+                                ? localizations.historyCompletedTitle
+                                : localizations.historyDeletedTitle,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ],
               ),
@@ -113,7 +157,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
       },
       loading: () => ScreenNoteScaffold(
         title: Text(localizations.taskDetailTitle),
-        body: ScreenNoteLoadingView(message: localizations.taskLoadFailed),
+        body: ScreenNoteLoadingView(message: localizations.homePageSubtitle),
       ),
       error: (Object _, StackTrace __) => ScreenNoteScaffold(
         title: Text(localizations.taskDetailTitle),
@@ -139,6 +183,110 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
     _initialized = true;
   }
 
+  Widget _buildEditableFieldsPanel(AppLocalizations localizations) {
+    return TaskSurfacePanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextField(
+            controller: _titleController,
+            decoration: InputDecoration(labelText: localizations.taskTitleLabel),
+            onChanged: (_) => setState(() {}),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _noteController,
+            decoration: InputDecoration(labelText: localizations.taskNoteLabel),
+            minLines: 3,
+            maxLines: 6,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetaPanel(AppLocalizations localizations) {
+    return TaskSurfacePanel(
+      child: Column(
+        children: <Widget>[
+          TaskMetaRow(
+            icon: Icons.calendar_today_outlined,
+            label: localizations.taskDueLabel,
+            value: _dueAt == null
+                ? localizations.taskDueEmpty
+                : ScreenNoteDateTimeFormatter.formatDateTime(_dueAt!),
+            onTap: _pickDueTime,
+            trailing: const Icon(Icons.chevron_right_rounded),
+          ),
+          const SizedBox(height: 16),
+          TaskMetaRow(
+            icon: Icons.push_pin_outlined,
+            label: localizations.taskPinnedLabel,
+            value: _isPinned
+                ? localizations.valueEnabled
+                : localizations.valueDisabled,
+            trailing: Switch.adaptive(
+              value: _isPinned,
+              onChanged: (bool value) => setState(() => _isPinned = value),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TaskMetaRow(
+            icon: Icons.visibility_off_outlined,
+            label: localizations.taskPrivateLabel,
+            value: _isPrivate
+                ? localizations.valueEnabled
+                : localizations.valueDisabled,
+            trailing: Switch.adaptive(
+              value: _isPrivate,
+              onChanged: (bool value) => setState(() => _isPrivate = value),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: _showPrivacyExplain,
+              child: Text(localizations.privacyExplainTitle),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReadOnlyMetaPanel(AppLocalizations localizations) {
+    return TaskSurfacePanel(
+      child: Column(
+        children: <Widget>[
+          TaskMetaRow(
+            icon: Icons.calendar_today_outlined,
+            label: localizations.taskDueLabel,
+            value: _dueAt == null
+                ? localizations.taskDueEmpty
+                : ScreenNoteDateTimeFormatter.formatDateTime(_dueAt!),
+          ),
+          const SizedBox(height: 16),
+          TaskMetaRow(
+            icon: Icons.push_pin_outlined,
+            label: localizations.taskPinnedLabel,
+            value: _isPinned
+                ? localizations.valueEnabled
+                : localizations.valueDisabled,
+          ),
+          const SizedBox(height: 16),
+          TaskMetaRow(
+            icon: Icons.visibility_off_outlined,
+            label: localizations.taskPrivateLabel,
+            value: _isPrivate
+                ? localizations.valueEnabled
+                : localizations.valueDisabled,
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _pickDueTime() async {
     final DateTime? selectedTime = await showModalBottomSheet<DateTime?>(
       context: context,
@@ -156,136 +304,6 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
     await showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => const PrivacyExplainSheet(),
-    );
-  }
-
-  Widget _buildEditableContent(AppLocalizations localizations) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
-          decoration: BoxDecoration(
-            color: ScreenNoteColors.surfaceCard,
-            borderRadius: ScreenNoteRadii.card,
-            border: Border.all(color: ScreenNoteColors.lineSoft),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextField(
-                controller: _titleController,
-                decoration: InputDecoration(labelText: localizations.taskTitleLabel),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _noteController,
-                decoration: InputDecoration(labelText: localizations.taskNoteLabel),
-                minLines: 3,
-                maxLines: 6,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
-          decoration: BoxDecoration(
-            color: ScreenNoteColors.surfaceCard,
-            borderRadius: ScreenNoteRadii.card,
-            border: Border.all(color: ScreenNoteColors.lineSoft),
-          ),
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(localizations.taskDueLabel),
-                subtitle: Text(
-                  _dueAt == null
-                      ? localizations.taskDueEmpty
-                      : ScreenNoteDateTimeFormatter.formatDateTime(_dueAt!),
-                ),
-                onTap: _pickDueTime,
-              ),
-              SwitchListTile(
-                value: _isPinned,
-                contentPadding: EdgeInsets.zero,
-                title: Text(localizations.taskPinnedLabel),
-                onChanged: (bool value) => setState(() => _isPinned = value),
-              ),
-              SwitchListTile(
-                value: _isPrivate,
-                contentPadding: EdgeInsets.zero,
-                title: Text(localizations.taskPrivateLabel),
-                onChanged: (bool value) => setState(() => _isPrivate = value),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: _showPrivacyExplain,
-                  child: Text(localizations.privacyExplainTitle),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActiveActions(AppLocalizations localizations, Task task) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: FilledButton(
-                onPressed: () => _saveTask(task),
-                child: Text(localizations.taskSaveChanges),
-              ),
-            ),
-            const SizedBox(width: 12),
-            FilledButton.tonal(
-              onPressed: () => _deleteTask(task.id),
-              child: Text(localizations.taskDeleteAction),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton(
-            onPressed: () => _completeTask(task.id),
-            child: Text(localizations.taskCompleteAction),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildReadOnlyActions(AppLocalizations localizations, Task task) {
-    final String secondaryLabel = task.status == TaskStatus.completed
-        ? localizations.historyCompletedTitle
-        : localizations.historyDeletedTitle;
-    final String secondaryPath = task.status == TaskStatus.completed
-        ? RoutePaths.historyCompleted
-        : RoutePaths.historyDeleted;
-
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: FilledButton(
-            onPressed: () => _restoreTask(task.id),
-            child: Text(localizations.taskRestoreItemAction),
-          ),
-        ),
-        const SizedBox(width: 12),
-        FilledButton.tonal(
-          onPressed: () => context.go(secondaryPath),
-          child: Text(secondaryLabel),
-        ),
-      ],
     );
   }
 
@@ -368,7 +386,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
   Future<bool> _confirmDiscardIfNeeded() async {
     final AsyncValue<Task?> taskAsync = ref.read(taskProvider(widget.taskId));
     final Task? task = taskAsync.value;
-    if (task == null) {
+    if (task == null || task.status != TaskStatus.active) {
       return true;
     }
 
@@ -391,41 +409,67 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
   }
 }
 
-/// 详情页头部摘要卡，统一承载状态、标题和主说明。
-class _TaskDetailSummaryCard extends StatelessWidget {
-  const _TaskDetailSummaryCard({required this.task});
+/// 详情页头部摘要卡。
+class _TaskSummaryHeader extends StatelessWidget {
+  /// 创建详情页头部摘要卡。
+  const _TaskSummaryHeader({required this.task});
 
+  /// 当前事项。
   final Task task;
 
   @override
   Widget build(BuildContext context) {
-    final TaskStatusChipKind? statusKind = switch (task.status) {
-      TaskStatus.active => task.isPrivate ? TaskStatusChipKind.privateItem : null,
-      TaskStatus.completed => TaskStatusChipKind.completed,
-      TaskStatus.deleted => TaskStatusChipKind.deleted,
-    };
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    final String title = task.isPrivate
+        ? localizations.privateMaskedTitle
+        : task.title;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
-      decoration: BoxDecoration(
-        color: task.status == TaskStatus.deleted
-            ? ScreenNoteColors.surfaceMuted
-            : ScreenNoteColors.surfaceCard,
-        borderRadius: ScreenNoteRadii.card,
-        border: Border.all(color: ScreenNoteColors.lineSoft),
-      ),
+    return TaskSurfacePanel(
+      backgroundColor: palette.surfaceMuted,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (statusKind != null) ...<Widget>[
-            TaskStatusChip(kind: statusKind),
-            const SizedBox(height: 12),
-          ],
-          Text(task.title, style: Theme.of(context).textTheme.titleMedium),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: <Widget>[
+              _TaskHeaderChip(
+                icon: Icons.push_pin_outlined,
+                label: task.isPinned
+                    ? localizations.statusPinned
+                    : localizations.statusToday,
+              ),
+              if (task.isPrivate)
+                _TaskHeaderChip(
+                  icon: Icons.visibility_off_outlined,
+                  label: localizations.statusPrivate,
+                ),
+              if (task.status == TaskStatus.completed)
+                _TaskHeaderChip(
+                  icon: Icons.check_circle_outline_rounded,
+                  label: localizations.statusCompleted,
+                ),
+              if (task.status == TaskStatus.deleted)
+                _TaskHeaderChip(
+                  icon: Icons.delete_outline_rounded,
+                  label: localizations.statusDeleted,
+                ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
           if (task.note case final String note when note.trim().isNotEmpty) ...<Widget>[
-            const SizedBox(height: 8),
-            Text(note, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 10),
+            Text(
+              note,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: palette.inkSecondary,
+              ),
+            ),
           ],
         ],
       ),
@@ -433,65 +477,38 @@ class _TaskDetailSummaryCard extends StatelessWidget {
   }
 }
 
-/// 详情页只读信息卡，避免完成态和删除态仍暴露可编辑控件。
-class _TaskDetailMetaCard extends StatelessWidget {
-  const _TaskDetailMetaCard({
-    required this.dueText,
-    required this.pinnedLabel,
-    required this.privateLabel,
+/// 详情页头部标签。
+class _TaskHeaderChip extends StatelessWidget {
+  /// 创建详情页头部标签。
+  const _TaskHeaderChip({
+    required this.icon,
+    required this.label,
   });
 
-  final String dueText;
-  final String pinnedLabel;
-  final String privateLabel;
+  /// 图标。
+  final IconData icon;
+
+  /// 文案。
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
 
     return Container(
-      padding: const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: ScreenNoteColors.surfaceCard,
-        borderRadius: ScreenNoteRadii.card,
-        border: Border.all(color: ScreenNoteColors.lineSoft),
+        color: palette.surfaceRaised,
+        borderRadius: ScreenNoteRadii.small,
       ),
-      child: Column(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          _TaskDetailMetaRow(label: localizations.taskDueLabel, value: dueText),
-          const SizedBox(height: 12),
-          _TaskDetailMetaRow(
-            label: localizations.taskPinnedLabel,
-            value: pinnedLabel,
-          ),
-          const SizedBox(height: 12),
-          _TaskDetailMetaRow(
-            label: localizations.taskPrivateLabel,
-            value: privateLabel,
-          ),
+          Icon(icon, size: 16, color: palette.accentAmber),
+          const SizedBox(width: 6),
+          Text(label, style: Theme.of(context).textTheme.labelMedium),
         ],
       ),
-    );
-  }
-}
-
-/// 详情页信息行。
-class _TaskDetailMetaRow extends StatelessWidget {
-  const _TaskDetailMetaRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        ),
-        const SizedBox(width: 12),
-        Text(value, style: Theme.of(context).textTheme.bodyLarge),
-      ],
     );
   }
 }
