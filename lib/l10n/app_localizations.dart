@@ -302,6 +302,60 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsEntry;
 
+  /// Bottom navigation label for the task flow module.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get taskFlowTabLabel;
+
+  /// Bottom navigation label for the history center module.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get historyCenterTabLabel;
+
+  /// Bottom navigation label for the widget bridge module.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock Screen'**
+  String get widgetBridgeTabLabel;
+
+  /// Bottom navigation label for the settings center module.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsCenterTabLabel;
+
+  /// Badge label shown on initialization placeholder cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization baseline'**
+  String get bootstrapPlaceholderBadge;
+
+  /// Generic explanation used by placeholder screens during project initialization.
+  ///
+  /// In en, this message translates to:
+  /// **'This screen only ships routing, theming, provider wiring, and module boundaries during flutter-init. Real business behaviors are intentionally deferred to the flutter-dev stage.'**
+  String get bootstrapPlaceholderBody;
+
+  /// Metric label for active task preview readiness on the task flow placeholder page.
+  ///
+  /// In en, this message translates to:
+  /// **'Active preview'**
+  String get taskFlowActivePreviewLabel;
+
+  /// Metric label for completed history readiness on the task flow placeholder page.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed handoff'**
+  String get taskFlowCompletedPreviewLabel;
+
+  /// Metric label for deleted history readiness on the task flow placeholder page.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted restore'**
+  String get taskFlowDeletedPreviewLabel;
+
   /// Empty state title when there are no active tasks.
   ///
   /// In en, this message translates to:
@@ -734,6 +788,30 @@ abstract class AppLocalizations {
   /// **'Display preferences'**
   String get settingsDisplayGroupTitle;
 
+  /// Title for the notification preference row on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification access'**
+  String get notificationSettingsTitle;
+
+  /// Supporting copy for the notification preference row on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Only manages reminder availability and keeps the main task flow non-blocking.'**
+  String get notificationSettingsSubtitle;
+
+  /// Short status label shown when notification preference is enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get notificationSettingsEnabled;
+
+  /// Short status label shown when notification preference is disabled or downgraded.
+  ///
+  /// In en, this message translates to:
+  /// **'Degraded'**
+  String get notificationSettingsDisabled;
+
   /// Trailing action label shown on settings tiles.
   ///
   /// In en, this message translates to:
@@ -763,6 +841,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preview the lock screen baseline inside the app. Phase two does not connect to real widget refresh.'**
   String get widgetSettingsSubtitle;
+
+  /// Title for the widget display style selector on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock screen style'**
+  String get widgetStyleSelectorTitle;
 
   /// Title for the private preview toggle on the widget settings page.
   ///
@@ -853,6 +937,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fallback keeps the last safe content'**
   String get widgetFallbackPreviewTitle;
+
+  /// Title for the future sync placeholder entry on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync and backup'**
+  String get syncPlaceholderTitle;
+
+  /// Body copy for the future sync placeholder entry on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Future sync and recovery stay as a weak entry for now, without changing the local-first main flow.'**
+  String get syncPlaceholderBody;
+
+  /// Status label shown for the future sync placeholder entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enabled'**
+  String get syncPlaceholderStatus;
+
+  /// Title for the future premium entry card on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Member center'**
+  String get proEntryTitle;
+
+  /// Body copy for the future premium entry card on the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock future advanced capabilities without affecting the basic privacy baseline.'**
+  String get proEntryBody;
+
+  /// Future premium benefit label for an unlimited list.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited list'**
+  String get proBenefitUnlimitedList;
+
+  /// Future premium benefit label for custom reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom reminder'**
+  String get proBenefitCustomReminder;
+
+  /// Future premium benefit label for data backup.
+  ///
+  /// In en, this message translates to:
+  /// **'Data backup'**
+  String get proBenefitDataBackup;
 
   /// Sample title shown in single widget preview mode.
   ///

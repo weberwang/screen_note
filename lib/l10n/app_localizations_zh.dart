@@ -112,6 +112,34 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsEntry => '设置';
 
   @override
+  String get taskFlowTabLabel => '事项';
+
+  @override
+  String get historyCenterTabLabel => '历史';
+
+  @override
+  String get widgetBridgeTabLabel => '锁屏';
+
+  @override
+  String get settingsCenterTabLabel => '设置';
+
+  @override
+  String get bootstrapPlaceholderBadge => '初始化基线';
+
+  @override
+  String get bootstrapPlaceholderBody =>
+      '当前页面在 flutter-init 阶段只交付路由、主题、Provider 装配和模块边界，真实业务行为会在 flutter-dev 阶段继续实现。';
+
+  @override
+  String get taskFlowActivePreviewLabel => '活跃预览';
+
+  @override
+  String get taskFlowCompletedPreviewLabel => '完成回流';
+
+  @override
+  String get taskFlowDeletedPreviewLabel => '删除恢复';
+
+  @override
   String get emptyActiveTasksTitle => '现在还没有要记的事';
 
   @override
@@ -337,6 +365,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsDisplayGroupTitle => '展示偏好';
 
   @override
+  String get notificationSettingsTitle => '通知权限';
+
+  @override
+  String get notificationSettingsSubtitle => '只管理提醒可用性，任何降级都不能阻断主任务链路。';
+
+  @override
+  String get notificationSettingsEnabled => '已开启';
+
+  @override
+  String get notificationSettingsDisabled => '已降级';
+
+  @override
   String get settingsOpenAction => '进入';
 
   @override
@@ -350,6 +390,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get widgetSettingsSubtitle => '在 App 内预览锁屏展示基线，阶段二不接真实 Widget 刷新。';
+
+  @override
+  String get widgetStyleSelectorTitle => '锁屏显示样式';
 
   @override
   String get widgetPreviewMaskPrivateTitle => '预览里隐藏隐私事项正文';
@@ -405,6 +448,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get widgetFallbackPreviewTitle => '刷新失败时保留最后有效内容';
+
+  @override
+  String get syncPlaceholderTitle => '同步与备份';
+
+  @override
+  String get syncPlaceholderBody => '未来同步与恢复先保留为弱入口，不改变当前本地优先主链路。';
+
+  @override
+  String get syncPlaceholderStatus => '未开放';
+
+  @override
+  String get proEntryTitle => '会员中心';
+
+  @override
+  String get proEntryBody => '未来可解锁更多高级能力，但不影响基础隐私与展示能力。';
+
+  @override
+  String get proBenefitUnlimitedList => '无限清单';
+
+  @override
+  String get proBenefitCustomReminder => '自定义提醒';
+
+  @override
+  String get proBenefitDataBackup => '数据备份';
 
   @override
   String get widgetPreviewSingleTitle => '完成锁屏小组件验收';

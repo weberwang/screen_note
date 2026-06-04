@@ -32,10 +32,7 @@ class ScreenNoteScaffold extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: <Color>[
-            palette.backgroundTop,
-            palette.backgroundBottom,
-          ],
+          colors: <Color>[palette.backgroundTop, palette.backgroundBottom],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

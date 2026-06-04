@@ -136,6 +136,42 @@
   "@settingsEntry": {
     "description": "首页进入设置页的入口文案。"
   },
+  "taskFlowTabLabel": "事项",
+  "@taskFlowTabLabel": {
+    "description": "底部导航里事项主流程模块的标签。"
+  },
+  "historyCenterTabLabel": "历史",
+  "@historyCenterTabLabel": {
+    "description": "底部导航里历史中心模块的标签。"
+  },
+  "widgetBridgeTabLabel": "锁屏",
+  "@widgetBridgeTabLabel": {
+    "description": "底部导航里 Widget 桥接模块的标签。"
+  },
+  "settingsCenterTabLabel": "设置",
+  "@settingsCenterTabLabel": {
+    "description": "底部导航里设置中心模块的标签。"
+  },
+  "bootstrapPlaceholderBadge": "初始化基线",
+  "@bootstrapPlaceholderBadge": {
+    "description": "初始化占位卡片上方的边界标签。"
+  },
+  "bootstrapPlaceholderBody": "当前页面在 flutter-init 阶段只交付路由、主题、Provider 装配和模块边界，真实业务行为会在 flutter-dev 阶段继续实现。",
+  "@bootstrapPlaceholderBody": {
+    "description": "项目初始化阶段各占位页面通用的说明文案。"
+  },
+  "taskFlowActivePreviewLabel": "活跃预览",
+  "@taskFlowActivePreviewLabel": {
+    "description": "事项主流程占位页中的活跃事项预览指标标签。"
+  },
+  "taskFlowCompletedPreviewLabel": "完成回流",
+  "@taskFlowCompletedPreviewLabel": {
+    "description": "事项主流程占位页中的最近完成指标标签。"
+  },
+  "taskFlowDeletedPreviewLabel": "删除恢复",
+  "@taskFlowDeletedPreviewLabel": {
+    "description": "事项主流程占位页中的最近删除指标标签。"
+  },
   "emptyActiveTasksTitle": "现在还没有要记的事",
   "@emptyActiveTasksTitle": {
     "description": "当前事项为空时的标题。"
@@ -429,6 +465,22 @@
   "@settingsDisplayGroupTitle": {
     "description": "设置页展示分组标题。"
   },
+  "notificationSettingsTitle": "通知权限",
+  "@notificationSettingsTitle": {
+    "description": "设置页中通知偏好行标题。"
+  },
+  "notificationSettingsSubtitle": "只管理提醒可用性，任何降级都不能阻断主任务链路。",
+  "@notificationSettingsSubtitle": {
+    "description": "设置页中通知偏好行说明。"
+  },
+  "notificationSettingsEnabled": "已开启",
+  "@notificationSettingsEnabled": {
+    "description": "通知偏好开启时显示的状态文案。"
+  },
+  "notificationSettingsDisabled": "已降级",
+  "@notificationSettingsDisabled": {
+    "description": "通知偏好关闭或降级时显示的状态文案。"
+  },
   "settingsOpenAction": "进入",
   "@settingsOpenAction": {
     "description": "设置条目尾部进入动作文案。"
@@ -448,6 +500,10 @@
   "widgetSettingsSubtitle": "在 App 内预览锁屏展示基线，阶段二不接真实 Widget 刷新。",
   "@widgetSettingsSubtitle": {
     "description": "锁屏显示设置页辅助说明。"
+  },
+  "widgetStyleSelectorTitle": "锁屏显示样式",
+  "@widgetStyleSelectorTitle": {
+    "description": "设置页中锁屏展示样式选择器标题。"
   },
   "widgetPreviewMaskPrivateTitle": "预览里隐藏隐私事项正文",
   "@widgetPreviewMaskPrivateTitle": {
@@ -513,6 +569,38 @@
   "widgetFallbackPreviewTitle": "刷新失败时保留最后有效内容",
   "@widgetFallbackPreviewTitle": {
     "description": "用于展示 Widget fallback 行为的预览标题。"
+  },
+  "syncPlaceholderTitle": "同步与备份",
+  "@syncPlaceholderTitle": {
+    "description": "设置页中未来同步与备份入口标题。"
+  },
+  "syncPlaceholderBody": "未来同步与恢复先保留为弱入口，不改变当前本地优先主链路。",
+  "@syncPlaceholderBody": {
+    "description": "设置页中未来同步与备份入口说明。"
+  },
+  "syncPlaceholderStatus": "未开放",
+  "@syncPlaceholderStatus": {
+    "description": "未来同步与备份入口的状态文案。"
+  },
+  "proEntryTitle": "会员中心",
+  "@proEntryTitle": {
+    "description": "设置页中未来会员入口卡片标题。"
+  },
+  "proEntryBody": "未来可解锁更多高级能力，但不影响基础隐私与展示能力。",
+  "@proEntryBody": {
+    "description": "设置页中未来会员入口卡片说明。"
+  },
+  "proBenefitUnlimitedList": "无限清单",
+  "@proBenefitUnlimitedList": {
+    "description": "会员入口卡片中的权益标签：无限清单。"
+  },
+  "proBenefitCustomReminder": "自定义提醒",
+  "@proBenefitCustomReminder": {
+    "description": "会员入口卡片中的权益标签：自定义提醒。"
+  },
+  "proBenefitDataBackup": "数据备份",
+  "@proBenefitDataBackup": {
+    "description": "会员入口卡片中的权益标签：数据备份。"
   },
   "widgetPreviewSingleTitle": "完成锁屏小组件验收",
   "@widgetPreviewSingleTitle": {

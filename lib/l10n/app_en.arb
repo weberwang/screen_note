@@ -136,6 +136,42 @@
   "@settingsEntry": {
     "description": "Entry label used on the home page to open settings."
   },
+  "taskFlowTabLabel": "Tasks",
+  "@taskFlowTabLabel": {
+    "description": "Bottom navigation label for the task flow module."
+  },
+  "historyCenterTabLabel": "History",
+  "@historyCenterTabLabel": {
+    "description": "Bottom navigation label for the history center module."
+  },
+  "widgetBridgeTabLabel": "Lock Screen",
+  "@widgetBridgeTabLabel": {
+    "description": "Bottom navigation label for the widget bridge module."
+  },
+  "settingsCenterTabLabel": "Settings",
+  "@settingsCenterTabLabel": {
+    "description": "Bottom navigation label for the settings center module."
+  },
+  "bootstrapPlaceholderBadge": "Initialization baseline",
+  "@bootstrapPlaceholderBadge": {
+    "description": "Badge label shown on initialization placeholder cards."
+  },
+  "bootstrapPlaceholderBody": "This screen only ships routing, theming, provider wiring, and module boundaries during flutter-init. Real business behaviors are intentionally deferred to the flutter-dev stage.",
+  "@bootstrapPlaceholderBody": {
+    "description": "Generic explanation used by placeholder screens during project initialization."
+  },
+  "taskFlowActivePreviewLabel": "Active preview",
+  "@taskFlowActivePreviewLabel": {
+    "description": "Metric label for active task preview readiness on the task flow placeholder page."
+  },
+  "taskFlowCompletedPreviewLabel": "Completed handoff",
+  "@taskFlowCompletedPreviewLabel": {
+    "description": "Metric label for completed history readiness on the task flow placeholder page."
+  },
+  "taskFlowDeletedPreviewLabel": "Deleted restore",
+  "@taskFlowDeletedPreviewLabel": {
+    "description": "Metric label for deleted history readiness on the task flow placeholder page."
+  },
   "emptyActiveTasksTitle": "Nothing to remember yet",
   "@emptyActiveTasksTitle": {
     "description": "Empty state title when there are no active tasks."
@@ -429,6 +465,22 @@
   "@settingsDisplayGroupTitle": {
     "description": "Title for the display-related settings group."
   },
+  "notificationSettingsTitle": "Notification access",
+  "@notificationSettingsTitle": {
+    "description": "Title for the notification preference row on the settings page."
+  },
+  "notificationSettingsSubtitle": "Only manages reminder availability and keeps the main task flow non-blocking.",
+  "@notificationSettingsSubtitle": {
+    "description": "Supporting copy for the notification preference row on the settings page."
+  },
+  "notificationSettingsEnabled": "Enabled",
+  "@notificationSettingsEnabled": {
+    "description": "Short status label shown when notification preference is enabled."
+  },
+  "notificationSettingsDisabled": "Degraded",
+  "@notificationSettingsDisabled": {
+    "description": "Short status label shown when notification preference is disabled or downgraded."
+  },
   "settingsOpenAction": "Open",
   "@settingsOpenAction": {
     "description": "Trailing action label shown on settings tiles."
@@ -448,6 +500,10 @@
   "widgetSettingsSubtitle": "Preview the lock screen baseline inside the app. Phase two does not connect to real widget refresh.",
   "@widgetSettingsSubtitle": {
     "description": "Helper copy shown on the lock screen preview settings page."
+  },
+  "widgetStyleSelectorTitle": "Lock screen style",
+  "@widgetStyleSelectorTitle": {
+    "description": "Title for the widget display style selector on the settings page."
   },
   "widgetPreviewMaskPrivateTitle": "Hide private task body in previews",
   "@widgetPreviewMaskPrivateTitle": {
@@ -513,6 +569,38 @@
   "widgetFallbackPreviewTitle": "Fallback keeps the last safe content",
   "@widgetFallbackPreviewTitle": {
     "description": "Preview title used when demonstrating widget fallback behavior."
+  },
+  "syncPlaceholderTitle": "Sync and backup",
+  "@syncPlaceholderTitle": {
+    "description": "Title for the future sync placeholder entry on the settings page."
+  },
+  "syncPlaceholderBody": "Future sync and recovery stay as a weak entry for now, without changing the local-first main flow.",
+  "@syncPlaceholderBody": {
+    "description": "Body copy for the future sync placeholder entry on the settings page."
+  },
+  "syncPlaceholderStatus": "Not enabled",
+  "@syncPlaceholderStatus": {
+    "description": "Status label shown for the future sync placeholder entry."
+  },
+  "proEntryTitle": "Member center",
+  "@proEntryTitle": {
+    "description": "Title for the future premium entry card on the settings page."
+  },
+  "proEntryBody": "Unlock future advanced capabilities without affecting the basic privacy baseline.",
+  "@proEntryBody": {
+    "description": "Body copy for the future premium entry card on the settings page."
+  },
+  "proBenefitUnlimitedList": "Unlimited list",
+  "@proBenefitUnlimitedList": {
+    "description": "Future premium benefit label for an unlimited list."
+  },
+  "proBenefitCustomReminder": "Custom reminder",
+  "@proBenefitCustomReminder": {
+    "description": "Future premium benefit label for custom reminders."
+  },
+  "proBenefitDataBackup": "Data backup",
+  "@proBenefitDataBackup": {
+    "description": "Future premium benefit label for data backup."
   },
   "widgetPreviewSingleTitle": "Finish the lock screen widget review",
   "@widgetPreviewSingleTitle": {

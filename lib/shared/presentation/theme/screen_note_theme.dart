@@ -223,8 +223,7 @@ class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
       inkSecondary: inkSecondary ?? this.inkSecondary,
       inkTertiary: inkTertiary ?? this.inkTertiary,
       inkOnFocus: inkOnFocus ?? this.inkOnFocus,
-      inkOnFocusSecondary:
-          inkOnFocusSecondary ?? this.inkOnFocusSecondary,
+      inkOnFocusSecondary: inkOnFocusSecondary ?? this.inkOnFocusSecondary,
       lineSoft: lineSoft ?? this.lineSoft,
       lineStrong: lineStrong ?? this.lineStrong,
       accentAmber: accentAmber ?? this.accentAmber,
@@ -253,25 +252,38 @@ class ScreenNoteThemePalette extends ThemeExtension<ScreenNoteThemePalette> {
       surfaceCard: Color.lerp(surfaceCard, other.surfaceCard, t)!,
       surfaceMuted: Color.lerp(surfaceMuted, other.surfaceMuted, t)!,
       surfaceRaised: Color.lerp(surfaceRaised, other.surfaceRaised, t)!,
-      surfaceFocusCard:
-          Color.lerp(surfaceFocusCard, other.surfaceFocusCard, t)!,
+      surfaceFocusCard: Color.lerp(
+        surfaceFocusCard,
+        other.surfaceFocusCard,
+        t,
+      )!,
       inkPrimary: Color.lerp(inkPrimary, other.inkPrimary, t)!,
       inkSecondary: Color.lerp(inkSecondary, other.inkSecondary, t)!,
       inkTertiary: Color.lerp(inkTertiary, other.inkTertiary, t)!,
       inkOnFocus: Color.lerp(inkOnFocus, other.inkOnFocus, t)!,
-      inkOnFocusSecondary:
-          Color.lerp(inkOnFocusSecondary, other.inkOnFocusSecondary, t)!,
+      inkOnFocusSecondary: Color.lerp(
+        inkOnFocusSecondary,
+        other.inkOnFocusSecondary,
+        t,
+      )!,
       lineSoft: Color.lerp(lineSoft, other.lineSoft, t)!,
       lineStrong: Color.lerp(lineStrong, other.lineStrong, t)!,
       accentAmber: Color.lerp(accentAmber, other.accentAmber, t)!,
-      accentTerracotta:
-          Color.lerp(accentTerracotta, other.accentTerracotta, t)!,
+      accentTerracotta: Color.lerp(
+        accentTerracotta,
+        other.accentTerracotta,
+        t,
+      )!,
       statusOverdue: Color.lerp(statusOverdue, other.statusOverdue, t)!,
       statusDone: Color.lerp(statusDone, other.statusDone, t)!,
       statusPrivate: Color.lerp(statusPrivate, other.statusPrivate, t)!,
       actionBlue: Color.lerp(actionBlue, other.actionBlue, t)!,
       backgroundTop: Color.lerp(backgroundTop, other.backgroundTop, t)!,
-      backgroundBottom: Color.lerp(backgroundBottom, other.backgroundBottom, t)!,
+      backgroundBottom: Color.lerp(
+        backgroundBottom,
+        other.backgroundBottom,
+        t,
+      )!,
       shadowSoft: Color.lerp(shadowSoft, other.shadowSoft, t)!,
     );
   }
@@ -361,29 +373,35 @@ ThemeData _buildScreenNoteTheme({
   required Brightness brightness,
   required ScreenNoteThemePalette palette,
 }) {
-  const List<String> serifFallback = <String>['Georgia', 'Times New Roman', 'serif'];
-  final ColorScheme colorScheme = ColorScheme.fromSeed(
-    seedColor: palette.accentAmber,
-    brightness: brightness,
-  ).copyWith(
-    primary: palette.accentAmber,
-    onPrimary: palette.inkOnFocus,
-    secondary: palette.accentTerracotta,
-    onSecondary: palette.inkOnFocus,
-    surface: palette.surfaceCard,
-    onSurface: palette.inkPrimary,
-    outline: palette.lineSoft,
-    error: palette.statusOverdue,
-    onError: palette.inkOnFocus,
-  );
-
-  final TextTheme baseTextTheme = (brightness == Brightness.dark
-          ? Typography.whiteMountainView
-          : Typography.blackMountainView)
-      .apply(
-        bodyColor: palette.inkPrimary,
-        displayColor: palette.inkPrimary,
+  const List<String> serifFallback = <String>[
+    'Georgia',
+    'Times New Roman',
+    'serif',
+  ];
+  final ColorScheme colorScheme =
+      ColorScheme.fromSeed(
+        seedColor: palette.accentAmber,
+        brightness: brightness,
+      ).copyWith(
+        primary: palette.accentAmber,
+        onPrimary: palette.inkOnFocus,
+        secondary: palette.accentTerracotta,
+        onSecondary: palette.inkOnFocus,
+        surface: palette.surfaceCard,
+        onSurface: palette.inkPrimary,
+        outline: palette.lineSoft,
+        error: palette.statusOverdue,
+        onError: palette.inkOnFocus,
       );
+
+  final TextTheme baseTextTheme =
+      (brightness == Brightness.dark
+              ? Typography.whiteMountainView
+              : Typography.blackMountainView)
+          .apply(
+            bodyColor: palette.inkPrimary,
+            displayColor: palette.inkPrimary,
+          );
 
   final TextTheme textTheme = baseTextTheme.copyWith(
     displayLarge: baseTextTheme.displayLarge?.copyWith(
@@ -493,7 +511,9 @@ ThemeData _buildScreenNoteTheme({
         foregroundColor: palette.inkOnFocus,
         textStyle: textTheme.labelLarge,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        shape: const RoundedRectangleBorder(borderRadius: ScreenNoteRadii.small),
+        shape: const RoundedRectangleBorder(
+          borderRadius: ScreenNoteRadii.small,
+        ),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -507,7 +527,9 @@ ThemeData _buildScreenNoteTheme({
         foregroundColor: palette.inkPrimary,
         side: BorderSide(color: palette.lineSoft),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        shape: const RoundedRectangleBorder(borderRadius: ScreenNoteRadii.small),
+        shape: const RoundedRectangleBorder(
+          borderRadius: ScreenNoteRadii.small,
+        ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -533,10 +555,7 @@ ThemeData _buildScreenNoteTheme({
       hintStyle: textTheme.bodyMedium?.copyWith(color: palette.inkTertiary),
       labelStyle: textTheme.labelMedium,
     ),
-    dividerTheme: DividerThemeData(
-      color: palette.lineSoft,
-      thickness: 1,
-    ),
+    dividerTheme: DividerThemeData(color: palette.lineSoft, thickness: 1),
     chipTheme: ChipThemeData(
       backgroundColor: palette.surfaceMuted,
       side: BorderSide.none,

@@ -121,6 +121,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsEntry => 'Settings';
 
   @override
+  String get taskFlowTabLabel => 'Tasks';
+
+  @override
+  String get historyCenterTabLabel => 'History';
+
+  @override
+  String get widgetBridgeTabLabel => 'Lock Screen';
+
+  @override
+  String get settingsCenterTabLabel => 'Settings';
+
+  @override
+  String get bootstrapPlaceholderBadge => 'Initialization baseline';
+
+  @override
+  String get bootstrapPlaceholderBody =>
+      'This screen only ships routing, theming, provider wiring, and module boundaries during flutter-init. Real business behaviors are intentionally deferred to the flutter-dev stage.';
+
+  @override
+  String get taskFlowActivePreviewLabel => 'Active preview';
+
+  @override
+  String get taskFlowCompletedPreviewLabel => 'Completed handoff';
+
+  @override
+  String get taskFlowDeletedPreviewLabel => 'Deleted restore';
+
+  @override
   String get emptyActiveTasksTitle => 'Nothing to remember yet';
 
   @override
@@ -358,6 +386,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsDisplayGroupTitle => 'Display preferences';
 
   @override
+  String get notificationSettingsTitle => 'Notification access';
+
+  @override
+  String get notificationSettingsSubtitle =>
+      'Only manages reminder availability and keeps the main task flow non-blocking.';
+
+  @override
+  String get notificationSettingsEnabled => 'Enabled';
+
+  @override
+  String get notificationSettingsDisabled => 'Degraded';
+
+  @override
   String get settingsOpenAction => 'Open';
 
   @override
@@ -373,6 +414,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get widgetSettingsSubtitle =>
       'Preview the lock screen baseline inside the app. Phase two does not connect to real widget refresh.';
+
+  @override
+  String get widgetStyleSelectorTitle => 'Lock screen style';
 
   @override
   String get widgetPreviewMaskPrivateTitle =>
@@ -433,6 +477,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get widgetFallbackPreviewTitle =>
       'Fallback keeps the last safe content';
+
+  @override
+  String get syncPlaceholderTitle => 'Sync and backup';
+
+  @override
+  String get syncPlaceholderBody =>
+      'Future sync and recovery stay as a weak entry for now, without changing the local-first main flow.';
+
+  @override
+  String get syncPlaceholderStatus => 'Not enabled';
+
+  @override
+  String get proEntryTitle => 'Member center';
+
+  @override
+  String get proEntryBody =>
+      'Unlock future advanced capabilities without affecting the basic privacy baseline.';
+
+  @override
+  String get proBenefitUnlimitedList => 'Unlimited list';
+
+  @override
+  String get proBenefitCustomReminder => 'Custom reminder';
+
+  @override
+  String get proBenefitDataBackup => 'Data backup';
 
   @override
   String get widgetPreviewSingleTitle => 'Finish the lock screen widget review';
