@@ -90,14 +90,20 @@
 ### visual_evidence
 
 - 已生成共享预览：
-  - `docs/rd/home-overview.png`
-  - `docs/rd/recent-completed.png`
-- 缺失但不阻塞模块冻结的页面预览：
-  - `task-editor`
+  - `docs/rd/home-page-light-refresh-v2.png`
+  - `docs/rd/task-editor-refresh-v1.png`
+  - `docs/rd/settings-center-refresh-v1.png`
+- 已同步到模块目录的页面证据：
+  - `docs/rd/modules/task-flow/home-page-light-refresh-v2.png`
+  - `docs/rd/modules/task-flow/task-editor-refresh-v1.png`
+  - `docs/rd/modules/settings-center/settings-center-refresh-v1.png`
+- 证据说明：
+  - `home-page-light-refresh-v2.png` 用于锁定共享方向与首页层级基准。
+  - `task-editor-refresh-v1.png` 与 `settings-center-refresh-v1.png` 属于方向锁定后的补充页面证据，用于完成全局组件、表单分组和设置分组的冻结，而不是新增竞争方向。
+- 仍缺少但不阻塞当前全局冻结的页面预览：
+  - `recent-completed`
   - `recent-deleted`
-  - `settings`
-- 缺失原因：图像端点在串行重试中出现超时；当前共享文本包与已有预览已足以支持冻结与模块准备。
-- 共享参考基准：`home-overview.png`
+- 共享参考基准：`home-page-light-refresh-v2.png`
 - 证据模式：`light-mode`
 
 ### acceptance_gates
@@ -109,13 +115,13 @@
 ## freeze_readiness
 
 - `shared_freeze_ready`
-- 说明：已有首页与历史页共享视觉证据，文本归一化已覆盖层级、CTA、状态和组件边界，足以进入全局冻结。
+- 说明：首页、历史、编辑、设置四类共享页面证据已补齐，文本归一化已覆盖层级、CTA、状态和组件边界，现已足以支撑全局冻结并作为后续模块实现的共享视觉基准。
 
 ## missing_items
 
-- `task-editor`、`recent-deleted`、`settings` 页面静态预览未全部生成
-- 这些缺口已记录为补充证据，不阻塞当前 `--auto` 模块准备
+- `recent-deleted` 页面静态预览尚未补齐
+- 当前缺口已降级为补充证据，不阻塞既有全局冻结、模块冻结与 `flutter-init` 前准备
 
 ## next_skill
 
-- `design-preview-to-global-guidelines`
+- `flutter-init`
