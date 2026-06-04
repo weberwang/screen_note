@@ -1,0 +1,76 @@
+artifact_type: theme_freeze
+theme_id: light
+platform_baseline: ios_hig
+color_roles:
+  primary: "#1F5EFF"
+  on_primary: "#FFFFFF"
+  secondary: "#E7F0FF"
+  on_secondary: "#183A8F"
+  accent: "#F46A5A"
+surface_roles:
+  background: "#F7F4EE"
+  surface: "#FFFDFC"
+  surface_subtle: "#F2EEE6"
+  surface_elevated: "#FFFFFF"
+  surface_inverse: "#171A24"
+text_roles:
+  text_primary: "#181C24"
+  text_secondary: "#616A79"
+  text_tertiary: "#8E97A6"
+  text_inverse: "#FFFFFF"
+icon_roles:
+  icon_primary: "#202432"
+  icon_secondary: "#6E7788"
+  icon_inverse: "#FFFFFF"
+border_roles:
+  border_subtle: "#E6E0D6"
+  border_strong: "#C8C0B2"
+  divider: "#ECE6DC"
+status_roles:
+  success: "#5D8A58"
+  on_success: "#FFFFFF"
+  warning: "#D88B31"
+  on_warning: "#FFFFFF"
+  error: "#D9534F"
+  on_error: "#FFFFFF"
+  info: "#4D83E6"
+  on_info: "#FFFFFF"
+shadow_or_overlay_roles:
+  shadow_color: "rgba(24, 28, 36, 0.08)"
+  overlay_scrim: "rgba(23, 26, 36, 0.32)"
+  focus_ring: "#8AAEFF"
+component_state_roles:
+  primary_button:
+    background_default: "#1F5EFF"
+    background_pressed: "#1849C8"
+    background_disabled: "#B9C9F6"
+    text_default: "#FFFFFF"
+    text_disabled: "#F6F8FF"
+  secondary_button:
+    background_default: "#E7F0FF"
+    background_pressed: "#D6E5FF"
+    background_disabled: "#F1F4FA"
+    text_default: "#183A8F"
+    text_disabled: "#8E97A6"
+  input_field:
+    background_default: "#FFFFFF"
+    background_disabled: "#F2EEE6"
+    border_default: "#E6E0D6"
+    border_focus: "#8AAEFF"
+    text_default: "#181C24"
+    placeholder: "#8E97A6"
+  card:
+    background_default: "#FFFDFC"
+    background_elevated: "#FFFFFF"
+    border_default: "#ECE6DC"
+    border_selected: "#1F5EFF"
+contrast_rules:
+  body_text_on_background: ">= 4.5:1"
+  body_text_on_surface: ">= 4.5:1"
+  text_on_primary: ">= 4.5:1"
+  cta_text_on_primary: ">= 4.5:1"
+  essential_iconography: ">= 3:1"
+forbidden_overrides:
+  - "Do not replace semantic primary with ad-hoc gradients."
+  - "Do not turn overdue emphasis into the same contrast band as secondary metadata."
+  - "Do not darken text until hierarchy between primary and tertiary labels collapses."
