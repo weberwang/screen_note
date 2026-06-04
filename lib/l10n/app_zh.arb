@@ -1,0 +1,573 @@
+{
+  "@@locale": "zh",
+  "appTitle": "屏幕便签",
+  "@appTitle": {
+    "description": "应用标题，用于应用外壳与首页展示。"
+  },
+  "homePageTitle": "今天别忘了",
+  "@homePageTitle": {
+    "description": "阶段一首页主标题。"
+  },
+  "homePageSubtitle": "把不能忘的小事放到一直看得见的地方。",
+  "@homePageSubtitle": {
+    "description": "阶段一首页副标题。"
+  },
+  "quickInputPlaceholder": "写下不能忘的小事",
+  "@quickInputPlaceholder": {
+    "description": "首页快速输入卡占位文案。"
+  },
+  "quickInputSubmit": "添加",
+  "@quickInputSubmit": {
+    "description": "首页快速创建事项的主按钮文案。"
+  },
+  "quickInputHelperText": "默认先保留标题，截止时间、置顶和隐私作为轻量补充。",
+  "@quickInputHelperText": {
+    "description": "首页快速输入卡的辅助说明文案。"
+  },
+  "quickAddPageTitle": "快速添加",
+  "@quickAddPageTitle": {
+    "description": "阶段四快速添加兜底页标题。"
+  },
+  "quickAddPageBody": "这里接住系统入口失败后的草稿，你可以补一句话内容并继续创建，不需要重新开始。",
+  "@quickAddPageBody": {
+    "description": "阶段四快速添加兜底页顶部说明文案。"
+  },
+  "quickAddSheetBody": "首页轻入口只保留一句话输入和少量默认值，方便你在 3 秒内完成创建。",
+  "@quickAddSheetBody": {
+    "description": "首页快速添加底部弹层的顶部说明文案。"
+  },
+  "quickAddInputLabel": "事项内容",
+  "@quickAddInputLabel": {
+    "description": "快速添加统一输入区域的字段标签。"
+  },
+  "quickAddDefaultPinnedTitle": "默认置顶",
+  "@quickAddDefaultPinnedTitle": {
+    "description": "快速添加默认置顶配置行标题。"
+  },
+  "quickAddDefaultPrivacyTitle": "默认隐私",
+  "@quickAddDefaultPrivacyTitle": {
+    "description": "快速添加默认隐私配置行标题。"
+  },
+  "quickAddDefaultEnableAction": "开启",
+  "@quickAddDefaultEnableAction": {
+    "description": "快速添加默认值行里的开启动作文案。"
+  },
+  "quickAddDefaultDisableAction": "关闭",
+  "@quickAddDefaultDisableAction": {
+    "description": "快速添加默认值行里的关闭动作文案。"
+  },
+  "quickAddNonBlockingTitle": "入口失败也不拦主链路",
+  "@quickAddNonBlockingTitle": {
+    "description": "快速添加非阻断提示标题。"
+  },
+  "quickAddNonBlockingBody": "如果系统入口没有直接完成创建，我们会先把内容留在应用层，回到 App 后继续补全。",
+  "@quickAddNonBlockingBody": {
+    "description": "快速添加非阻断提示正文。"
+  },
+  "quickAddSheetHintBody": "这里不会展开完整编辑流程，失败时也会把草稿先留住，方便你稍后继续。",
+  "@quickAddSheetHintBody": {
+    "description": "首页快速添加底部弹层里的非阻断提示正文。"
+  },
+  "quickAddDraftRestoredBody": "刚才的草稿已经恢复到这里，你可以直接继续补完并提交。",
+  "@quickAddDraftRestoredBody": {
+    "description": "快速添加页在恢复草稿后显示的提示正文。"
+  },
+  "quickAddSourceHome": "来自首页",
+  "@quickAddSourceHome": {
+    "description": "快速添加来源标签，表示来自首页轻入口。"
+  },
+  "quickAddSourceAppIntent": "来自 App Intent",
+  "@quickAddSourceAppIntent": {
+    "description": "快速添加来源标签，表示来自 App Intent。"
+  },
+  "quickAddSourceControlCenter": "来自控制中心",
+  "@quickAddSourceControlCenter": {
+    "description": "快速添加来源标签，表示来自控制中心。"
+  },
+  "quickAddSourceLockScreen": "来自锁屏入口",
+  "@quickAddSourceLockScreen": {
+    "description": "快速添加来源标签，表示来自锁屏入口。"
+  },
+  "quickAddSourceActionButton": "来自 Action Button",
+  "@quickAddSourceActionButton": {
+    "description": "快速添加来源标签，表示来自 Action Button。"
+  },
+  "quickAddSourceDeepLink": "来自深链回流",
+  "@quickAddSourceDeepLink": {
+    "description": "快速添加来源标签，表示来自深链或外部回流。"
+  },
+  "quickAddSourceFallback": "来自失败兜底",
+  "@quickAddSourceFallback": {
+    "description": "快速添加来源标签，表示来自统一失败兜底链路。"
+  },
+  "taskTitleRequired": "先写下一件重要的事。",
+  "@taskTitleRequired": {
+    "description": "事项标题为空时的校验提示。"
+  },
+  "taskCreateSuccess": "已放到锁屏提醒。",
+  "@taskCreateSuccess": {
+    "description": "创建事项成功后的反馈文案。"
+  },
+  "taskCreateFailed": "暂时还没保存成功，但输入内容还在。",
+  "@taskCreateFailed": {
+    "description": "快速创建失败后的反馈文案。"
+  },
+  "activeTasksSectionTitle": "当前事项",
+  "@activeTasksSectionTitle": {
+    "description": "首页当前事项分组标题。"
+  },
+  "homeUpNextTitle": "接下来",
+  "@homeUpNextTitle": {
+    "description": "首页焦点事项下方的次级事项分组标题。"
+  },
+  "completedHistoryEntry": "最近完成",
+  "@completedHistoryEntry": {
+    "description": "进入最近完成页的入口文案。"
+  },
+  "deletedHistoryEntry": "最近删除",
+  "@deletedHistoryEntry": {
+    "description": "进入最近删除页的入口文案。"
+  },
+  "taskEditorEntry": "完整新建",
+  "@taskEditorEntry": {
+    "description": "首页进入完整新建页的入口文案。"
+  },
+  "settingsEntry": "设置",
+  "@settingsEntry": {
+    "description": "首页进入设置页的入口文案。"
+  },
+  "emptyActiveTasksTitle": "现在还没有要记的事",
+  "@emptyActiveTasksTitle": {
+    "description": "当前事项为空时的标题。"
+  },
+  "emptyActiveTasksBody": "写下一件事，它就会稳定留在这里。",
+  "@emptyActiveTasksBody": {
+    "description": "当前事项为空时的说明。"
+  },
+  "emptyCompletedTasksTitle": "还没有最近完成",
+  "@emptyCompletedTasksTitle": {
+    "description": "最近完成为空时的标题。"
+  },
+  "emptyCompletedTasksBody": "完成过的事项会留在这里，方便之后追溯。",
+  "@emptyCompletedTasksBody": {
+    "description": "最近完成为空时的说明。"
+  },
+  "emptyDeletedTasksTitle": "最近删除还是空的",
+  "@emptyDeletedTasksTitle": {
+    "description": "最近删除为空时的标题。"
+  },
+  "emptyDeletedTasksBody": "删除的事项会在这里保留 30 天，方便你恢复。",
+  "@emptyDeletedTasksBody": {
+    "description": "最近删除为空时的说明。"
+  },
+  "deletedRetentionHint": "删除事项会在这里保留 30 天。",
+  "@deletedRetentionHint": {
+    "description": "最近删除列表顶部的保留说明。"
+  },
+  "historyCompletedTitle": "最近完成",
+  "@historyCompletedTitle": {
+    "description": "最近完成页标题。"
+  },
+  "historyDeletedTitle": "最近删除",
+  "@historyDeletedTitle": {
+    "description": "最近删除页标题。"
+  },
+  "taskDetailTitle": "事项详情",
+  "@taskDetailTitle": {
+    "description": "事项详情页标题。"
+  },
+  "taskEditorTitle": "新建事项",
+  "@taskEditorTitle": {
+    "description": "完整新建页标题。"
+  },
+  "taskEditorHelperText": "完整新建页负责标题、备注、时间、置顶、隐私与提醒模式的统一录入。",
+  "@taskEditorHelperText": {
+    "description": "完整新建页的辅助说明文案。"
+  },
+  "taskDetailMissing": "这条事项暂时不可用。",
+  "@taskDetailMissing": {
+    "description": "事项详情加载不到数据时的占位说明。"
+  },
+  "taskTitleLabel": "标题",
+  "@taskTitleLabel": {
+    "description": "事项标题输入框标签。"
+  },
+  "taskNoteLabel": "备注",
+  "@taskNoteLabel": {
+    "description": "事项备注输入框标签。"
+  },
+  "taskNoteEmpty": "添加备注",
+  "@taskNoteEmpty": {
+    "description": "事项备注尚未填写时的占位值文案。"
+  },
+  "taskDueLabel": "截止时间",
+  "@taskDueLabel": {
+    "description": "事项截止时间行标签。"
+  },
+  "taskDueEmpty": "还没设置截止时间",
+  "@taskDueEmpty": {
+    "description": "事项没有截止时间时的占位文案。"
+  },
+  "taskPinnedLabel": "置顶这条事项",
+  "@taskPinnedLabel": {
+    "description": "事项置顶开关标签。"
+  },
+  "taskPrivateLabel": "在锁屏隐藏正文",
+  "@taskPrivateLabel": {
+    "description": "事项隐私开关标签。"
+  },
+  "taskReminderModeLabel": "提醒模式",
+  "@taskReminderModeLabel": {
+    "description": "事项提醒模式行标签。"
+  },
+  "taskReminderModeNormal": "普通提醒",
+  "@taskReminderModeNormal": {
+    "description": "普通提醒模式文案。"
+  },
+  "taskReminderModePersistent": "强提醒",
+  "@taskReminderModePersistent": {
+    "description": "强提醒模式文案。"
+  },
+  "taskPreviewTitle": "锁屏预览",
+  "@taskPreviewTitle": {
+    "description": "任务详情与编辑页中的锁屏预览区域标题。"
+  },
+  "taskPreviewHideContentTitle": "隐藏正文",
+  "@taskPreviewHideContentTitle": {
+    "description": "锁屏预览里隐藏正文方案的标题。"
+  },
+  "taskPreviewHideContentBody": "只显示安全摘要。",
+  "@taskPreviewHideContentBody": {
+    "description": "锁屏预览里隐藏正文方案的说明。"
+  },
+  "taskPreviewShowContentTitle": "显示正文",
+  "@taskPreviewShowContentTitle": {
+    "description": "锁屏预览里显示正文方案的标题。"
+  },
+  "taskPreviewShowContentBody": "在应用内可见完整内容。",
+  "@taskPreviewShowContentBody": {
+    "description": "锁屏预览里显示正文方案的说明。"
+  },
+  "taskPreviewPrivateOnlyTitle": "仅你可见",
+  "@taskPreviewPrivateOnlyTitle": {
+    "description": "锁屏预览底部隐私总结标题。"
+  },
+  "taskPreviewPrivateOnlyBody": "外露场景默认隐藏正文。",
+  "@taskPreviewPrivateOnlyBody": {
+    "description": "锁屏预览底部隐私总结说明。"
+  },
+  "taskSaveChanges": "保存修改",
+  "@taskSaveChanges": {
+    "description": "保存事项详情修改的主按钮文案。"
+  },
+  "taskSaveAction": "保存事项",
+  "@taskSaveAction": {
+    "description": "完整新建页保存事项的主按钮文案。"
+  },
+  "taskCompleteAction": "完成",
+  "@taskCompleteAction": {
+    "description": "完成事项动作文案。"
+  },
+  "taskDeleteAction": "删除",
+  "@taskDeleteAction": {
+    "description": "软删除事项动作文案。"
+  },
+  "taskRestoreAction": "恢复",
+  "@taskRestoreAction": {
+    "description": "恢复事项动作文案。"
+  },
+  "taskRestoreItemAction": "恢复事项",
+  "@taskRestoreItemAction": {
+    "description": "详情页和最近删除卡片使用的恢复事项动作文案。"
+  },
+  "valueEnabled": "开启",
+  "@valueEnabled": {
+    "description": "详情页中布尔开关开启时的值文案。"
+  },
+  "valueDisabled": "关闭",
+  "@valueDisabled": {
+    "description": "详情页中布尔开关关闭时的值文案。"
+  },
+  "taskRestoreSuccess": "已恢复到当前事项。",
+  "@taskRestoreSuccess": {
+    "description": "恢复事项成功后的反馈文案。"
+  },
+  "taskDeleteSuccess": "已删除，可在最近删除里恢复。",
+  "@taskDeleteSuccess": {
+    "description": "删除事项成功后的反馈文案。"
+  },
+  "taskCompleteSuccess": "已移到最近完成。",
+  "@taskCompleteSuccess": {
+    "description": "完成事项成功后的反馈文案。"
+  },
+  "taskUpdateSuccess": "修改已经保存。",
+  "@taskUpdateSuccess": {
+    "description": "保存事项详情成功后的反馈文案。"
+  },
+  "taskLoadFailed": "暂时无法加载事项列表。",
+  "@taskLoadFailed": {
+    "description": "事项列表加载失败时的通用错误文案。"
+  },
+  "taskHistoryLoadFailed": "暂时无法加载历史记录。",
+  "@taskHistoryLoadFailed": {
+    "description": "历史列表加载失败时的通用错误文案。"
+  },
+  "retryAction": "重试",
+  "@retryAction": {
+    "description": "通用重试按钮文案。"
+  },
+  "statusPinned": "置顶",
+  "@statusPinned": {
+    "description": "事项置顶标签文案。"
+  },
+  "statusOverdue": "过期",
+  "@statusOverdue": {
+    "description": "事项过期标签文案。"
+  },
+  "statusToday": "今天",
+  "@statusToday": {
+    "description": "事项今天截止标签文案。"
+  },
+  "statusPrivate": "隐私",
+  "@statusPrivate": {
+    "description": "事项隐私标签文案。"
+  },
+  "statusCompleted": "已完成",
+  "@statusCompleted": {
+    "description": "事项完成标签文案。"
+  },
+  "statusDeleted": "已删除",
+  "@statusDeleted": {
+    "description": "事项删除标签文案。"
+  },
+  "privateMaskedTitle": "隐私事项",
+  "@privateMaskedTitle": {
+    "description": "需要隐藏正文时的占位标题。"
+  },
+  "taskPrivateMaskedBody": "隐私事项内容已隐藏，仅在详情页内可见。",
+  "@taskPrivateMaskedBody": {
+    "description": "隐私事项在列表卡片中的正文遮罩说明。"
+  },
+  "viewTaskDetailAction": "查看详情",
+  "@viewTaskDetailAction": {
+    "description": "列表态进入事项详情页的动作文案。"
+  },
+  "viewOriginalRecordAction": "查看原记录",
+  "@viewOriginalRecordAction": {
+    "description": "最近完成卡片进入原事项记录的动作文案。"
+  },
+  "remainingDaysLabel": "{days, plural, =0{今天到期} =1{还剩 1 天} other{还剩 {days} 天}}",
+  "@remainingDaysLabel": {
+    "description": "最近删除列表中剩余保留天数文案。",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteDialogTitle": "删除这条事项？",
+  "@deleteDialogTitle": {
+    "description": "删除确认对话框标题。"
+  },
+  "deleteDialogBody": "删除后 30 天内可在最近删除恢复。",
+  "@deleteDialogBody": {
+    "description": "删除确认对话框说明文案。"
+  },
+  "restoreDialogTitle": "恢复到当前事项？",
+  "@restoreDialogTitle": {
+    "description": "恢复确认对话框标题。"
+  },
+  "restoreDialogBody": "恢复后会重新出现在首页和锁屏排序中。",
+  "@restoreDialogBody": {
+    "description": "恢复确认对话框说明文案。"
+  },
+  "discardDialogTitle": "放弃还没保存的修改？",
+  "@discardDialogTitle": {
+    "description": "放弃修改确认对话框标题。"
+  },
+  "discardDialogBody": "这页上的编辑内容不会被保存。",
+  "@discardDialogBody": {
+    "description": "放弃修改确认对话框说明文案。"
+  },
+  "cancelAction": "取消",
+  "@cancelAction": {
+    "description": "通用取消动作文案。"
+  },
+  "discardAction": "放弃修改",
+  "@discardAction": {
+    "description": "通用放弃动作文案。"
+  },
+  "dueTimeDialogTitle": "选择截止时间",
+  "@dueTimeDialogTitle": {
+    "description": "截止时间选择对话框标题。"
+  },
+  "dueTimeSetAction": "设置时间",
+  "@dueTimeSetAction": {
+    "description": "确认截止时间选择的动作文案。"
+  },
+  "dueTimeClearAction": "清除时间",
+  "@dueTimeClearAction": {
+    "description": "清除截止时间的动作文案。"
+  },
+  "privacyExplainTitle": "隐私模式说明",
+  "@privacyExplainTitle": {
+    "description": "隐私说明底部弹层标题。"
+  },
+  "privacyExplainBody": "隐私事项不会在锁屏预览或其他外露场景里显示原始正文。",
+  "@privacyExplainBody": {
+    "description": "隐私说明底部弹层正文。"
+  },
+  "settingsPageTitle": "设置",
+  "@settingsPageTitle": {
+    "description": "设置页标题。"
+  },
+  "settingsPageHelperText": "阶段二只保留锁屏显示与隐私设置，不提前扩展通知、Pro 或系统入口。",
+  "@settingsPageHelperText": {
+    "description": "设置页辅助说明文案。"
+  },
+  "settingsDisplayGroupTitle": "展示偏好",
+  "@settingsDisplayGroupTitle": {
+    "description": "设置页展示分组标题。"
+  },
+  "settingsOpenAction": "进入",
+  "@settingsOpenAction": {
+    "description": "设置条目尾部进入动作文案。"
+  },
+  "settingsFallbackTitle": "降级原则",
+  "@settingsFallbackTitle": {
+    "description": "设置页降级说明标题。"
+  },
+  "settingsFallbackBody": "任何设置异常都只能影响当前页展示，不允许阻断首页创建、历史恢复或详情页状态切换。",
+  "@settingsFallbackBody": {
+    "description": "设置页降级说明正文。"
+  },
+  "widgetSettingsTitle": "锁屏显示",
+  "@widgetSettingsTitle": {
+    "description": "锁屏显示设置页标题。"
+  },
+  "widgetSettingsSubtitle": "在 App 内预览锁屏展示基线，阶段二不接真实 Widget 刷新。",
+  "@widgetSettingsSubtitle": {
+    "description": "锁屏显示设置页辅助说明。"
+  },
+  "widgetPreviewMaskPrivateTitle": "预览里隐藏隐私事项正文",
+  "@widgetPreviewMaskPrivateTitle": {
+    "description": "Widget 预览页隐私开关标题。"
+  },
+  "widgetPreviewMaskPrivateBody": "锁屏、小组件和其他外露入口默认不泄露隐私事项正文。",
+  "@widgetPreviewMaskPrivateBody": {
+    "description": "Widget 预览页隐私开关说明。"
+  },
+  "widgetPreviewPrivateState": "隐私事项内容已隐藏",
+  "@widgetPreviewPrivateState": {
+    "description": "Widget 预览页开启隐私模式后的主预览文案。"
+  },
+  "widgetPreviewEmptyHint": "锁屏上还没有可展示的事项",
+  "@widgetPreviewEmptyHint": {
+    "description": "Widget 没有安全内容可展示时使用的空态标题。"
+  },
+  "widgetPreviewFallbackHint": "当前保留最后一次有效快照",
+  "@widgetPreviewFallbackHint": {
+    "description": "Widget 刷新失败后保留最后有效快照时使用的提示文案。"
+  },
+  "widgetPreviewPrivateSummary": "{itemCount, plural, =0{隐私内容已隐藏} =1{已隐藏 1 条隐私事项} other{已隐藏 {itemCount} 条隐私事项}}",
+  "@widgetPreviewPrivateSummary": {
+    "description": "Widget 隐私模式下用于汇总隐藏事项数量的安全摘要。",
+    "placeholders": {
+      "itemCount": {
+        "type": "int"
+      }
+    }
+  },
+  "widgetPreviewDefaultBody": "显示时间、状态和安全摘要。",
+  "@widgetPreviewDefaultBody": {
+    "description": "Widget 预览页普通模式下的预览说明。"
+  },
+  "widgetDisplayModeSingle": "单条",
+  "@widgetDisplayModeSingle": {
+    "description": "Widget 单条展示模式的标签。"
+  },
+  "widgetDisplayModeList3": "三条",
+  "@widgetDisplayModeList3": {
+    "description": "Widget 三条展示模式的标签。"
+  },
+  "widgetDisplayModeToday": "今日",
+  "@widgetDisplayModeToday": {
+    "description": "Widget 仅展示今日事项模式的标签。"
+  },
+  "widgetDisplayModePrivate": "隐私",
+  "@widgetDisplayModePrivate": {
+    "description": "Widget 隐私优先展示模式的标签。"
+  },
+  "widgetDisplayModeEmpty": "空态",
+  "@widgetDisplayModeEmpty": {
+    "description": "Widget 空态展示模式的标签。"
+  },
+  "widgetInstallGuideTitle": "把它加到锁屏上",
+  "@widgetInstallGuideTitle": {
+    "description": "Widget 安装引导卡片的标题。"
+  },
+  "widgetInstallGuideBody": "请在系统锁屏编辑器里添加 Screen Note 小组件。App 这里只准备稳定快照，不承诺实时刷新。",
+  "@widgetInstallGuideBody": {
+    "description": "Widget 安装引导卡片的说明文案。"
+  },
+  "widgetFallbackPreviewTitle": "刷新失败时保留最后有效内容",
+  "@widgetFallbackPreviewTitle": {
+    "description": "用于展示 Widget fallback 行为的预览标题。"
+  },
+  "widgetPreviewSingleTitle": "完成锁屏小组件验收",
+  "@widgetPreviewSingleTitle": {
+    "description": "单条 Widget 预览模式里的示例标题。"
+  },
+  "widgetPreviewListItemOne": "确认三条模式的节奏",
+  "@widgetPreviewListItemOne": {
+    "description": "三条 Widget 预览模式里的第一条示例标题。"
+  },
+  "widgetPreviewListItemTwo": "导出最后一次有效快照",
+  "@widgetPreviewListItemTwo": {
+    "description": "三条 Widget 预览模式里的第二条示例标题。"
+  },
+  "widgetPreviewListItemThree": "确保隐私正文不外露",
+  "@widgetPreviewListItemThree": {
+    "description": "三条 Widget 预览模式里的第三条示例标题。"
+  },
+  "widgetPreviewTodayTitle": "今天到期的事项保持可见",
+  "@widgetPreviewTodayTitle": {
+    "description": "今日 Widget 预览模式里的示例标题。"
+  },
+  "widgetPreviewDueToday": "今天 18:00",
+  "@widgetPreviewDueToday": {
+    "description": "Widget 预览里用于展示今日截止时间的示例文案。"
+  },
+  "widgetPreviewDueYesterday": "昨天 20:00",
+  "@widgetPreviewDueYesterday": {
+    "description": "Widget 预览里用于展示过期截止时间的示例文案。"
+  },
+  "widgetPreviewEmptyBody": "新增或恢复一条事项后，锁屏会读取下一次稳定快照。",
+  "@widgetPreviewEmptyBody": {
+    "description": "Widget 空态预览时的说明文案。"
+  },
+  "privacySettingsTitle": "隐私设置",
+  "@privacySettingsTitle": {
+    "description": "隐私设置页标题。"
+  },
+  "privacySettingsSubtitle": "只管理基础展示偏好，不引入复杂权限流程。",
+  "@privacySettingsSubtitle": {
+    "description": "隐私设置页辅助说明。"
+  },
+  "privacySettingsMaskTitle": "外露预览里隐藏隐私事项正文",
+  "@privacySettingsMaskTitle": {
+    "description": "隐私设置页主开关标题。"
+  },
+  "privacySettingsMaskBody": "锁屏、小组件、通知和系统快捷入口默认不直接泄露隐私正文。",
+  "@privacySettingsMaskBody": {
+    "description": "隐私设置页主开关说明。"
+  },
+  "privacySettingsSafeTitle": "保守默认值",
+  "@privacySettingsSafeTitle": {
+    "description": "隐私设置页补充说明标题。"
+  },
+  "privacySettingsSafeBody": "隐私设置异常时必须维持保守默认值，而不是放宽外露展示。",
+  "@privacySettingsSafeBody": {
+    "description": "隐私设置页补充说明正文。"
+  }
+}
