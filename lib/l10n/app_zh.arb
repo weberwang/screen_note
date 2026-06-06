@@ -208,6 +208,24 @@
   "@historyDeletedTitle": {
     "description": "最近删除页标题。"
   },
+  "appShellLaunchRoutedFeedback": "已为你打开{destination}",
+  "@appShellLaunchRoutedFeedback": {
+    "description": "外部入口成功回流到目标页后，由壳层统一展示的轻反馈文案。",
+    "placeholders": {
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "appShellLaunchFallbackFeedback": "该入口暂不可用，已返回{destination}。",
+  "@appShellLaunchFallbackFeedback": {
+    "description": "外部入口目标无效时，由壳层统一展示的安全回退反馈文案。",
+    "placeholders": {
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
   "taskDetailTitle": "事项详情",
   "@taskDetailTitle": {
     "description": "事项详情页标题。"

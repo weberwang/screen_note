@@ -208,6 +208,24 @@
   "@historyDeletedTitle": {
     "description": "Title for the deleted history page."
   },
+  "appShellLaunchRoutedFeedback": "Opened {destination}",
+  "@appShellLaunchRoutedFeedback": {
+    "description": "Light feedback shown by the shell after an external entry is routed to a supported destination.",
+    "placeholders": {
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "appShellLaunchFallbackFeedback": "That entry is unavailable. Returned to {destination}.",
+  "@appShellLaunchFallbackFeedback": {
+    "description": "Light fallback feedback shown by the shell when an external entry target is invalid and the app returns to a safe destination.",
+    "placeholders": {
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
   "taskDetailTitle": "Task details",
   "@taskDetailTitle": {
     "description": "Title for the task detail page."

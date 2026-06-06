@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:screen_note/app/router/route_paths.dart';
+import 'package:screen_note/features/app_shell/presentation/widgets/app_shell_feedback_host.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
@@ -40,7 +41,12 @@ class AppShellPage extends StatelessWidget {
             ),
           ),
         ),
-        body: SafeArea(top: false, child: navigationShell),
+        body: Stack(
+          children: <Widget>[
+            SafeArea(top: false, child: navigationShell),
+            const AppShellFeedbackHost(),
+          ],
+        ),
         floatingActionButton: navigationShell.currentIndex == 0
             ? FloatingActionButton.extended(
                 onPressed: () => context.push(RoutePaths.taskEditor),

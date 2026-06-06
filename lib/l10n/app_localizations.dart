@@ -410,6 +410,18 @@ abstract class AppLocalizations {
   /// **'Recently deleted'**
   String get historyDeletedTitle;
 
+  /// Light feedback shown by the shell after an external entry is routed to a supported destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Opened {destination}'**
+  String appShellLaunchRoutedFeedback(String destination);
+
+  /// Light fallback feedback shown by the shell when an external entry target is invalid and the app returns to a safe destination.
+  ///
+  /// In en, this message translates to:
+  /// **'That entry is unavailable. Returned to {destination}.'**
+  String appShellLaunchFallbackFeedback(String destination);
+
   /// Title for the task detail page.
   ///
   /// In en, this message translates to:

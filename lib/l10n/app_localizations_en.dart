@@ -179,6 +179,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyDeletedTitle => 'Recently deleted';
 
   @override
+  String appShellLaunchRoutedFeedback(String destination) {
+    return 'Opened $destination';
+  }
+
+  @override
+  String appShellLaunchFallbackFeedback(String destination) {
+    return 'That entry is unavailable. Returned to $destination.';
+  }
+
+  @override
   String get taskDetailTitle => 'Task details';
 
   @override

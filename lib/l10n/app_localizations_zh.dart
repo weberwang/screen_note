@@ -167,6 +167,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get historyDeletedTitle => '最近删除';
 
   @override
+  String appShellLaunchRoutedFeedback(String destination) {
+    return '已为你打开$destination';
+  }
+
+  @override
+  String appShellLaunchFallbackFeedback(String destination) {
+    return '该入口暂不可用，已返回$destination。';
+  }
+
+  @override
   String get taskDetailTitle => '事项详情';
 
   @override
