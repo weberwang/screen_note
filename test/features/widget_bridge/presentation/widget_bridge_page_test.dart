@@ -20,7 +20,7 @@ import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 验证 widget-bridge 会渲染真实快照预览，并把手动同步交给共享存储端口。
 void main() {
-  testWidgets('预览页会遮罩隐私事项并允许手动同步快照', (WidgetTester tester) async {
+  testWidgets('预览页会把隐私事项渲染成安全摘要并允许手动同步快照', (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues(<String, Object>{
       'settings.maskPrivateContent': true,
       'settings.widgetDisplayMode': 'list3',
@@ -72,8 +72,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('隐私事项'), findsOneWidget);
-    expect(find.textContaining('18:00'), findsOneWidget);
+    expect(find.text('不该外露的正文'), findsNothing);
+    expect(find.textContaining('18:00'), findsNothing);
     await tester.scrollUntilVisible(
       find.byKey(const Key('widget-bridge-sync-button')),
       200,

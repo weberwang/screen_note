@@ -48,7 +48,7 @@ void main() {
     await database.close();
   });
 
-  test('loadSnapshot 会按展示模式输出三条快照并遮罩隐私事项正文', () async {
+  test('loadSnapshot 会把被遮罩的隐私事项投影为安全摘要而不是截止时间', () async {
     final DateTime now = DateTime.utc(2026, 6, 6, 8);
     await repository.createTask(
       _task(id: 'pinned', title: '先处理置顶', createdAt: now, isPinned: true),
@@ -73,14 +73,15 @@ void main() {
 
     expect(snapshot.displayMode, WidgetDisplayMode.list3);
     expect(snapshot.items.map((item) => item.rank), <int>[1, 2, 3]);
-    expect(
-      snapshot.items.map((item) => item.title),
-      <String>['先处理置顶', '隐私事项', '普通补充事项'],
-    );
+    expect(snapshot.items.map((item) => item.title), <String>[
+      '先处理置顶',
+      '隐私事项',
+      '普通补充事项',
+    ]);
     expect(snapshot.items[0].statusLabel, '置顶');
-    expect(snapshot.items[1].statusLabel, '今天');
+    expect(snapshot.items[1].statusLabel, '隐私');
     expect(snapshot.items[1].isPrivate, isTrue);
-    expect(snapshot.items[1].dueLabel, '18:00');
+    expect(snapshot.items[1].dueLabel, '已隐藏 1 条隐私事项');
     expect(snapshot.hasPrivateContent, isTrue);
     expect(snapshot.hasFallbackContent, isFalse);
   });
@@ -93,33 +94,55 @@ void main() {
       widgetDisplayMode: WidgetDisplayMode.private,
     );
     await repository.createTask(
-      _task(
-        id: 'private-a',
-        title: '隐私一',
-        createdAt: now,
-        isPrivate: true,
-      ),
+      _task(id: 'private-a', title: '隐私一', createdAt: now, isPrivate: true),
     );
     await repository.createTask(
-      _task(
-        id: 'private-b',
-        title: '隐私二',
-        createdAt: now,
-        isPrivate: true,
-      ),
+      _task(id: 'private-b', title: '隐私二', createdAt: now, isPrivate: true),
     );
 
     final bool synced = await syncService.syncSnapshot(now: now);
 
     expect(synced, isTrue);
     expect(snapshotStore.savedSnapshots, hasLength(1));
-    expect(snapshotStore.savedSnapshots.single.displayMode, WidgetDisplayMode.private);
+    expect(
+      snapshotStore.savedSnapshots.single.displayMode,
+      WidgetDisplayMode.private,
+    );
     expect(snapshotStore.savedSnapshots.single.items.single.title, '隐私事项内容已隐藏');
     expect(
       snapshotStore.savedSnapshots.single.items.single.dueLabel,
       '已隐藏 2 条隐私事项',
     );
     expect(snapshotStore.savedSnapshots.single.items.single.statusLabel, '隐私');
+  });
+
+  test('英文环境下会把 Widget 自身文案投影进共享快照合同', () async {
+    settingsRepository.preferences = const SettingsPreferences(
+      maskPrivateContent: true,
+      notificationsEnabled: true,
+      widgetDisplayMode: WidgetDisplayMode.single,
+    );
+    final WidgetSnapshotSyncService englishSyncService =
+        WidgetSnapshotSyncService(
+          taskRepository: repository,
+          settingsRepository: settingsRepository,
+          snapshotStore: snapshotStore,
+          projector: const WidgetSnapshotProjector(),
+          locale: const Locale('en'),
+        );
+
+    final WidgetSnapshot snapshot = await englishSyncService.loadSnapshot(
+      now: DateTime.utc(2026, 6, 6, 8),
+    );
+    final Map<String, dynamic> payload = snapshot.toJson();
+
+    expect(payload['headerTitle'], 'Single');
+    expect(payload['emptyTitle'], 'Nothing is pinned to the lock screen yet');
+    expect(
+      payload['emptyBody'],
+      'Create or restore a task and the lock screen will pick up the next stable snapshot.',
+    );
+    expect(payload['fallbackHint'], 'Showing the last valid snapshot');
   });
 }
 

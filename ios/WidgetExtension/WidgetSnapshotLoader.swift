@@ -31,6 +31,10 @@ struct WidgetSnapshotPayload: Codable {
   let snapshotId: String
   let generatedAt: Date
   let displayMode: WidgetDisplayModePayload
+  let headerTitle: String
+  let emptyTitle: String
+  let emptyBody: String
+  let fallbackHint: String
   let items: [WidgetSnapshotItemPayload]
   let hasPrivateContent: Bool
   let hasFallbackContent: Bool

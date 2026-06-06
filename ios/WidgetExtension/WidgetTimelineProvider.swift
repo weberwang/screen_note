@@ -18,25 +18,7 @@ struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
   func placeholder(in context: Context) -> ScreenNoteWidgetEntry {
     ScreenNoteWidgetEntry(
       date: Date(),
-      snapshot: WidgetSnapshotPayload(
-        snapshotId: "placeholder",
-        generatedAt: Date(),
-        displayMode: .single,
-        items: [
-          WidgetSnapshotItemPayload(
-            title: "完成锁屏小组件验收",
-            statusLabel: "置顶",
-            dueLabel: "今天 18:00",
-            isPinned: true,
-            isOverdue: false,
-            isPrivate: false,
-            rank: 1
-          )
-        ],
-        hasPrivateContent: false,
-        hasFallbackContent: false,
-        version: 1
-      )
+      snapshot: placeholderSnapshot()
     )
   }
 
@@ -47,7 +29,7 @@ struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
     completion(
       ScreenNoteWidgetEntry(
         date: Date(),
-        snapshot: loader.loadSnapshot()
+        snapshot: loader.loadSnapshot() ?? placeholderSnapshot()
       )
     )
   }
@@ -58,8 +40,35 @@ struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
   ) {
     let entry = ScreenNoteWidgetEntry(
       date: Date(),
-      snapshot: loader.loadSnapshot()
+      snapshot: loader.loadSnapshot() ?? placeholderSnapshot()
     )
     completion(Timeline(entries: [entry], policy: .atEnd))
+  }
+
+  /// 占位快照统一承担“首帧无共享数据”时的安全展示，避免 Widget 首次渲染落成空白。
+  private func placeholderSnapshot() -> WidgetSnapshotPayload {
+    WidgetSnapshotPayload(
+      snapshotId: "placeholder",
+      generatedAt: Date(),
+      displayMode: .single,
+      headerTitle: "单条",
+      emptyTitle: "锁屏上还没有可展示的事项",
+      emptyBody: "新增事项后，这里会读取下一次稳定快照。",
+      fallbackHint: "保留最后一次有效快照",
+      items: [
+        WidgetSnapshotItemPayload(
+          title: "完成锁屏小组件验收",
+          statusLabel: "置顶",
+          dueLabel: "今天 18:00",
+          isPinned: true,
+          isOverdue: false,
+          isPrivate: false,
+          rank: 1
+        )
+      ],
+      hasPrivateContent: false,
+      hasFallbackContent: false,
+      version: 1
+    )
   }
 }

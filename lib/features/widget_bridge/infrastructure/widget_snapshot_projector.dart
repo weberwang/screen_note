@@ -35,44 +35,81 @@ final class WidgetSnapshotProjector {
         .where((TaskEntity task) => task.isPrivate)
         .toList(growable: false);
 
-    final List<WidgetSnapshotItem> items = switch (preferences.widgetDisplayMode) {
-      WidgetDisplayMode.single => _projectGeneralItems(
-        orderedTasks: orderedTasks,
-        localizations: localizations,
-        preferences: preferences,
-        now: timestamp,
-        limit: 1,
-      ),
-      WidgetDisplayMode.list3 => _projectGeneralItems(
-        orderedTasks: orderedTasks,
-        localizations: localizations,
-        preferences: preferences,
-        now: timestamp,
-        limit: 3,
-      ),
-      WidgetDisplayMode.today => _projectTodayItems(
-        taskFeed: taskFeed,
-        orderedTasks: orderedTasks,
-        localizations: localizations,
-        preferences: preferences,
-        now: timestamp,
-      ),
-      WidgetDisplayMode.private => _projectPrivateSummary(
-        localizations: localizations,
-        privateCount: privateTasks.length,
-      ),
-      WidgetDisplayMode.empty => const <WidgetSnapshotItem>[],
-    };
+    final List<WidgetSnapshotItem> items =
+        switch (preferences.widgetDisplayMode) {
+          WidgetDisplayMode.single => _projectGeneralItems(
+            orderedTasks: orderedTasks,
+            localizations: localizations,
+            preferences: preferences,
+            now: timestamp,
+            limit: 1,
+          ),
+          WidgetDisplayMode.list3 => _projectGeneralItems(
+            orderedTasks: orderedTasks,
+            localizations: localizations,
+            preferences: preferences,
+            now: timestamp,
+            limit: 3,
+          ),
+          WidgetDisplayMode.today => _projectTodayItems(
+            taskFeed: taskFeed,
+            orderedTasks: orderedTasks,
+            localizations: localizations,
+            preferences: preferences,
+            now: timestamp,
+          ),
+          WidgetDisplayMode.private => _projectPrivateSummary(
+            localizations: localizations,
+            privateCount: privateTasks.length,
+          ),
+          WidgetDisplayMode.empty => const <WidgetSnapshotItem>[],
+        };
 
     return WidgetSnapshot(
       snapshotId: 'widget_${timestamp.toUtc().millisecondsSinceEpoch}',
       generatedAt: timestamp.toUtc(),
       displayMode: preferences.widgetDisplayMode,
+      headerTitle: _buildHeaderTitle(
+        localizations: localizations,
+        displayMode: preferences.widgetDisplayMode,
+      ),
+      emptyTitle: _buildEmptyTitle(localizations),
+      emptyBody: _buildEmptyBody(localizations),
+      fallbackHint: _buildFallbackHint(localizations),
       items: items,
       hasPrivateContent: privateTasks.isNotEmpty,
       hasFallbackContent: hasFallbackContent,
       version: 1,
     );
+  }
+
+  /// 为共享快照生成模式标题，确保 Flutter 预览页与原生 Widget 读取同一份文案合同。
+  String _buildHeaderTitle({
+    required AppLocalizations localizations,
+    required WidgetDisplayMode displayMode,
+  }) {
+    return switch (displayMode) {
+      WidgetDisplayMode.single => localizations.widgetDisplayModeSingle,
+      WidgetDisplayMode.list3 => localizations.widgetDisplayModeList3,
+      WidgetDisplayMode.today => localizations.widgetDisplayModeToday,
+      WidgetDisplayMode.private => localizations.widgetDisplayModePrivate,
+      WidgetDisplayMode.empty => localizations.widgetDisplayModeEmpty,
+    };
+  }
+
+  /// 为共享快照生成空态标题，避免原生层另起一套硬编码文案。
+  String _buildEmptyTitle(AppLocalizations localizations) {
+    return localizations.widgetPreviewEmptyHint;
+  }
+
+  /// 为共享快照生成空态说明，保证锁屏预览与原生 Widget 的降级姿态一致。
+  String _buildEmptyBody(AppLocalizations localizations) {
+    return localizations.widgetPreviewEmptyBody;
+  }
+
+  /// 为共享快照生成回退提示，让最后有效快照的说明只维护一份来源。
+  String _buildFallbackHint(AppLocalizations localizations) {
+    return localizations.widgetPreviewFallbackHint;
   }
 
   List<WidgetSnapshotItem> _projectGeneralItems({
@@ -152,7 +189,9 @@ final class WidgetSnapshotProjector {
   }) {
     final bool isOverdue = _isOverdue(task, now);
     final bool isDueToday = _isDueToday(task, now);
-    final bool maskPrivateContent = preferences.maskPrivateContent && task.isPrivate;
+    final bool maskPrivateContent =
+        preferences.maskPrivateContent && task.isPrivate;
+    final String privateSummary = localizations.widgetPreviewPrivateSummary(1);
 
     return WidgetSnapshotItem(
       title: maskPrivateContent ? localizations.privateMaskedTitle : task.title,
@@ -167,6 +206,8 @@ final class WidgetSnapshotProjector {
         task: task,
         localizations: localizations,
         isDueToday: isDueToday,
+        maskPrivateContent: maskPrivateContent,
+        privateSummary: privateSummary,
       ),
       isPinned: task.isPinned,
       isOverdue: isOverdue,
@@ -182,6 +223,10 @@ final class WidgetSnapshotProjector {
     required bool isDueToday,
     required bool maskPrivateContent,
   }) {
+    // 隐私遮罩一旦生效，就只允许输出安全占位标签，不再外露时间紧迫性或排序语义。
+    if (maskPrivateContent) {
+      return localizations.statusPrivate;
+    }
     if (isOverdue) {
       return localizations.statusOverdue;
     }
@@ -191,9 +236,6 @@ final class WidgetSnapshotProjector {
     if (task.isPinned) {
       return localizations.statusPinned;
     }
-    if (maskPrivateContent) {
-      return localizations.statusPrivate;
-    }
     return '';
   }
 
@@ -201,7 +243,12 @@ final class WidgetSnapshotProjector {
     required TaskEntity task,
     required AppLocalizations localizations,
     required bool isDueToday,
+    required bool maskPrivateContent,
+    required String privateSummary,
   }) {
+    if (maskPrivateContent) {
+      return privateSummary;
+    }
     final DateTime? dueAt = task.dueAt?.toLocal();
     if (dueAt == null) {
       return '';
@@ -243,7 +290,8 @@ final class WidgetSnapshotProjector {
 
   Locale _resolveSupportedLocale(Locale locale) {
     return AppLocalizations.supportedLocales.any(
-          (supportedLocale) => supportedLocale.languageCode == locale.languageCode,
+          (supportedLocale) =>
+              supportedLocale.languageCode == locale.languageCode,
         )
         ? Locale(locale.languageCode)
         : AppLocalizations.supportedLocales.first;

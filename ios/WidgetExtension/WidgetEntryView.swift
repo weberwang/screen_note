@@ -11,7 +11,7 @@ struct ScreenNoteWidgetEntryView: View {
     let snapshot = entry.snapshot
 
     VStack(alignment: .leading, spacing: 6) {
-      Text(headerTitle(for: snapshot?.displayMode ?? .empty))
+      Text(snapshot?.headerTitle ?? " ")
         .font(.caption2.weight(.semibold))
         .foregroundStyle(.secondary)
 
@@ -19,13 +19,13 @@ struct ScreenNoteWidgetEntryView: View {
         content(for: snapshot)
       } else {
         emptyView(
-          title: "锁屏上还没有可展示的事项",
-          body: "新增事项后，这里会读取下一次稳定快照。"
+          title: " ",
+          body: " "
         )
       }
 
       if snapshot?.hasFallbackContent == true {
-        Text("保留最后一次有效快照")
+        Text(snapshot?.fallbackHint ?? " ")
           .font(.caption2)
           .foregroundStyle(.secondary)
       }
@@ -44,15 +44,15 @@ struct ScreenNoteWidgetEntryView: View {
         itemRow(item)
       } else {
         emptyView(
-          title: "锁屏上还没有可展示的事项",
-          body: "新增事项后，这里会读取下一次稳定快照。"
+          title: snapshot.emptyTitle,
+          body: snapshot.emptyBody
         )
       }
     case .list3:
       if snapshot.items.isEmpty {
         emptyView(
-          title: "锁屏上还没有可展示的事项",
-          body: "新增事项后，这里会读取下一次稳定快照。"
+          title: snapshot.emptyTitle,
+          body: snapshot.emptyBody
         )
       } else {
         VStack(alignment: .leading, spacing: 4) {
@@ -63,24 +63,9 @@ struct ScreenNoteWidgetEntryView: View {
       }
     case .empty:
       emptyView(
-        title: "锁屏上还没有可展示的事项",
-        body: "新增事项后，这里会读取下一次稳定快照。"
+        title: snapshot.emptyTitle,
+        body: snapshot.emptyBody
       )
-    }
-  }
-
-  private func headerTitle(for mode: WidgetDisplayModePayload) -> String {
-    switch mode {
-    case .single:
-      return "单条"
-    case .list3:
-      return "三条"
-    case .today:
-      return "今日"
-    case .private:
-      return "隐私"
-    case .empty:
-      return "空态"
     }
   }
 

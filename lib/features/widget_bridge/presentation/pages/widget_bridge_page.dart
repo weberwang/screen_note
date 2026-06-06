@@ -165,7 +165,9 @@ class _WidgetBridgeContent extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const Spacer(),
-                  _ModeChip(label: _modeLabel(localizations, snapshot.displayMode)),
+                  _ModeChip(
+                    label: _modeLabel(localizations, snapshot.displayMode),
+                  ),
                 ],
               ),
               const SizedBox(height: 14),
@@ -173,7 +175,7 @@ class _WidgetBridgeContent extends StatelessWidget {
               if (snapshot.hasFallbackContent) ...<Widget>[
                 const SizedBox(height: 12),
                 Text(
-                  localizations.widgetPreviewFallbackHint,
+                  snapshot.fallbackHint,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -206,7 +208,6 @@ class _WidgetPreviewFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations localizations = AppLocalizations.of(context);
     final ScreenNoteThemePalette palette = context.screenNotePalette;
 
     return DecoratedBox(
@@ -221,14 +222,14 @@ class _WidgetPreviewFrame extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              _headerTitle(localizations),
+              snapshot.headerTitle,
               style: Theme.of(context).textTheme.labelLarge,
             ),
             const SizedBox(height: 10),
             if (snapshot.items.isEmpty)
               _PreviewEmptyState(
-                title: localizations.widgetPreviewEmptyHint,
-                body: localizations.widgetPreviewEmptyBody,
+                title: snapshot.emptyTitle,
+                body: snapshot.emptyBody,
               )
             else if (snapshot.displayMode == WidgetDisplayMode.list3)
               Column(
@@ -247,16 +248,6 @@ class _WidgetPreviewFrame extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _headerTitle(AppLocalizations localizations) {
-    return switch (snapshot.displayMode) {
-      WidgetDisplayMode.single => localizations.widgetDisplayModeSingle,
-      WidgetDisplayMode.list3 => localizations.widgetDisplayModeList3,
-      WidgetDisplayMode.today => localizations.widgetDisplayModeToday,
-      WidgetDisplayMode.private => localizations.widgetDisplayModePrivate,
-      WidgetDisplayMode.empty => localizations.widgetDisplayModeEmpty,
-    };
   }
 }
 
@@ -290,12 +281,14 @@ class _PreviewItemRow extends StatelessWidget {
                     ? Theme.of(context).textTheme.titleLarge
                     : Theme.of(context).textTheme.titleMedium,
               ),
-              if (item.statusLabel.isNotEmpty || item.dueLabel.isNotEmpty) ...<Widget>[
+              if (item.statusLabel.isNotEmpty ||
+                  item.dueLabel.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 6),
                 Text(
-                  [item.statusLabel, item.dueLabel]
-                      .where((segment) => segment.isNotEmpty)
-                      .join(' · '),
+                  [
+                    item.statusLabel,
+                    item.dueLabel,
+                  ].where((segment) => segment.isNotEmpty).join(' · '),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium,
