@@ -154,7 +154,7 @@ final class SettingsSideEffectPortProvider
 }
 
 String _$settingsSideEffectPortHash() =>
-    r'64ef753e1cb69f9f65fe4602db8b13985c6a1fdf';
+    r'6925a8ef1fd73d23a0e5c2c64739ff54cd3d3620';
 
 /// 读取设置偏好用例提供器。
 

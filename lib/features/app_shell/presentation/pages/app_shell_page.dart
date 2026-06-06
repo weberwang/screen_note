@@ -17,6 +17,9 @@ class AppShellPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScreenNoteThemePalette palette = context.screenNotePalette;
     final AppLocalizations localizations = AppLocalizations.of(context);
+    final String? historySection = GoRouterState.of(context)
+        .uri
+        .queryParameters['section'];
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -30,7 +33,11 @@ class AppShellPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text(
-            _titleForIndex(localizations, navigationShell.currentIndex),
+            _titleForIndex(
+              localizations,
+              navigationShell.currentIndex,
+              historySection: historySection,
+            ),
           ),
         ),
         body: SafeArea(top: false, child: navigationShell),
@@ -81,10 +88,16 @@ class AppShellPage extends StatelessWidget {
   }
 
   /// 根据当前分支索引返回对应标题，避免页面自己重复维护壳层文案。
-  String _titleForIndex(AppLocalizations localizations, int index) {
+  String _titleForIndex(
+    AppLocalizations localizations,
+    int index, {
+    String? historySection,
+  }) {
     return switch (index) {
       0 => localizations.appTitle,
-      1 => localizations.historyCompletedTitle,
+      1 => historySection == 'deleted'
+          ? localizations.historyDeletedTitle
+          : localizations.historyCompletedTitle,
       2 => localizations.widgetSettingsTitle,
       _ => localizations.settingsPageTitle,
     };

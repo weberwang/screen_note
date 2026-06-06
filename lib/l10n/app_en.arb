@@ -525,6 +525,30 @@
   "@widgetPreviewFallbackHint": {
     "description": "Hint shown when widget refresh fails and the last valid snapshot is kept."
   },
+  "widgetSyncAction": "Sync lock screen snapshot",
+  "@widgetSyncAction": {
+    "description": "Button label used on the widget preview page to manually sync the latest stable snapshot."
+  },
+  "widgetSyncSuccess": "Synced the latest stable snapshot.",
+  "@widgetSyncSuccess": {
+    "description": "Feedback shown after the widget preview page manually syncs the latest stable snapshot successfully."
+  },
+  "widgetSyncFailed": "Sync failed. Keeping the last valid snapshot.",
+  "@widgetSyncFailed": {
+    "description": "Fallback feedback shown when the widget preview page fails to sync and keeps the last valid snapshot."
+  },
+  "widgetPreviewModeMetric": "Current mode",
+  "@widgetPreviewModeMetric": {
+    "description": "Metric label used on the widget preview page for the current display mode."
+  },
+  "widgetPreviewVisibleMetric": "Visible items",
+  "@widgetPreviewVisibleMetric": {
+    "description": "Metric label used on the widget preview page for the number of visible items."
+  },
+  "widgetPreviewPrivateMetric": "Private items",
+  "@widgetPreviewPrivateMetric": {
+    "description": "Metric label used on the widget preview page for the number of private items."
+  },
   "widgetPreviewPrivateSummary": "{itemCount, plural, =0{Private content hidden} =1{1 task hidden} other{{itemCount} tasks hidden}}",
   "@widgetPreviewPrivateSummary": {
     "description": "Summary shown in widget snapshots when private mode hides task bodies.",

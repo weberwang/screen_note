@@ -410,6 +410,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get widgetPreviewFallbackHint => '当前保留最后一次有效快照';
 
   @override
+  String get widgetSyncAction => '同步锁屏快照';
+
+  @override
+  String get widgetSyncSuccess => '已同步最新稳定快照。';
+
+  @override
+  String get widgetSyncFailed => '同步失败，继续保留最后一次有效快照。';
+
+  @override
+  String get widgetPreviewModeMetric => '当前模式';
+
+  @override
+  String get widgetPreviewVisibleMetric => '可见事项';
+
+  @override
+  String get widgetPreviewPrivateMetric => '隐私事项';
+
+  @override
   String widgetPreviewPrivateSummary(int itemCount) {
     String _temp0 = intl.Intl.pluralLogic(
       itemCount,

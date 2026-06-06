@@ -2,7 +2,7 @@ artifact_type: flutter_workflow_record
 workflow_status: active
 execution_mode: manual
 current_stage: implementing
-current_module: settings-center
+current_module: widget-bridge
 confirmation_status: not_required
 next_skill: flutter-dev
 pending_next_stage: none
@@ -21,34 +21,37 @@ pending_status_updates: none
 - `app-shell` 已落地第一批正式实现，当前已补齐 `/launch` 回流路由、目标解析与保守回退链路，并通过自动化测试验证。
 - `task-flow` 已进入正式实现，当前已补齐最小数据合同、Drift 持久化、首页真实排序展示、快速添加与完整新建链路。
 - `settings-center` 已进入正式实现，当前已补齐偏好实体、`SharedPreferences` 持久化、设置页真实分组、通知/隐私/样式偏好交互与未来入口弱化展示。
-- 下一真实步骤是继续推进 `task-flow` / `settings-center` 收尾，再进入 `history-center` 与 `widget-bridge`。
+- `history-center` 已进入正式实现，当前已补齐最近完成/最近删除真实快照、分区切换、最近删除恢复动作与首页跨页刷新。
+- `widget-bridge` 已进入正式实现，当前已补齐共享快照合同、App 内锁屏预览、隐私遮罩投影、手动同步桥接、任务/设置变更到稳定快照的自动联动，以及系统 Widget 点击回流到 App 的原生绑定闭环。
+- 下一真实步骤是对 `widget-bridge` 进入设计一致性复核与模块收口，确认锁屏预览、共享快照和回流行为与冻结设计保持一致。
 
 ## current_stage_detail
 
-- 当前确认阶段为 `implementing`，因为初始化骨架已完成，且 `app-shell`、`task-flow`、`settings-center` 都已开始承接真实代码实现。
+- 当前确认阶段为 `implementing`，因为初始化骨架已完成，且 `app-shell`、`task-flow`、`settings-center`、`history-center`、`widget-bridge` 都已开始承接真实代码实现。
 - `flutter-taste-router` 所要求的文本归一化已体现在 `docs/rd/02-shared-design-packet.md`。
 - 共享冻结前的目录检查已执行：`docs/rd/` 原先无任何静态预览。
 - 已调用图像生成能力；当前实际落地并保留在工作区的共享证据为 `home-page-light-refresh-v2.png`、`task-editor-refresh-v1.png` 与 `settings-center-refresh-v1.png`，三者均作为 light-mode 共享证据使用。
 - `home-page-light-refresh-v2.png` 已先用于锁定共享方向；后续补充生成的 `task-editor-refresh-v1.png` 与 `settings-center-refresh-v1.png` 属于方向锁定后的页面级补充证据，用于完成全局冻结，不作为新的竞争方向分支。
-- 当前实现仍受冻结设计源约束；`task-flow` 与 `settings-center` 都已按冻结设计源进入真实实现，但提醒调度与 Widget/通知同步仍通过空副作用端口保守降级。
+- 当前实现仍受冻结设计源约束；`task-flow`、`settings-center`、`history-center` 与 `widget-bridge` 都已按冻结设计源进入真实实现。
+- Widget 快照现在已接回 `task-flow` 和 `settings-center` 的自动同步副作用，系统 Widget 点击也已通过 `HomeWidget` 回流到 `/launch` 网关；当前剩余工作主要是设计一致性复核与模块收口。
 
 ## current_module_detail
 
-- 当前活动模块：`settings-center`
-- 原因：`task-flow` 最小主链路已打通，当前应并行补齐 `settings-center`，以便后续 `widget-bridge` 消费稳定的隐私与展示偏好。
+- 当前活动模块：`widget-bridge`
+- 原因：`task-flow` 和 `settings-center` 已具备稳定事实源与偏好边界，当前应把它们投影成共享锁屏快照，并补齐 App 内预览与同步桥接。
 - 目标模块当前状态：
   - `app-shell`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=in_progress`
   - `task-flow`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=in_progress`
   - `settings-center`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=in_progress`
-  - `history-center`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=not_started`
-  - `widget-bridge`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=not_started`
-- 当前 `settings-center` 已进入正式实现，`code_status=in_progress`；本轮已补齐偏好实体、持久化仓储、设置页真实分组和交互。
-- `history-center`、`widget-bridge` 仍维持 `code_status=not_started`，等待依赖顺序继续推进。
+  - `history-center`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=in_progress`
+  - `widget-bridge`：`uiux_status=landed`，`impl_status=landed`，`design_source_status=frozen`，`code_status=in_progress`
+- 当前 `widget-bridge` 已进入正式实现，`code_status=in_progress`；本轮已补齐锁屏共享快照实体、预览页、手动同步动作、HomeWidget 共享存储写入、`task-flow` / `settings-center` 到快照的自动同步副作用，以及 Widget 点击回流到 `/launch` 的 Flutter/原生绑定。
+- 当前剩余工作是设计一致性复核与模块收口，暂无线性实现阻塞。
 
 ## next_action
 
-- `next_skill`: `flutter-dev`
-- 原因：`task-flow` 与 `settings-center` 的最小主链路都已落地，下一步可以继续补它们的收尾，或者进入 `history-center`。
+- `next_skill`: `flutter-design-parity-reviewer`
+- 原因：`widget-bridge` 的共享快照、预览页、自动同步和系统回流闭环都已落地，下一步应进入设计一致性复核，确认视觉层级、隐私遮罩和回流行为符合冻结设计。
 - 最小输入：
   - `docs/rd/modules/task-flow/task-flow.ui-ux.md`
   - `docs/rd/modules/task-flow/task-flow.impl.md`
@@ -56,13 +59,20 @@ pending_status_updates: none
   - `docs/rd/modules/settings-center/settings-center.impl.md`
   - `docs/rd/modules/history-center/history-center.ui-ux.md`
   - `docs/rd/modules/history-center/history-center.impl.md`
-  - `docs/rd/01-global-technical-baseline.md`
-  - `docs/rd/03-architecture-pack.md`
-  - `docs/rd/00-module-index.md`
-  - `docs/rd/global-design-guidelines.md`
-  - `docs/rd/light-theme-freeze.yaml`
-  - `docs/rd/dark-theme-freeze.yaml`
-- 实施顺序：完成 `task-flow` / `settings-center` 收尾 -> `history-center` -> `widget-bridge`
+  - `docs/rd/modules/widget-bridge/widget-bridge.ui-ux.md`
+  - `docs/rd/modules/widget-bridge/widget-bridge.impl.md`
+  - `ios/WidgetExtension/WidgetEntryView.swift`
+  - `ios/WidgetExtension/WidgetTimelineProvider.swift`
+  - `ios/Runner/Info.plist`
+  - `android/app/src/main/AndroidManifest.xml`
+  - `lib/app/app.dart`
+- `docs/rd/01-global-technical-baseline.md`
+- `docs/rd/03-architecture-pack.md`
+- `docs/rd/00-module-index.md`
+- `docs/rd/global-design-guidelines.md`
+- `docs/rd/light-theme-freeze.yaml`
+- `docs/rd/dark-theme-freeze.yaml`
+- 实施顺序：执行 `widget-bridge` 设计一致性复核 -> 根据复核结果修正或进入模块收口
 - 实施约束：显示层落地前先读取对应页面证据；代码执行路径必须显式走 `@superpowers`
 
 ## confirmation_gate
@@ -109,8 +119,8 @@ pending_status_updates: none
 | app-shell | implementing | not_required | flutter-dev | none | none | none | `docs/rd/modules/app-shell/app-shell.ui-ux.md` | landed | `docs/rd/modules/app-shell/app-shell.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `docs/rd/home-page-light-refresh-v2.png` | frozen | in_progress | completed | none |
 | task-flow | implementing | not_required | flutter-dev | none | none | none | `docs/rd/modules/task-flow/task-flow.ui-ux.md` | landed | `docs/rd/modules/task-flow/task-flow.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `docs/rd/modules/task-flow/home-page-light-refresh-v2.png`; `docs/rd/modules/task-flow/task-editor-refresh-v1.png` | frozen | in_progress | completed | none |
 | settings-center | implementing | not_required | flutter-dev | none | none | none | `docs/rd/modules/settings-center/settings-center.ui-ux.md` | landed | `docs/rd/modules/settings-center/settings-center.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `docs/rd/modules/settings-center/settings-center-refresh-v1.png` | frozen | in_progress | completed | none |
-| history-center | implementing | not_required | flutter-dev | none | none | none | `docs/rd/modules/history-center/history-center.ui-ux.md` | landed | `docs/rd/modules/history-center/history-center.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `not_provided` | frozen | not_started | completed | waiting_for_task_flow |
-| widget-bridge | implementing | not_required | flutter-dev | none | none | none | `docs/rd/modules/widget-bridge/widget-bridge.ui-ux.md` | landed | `docs/rd/modules/widget-bridge/widget-bridge.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `docs/rd/home-page-light-refresh-v2.png` | frozen | not_started | completed | waiting_for_task_flow_and_settings_center |
+| history-center | implementing | not_required | flutter-dev | none | none | none | `docs/rd/modules/history-center/history-center.ui-ux.md` | landed | `docs/rd/modules/history-center/history-center.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `not_provided` | frozen | in_progress | completed | none |
+| widget-bridge | implementing | not_required | flutter-design-parity-reviewer | none | none | none | `docs/rd/modules/widget-bridge/widget-bridge.ui-ux.md` | landed | `docs/rd/modules/widget-bridge/widget-bridge.impl.md` | landed | `docs/rd/global-design-guidelines.md` | `docs/rd/light-theme-freeze.yaml` | `docs/rd/dark-theme-freeze.yaml` | `docs/rd/02-shared-design-packet.md` | `docs/rd/home-page-light-refresh-v2.png` | frozen | in_progress | completed | parity_review_pending |
 
 ## decision_log
 
@@ -132,3 +142,9 @@ pending_status_updates: none
 - 2026-06-04：为 `task-flow` 新增 `Task` 聚合、状态流转用例、Drift 仓储、首页真实任务流、快速添加与完整新建页，并以 `flutter test` 与 `flutter analyze` 验证通过。
 - 2026-06-05：将当前活动模块切换到 `settings-center`，开始设置偏好正式代码落地。
 - 2026-06-05：为 `settings-center` 新增偏好实体、SharedPreferences 仓储、通知/隐私/锁屏样式设置页与弱化未来入口，并以 `rtk flutter gen-l10n`、`flutter test` 与 `flutter analyze` 验证通过。
+- 2026-06-06：将当前活动模块切换到 `history-center`，开始最近完成/最近删除与恢复主链路正式代码落地。
+- 2026-06-06：为 `history-center` 新增历史快照用例、分区路由映射、最近删除恢复动作、首页跨页刷新与页面自动化测试，并以 `flutter test` 与 `flutter analyze` 验证通过。
+- 2026-06-06：将当前活动模块切换到 `widget-bridge`，开始稳定快照、锁屏预览与共享存储桥接正式代码落地。
+- 2026-06-06：为 `widget-bridge` 新增共享快照实体、快照投影器、HomeWidget 存储桥接、App 内锁屏预览页与页面/应用层自动化测试，并以 `rtk flutter gen-l10n`、`flutter test` 与 `flutter analyze` 验证通过。
+- 2026-06-06：为 `widget-bridge` 接回 `task-flow` 与 `settings-center` 的自动快照同步副作用，并以集成测试、页面测试、`flutter analyze` 与 `gitnexus detect-changes` 验证低风险通过。
+- 2026-06-06：为 `widget-bridge` 新增 `HomeWidget` 启动桥接、iOS `widgetURL`、iOS URL scheme、Android `launch` deep link 入口与应用级回流测试，并以 `flutter test`、`flutter analyze` 与 `gitnexus detect-changes` 验证低风险通过。

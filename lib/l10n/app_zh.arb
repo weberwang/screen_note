@@ -525,6 +525,30 @@
   "@widgetPreviewFallbackHint": {
     "description": "Widget 刷新失败后保留最后有效快照时使用的提示文案。"
   },
+  "widgetSyncAction": "同步锁屏快照",
+  "@widgetSyncAction": {
+    "description": "Widget 预览页里用于手动同步最新稳定快照的按钮文案。"
+  },
+  "widgetSyncSuccess": "已同步最新稳定快照。",
+  "@widgetSyncSuccess": {
+    "description": "Widget 预览页手动同步成功后的反馈文案。"
+  },
+  "widgetSyncFailed": "同步失败，继续保留最后一次有效快照。",
+  "@widgetSyncFailed": {
+    "description": "Widget 预览页手动同步失败后的降级反馈文案。"
+  },
+  "widgetPreviewModeMetric": "当前模式",
+  "@widgetPreviewModeMetric": {
+    "description": "Widget 预览页统计块中用于展示当前模式的标签。"
+  },
+  "widgetPreviewVisibleMetric": "可见事项",
+  "@widgetPreviewVisibleMetric": {
+    "description": "Widget 预览页统计块中用于展示当前可见事项数量的标签。"
+  },
+  "widgetPreviewPrivateMetric": "隐私事项",
+  "@widgetPreviewPrivateMetric": {
+    "description": "Widget 预览页统计块中用于展示当前隐私事项数量的标签。"
+  },
   "widgetPreviewPrivateSummary": "{itemCount, plural, =0{隐私内容已隐藏} =1{已隐藏 1 条隐私事项} other{已隐藏 {itemCount} 条隐私事项}}",
   "@widgetPreviewPrivateSummary": {
     "description": "Widget 隐私模式下用于汇总隐藏事项数量的安全摘要。",

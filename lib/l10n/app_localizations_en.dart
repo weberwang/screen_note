@@ -437,6 +437,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get widgetPreviewFallbackHint => 'Showing the last valid snapshot';
 
   @override
+  String get widgetSyncAction => 'Sync lock screen snapshot';
+
+  @override
+  String get widgetSyncSuccess => 'Synced the latest stable snapshot.';
+
+  @override
+  String get widgetSyncFailed =>
+      'Sync failed. Keeping the last valid snapshot.';
+
+  @override
+  String get widgetPreviewModeMetric => 'Current mode';
+
+  @override
+  String get widgetPreviewVisibleMetric => 'Visible items';
+
+  @override
+  String get widgetPreviewPrivateMetric => 'Private items';
+
+  @override
   String widgetPreviewPrivateSummary(int itemCount) {
     String _temp0 = intl.Intl.pluralLogic(
       itemCount,

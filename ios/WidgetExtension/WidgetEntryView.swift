@@ -33,6 +33,7 @@ struct ScreenNoteWidgetEntryView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     .padding(12)
     .containerBackground(.fill.tertiary, for: .widget)
+    .widgetURL(URL(string: "screennote://launch?source=widget&target=home"))
   }
 
   @ViewBuilder

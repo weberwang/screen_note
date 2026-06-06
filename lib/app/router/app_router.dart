@@ -7,6 +7,7 @@ import 'package:screen_note/features/app_shell/application/app_shell_launch_reso
 import 'package:screen_note/features/app_shell/domain/entities/app_shell_launch_intent.dart';
 import 'package:screen_note/features/app_shell/infrastructure/app_shell_launch_query_parser.dart';
 import 'package:screen_note/features/app_shell/presentation/pages/app_shell_page.dart';
+import 'package:screen_note/features/history_center/domain/entities/history_section.dart';
 import 'package:screen_note/features/history_center/presentation/pages/history_center_page.dart';
 import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
 import 'package:screen_note/features/task_flow/presentation/pages/task_flow_editor_page.dart';
@@ -55,7 +56,11 @@ GoRouter appRouter(Ref ref) {
               GoRoute(
                 path: RoutePaths.historyCenter,
                 name: 'history-center',
-                builder: (context, state) => const HistoryCenterPage(),
+                builder: (context, state) => HistoryCenterPage(
+                  initialSection: HistorySection.fromQueryValue(
+                    state.uri.queryParameters['section'],
+                  ),
+                ),
               ),
             ],
           ),

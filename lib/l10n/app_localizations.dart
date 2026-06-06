@@ -878,6 +878,42 @@ abstract class AppLocalizations {
   /// **'Showing the last valid snapshot'**
   String get widgetPreviewFallbackHint;
 
+  /// Button label used on the widget preview page to manually sync the latest stable snapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync lock screen snapshot'**
+  String get widgetSyncAction;
+
+  /// Feedback shown after the widget preview page manually syncs the latest stable snapshot successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced the latest stable snapshot.'**
+  String get widgetSyncSuccess;
+
+  /// Fallback feedback shown when the widget preview page fails to sync and keeps the last valid snapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed. Keeping the last valid snapshot.'**
+  String get widgetSyncFailed;
+
+  /// Metric label used on the widget preview page for the current display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Current mode'**
+  String get widgetPreviewModeMetric;
+
+  /// Metric label used on the widget preview page for the number of visible items.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible items'**
+  String get widgetPreviewVisibleMetric;
+
+  /// Metric label used on the widget preview page for the number of private items.
+  ///
+  /// In en, this message translates to:
+  /// **'Private items'**
+  String get widgetPreviewPrivateMetric;
+
   /// Summary shown in widget snapshots when private mode hides task bodies.
   ///
   /// In en, this message translates to:

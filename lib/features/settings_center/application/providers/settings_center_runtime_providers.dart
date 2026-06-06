@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:screen_note/core/logging/app_logger.dart';
 import 'package:screen_note/core/storage/app_preferences.dart';
 import 'package:screen_note/features/settings_center/application/ports/settings_side_effect_port.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/load_settings_preferences_use_case.dart';
@@ -8,7 +11,12 @@ import 'package:screen_note/features/settings_center/application/use_cases/updat
 import 'package:screen_note/features/settings_center/domain/entities/settings_preferences.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 import 'package:screen_note/features/settings_center/infrastructure/settings_preferences_repository_impl.dart';
-import 'package:screen_note/features/settings_center/infrastructure/settings_side_effect_noop_port.dart';
+import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
+import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
+import 'package:screen_note/features/widget_bridge/application/providers/widget_snapshot_shared_providers.dart';
+import 'package:screen_note/features/widget_bridge/application/services/widget_snapshot_auto_sync_coordinator.dart';
+import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_settings_side_effect_port.dart';
+import 'package:screen_note/l10n/app_localizations.dart';
 
 part 'settings_center_runtime_providers.g.dart';
 
@@ -30,7 +38,33 @@ Future<SettingsPreferencesRepository> settingsPreferencesRepository(Ref ref) asy
 /// 设置副作用端口提供器。
 @riverpod
 SettingsSideEffectPort settingsSideEffectPort(Ref ref) {
-  return const SettingsSideEffectNoopPort();
+  final TaskRepository taskRepository = ref.watch(taskRepositoryProvider);
+  final WidgetSnapshotAutoSyncCoordinator coordinator =
+      WidgetSnapshotAutoSyncCoordinator(
+        taskRepository: taskRepository,
+        snapshotStore: ref.watch(widgetSnapshotStoreProvider),
+        projector: ref.watch(widgetSnapshotProjectorProvider),
+        locale: _resolveAutoSyncLocale(),
+        loadStoredPreferences: () async {
+          final repository = await ref.read(
+            settingsPreferencesRepositoryProvider.future,
+          );
+          return repository.load();
+        },
+      );
+  return WidgetSnapshotSettingsSideEffectPort(
+    coordinator: coordinator,
+    logger: AppLogger.instance,
+  );
+}
+
+Locale _resolveAutoSyncLocale() {
+  final Locale locale = PlatformDispatcher.instance.locale;
+  return AppLocalizations.supportedLocales.any(
+        (supportedLocale) => supportedLocale.languageCode == locale.languageCode,
+      )
+      ? Locale(locale.languageCode)
+      : AppLocalizations.supportedLocales.first;
 }
 
 /// 读取设置偏好用例提供器。
