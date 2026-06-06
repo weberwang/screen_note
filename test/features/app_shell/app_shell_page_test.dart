@@ -14,7 +14,7 @@ import 'package:screen_note/l10n/app_localizations.dart';
 
 /// 验证壳层页面会稳定承接唯一导航宿主，并按当前分支切换标题与新建入口。
 void main() {
-  testWidgets('壳层切换分支时保持唯一宿主，并按分支规则切换标题与 FAB', (
+  testWidgets('壳层切换分支时保持唯一宿主，并按壳层保真规则切换 hero 与 FAB', (
     WidgetTester tester,
   ) async {
     SharedPreferences.setMockInitialValues(<String, Object>{});
@@ -45,29 +45,23 @@ void main() {
     );
 
     expect(find.byType(AppShellPage), findsOneWidget);
-    expect(find.byType(NavigationBar), findsOneWidget);
-    expect(find.byType(FloatingActionButton), findsOneWidget);
-    expect(
-      find.descendant(
-        of: find.byType(AppBar),
-        matching: find.text(localizations.appTitle),
-      ),
-      findsOneWidget,
-    );
+    expect(find.byKey(const Key('app-shell-nav-surface')), findsOneWidget);
+    expect(find.byKey(const Key('app-shell-home-cta')), findsOneWidget);
+    expect(find.byType(AppBar), findsNothing);
+    expect(find.byKey(const Key('app-shell-home-hero')), findsOneWidget);
+    expect(find.byKey(const Key('app-shell-home-landscape-band')), findsOneWidget);
+    expect(find.text(localizations.appShellGreetingLabel), findsOneWidget);
+    expect(find.text(localizations.appShellHomeHeadline), findsOneWidget);
 
     await tester.tap(find.text(localizations.settingsCenterTabLabel));
     await tester.pumpAndSettle();
 
     expect(find.byType(AppShellPage), findsOneWidget);
     expect(find.byType(SettingsCenterPage), findsOneWidget);
-    expect(find.byType(NavigationBar), findsOneWidget);
-    expect(find.byType(FloatingActionButton), findsNothing);
-    expect(
-      find.descendant(
-        of: find.byType(AppBar),
-        matching: find.text(localizations.settingsPageTitle),
-      ),
-      findsOneWidget,
-    );
+    expect(find.byKey(const Key('app-shell-nav-surface')), findsOneWidget);
+    expect(find.byKey(const Key('app-shell-home-cta')), findsNothing);
+    expect(find.byType(AppBar), findsNothing);
+    expect(find.byKey(const Key('app-shell-home-hero')), findsNothing);
+    expect(find.text(localizations.settingsPageHelperText), findsOneWidget);
   });
 }

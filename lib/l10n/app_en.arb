@@ -226,6 +226,22 @@
       }
     }
   },
+  "appShellGreetingLabel": "Good morning",
+  "@appShellGreetingLabel": {
+    "description": "Shell greeting eyebrow shown in the top-left greeting row of the app shell home chrome."
+  },
+  "appShellHomeHeadline": "Focus on what moves you forward.",
+  "@appShellHomeHeadline": {
+    "description": "Primary shell headline shown in the home shell chrome."
+  },
+  "appShellHomeSubtitle": "Plan with clarity. Take action. See progress.",
+  "@appShellHomeSubtitle": {
+    "description": "Supporting subtitle shown under the shell headline on the home shell."
+  },
+  "appShellHomeCta": "Start something meaningful",
+  "@appShellHomeCta": {
+    "description": "Primary call to action shown by the shell on the home branch."
+  },
   "taskDetailTitle": "Task details",
   "@taskDetailTitle": {
     "description": "Title for the task detail page."

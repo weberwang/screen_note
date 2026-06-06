@@ -189,6 +189,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get appShellGreetingLabel => 'Good morning';
+
+  @override
+  String get appShellHomeHeadline => 'Focus on what moves you forward.';
+
+  @override
+  String get appShellHomeSubtitle =>
+      'Plan with clarity. Take action. See progress.';
+
+  @override
+  String get appShellHomeCta => 'Start something meaningful';
+
+  @override
   String get taskDetailTitle => 'Task details';
 
   @override

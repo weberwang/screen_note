@@ -177,6 +177,18 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get appShellGreetingLabel => '早安';
+
+  @override
+  String get appShellHomeHeadline => '专注那些真正推动你向前的事。';
+
+  @override
+  String get appShellHomeSubtitle => '先理清，再行动，再看见进展。';
+
+  @override
+  String get appShellHomeCta => '开始一件有意义的事';
+
+  @override
   String get taskDetailTitle => '事项详情';
 
   @override

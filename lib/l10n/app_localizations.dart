@@ -422,6 +422,30 @@ abstract class AppLocalizations {
   /// **'That entry is unavailable. Returned to {destination}.'**
   String appShellLaunchFallbackFeedback(String destination);
 
+  /// Shell greeting eyebrow shown in the top-left greeting row of the app shell home chrome.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get appShellGreetingLabel;
+
+  /// Primary shell headline shown in the home shell chrome.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on what moves you forward.'**
+  String get appShellHomeHeadline;
+
+  /// Supporting subtitle shown under the shell headline on the home shell.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan with clarity. Take action. See progress.'**
+  String get appShellHomeSubtitle;
+
+  /// Primary call to action shown by the shell on the home branch.
+  ///
+  /// In en, this message translates to:
+  /// **'Start something meaningful'**
+  String get appShellHomeCta;
+
   /// Title for the task detail page.
   ///
   /// In en, this message translates to:

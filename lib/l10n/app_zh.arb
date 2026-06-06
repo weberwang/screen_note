@@ -226,6 +226,22 @@
       }
     }
   },
+  "appShellGreetingLabel": "早安",
+  "@appShellGreetingLabel": {
+    "description": "首页壳层左上问候行的眉标题文案。"
+  },
+  "appShellHomeHeadline": "专注那些真正推动你向前的事。",
+  "@appShellHomeHeadline": {
+    "description": "首页壳层 hero 的主标题文案。"
+  },
+  "appShellHomeSubtitle": "先理清，再行动，再看见进展。",
+  "@appShellHomeSubtitle": {
+    "description": "首页壳层 hero 主标题下方的辅助说明文案。"
+  },
+  "appShellHomeCta": "开始一件有意义的事",
+  "@appShellHomeCta": {
+    "description": "首页壳层主 CTA 的按钮文案。"
+  },
   "taskDetailTitle": "事项详情",
   "@taskDetailTitle": {
     "description": "事项详情页标题。"
