@@ -32,20 +32,32 @@ class ScreenNoteStatTile extends StatelessWidget {
         border: Border.all(color: palette.lineSoft),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Icon(icon, color: palette.accentAmber, size: 20),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Text(
               value,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(color: palette.inkPrimary),
             ),
             const SizedBox(height: 4),
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            Expanded(
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  label,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
           ],
         ),
       ),

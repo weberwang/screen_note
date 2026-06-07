@@ -97,12 +97,15 @@
   - `docs/rd/modules/task-flow/home-page-light-refresh-v2.png`
   - `docs/rd/modules/task-flow/task-editor-refresh-v1.png`
   - `docs/rd/modules/settings-center/settings-center-refresh-v1.png`
+  - `docs/rd/modules/app-shell/app-shell-refresh-v1.png`
+  - `docs/rd/modules/history-center/history-center-refresh-v1.png`
+  - `docs/rd/modules/widget-bridge/widget-bridge-refresh-v1.png`
 - 证据说明：
   - `home-page-light-refresh-v2.png` 用于锁定共享方向与首页层级基准。
   - `task-editor-refresh-v1.png` 与 `settings-center-refresh-v1.png` 属于方向锁定后的补充页面证据，用于完成全局组件、表单分组和设置分组的冻结，而不是新增竞争方向。
+- `app-shell-refresh-v1.png`、`history-center-refresh-v1.png` 与 `widget-bridge-refresh-v1.png` 属于本轮缺图模块补证据，负责把壳层宿主、历史回看与 Widget 结构从纯文本约束提升到可视化页面证据，但不重定义共享视觉世界。
 - 仍缺少但不阻塞当前全局冻结的页面预览：
-  - `recent-completed`
-  - `recent-deleted`
+  - `none`
 - 共享参考基准：`home-page-light-refresh-v2.png`
 - 证据模式：`light-mode`
 
@@ -119,8 +122,8 @@
 
 ## missing_items
 
-- `recent-deleted` 页面静态预览尚未补齐
-- 当前缺口已降级为补充证据，不阻塞既有全局冻结、模块冻结与 `flutter-init` 前准备
+- `none`
+- 缺图模块的模块级静态预览已补齐，当前共享冻结与模块冻结都具备可视化页面证据
 
 ## next_skill
 

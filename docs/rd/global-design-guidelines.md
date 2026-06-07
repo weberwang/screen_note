@@ -130,9 +130,13 @@ Dark 主题不做简单反相，而是保留语义分层：深背景、略抬起
   - `docs/rd/modules/task-flow/home-page-light-refresh-v2.png`
   - `docs/rd/modules/task-flow/task-editor-refresh-v1.png`
   - `docs/rd/modules/settings-center/settings-center-refresh-v1.png`
+  - `docs/rd/modules/app-shell/app-shell-refresh-v1.png`
+  - `docs/rd/modules/history-center/history-center-refresh-v1.png`
+  - `docs/rd/modules/widget-bridge/widget-bridge-refresh-v1.png`
 - 证据使用规则：
   - `home-page-light-refresh-v2.png` 继续作为全局方向锚点。
   - `task-editor-refresh-v1.png` 与 `settings-center-refresh-v1.png` 仅用于补齐冻结所需的表单、分组设置和共享组件证据，不重新定义视觉世界。
+  - 三张新增模块图仅补齐各模块的页面级结构证据，不改动共享色彩、字重层级或 CTA 语义。
 
 ## design_prohibitions
 

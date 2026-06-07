@@ -16,9 +16,14 @@
 
 - 全局视觉规则：`global-design-guidelines.md`
 - 主题冻结：`light-theme-freeze.yaml`、`dark-theme-freeze.yaml`
-- 静态证据：
-  - `docs/rd/home-overview.png`
-  - `docs/rd/recent-completed.png`
+- 共享静态证据：
+  - `docs/rd/home-page-light-refresh-v2.png`
+  - `docs/rd/task-editor-refresh-v1.png`
+  - `docs/rd/settings-center-refresh-v1.png`
+- 模块级静态证据：
+  - `docs/rd/modules/app-shell/app-shell-refresh-v1.png`
+  - `docs/rd/modules/history-center/history-center-refresh-v1.png`
+  - `docs/rd/modules/widget-bridge/widget-bridge-refresh-v1.png`
 
 ## theme_token_mapping
 
@@ -40,7 +45,7 @@
 - `native_flutter`
   - 任务行、设置项、历史记录行、底部宿主、输入区、状态标签
 - `existing_asset_reuse`
-  - `home-overview.png`、`recent-completed.png` 仅作为视觉参考，不直接进 App
+  - `home-page-light-refresh-v2.png`、`task-editor-refresh-v1.png`、`settings-center-refresh-v1.png` 仅作为视觉参考，不直接进 App
 - `project_bitmap_asset`
   - none
 
@@ -150,5 +155,5 @@
 
 - `flutter-init` 尚未执行，当前工程仍缺少 project-local `flutter-dev` 技能与 `lib/` 基线代码
 - 当前 worktree 已存在大量旧实现与设计资产的删除/修改痕迹；继续执行 `flutter-init` 前需要先确认这些删除是否为用户有意保留
-- `task-editor`、`recent-deleted`、`settings` 的静态预览未全部生成，后续如要做高保真显示层对齐，可补图再实施
+- 3 个缺图模块的页面级静态证据已补齐；后续如再改结构，应重新生成对应模块图，而不是回退到纯文本或旧占位图名
 - Pro/iCloud/Reminders 仍是未来增强，初始化阶段只应预留扩展口

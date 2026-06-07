@@ -125,64 +125,92 @@ class _WidgetBridgeContent extends StatelessWidget {
         .where((item) => item.isPrivate)
         .length;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.1,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final bool useCompactGrid = constraints.maxWidth < 400;
+        final bool useStackedHeader = constraints.maxWidth < 360;
+
+        // 预览页既要服务桌面宽度，也要保证手机宽度下指标卡和模式标签不溢出。
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            ScreenNoteStatTile(
-              label: localizations.widgetPreviewModeMetric,
-              value: _modeLabel(localizations, snapshot.displayMode),
-              icon: Icons.dashboard_customize_outlined,
-            ),
-            ScreenNoteStatTile(
-              label: localizations.widgetPreviewVisibleMetric,
-              value: '${snapshot.items.length}',
-              icon: Icons.visibility_outlined,
-            ),
-            ScreenNoteStatTile(
-              label: localizations.widgetPreviewPrivateMetric,
-              value: '$privateItemCount',
-              icon: Icons.lock_outline_rounded,
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        ScreenNotePanel(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(
-                    localizations.widgetSettingsTitle,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const Spacer(),
-                  _ModeChip(
-                    label: _modeLabel(localizations, snapshot.displayMode),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              _WidgetPreviewFrame(snapshot: snapshot),
-              if (snapshot.hasFallbackContent) ...<Widget>[
-                const SizedBox(height: 12),
-                Text(
-                  snapshot.fallbackHint,
-                  style: Theme.of(context).textTheme.bodyMedium,
+            GridView.count(
+              crossAxisCount: useCompactGrid ? 2 : 3,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: useCompactGrid ? 1.45 : 1.1,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                ScreenNoteStatTile(
+                  label: localizations.widgetPreviewModeMetric,
+                  value: _modeLabel(localizations, snapshot.displayMode),
+                  icon: Icons.dashboard_customize_outlined,
+                ),
+                ScreenNoteStatTile(
+                  label: localizations.widgetPreviewVisibleMetric,
+                  value: '${snapshot.items.length}',
+                  icon: Icons.visibility_outlined,
+                ),
+                ScreenNoteStatTile(
+                  label: localizations.widgetPreviewPrivateMetric,
+                  value: '$privateItemCount',
+                  icon: Icons.lock_outline_rounded,
                 ),
               ],
-            ],
-          ),
-        ),
-      ],
+            ),
+            const SizedBox(height: 16),
+            ScreenNotePanel(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  if (useStackedHeader)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          localizations.widgetSettingsTitle,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: _ModeChip(
+                            label: _modeLabel(localizations, snapshot.displayMode),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            localizations.widgetSettingsTitle,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        _ModeChip(
+                          label: _modeLabel(localizations, snapshot.displayMode),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 14),
+                  _WidgetPreviewFrame(snapshot: snapshot),
+                  if (snapshot.hasFallbackContent) ...<Widget>[
+                    const SizedBox(height: 12),
+                    Text(
+                      snapshot.fallbackHint,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

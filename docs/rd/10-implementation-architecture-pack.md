@@ -14,16 +14,16 @@
   - [light-theme-freeze.yaml](D:/Projects/Flutter/screen_note/docs/rd/light-theme-freeze.yaml)
   - [dark-theme-freeze.yaml](D:/Projects/Flutter/screen_note/docs/rd/dark-theme-freeze.yaml)
 - 模块实现前 RD：
-  - [tasks.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/tasks/tasks.ui-ux.md)
-  - [tasks.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/tasks/tasks.impl.md)
-  - [history.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/history/history.ui-ux.md)
-  - [history.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/history/history.impl.md)
-  - [quick_add.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/quick_add/quick_add.ui-ux.md)
-  - [quick_add.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/quick_add/quick_add.impl.md)
-  - [widget_bridge.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/widget_bridge/widget_bridge.ui-ux.md)
-  - [widget_bridge.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/widget_bridge/widget_bridge.impl.md)
-  - [settings.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/settings/settings.ui-ux.md)
-  - [settings.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/settings/settings.impl.md)
+  - [app-shell.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/app-shell/app-shell.ui-ux.md)
+  - [app-shell.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/app-shell/app-shell.impl.md)
+  - [task-flow.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/task-flow/task-flow.ui-ux.md)
+  - [task-flow.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/task-flow/task-flow.impl.md)
+  - [history-center.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/history-center/history-center.ui-ux.md)
+  - [history-center.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/history-center/history-center.impl.md)
+  - [widget-bridge.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/widget-bridge/widget-bridge.ui-ux.md)
+  - [widget-bridge.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/widget-bridge/widget-bridge.impl.md)
+  - [settings-center.ui-ux.md](D:/Projects/Flutter/screen_note/docs/rd/modules/settings-center/settings-center.ui-ux.md)
+  - [settings-center.impl.md](D:/Projects/Flutter/screen_note/docs/rd/modules/settings-center/settings-center.impl.md)
 
 ## 2. 主题令牌映射
 
@@ -53,25 +53,25 @@
   - `history_note_row`
   - `privacy_preview_card`
 - 模块业务组件：
-  - `tasks`: `task_meta_row`, `editor_action_footer`
-  - `history`: `history_section_header`, `history_row_action_slot`
-  - `quick_add`: `quick_add_source_chip`, `quick_add_default_option_row`
-  - `widget_bridge`: `widget_preview_frame`, `snapshot_status_hint`
-  - `settings`: `settings_group`, `capability_explain_card`
+  - `app-shell`: `launch_router_gate`, `global_feedback_host`
+  - `task-flow`: `task_meta_row`, `editor_action_footer`, `quick_add_bar`
+  - `history-center`: `history_section_header`, `history_row_action_slot`
+  - `widget-bridge`: `widget_preview_frame`, `snapshot_status_hint`
+  - `settings-center`: `settings_group`, `capability_explain_card`
 
 ## 4. 屏幕架构
 
-- `tasks`
+- `app-shell`
+  - `launch_router_gate` 负责回流参数解析与默认落点
+  - `shell_page` 负责底部宿主、全局反馈宿主与子路由装配
+- `task-flow`
   - `home_page` 负责焦点事项、次级列表与快捷录入编排
-  - `task_detail_page` 负责查看与次级操作
   - `task_editor_page` 负责编辑与保存
-- `history`
+- `history-center`
   - 历史页采用单页面双区块结构，列表状态边界独立
-- `quick_add`
-  - 支持全屏页与底部弹层两种宿主，但共用同一状态模型
-- `widget_bridge`
+- `widget-bridge`
   - 预览与设置解耦；展示模式、刷新状态、安装说明分区承载
-- `settings`
+- `settings-center`
   - 设置首页只做导航与摘要，隐私页 / Widget 页承接具体设置
 
 ## 5. 状态架构
@@ -129,15 +129,15 @@
 - 当前已存在：
   - `lib/app`
   - `lib/shared`
-  - `lib/features/tasks`
-  - `lib/features/history`
-  - `lib/features/quick_add`
+  - `lib/features/app_shell`
+  - `lib/features/task_flow`
+  - `lib/features/history_center`
   - `lib/features/widget_bridge`
-  - `lib/features/settings`
+  - `lib/features/settings_center`
 - 因仓库已初始化，本架构包供 `flutter-dev` 与 `flutter-project-guardrails` 直接消费，不再重复跑初始化脚手架。
 
 ## 10. 风险与开放项
 
-- 当前模块级冻结主要依赖共享三张预览图与模块文档推导，后续若用户主动改视觉，必须回到设计源控制流程。
+- 当前模块级冻结依赖共享三张预览图、模块文档与显式文本设计包；后续若用户主动改视觉，必须回到设计源控制流程。
 - 深色主题尚未生成独立静态预览，但共享冻结已给出完整 theme freeze 值，编码阶段不得自行改义。
 - 若后续新增同步、Pro、Apple Reminders 或 AI 提取，应新增模块，不得偷挂到当前五个模块里扩边界。

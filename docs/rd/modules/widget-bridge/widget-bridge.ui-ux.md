@@ -49,7 +49,12 @@
 
 - 共享设计包：`docs/rd/02-shared-design-packet.md`
 - 共享冻结：`docs/rd/global-design-guidelines.md`
-- 视觉证据：沿用 `home-overview` 的列表层级与卡片节奏
+- 主题冻结：`docs/rd/light-theme-freeze.yaml`、`docs/rd/dark-theme-freeze.yaml`
+- 视觉证据策略：
+  - 共享锚点：`docs/rd/home-page-light-refresh-v2.png`
+  - 模块级效果图：`docs/rd/modules/widget-bridge/widget-bridge-refresh-v1.png`
+  - 模块图用于补充单条 Widget、三条 Widget 与隐私占位三类结构；共享设计包继续约束列表层级、隐私语义与空态语气。
+  - 运行态证据只作实现复核参考：`test/parity/goldens/runtime_pack_widget_private.png`、`test/parity/goldens/runtime_edge_widget_private.png`、`test/parity/goldens/runtime_edge_widget_empty.png`
 
 ## 设计冻结卡
 
@@ -57,6 +62,7 @@
 - 不可变项：Widget 不泄露隐私正文；刷新失败保留最后有效内容
 - 允许调整：系统容器边距、文字截断策略、图标密度
 - 审批记录：`workflow-orchestrator --auto` 于 2026-06-04 自动确认
+- 当前返工补充：本轮明确禁止继续引用任何已废弃的旧占位图名；Widget 设计源以共享包与隐私规则文本为准。
 
 ## 接受门禁
 

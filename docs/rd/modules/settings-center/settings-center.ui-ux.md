@@ -50,7 +50,11 @@
 
 - 共享设计包：`docs/rd/02-shared-design-packet.md`
 - 共享冻结：`docs/rd/global-design-guidelines.md`
-- 文字设计基线可覆盖该模块，无静态预览也可冻结
+- 主题冻结：`docs/rd/light-theme-freeze.yaml`、`docs/rd/dark-theme-freeze.yaml`
+- 视觉证据：
+  - `docs/rd/settings-center-refresh-v1.png`
+  - 模块内复制图：`docs/rd/modules/settings-center/settings-center-refresh-v1.png`
+  - 运行态截图仅作实现复核参考：`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c001/runtime-pack/settings.png`
 
 ## 设计冻结卡
 
@@ -58,6 +62,7 @@
 - 不可变项：基础隐私能力不是付费门槛；权限拒绝提示不得阻断主链路
 - 允许调整：组间留白、开关文案说明长度
 - 审批记录：`workflow-orchestrator --auto` 于 2026-06-04 自动确认
+- 当前返工补充：设置页已具备模块内静态图，后续分组层级判断以该图和共享设计包共同为准。
 
 ## 接受门禁
 

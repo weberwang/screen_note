@@ -53,8 +53,11 @@
 - 共享冻结：`docs/rd/global-design-guidelines.md`
 - 主题冻结：`docs/rd/light-theme-freeze.yaml`、`docs/rd/dark-theme-freeze.yaml`
 - 视觉证据：
-  - `docs/rd/home-overview.png`
-  - 模块内复制图：`docs/rd/modules/task-flow/home-overview.png`
+  - `docs/rd/home-page-light-refresh-v2.png`
+  - `docs/rd/task-editor-refresh-v1.png`
+  - 模块内复制图：`docs/rd/modules/task-flow/home-page-light-refresh-v2.png`
+  - 模块内复制图：`docs/rd/modules/task-flow/task-editor-refresh-v1.png`
+  - 运行态截图仅作实现复核参考：`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c001/runtime-pack/home.png`、`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c001/runtime-pack/task-editor.png`
 
 ## 设计冻结卡
 
@@ -62,6 +65,7 @@
 - 不可变项：过期任务显著性高于普通任务；隐私任务不得在锁屏型上下文露正文
 - 允许调整：列表分隔形式、骨架样式、编辑页控件实现细节
 - 审批记录：`workflow-orchestrator --auto` 于 2026-06-04 自动确认
+- 当前返工补充：首页与编辑页现在分别绑定到现有共享图与模块复制图，禁止继续引用任何已废弃的旧占位图名。
 
 ## 接受门禁
 

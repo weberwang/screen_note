@@ -1,0 +1,211 @@
+{
+  "pet_id": "huihui",
+  "display_name": "\u7070\u7070",
+  "description": "\u4e00\u53ea\u5199\u5b9e\u6bdb\u7ed2\u98ce\u3001\u6d3b\u6cfc\u4eb2\u4eba\u7684\u82f1\u77ed\u7070\u732b\u7a0b\u5e8f\u5458\u5ba0\u7269\uff0c\u4fdd\u7559\u5706\u8138\u3001\u9ec4\u773c\u775b\u548c\u539a\u5b9e\u77ed\u6bdb\uff0c\u901a\u8fc7\u952e\u76d8\u4e92\u52a8\u8868\u8fbe\u7a0b\u5e8f\u5458\u6c14\u8d28\u3002.",
+  "created_at": "2026-06-04T15:02:45.147903+00:00",
+  "atlas": {
+    "columns": 8,
+    "rows": 9,
+    "cell_width": 192,
+    "cell_height": 208,
+    "width": 1536,
+    "height": 1872
+  },
+  "rows": [
+    {
+      "state": "idle",
+      "row": 0,
+      "frames": 6,
+      "purpose": "calm resting, breathing, and blinking loop"
+    },
+    {
+      "state": "running-right",
+      "row": 1,
+      "frames": 8,
+      "purpose": "rightward drag movement loop"
+    },
+    {
+      "state": "running-left",
+      "row": 2,
+      "frames": 8,
+      "purpose": "leftward drag movement loop"
+    },
+    {
+      "state": "waving",
+      "row": 3,
+      "frames": 4,
+      "purpose": "greeting or attention gesture"
+    },
+    {
+      "state": "jumping",
+      "row": 4,
+      "frames": 5,
+      "purpose": "hover or playful jump"
+    },
+    {
+      "state": "failed",
+      "row": 5,
+      "frames": 8,
+      "purpose": "blocked, failed, or cancelled reaction"
+    },
+    {
+      "state": "waiting",
+      "row": 6,
+      "frames": 6,
+      "purpose": "waiting for approval, help, or user input"
+    },
+    {
+      "state": "running",
+      "row": 7,
+      "frames": 6,
+      "purpose": "active task work or processing"
+    },
+    {
+      "state": "review",
+      "row": 8,
+      "frames": 6,
+      "purpose": "ready or completed output review"
+    }
+  ],
+  "layout_guides": [
+    {
+      "state": "idle",
+      "path": "references\\layout-guides\\idle.png",
+      "width": 1152,
+      "height": 208,
+      "frames": 6,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "running-right",
+      "path": "references\\layout-guides\\running-right.png",
+      "width": 1536,
+      "height": 208,
+      "frames": 8,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "running-left",
+      "path": "references\\layout-guides\\running-left.png",
+      "width": 1536,
+      "height": 208,
+      "frames": 8,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "waving",
+      "path": "references\\layout-guides\\waving.png",
+      "width": 768,
+      "height": 208,
+      "frames": 4,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "jumping",
+      "path": "references\\layout-guides\\jumping.png",
+      "width": 960,
+      "height": 208,
+      "frames": 5,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "failed",
+      "path": "references\\layout-guides\\failed.png",
+      "width": 1536,
+      "height": 208,
+      "frames": 8,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "waiting",
+      "path": "references\\layout-guides\\waiting.png",
+      "width": 1152,
+      "height": 208,
+      "frames": 6,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "running",
+      "path": "references\\layout-guides\\running.png",
+      "width": 1152,
+      "height": 208,
+      "frames": 6,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    },
+    {
+      "state": "review",
+      "path": "references\\layout-guides\\review.png",
+      "width": 1152,
+      "height": 208,
+      "frames": 6,
+      "cell_width": 192,
+      "cell_height": 208,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    }
+  ],
+  "references": [
+    {
+      "path": "D:\\Projects\\Flutter\\screen_note\\output\\pets\\huihui-run\\references\\reference-01.jpg",
+      "width": 887,
+      "height": 1920,
+      "mode": "RGB",
+      "format": "JPEG",
+      "source_path": "D:\\xwechat_files\\W_heartforever_41a8\\temp\\RWTemp\\2026-06\\9e20f478899dc29eb19741386f9343c8\\2ac0bc27f808af08ce48a06873a9be7c.jpg",
+      "copied_path": "D:\\Projects\\Flutter\\screen_note\\output\\pets\\huihui-run\\references\\reference-01.jpg"
+    }
+  ],
+  "chroma_key": {
+    "hex": "#00FFFF",
+    "rgb": [
+      0,
+      255,
+      255
+    ],
+    "name": "cyan",
+    "selection": "auto",
+    "score": 223.51
+  },
+  "pet_notes": "\u5199\u5b9e\u6bdb\u7ed2\u98ce\u82f1\u77ed\u7070\u732b\uff0c\u5706\u8138\uff0c\u539a\u5b9e\u77ed\u6bdb\uff0c\u504f\u91d1\u9ec4\u8272\u5706\u773c\uff0c\u6df1\u7070\u9f3b\u5934\uff0c\u8eab\u4f53\u6566\u5b9e\uff0c\u8868\u60c5\u4eb2\u4eba\u7075\u52a8\uff0c\u52a8\u4f5c\u5e26\u8f7b\u5fae\u952e\u76d8\u4e92\u52a8\u611f\uff0c\u4e0d\u52a0\u7a7f\u6234\u914d\u4ef6\uff0c\u4fdd\u6301\u771f\u5b9e\u732b\u6bd4\u4f8b\u548c\u6bdb\u7ed2\u8d28\u611f\u3002",
+  "style_preset": "plush",
+  "style_notes": "\u5199\u5b9e\u6bdb\u7ed2\u98ce\uff0c\u4e0d\u8981Q\u7248\uff0c\u4e0d\u8981\u5938\u5f20\u5361\u901a\u5934\u8eab\u6bd4\uff0c\u4fdd\u7559\u771f\u5b9e\u732b\u4f53\u6001\u4e0e\u67d4\u8f6f\u77ed\u6bdb\u5c42\u6b21\u3002",
+  "style_contract": "Pet-safe sprite: compact full-body mascot, readable in a 192x208 cell, clear silhouette, simple face, stable palette/materials, and crisp edges for chroma-key extraction. Style `plush`: Soft plush toy mascot with rounded stitched forms, fuzzy fabric feel, simple sewn details, and readable toy-like proportions. User style notes: \u5199\u5b9e\u6bdb\u7ed2\u98ce\uff0c\u4e0d\u8981Q\u7248\uff0c\u4e0d\u8981\u5938\u5f20\u5361\u901a\u5934\u8eab\u6bd4\uff0c\u4fdd\u7559\u771f\u5b9e\u732b\u4f53\u6001\u4e0e\u67d4\u8f6f\u77ed\u6bdb\u5c42\u6b21\u3002.",
+  "brand_name": "",
+  "brand_brief": "",
+  "brand_sources": [],
+  "pet_safe_style": "Pet-safe sprite: compact full-body mascot, readable in a 192x208 cell, clear silhouette, simple face, stable palette/materials, and crisp edges for chroma-key extraction.",
+  "primary_generation_skill": "$imagegen"
+}

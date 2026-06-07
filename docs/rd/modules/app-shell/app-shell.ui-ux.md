@@ -49,7 +49,11 @@
 - 共享设计包：`docs/rd/02-shared-design-packet.md`
 - 共享冻结：`docs/rd/global-design-guidelines.md`
 - 主题冻结：`docs/rd/light-theme-freeze.yaml`、`docs/rd/dark-theme-freeze.yaml`
-- 视觉证据：沿用 `home-overview` 的底部宿主与页首节奏
+- 视觉证据策略：
+  - 共享锚点：`docs/rd/home-page-light-refresh-v2.png`
+  - 模块级效果图：`docs/rd/modules/app-shell/app-shell-refresh-v1.png`
+  - 模块图用于补充壳层宿主、底部导航与回流反馈的页面级证据；共享设计包继续约束壳层层级与页首节奏。
+  - 运行态截图仅作为实现复核参考：`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c002/launch-settings.png`、`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c002/launch-history-deleted.png`、`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c002/launch-fallback-home.png`
 
 ## 设计冻结卡
 
@@ -57,6 +61,7 @@
 - 不可变项：仅一个壳层导航体系；主页面切换不引入第二宿主
 - 允许调整：iOS 安全区细节、底部高度、过渡动画时长
 - 审批记录：`workflow-orchestrator --auto` 于 2026-06-04 自动确认
+- 当前返工补充：本轮仅细化设计源说明与证据索引，不把已实现截图回写为新的设计源。
 
 ## 验收门禁
 

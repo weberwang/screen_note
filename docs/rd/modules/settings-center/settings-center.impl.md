@@ -17,6 +17,15 @@
   - 通知权限读取
   - Widget 样式同步
 
+## 最小数据合同
+
+- `SettingsPreferencesSnapshot`
+  - 字段：`privacyMode`、`widgetDisplayMode`、`notificationPermissionState`
+  - 约束：只表达当前可持久化偏好，不承载未来权益试验字段
+- `SettingsCapabilityState`
+  - 字段：`notificationsAvailable`、`widgetSyncAvailable`、`premiumEntryVisible`
+  - 约束：能力缺失只能降级展示，不阻断基础设置读写
+
 ## 状态与交互
 
 - 设置项切换后应立即写本地偏好并触发相关刷新
@@ -32,3 +41,4 @@
 
 - 不允许把基础隐私能力放进付费门槛
 - 不允许设置页直接调任务数据库写核心业务字段
+- 返工后的静态图与共享设计包共同定义分组节奏；运行态截图仅用于 parity 复核

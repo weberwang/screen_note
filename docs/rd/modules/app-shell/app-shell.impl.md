@@ -30,6 +30,15 @@
 - 回流参数异常时回退首页并写警告日志
 - 返回行为统一由 `go_router` 管理，不允许页面自行重建壳层
 
+## 最小数据合同
+
+- `AppShellLaunchIntent`
+  - 字段：`targetRoute`、`sourceType`、`fallbackReason`
+  - 约束：只允许最小必要参数穿过壳层，不携带任务正文或其他隐私正文
+- `ShellTabState`
+  - 字段：`currentTab`、`restoredFromExternalEntry`
+  - 约束：只表达导航宿主状态，不承载业务模块数据
+
 ## 数据、安全与监控
 
 - 不持有业务数据，仅持有入口来源和当前 Tab
@@ -41,3 +50,4 @@
 - 不允许在壳层实现任务逻辑
 - 不允许并行出现第二套路由守卫
 - 后续 `flutter-init` 需先落壳层 scaffold，其他模块再接入
+- 返工后的设计源仍以共享设计包和冻结规则为准；运行态截图只用于 parity 复核，不升级为新的壳层设计源

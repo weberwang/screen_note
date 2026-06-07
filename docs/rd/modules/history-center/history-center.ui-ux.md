@@ -48,9 +48,12 @@
 ## 设计来源
 
 - 共享设计包：`docs/rd/02-shared-design-packet.md`
-- 视觉证据：
-  - `docs/rd/recent-completed.png`
-  - 模块内复制图：`docs/rd/modules/history-center/recent-completed.png`
+- 共享冻结：`docs/rd/global-design-guidelines.md`
+- 主题冻结：`docs/rd/light-theme-freeze.yaml`、`docs/rd/dark-theme-freeze.yaml`
+- 视觉证据策略：
+  - 模块级效果图：`docs/rd/modules/history-center/history-center-refresh-v1.png`
+  - 模块图用于补充最近完成/最近删除并列节奏、恢复按钮显著性与柔和空态姿态；共享设计包继续约束列表和 CTA 语义。
+  - 运行态证据只作实现复核参考：`test/parity/goldens/runtime_pack_history_deleted.png`、`test/parity/goldens/runtime_edge_history_completed_empty.png`、`.omo/ulw-loop/019e9bfa-e6c7-7103-9226-64ff30b72c6e/evidence/c003/history-empty.png`
 
 ## 设计冻结卡
 
@@ -58,6 +61,7 @@
 - 不可变项：恢复动作用清晰按钮或尾部动作，不得隐藏在长按手势
 - 允许调整：图标具体风格、分隔线轻重
 - 审批记录：`workflow-orchestrator --auto` 于 2026-06-04 自动确认
+- 当前返工补充：在缺少模块私有页面图的情况下，冻结依据回到文本设计包与共享冻结，不再伪装存在独立 `recent-completed` 设计图。
 
 ## 接受门禁
 

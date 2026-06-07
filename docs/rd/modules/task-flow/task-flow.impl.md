@@ -31,6 +31,15 @@
 - 仓储接口：`TaskRepository`
 - 时间字段统一用 UTC 持久化，本地时区展示
 
+## 最小数据合同
+
+- `TaskFeedCard`
+  - 字段：`id`、`title`、`dueAt`、`status`、`isPinned`、`isPrivate`、`reminderMode`
+  - 约束：首页列表只消费稳定查询结果，不额外拼接 Widget 或通知插件状态
+- `TaskEditorDraft`
+  - 字段：`title`、`scheduledAt`、`privacyMode`、`reminderMode`、`pinState`
+  - 约束：表单保存前只在页面层维护草稿，状态流转统一由应用层用例落库
+
 ## 展示层与数据层边界
 
 - 展示层不直接操作数据库
@@ -53,3 +62,4 @@
 - 不允许页面绕过用例直接写状态
 - 不允许新增第四种持久状态
 - 代码消费冻结设计源时，不得改动任务行层级与主次 CTA
+- 返工后的视觉证据只绑定 `home-page-light-refresh-v2.png` 与 `task-editor-refresh-v1.png`，不再接受旧预览文件名

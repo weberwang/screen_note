@@ -18,6 +18,15 @@
 - 写模型：
   - `restoreTask`
 
+## 最小数据合同
+
+- `HistoryRecordItem`
+  - 字段：`taskId`、`displayTitle`、`occurredAt`、`section`、`canRestore`
+  - 约束：隐私事项标题必须先在应用层完成安全投影，再交给页面层展示
+- `HistorySectionSnapshot`
+  - 字段：`sectionType`、`items`、`isEmpty`
+  - 约束：页面层只消费稳定快照，不直接拼装排序或跨表查询
+
 ## 状态与交互
 
 - 恢复成功后刷新当前页与首页
@@ -38,3 +47,4 @@
 
 - 不允许在历史页物理删除记录
 - 不允许恢复逻辑绕过任务主用例
+- 返工后的冻结依据以文本设计包为主；运行态 goldens 只用于验证恢复入口、空态和节奏是否与设计语义一致
