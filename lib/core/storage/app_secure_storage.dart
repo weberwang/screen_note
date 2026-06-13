@@ -3,24 +3,26 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_secure_storage.g.dart';
 
-/// 安全存储入口，供后续隐私或令牌类数据复用统一封装。
+/// 敏感值存储封装，确保上层不直接依赖三方存储类型。
 final class AppSecureStorage {
-  /// 创建安全存储封装。
-  const AppSecureStorage();
+  /// 创建敏感值存储封装。
+  AppSecureStorage(this._storage);
 
-  static const FlutterSecureStorage _storage = FlutterSecureStorage();
+  final FlutterSecureStorage _storage;
 
-  /// 启动阶段预热一次，确保平台插件已就绪且后续能力有统一入口。
-  Future<void> warmUp() async {
-    await _storage.containsKey(key: '__screen_note_bootstrap__');
-  }
+  /// 读取敏感值。
+  Future<String?> read(String key) => _storage.read(key: key);
 
-  /// 暴露底层安全存储实例，后续应继续通过边界层而不是页面直接调用。
-  FlutterSecureStorage get instance => _storage;
+  /// 写入敏感值。
+  Future<void> write(String key, String value) => _storage.write(key: key, value: value);
+
+  /// 删除敏感值。
+  Future<void> delete(String key) => _storage.delete(key: key);
 }
 
-/// 应用级安全存储提供器。
-@riverpod
+/// 提供全局敏感值存储封装。
+@Riverpod(keepAlive: true)
 AppSecureStorage appSecureStorage(Ref ref) {
-  return const AppSecureStorage();
+  return AppSecureStorage(const FlutterSecureStorage());
 }
+

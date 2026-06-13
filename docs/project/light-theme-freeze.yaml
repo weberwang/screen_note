@@ -1,0 +1,75 @@
+artifact_type: theme_freeze
+theme_id: light
+platform_baseline: ios_hig
+color_roles:
+  primary: "#4D8B52"
+  on_primary: "#FFFFFF"
+  secondary: "#6E7B6F"
+  on_secondary: "#FFFFFF"
+  accent: "#F08A32"
+surface_roles:
+  background: "#FBFAF7"
+  surface: "#FFFFFF"
+  surface_subtle: "#F3F5F0"
+  surface_elevated: "#FFFFFF"
+  surface_inverse: "#1F2328"
+text_roles:
+  text_primary: "#1F2328"
+  text_secondary: "#5F6762"
+  text_tertiary: "#8D9490"
+  text_inverse: "#FFFFFF"
+icon_roles:
+  icon_primary: "#4D8B52"
+  icon_secondary: "#7C8580"
+  icon_inverse: "#FFFFFF"
+border_roles:
+  border_subtle: "#E4E8E0"
+  border_strong: "#C9D1C9"
+  divider: "#E8ECE5"
+status_roles:
+  success: "#4D8B52"
+  on_success: "#FFFFFF"
+  warning: "#F08A32"
+  on_warning: "#FFFFFF"
+  error: "#E96A5A"
+  on_error: "#FFFFFF"
+  info: "#8A958C"
+  on_info: "#FFFFFF"
+shadow_or_overlay_roles:
+  shadow_color: "rgba(24, 34, 26, 0.08)"
+  overlay_scrim: "rgba(31, 35, 40, 0.24)"
+  focus_ring: "#8BB58F"
+component_state_roles:
+  primary_button:
+    background: "#4D8B52"
+    text: "#FFFFFF"
+    border: "#4D8B52"
+    disabled_background: "#C7D5C8"
+    disabled_text: "#F8FAF7"
+  secondary_button:
+    background: "#FFFFFF"
+    text: "#4D8B52"
+    border: "#C9D1C9"
+    disabled_background: "#F3F5F0"
+    disabled_text: "#9CA49F"
+  input_field:
+    background: "#FFFFFF"
+    text: "#1F2328"
+    border: "#D7DDD6"
+    placeholder: "#99A19C"
+    focus: "#4D8B52"
+  card:
+    background: "#FFFFFF"
+    text: "#1F2328"
+    border: "#E6EAE4"
+    highlight: "#F3F5F0"
+contrast_rules:
+  body_text_on_background: ">= 4.5:1"
+  body_text_on_surface: ">= 4.5:1"
+  text_on_primary: ">= 4.5:1"
+  cta_text_on_primary: ">= 4.5:1"
+  essential_iconography: ">= 3:1"
+forbidden_overrides:
+  - "Do not replace semantic primary with ad-hoc gradients."
+  - "Do not swap warning and accent roles inside local widgets."
+  - "Do not flatten priority cards into the same contrast band as the page background."

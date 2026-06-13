@@ -3,13 +3,14 @@ import 'package:retrofit/retrofit.dart';
 
 part 'bootstrap_probe_api.g.dart';
 
-/// 初始化阶段的 Retrofit 模板接口，后续真实远程能力应在 feature 内扩展具体契约。
+/// 这个接口只用于验证初始化阶段的 Retrofit 生成链，
+/// 不能被当成真实业务后端契约。
 @RestApi()
 abstract class BootstrapProbeApi {
-  /// 创建初始化探针接口。
-  factory BootstrapProbeApi(Dio dio, {String? baseUrl}) = _BootstrapProbeApi;
+  /// 初始化阶段只保留工厂声明，真实 baseUrl 与拦截器接线留给 bootstrap 阶段。
+  factory BootstrapProbeApi(Dio dio, {String baseUrl}) = _BootstrapProbeApi;
 
-  /// 仅保留最小探活契约，用来验证 `dio + retrofit` 代码生成链可用。
-  @GET('/health')
-  Future<void> healthCheck();
+  /// 探测接口仅用于占位，后续若无远端能力，也可以整体被保留为未接线契约。
+  @GET('/bootstrap-probe')
+  Future<String> getBootstrapProbe();
 }

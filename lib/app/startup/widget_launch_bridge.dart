@@ -1,35 +1,28 @@
-import 'dart:async';
-
-import 'package:home_widget/home_widget.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:screen_note/app/router/route_paths.dart';
 
 part 'widget_launch_bridge.g.dart';
 
-/// Widget 回流桥接，统一隔离 HomeWidget 点击事件与初始启动 URI 读取。
+/// 启动桥接负责把系统入口解析为安全的首个落点。
+///
+/// 当前 bootstrap 阶段先提供无副作用默认实现，后续再接 Widget、深链或系统快捷入口。
 abstract interface class WidgetLaunchBridge {
-  /// 读取应用是否由 Widget 首次唤起。
-  Future<Uri?> initiallyLaunchedUri();
-
-  /// 监听运行中来自 Widget 的点击回流事件。
-  Stream<Uri?> get widgetClicked;
+  /// 返回平台原始入口位置；壳层路由会基于它归一化到安全一级入口。
+  String get rawLaunchLocation;
 }
 
-/// HomeWidget 版桥接实现，直接复用插件提供的启动 URI 与点击事件流。
-final class HomeWidgetLaunchBridge implements WidgetLaunchBridge {
-  /// 创建 HomeWidget 版桥接实现。
-  const HomeWidgetLaunchBridge();
+/// 默认桥接不做任何平台分发，统一安全落到首页。
+final class NoopWidgetLaunchBridge implements WidgetLaunchBridge {
+  /// 创建默认桥接。
+  const NoopWidgetLaunchBridge();
 
   @override
-  Future<Uri?> initiallyLaunchedUri() {
-    return HomeWidget.initiallyLaunchedFromHomeWidget();
-  }
-
-  @override
-  Stream<Uri?> get widgetClicked => HomeWidget.widgetClicked;
+  String get rawLaunchLocation => RoutePaths.home;
 }
 
-/// Widget 回流桥接提供器，允许测试替换启动 URI 和点击事件。
-@riverpod
+/// 根路由只依赖这个 Provider 获取安全初始落点，
+/// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
+@Riverpod(keepAlive: true)
 WidgetLaunchBridge widgetLaunchBridge(Ref ref) {
-  return const HomeWidgetLaunchBridge();
+  return const NoopWidgetLaunchBridge();
 }

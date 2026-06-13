@@ -1,17 +1,18 @@
-/// 项目级环境配置，集中保存初始化阶段就能确定的常量。
+/// 统一描述当前应用的运行环境。
+///
+/// 目前项目仍是本地优先 MVP，因此环境对象只暴露最小常量，
+/// 不引入 flavor、远端配置或密钥装配。
 final class AppEnvironment {
-  /// 当前应用展示名。
-  static const String appName = 'Screen Note';
+  /// 创建环境对象。
+  const AppEnvironment._();
 
-  /// Android 应用包名。
-  static const String androidApplicationId = 'com.example.screen_note';
+  /// 当前应用包名。
+  static const String packageId = 'com.example.screen_note';
 
-  /// Apple 平台应用包名。
-  static const String appleBundleId = 'com.example.screenNote';
+  /// 当前环境标识。
+  static const String environmentName = 'local-only-mvp';
 
-  /// 共享 Widget 与系统入口桥接使用的 App Group。
-  static const String sharedAppGroupId = 'group.com.example.screenNote.shared';
-
-  /// 预留远程接口基地址；真实后端接入前保持空值，避免初始化阶段编造契约。
-  static const String? apiBaseUrl = null;
+  /// 当前是否为生产模式。
+  static const bool isProduction = false;
 }
+

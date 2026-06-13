@@ -8,12 +8,14 @@ part of 'widget_launch_bridge.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Widget 回流桥接提供器，允许测试替换启动 URI 和点击事件。
+/// 根路由只依赖这个 Provider 获取安全初始落点，
+/// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
 
 @ProviderFor(widgetLaunchBridge)
 const widgetLaunchBridgeProvider = WidgetLaunchBridgeProvider._();
 
-/// Widget 回流桥接提供器，允许测试替换启动 URI 和点击事件。
+/// 根路由只依赖这个 Provider 获取安全初始落点，
+/// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
 
 final class WidgetLaunchBridgeProvider
     extends
@@ -23,14 +25,15 @@ final class WidgetLaunchBridgeProvider
           WidgetLaunchBridge
         >
     with $Provider<WidgetLaunchBridge> {
-  /// Widget 回流桥接提供器，允许测试替换启动 URI 和点击事件。
+  /// 根路由只依赖这个 Provider 获取安全初始落点，
+  /// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
   const WidgetLaunchBridgeProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'widgetLaunchBridgeProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -59,4 +62,4 @@ final class WidgetLaunchBridgeProvider
 }
 
 String _$widgetLaunchBridgeHash() =>
-    r'9bce50ddb02e1acb01e6100d001c63fa16b4092a';
+    r'77c6178039571908cb5cd8c9db46dd8bf9fd928a';

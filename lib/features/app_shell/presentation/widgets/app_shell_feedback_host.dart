@@ -1,55 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:screen_note/features/app_shell/application/providers/app_shell_launch_feedback_controller.dart';
-import 'package:screen_note/features/app_shell/domain/entities/app_shell_launch_intent.dart';
-import 'package:screen_note/l10n/app_localizations.dart';
+/// 共享壳层轻反馈宿主只承接非阻断式提示，
+/// 避免把占位反馈升级为打断用户流程的强提醒。
+class AppShellFeedbackHost extends StatelessWidget {
+  /// 创建共享壳层轻反馈宿主。
+  const AppShellFeedbackHost({
+    required this.text,
+    required this.dismissLabel,
+    required this.onClose,
+    super.key,
+  });
 
-/// 壳层全局反馈宿主，统一承接外部回流后的轻量提示位置与展示策略。
-class AppShellFeedbackHost extends ConsumerWidget {
-  /// 创建壳层全局反馈宿主。
-  const AppShellFeedbackHost({super.key});
+  /// 当前要展示的轻反馈文案。
+  final String text;
+
+  /// 关闭反馈按钮文案。
+  final String dismissLabel;
+
+  /// 用户主动关闭反馈时触发。
+  final VoidCallback onClose;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AppShellLaunchFeedbackEvent?>(
-      appShellLaunchFeedbackControllerProvider,
-      (AppShellLaunchFeedbackEvent? previous, AppShellLaunchFeedbackEvent? next) {
-        if (next == null) {
-          return;
-        }
-        final AppLocalizations localizations = AppLocalizations.of(context);
-        final String destination = _destinationLabel(
-          localizations,
-          next.intent.target,
-        );
-        final String message = next.intent.isFallback
-            ? localizations.appShellLaunchFallbackFeedback(destination)
-            : localizations.appShellLaunchRoutedFeedback(destination);
-        // 回流反馈必须克制且位置稳定，因此统一用壳层浮动 SnackBar 承接。
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text(message)));
-        ref
-            .read(appShellLaunchFeedbackControllerProvider.notifier)
-            .consume(next.sequence);
-      },
-    );
-    return const SizedBox.shrink();
-  }
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
-  /// 把壳层目标枚举映射为当前语言下的页面名称，避免页面层散落文案判断。
-  String _destinationLabel(
-    AppLocalizations localizations,
-    AppShellRouteTarget target,
-  ) {
-    return switch (target) {
-      AppShellRouteTarget.home => localizations.taskFlowTabLabel,
-      AppShellRouteTarget.taskEditor => localizations.taskEditorTitle,
-      AppShellRouteTarget.historyCompleted => localizations.historyCompletedTitle,
-      AppShellRouteTarget.historyDeleted => localizations.historyDeletedTitle,
-      AppShellRouteTarget.settings => localizations.settingsPageTitle,
-      AppShellRouteTarget.widgetBridge => localizations.widgetSettingsTitle,
-    };
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 0),
+        padding: EdgeInsets.fromLTRB(16.w, 14.h, 12.w, 14.h),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: theme.dividerColor),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 18.r,
+              offset: Offset(0, 8.h),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            TextButton(
+              onPressed: onClose,
+              child: Text(dismissLabel),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

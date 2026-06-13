@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.4"
+  ci:
+    dependency: transitive
+    description:
+      name: ci
+      sha256: "145d095ce05cddac4d797a158bc4cf3b6016d1fe63d8c3d2fbd7212590adca13"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   cli_config:
     dependency: transitive
     description:
@@ -209,6 +217,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  custom_lint:
+    dependency: "direct dev"
+    description:
+      name: custom_lint
+      sha256: "78085fbe842de7c5bef92de811ca81536968dbcbbcdac5c316711add2d15e796"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
+  custom_lint_builder:
+    dependency: transitive
+    description:
+      name: custom_lint_builder
+      sha256: cc5532d5733d4eccfccaaec6070a1926e9f21e613d93ad0927fad020b95c9e52
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   custom_lint_core:
     dependency: transitive
     description:
@@ -395,6 +419,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  flutter_screenutil:
+    dependency: "direct main"
+    description:
+      name: flutter_screenutil
+      sha256: "8239210dd68bee6b0577aa4a090890342d04a136ce1c81f98ee513fc0ce891de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.3"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -525,6 +557,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  hotreloader:
+    dependency: transitive
+    description:
+      name: hotreloader
+      sha256: "66871df468fc24eee81f1a0a7cb98acc104716f9b7376d355437b48d633c4ebf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.0"
   http:
     dependency: transitive
     description:
@@ -621,6 +661,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
+  logger:
+    dependency: "direct main"
+    description:
+      name: logger
+      sha256: "25aee487596a6257655a1e091ec2ae66bc30e7af663592cc3a27e6591e05035c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   logging:
     dependency: transitive
     description:
@@ -869,6 +917,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  riverpod_lint:
+    dependency: "direct dev"
+    description:
+      name: riverpod_lint
+      sha256: "7ef9c43469e9b5ac4e4c3b24d7c30642e47ce1b12cd7dcdd643534db0a72ed13"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.28.0"
   shared_preferences:
     dependency: "direct main"
     description:

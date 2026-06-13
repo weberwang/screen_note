@@ -8,12 +8,12 @@ part of 'app_secure_storage.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// 应用级安全存储提供器。
+/// 提供全局敏感值存储封装。
 
 @ProviderFor(appSecureStorage)
 const appSecureStorageProvider = AppSecureStorageProvider._();
 
-/// 应用级安全存储提供器。
+/// 提供全局敏感值存储封装。
 
 final class AppSecureStorageProvider
     extends
@@ -23,14 +23,14 @@ final class AppSecureStorageProvider
           AppSecureStorage
         >
     with $Provider<AppSecureStorage> {
-  /// 应用级安全存储提供器。
+  /// 提供全局敏感值存储封装。
   const AppSecureStorageProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'appSecureStorageProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -57,4 +57,4 @@ final class AppSecureStorageProvider
   }
 }
 
-String _$appSecureStorageHash() => r'962b8eeab75e7e057e2aaa7c6c3be0518794db4b';
+String _$appSecureStorageHash() => r'a59efed92d13fe8c705c624f70fa6153aa0dfb2a';

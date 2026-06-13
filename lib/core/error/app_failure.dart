@@ -1,18 +1,15 @@
-/// 应用层失败模型，避免页面直接依赖底层异常类型。
-final class AppFailure {
-  /// 创建应用层失败结果。
-  const AppFailure({
-    required this.code,
-    required this.message,
-    this.isRetryable = false,
-  });
+/// 统一定义公共失败模型，后续由应用层把异常映射成更稳定的失败语义。
+sealed class AppFailure {
+  /// 创建失败对象。
+  const AppFailure(this.message);
 
-  /// 失败码，便于状态层做条件分支。
-  final String code;
-
-  /// 页面最终可决定是否把这段信息翻译为用户文案。
+  /// 可用于日志和提示映射的失败说明。
   final String message;
-
-  /// 标记是否适合重试，方便后续统一接到刷新或重试入口。
-  final bool isRetryable;
 }
+
+/// 表示初始化阶段可恢复的公共失败。
+final class AppRecoverableFailure extends AppFailure {
+  /// 创建可恢复失败。
+  const AppRecoverableFailure(super.message);
+}
+

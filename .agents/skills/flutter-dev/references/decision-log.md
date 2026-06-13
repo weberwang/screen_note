@@ -12,3 +12,5 @@
 ## Change Records
 
 - 2026-06-04：完成 `flutter-init` 基线补齐，移除旧的半成品 `tasks/quick_add/history/settings` 骨架，统一切换到 `app_shell / task_flow / history_center / widget_bridge / settings_center` 结构。
+- 2026-06-13：按当前共享冻结与模块架构包重新补齐目录级初始化骨架，恢复 `lib/app`、`lib/core`、`lib/shared`、`lib/features` 分层，并对齐 `flutter_screenutil`、`logger` 与注解生成链的最小初始化基线。
+- 2026-06-13：完成最小可运行 bootstrap，落地 `main.dart`、共享主题、根路由壳层和三栏占位分支页；真实业务实现仍留给后续模块执行阶段。

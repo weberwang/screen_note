@@ -1,39 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:screen_note/l10n/app_localizations.dart';
 
-import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
-
-/// 壳层底部导航承托容器，用胶囊底座承接导航而不是裸露 Material 默认条。
+/// 共享底栏只承接三个一级目的地，
+/// 不把快速添加混入导航结构。
 class AppShellNavigationSurface extends StatelessWidget {
-  /// 创建壳层底部导航承托容器。
+  /// 创建共享底栏组件。
   const AppShellNavigationSurface({
+    required this.navigationShell,
     super.key,
-    required this.child,
   });
 
-  /// 导航主体。
-  final Widget child;
+  /// 当前根级分支宿主。
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
-    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    final localizations = AppLocalizations.of(context);
 
-    return DecoratedBox(
-      key: const Key('app-shell-nav-surface'),
-      decoration: BoxDecoration(
-        color: palette.surfaceRaised.withValues(alpha: 0.96),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: palette.lineSoft.withValues(alpha: 0.85),
+    return NavigationBar(
+      height: 86.h,
+      selectedIndex: navigationShell.currentIndex,
+      onDestinationSelected: (index) {
+        // 中文注释：重复点击当前 tab 时复位到该分支根页面，避免壳层状态分叉。
+        navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        );
+      },
+      destinations: [
+        NavigationDestination(
+          icon: const Icon(Icons.home_outlined),
+          selectedIcon: const Icon(Icons.home_rounded),
+          label: localizations.homeTabLabel,
         ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: palette.shadowSoft,
-            blurRadius: 28,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
-      child: child,
+        NavigationDestination(
+          icon: const Icon(Icons.history_outlined),
+          selectedIcon: const Icon(Icons.history_rounded),
+          label: localizations.historyTabLabel,
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.settings_outlined),
+          selectedIcon: const Icon(Icons.settings_rounded),
+          label: localizations.settingsTabLabel,
+        ),
+      ],
     );
   }
 }

@@ -8,24 +8,27 @@ part of 'app_router.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// 应用路由提供器，初始化阶段只负责壳层导航与模块入口骨架。
+/// 根路由提供者只负责全局公共路由宿主，
+/// 不直接承载任何 feature 业务规则或数据库判断。
 
 @ProviderFor(appRouter)
 const appRouterProvider = AppRouterProvider._();
 
-/// 应用路由提供器，初始化阶段只负责壳层导航与模块入口骨架。
+/// 根路由提供者只负责全局公共路由宿主，
+/// 不直接承载任何 feature 业务规则或数据库判断。
 
 final class AppRouterProvider
     extends $FunctionalProvider<GoRouter, GoRouter, GoRouter>
     with $Provider<GoRouter> {
-  /// 应用路由提供器，初始化阶段只负责壳层导航与模块入口骨架。
+  /// 根路由提供者只负责全局公共路由宿主，
+  /// 不直接承载任何 feature 业务规则或数据库判断。
   const AppRouterProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'appRouterProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -52,4 +55,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'56cead81b9788132e1ae1a92e33c173d166b27af';
+String _$appRouterHash() => r'16ab4f8fe74b8f7dff51f177aeed0137519a1e6a';

@@ -1,1 +1,6 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    # 初始化阶段只恢复目录骨架，不恢复旧的运行时取证工具实现。
+    - tool/runtime_capture/**

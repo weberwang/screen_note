@@ -8,48 +8,46 @@ part of 'app_preferences.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// 应用级 SharedPreferences 提供器。
+/// 异步创建轻量偏好实例。
 
-@ProviderFor(sharedPreferences)
-const sharedPreferencesProvider = SharedPreferencesProvider._();
+@ProviderFor(appPreferences)
+const appPreferencesProvider = AppPreferencesProvider._();
 
-/// 应用级 SharedPreferences 提供器。
+/// 异步创建轻量偏好实例。
 
-final class SharedPreferencesProvider
+final class AppPreferencesProvider
     extends
         $FunctionalProvider<
-          AsyncValue<SharedPreferences>,
-          SharedPreferences,
-          FutureOr<SharedPreferences>
+          AsyncValue<AppPreferences>,
+          AppPreferences,
+          FutureOr<AppPreferences>
         >
-    with
-        $FutureModifier<SharedPreferences>,
-        $FutureProvider<SharedPreferences> {
-  /// 应用级 SharedPreferences 提供器。
-  const SharedPreferencesProvider._()
+    with $FutureModifier<AppPreferences>, $FutureProvider<AppPreferences> {
+  /// 异步创建轻量偏好实例。
+  const AppPreferencesProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'sharedPreferencesProvider',
-        isAutoDispose: true,
+        name: r'appPreferencesProvider',
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$sharedPreferencesHash();
+  String debugGetCreateSourceHash() => _$appPreferencesHash();
 
   @$internal
   @override
-  $FutureProviderElement<SharedPreferences> $createElement(
+  $FutureProviderElement<AppPreferences> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<SharedPreferences> create(Ref ref) {
-    return sharedPreferences(ref);
+  FutureOr<AppPreferences> create(Ref ref) {
+    return appPreferences(ref);
   }
 }
 
-String _$sharedPreferencesHash() => r'c02aab4ea2fb0b56300f34410efc5cb0f4b8ab5a';
+String _$appPreferencesHash() => r'4c2e99bd279114b38697c12fa506f486ba92b63b';

@@ -14,64 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppShellLaunchIntent {
 
- AppShellEntrySource get source; AppShellRouteTarget get target; bool get isFallback; String? get invalidTarget;
-/// Create a copy of AppShellLaunchIntent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$AppShellLaunchIntentCopyWith<AppShellLaunchIntent> get copyWith => _$AppShellLaunchIntentCopyWithImpl<AppShellLaunchIntent>(this as AppShellLaunchIntent, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppShellLaunchIntent&&(identical(other.source, source) || other.source == source)&&(identical(other.target, target) || other.target == target)&&(identical(other.isFallback, isFallback) || other.isFallback == isFallback)&&(identical(other.invalidTarget, invalidTarget) || other.invalidTarget == invalidTarget));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppShellLaunchIntent);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,source,target,isFallback,invalidTarget);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppShellLaunchIntent(source: $source, target: $target, isFallback: $isFallback, invalidTarget: $invalidTarget)';
+  return 'AppShellLaunchIntent()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $AppShellLaunchIntentCopyWith<$Res>  {
-  factory $AppShellLaunchIntentCopyWith(AppShellLaunchIntent value, $Res Function(AppShellLaunchIntent) _then) = _$AppShellLaunchIntentCopyWithImpl;
-@useResult
-$Res call({
- AppShellEntrySource source, AppShellRouteTarget target, bool isFallback, String? invalidTarget
-});
-
-
-
-
-}
-/// @nodoc
-class _$AppShellLaunchIntentCopyWithImpl<$Res>
-    implements $AppShellLaunchIntentCopyWith<$Res> {
-  _$AppShellLaunchIntentCopyWithImpl(this._self, this._then);
-
-  final AppShellLaunchIntent _self;
-  final $Res Function(AppShellLaunchIntent) _then;
-
-/// Create a copy of AppShellLaunchIntent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? target = null,Object? isFallback = null,Object? invalidTarget = freezed,}) {
-  return _then(_self.copyWith(
-source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as AppShellEntrySource,target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as AppShellRouteTarget,isFallback: null == isFallback ? _self.isFallback : isFallback // ignore: cast_nullable_to_non_nullable
-as bool,invalidTarget: freezed == invalidTarget ? _self.invalidTarget : invalidTarget // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
+class $AppShellLaunchIntentCopyWith<$Res>  {
+$AppShellLaunchIntentCopyWith(AppShellLaunchIntent _, $Res Function(AppShellLaunchIntent) __);
 }
 
 
@@ -89,11 +55,14 @@ extension AppShellLaunchIntentPatterns on AppShellLaunchIntent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AppShellLaunchIntent value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Home value)?  home,TResult Function( _History value)?  history,TResult Function( _Settings value)?  settings,TResult Function( _FallbackHome value)?  fallbackHome,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _AppShellLaunchIntent() when $default != null:
-return $default(_that);case _:
+case _Home() when home != null:
+return home(_that);case _History() when history != null:
+return history(_that);case _Settings() when settings != null:
+return settings(_that);case _FallbackHome() when fallbackHome != null:
+return fallbackHome(_that);case _:
   return orElse();
 
 }
@@ -111,11 +80,14 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AppShellLaunchIntent value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Home value)  home,required TResult Function( _History value)  history,required TResult Function( _Settings value)  settings,required TResult Function( _FallbackHome value)  fallbackHome,}){
 final _that = this;
 switch (_that) {
-case _AppShellLaunchIntent():
-return $default(_that);case _:
+case _Home():
+return home(_that);case _History():
+return history(_that);case _Settings():
+return settings(_that);case _FallbackHome():
+return fallbackHome(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -132,11 +104,14 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AppShellLaunchIntent value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Home value)?  home,TResult? Function( _History value)?  history,TResult? Function( _Settings value)?  settings,TResult? Function( _FallbackHome value)?  fallbackHome,}){
 final _that = this;
 switch (_that) {
-case _AppShellLaunchIntent() when $default != null:
-return $default(_that);case _:
+case _Home() when home != null:
+return home(_that);case _History() when history != null:
+return history(_that);case _Settings() when settings != null:
+return settings(_that);case _FallbackHome() when fallbackHome != null:
+return fallbackHome(_that);case _:
   return null;
 
 }
@@ -153,10 +128,13 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppShellEntrySource source,  AppShellRouteTarget target,  bool isFallback,  String? invalidTarget)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,TResult Function()?  history,TResult Function()?  settings,TResult Function()?  fallbackHome,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _AppShellLaunchIntent() when $default != null:
-return $default(_that.source,_that.target,_that.isFallback,_that.invalidTarget);case _:
+case _Home() when home != null:
+return home();case _History() when history != null:
+return history();case _Settings() when settings != null:
+return settings();case _FallbackHome() when fallbackHome != null:
+return fallbackHome();case _:
   return orElse();
 
 }
@@ -174,10 +152,13 @@ return $default(_that.source,_that.target,_that.isFallback,_that.invalidTarget);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppShellEntrySource source,  AppShellRouteTarget target,  bool isFallback,  String? invalidTarget)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,required TResult Function()  history,required TResult Function()  settings,required TResult Function()  fallbackHome,}) {final _that = this;
 switch (_that) {
-case _AppShellLaunchIntent():
-return $default(_that.source,_that.target,_that.isFallback,_that.invalidTarget);case _:
+case _Home():
+return home();case _History():
+return history();case _Settings():
+return settings();case _FallbackHome():
+return fallbackHome();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +175,13 @@ return $default(_that.source,_that.target,_that.isFallback,_that.invalidTarget);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppShellEntrySource source,  AppShellRouteTarget target,  bool isFallback,  String? invalidTarget)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,TResult? Function()?  history,TResult? Function()?  settings,TResult? Function()?  fallbackHome,}) {final _that = this;
 switch (_that) {
-case _AppShellLaunchIntent() when $default != null:
-return $default(_that.source,_that.target,_that.isFallback,_that.invalidTarget);case _:
+case _Home() when home != null:
+return home();case _History() when history != null:
+return history();case _Settings() when settings != null:
+return settings();case _FallbackHome() when fallbackHome != null:
+return fallbackHome();case _:
   return null;
 
 }
@@ -208,73 +192,129 @@ return $default(_that.source,_that.target,_that.isFallback,_that.invalidTarget);
 /// @nodoc
 
 
-class _AppShellLaunchIntent implements AppShellLaunchIntent {
-  const _AppShellLaunchIntent({required this.source, required this.target, required this.isFallback, this.invalidTarget});
+class _Home implements AppShellLaunchIntent {
+  const _Home();
   
 
-@override final  AppShellEntrySource source;
-@override final  AppShellRouteTarget target;
-@override final  bool isFallback;
-@override final  String? invalidTarget;
 
-/// Create a copy of AppShellLaunchIntent
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$AppShellLaunchIntentCopyWith<_AppShellLaunchIntent> get copyWith => __$AppShellLaunchIntentCopyWithImpl<_AppShellLaunchIntent>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppShellLaunchIntent&&(identical(other.source, source) || other.source == source)&&(identical(other.target, target) || other.target == target)&&(identical(other.isFallback, isFallback) || other.isFallback == isFallback)&&(identical(other.invalidTarget, invalidTarget) || other.invalidTarget == invalidTarget));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Home);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,source,target,isFallback,invalidTarget);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppShellLaunchIntent(source: $source, target: $target, isFallback: $isFallback, invalidTarget: $invalidTarget)';
+  return 'AppShellLaunchIntent.home()';
 }
 
 
 }
+
+
+
 
 /// @nodoc
-abstract mixin class _$AppShellLaunchIntentCopyWith<$Res> implements $AppShellLaunchIntentCopyWith<$Res> {
-  factory _$AppShellLaunchIntentCopyWith(_AppShellLaunchIntent value, $Res Function(_AppShellLaunchIntent) _then) = __$AppShellLaunchIntentCopyWithImpl;
-@override @useResult
-$Res call({
- AppShellEntrySource source, AppShellRouteTarget target, bool isFallback, String? invalidTarget
-});
 
 
+class _History implements AppShellLaunchIntent {
+  const _History();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _History);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AppShellLaunchIntent.history()';
+}
 
 
 }
+
+
+
+
 /// @nodoc
-class __$AppShellLaunchIntentCopyWithImpl<$Res>
-    implements _$AppShellLaunchIntentCopyWith<$Res> {
-  __$AppShellLaunchIntentCopyWithImpl(this._self, this._then);
 
-  final _AppShellLaunchIntent _self;
-  final $Res Function(_AppShellLaunchIntent) _then;
 
-/// Create a copy of AppShellLaunchIntent
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? target = null,Object? isFallback = null,Object? invalidTarget = freezed,}) {
-  return _then(_AppShellLaunchIntent(
-source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as AppShellEntrySource,target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as AppShellRouteTarget,isFallback: null == isFallback ? _self.isFallback : isFallback // ignore: cast_nullable_to_non_nullable
-as bool,invalidTarget: freezed == invalidTarget ? _self.invalidTarget : invalidTarget // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
+class _Settings implements AppShellLaunchIntent {
+  const _Settings();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Settings);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AppShellLaunchIntent.settings()';
 }
 
 
 }
+
+
+
+
+/// @nodoc
+
+
+class _FallbackHome implements AppShellLaunchIntent {
+  const _FallbackHome();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FallbackHome);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AppShellLaunchIntent.fallbackHome()';
+}
+
+
+}
+
+
+
 
 // dart format on

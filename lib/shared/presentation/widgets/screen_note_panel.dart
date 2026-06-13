@@ -1,44 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
-
-/// 通用信息面板，统一承接初始化阶段的卡片层级与边框样式。
+/// 共享面板组件用于承接当前 bootstrap 阶段的统一表面语言，
+/// 避免各个占位页各自发明容器样式。
 class ScreenNotePanel extends StatelessWidget {
-  /// 创建通用信息面板。
+  /// 创建共享面板组件。
   const ScreenNotePanel({
-    super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(ScreenNoteSpacing.cardPadding),
-    this.backgroundColor,
+    super.key,
+    this.padding,
   });
 
-  /// 面板内容。
+  /// 面板主体内容。
   final Widget child;
 
-  /// 面板内边距。
-  final EdgeInsetsGeometry padding;
-
-  /// 自定义背景色；为空时使用主题默认卡片层。
-  final Color? backgroundColor;
+  /// 允许按需覆盖内边距，但默认沿用共享卡片节奏。
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
-    final ScreenNoteThemePalette palette = context.screenNotePalette;
-
-    return DecoratedBox(
+    return Container(
+      width: double.infinity,
+      padding: padding ?? EdgeInsets.all(24.w),
       decoration: BoxDecoration(
-        color: backgroundColor ?? palette.surfaceCard,
-        borderRadius: ScreenNoteRadii.card,
-        border: Border.all(color: palette.lineSoft),
-        boxShadow: <BoxShadow>[
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(32.r),
+        border: Border.all(color: Theme.of(context).dividerColor),
+        boxShadow: [
           BoxShadow(
-            color: palette.shadowSoft,
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
         ],
       ),
-      child: Padding(padding: padding, child: child),
+      child: child,
     );
   }
 }
+

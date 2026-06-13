@@ -1,0 +1,75 @@
+artifact_type: theme_freeze
+theme_id: dark
+platform_baseline: ios_hig
+color_roles:
+  primary: "#6FAE73"
+  on_primary: "#102214"
+  secondary: "#A7B4A9"
+  on_secondary: "#102214"
+  accent: "#F2A24D"
+surface_roles:
+  background: "#111513"
+  surface: "#171D1A"
+  surface_subtle: "#1F2622"
+  surface_elevated: "#242D28"
+  surface_inverse: "#F6F7F4"
+text_roles:
+  text_primary: "#F2F4EF"
+  text_secondary: "#C4CBC5"
+  text_tertiary: "#8C958F"
+  text_inverse: "#161B18"
+icon_roles:
+  icon_primary: "#82C286"
+  icon_secondary: "#B7C0B9"
+  icon_inverse: "#161B18"
+border_roles:
+  border_subtle: "#28302B"
+  border_strong: "#3A453F"
+  divider: "#2D3530"
+status_roles:
+  success: "#76C07B"
+  on_success: "#102214"
+  warning: "#F2A24D"
+  on_warning: "#1E1304"
+  error: "#F08A7B"
+  on_error: "#2A0F0B"
+  info: "#B2BBB5"
+  on_info: "#162019"
+shadow_or_overlay_roles:
+  shadow_color: "rgba(0, 0, 0, 0.42)"
+  overlay_scrim: "rgba(0, 0, 0, 0.48)"
+  focus_ring: "#9CD39F"
+component_state_roles:
+  primary_button:
+    background: "#76C07B"
+    text: "#102214"
+    border: "#76C07B"
+    disabled_background: "#344138"
+    disabled_text: "#758078"
+  secondary_button:
+    background: "#171D1A"
+    text: "#D7E5D8"
+    border: "#3A453F"
+    disabled_background: "#1F2622"
+    disabled_text: "#6E7871"
+  input_field:
+    background: "#171D1A"
+    text: "#F2F4EF"
+    border: "#36403A"
+    placeholder: "#79827B"
+    focus: "#82C286"
+  card:
+    background: "#171D1A"
+    text: "#F2F4EF"
+    border: "#2D3530"
+    highlight: "#242D28"
+contrast_rules:
+  body_text_on_background: ">= 4.5:1"
+  body_text_on_surface: ">= 4.5:1"
+  text_on_primary: ">= 4.5:1"
+  cta_text_on_primary: ">= 4.5:1"
+  essential_iconography: ">= 3:1"
+forbidden_overrides:
+  - "Do not invert the light theme mechanically."
+  - "Do not increase saturation until alert colors become neon noise."
+  - "Do not merge elevated surfaces into the same contrast band as the background."

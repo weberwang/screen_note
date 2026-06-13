@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Note App Shell Prototype</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <style>
+      :root {
+        --background: #fbfaf7;
+        --surface: #ffffff;
+        --surface-subtle: #f3f5f0;
+        --surface-warm: #fcf8ee;
+        --text-primary: #1f2328;
+        --text-secondary: #5f6762;
+        --accent-green: #4d8b52;
+        --accent-green-soft: #dfe9d7;
+        --accent-coral: #e96a5a;
+        --outline: #e4e8e0;
+        --shadow: 0 24px 60px rgba(24, 34, 26, 0.08);
+        --radius-xl: 36px;
+        --radius-lg: 28px;
+        --radius-md: 16px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "SF Pro Text", "Segoe UI", sans-serif;
+        background: linear-gradient(180deg, #fefdf9 0%, #f9f7f2 100%);
+        color: var(--text-primary);
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .phone {
+        width: 390px;
+        min-height: 844px;
+        background: var(--background);
+        border-radius: 42px;
+        box-shadow: 0 28px 70px rgba(22, 30, 25, 0.12);
+        padding: 28px 24px 124px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .eyebrow {
+        font-size: 17px;
+        line-height: 1.35;
+        color: var(--text-secondary);
+        margin-top: 10px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 38px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      .icon-button {
+        width: 56px;
+        height: 56px;
+        border-radius: 999px;
+        border: 1px solid rgba(228, 232, 224, 0.9);
+        background: rgba(255, 255, 255, 0.9);
+        display: grid;
+        place-items: center;
+        color: var(--text-primary);
+        box-shadow: 0 10px 30px rgba(31, 35, 40, 0.06);
+      }
+
+      .hero-card {
+        background:
+          radial-gradient(circle at top left, rgba(255, 255, 255, 0.85), transparent 44%),
+          linear-gradient(180deg, #fcf8ee 0%, #f9f6ec 100%);
+        border: 1px solid rgba(228, 232, 224, 0.8);
+        border-radius: var(--radius-xl);
+        padding: 26px 24px 24px;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      /* 只保留非常轻的纸感，不引入额外装饰物。 */
+      .hero-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 40%),
+          radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.22), transparent 30%);
+        pointer-events: none;
+      }
+
+      .hero-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: var(--radius-full);
+        background: rgba(223, 233, 215, 0.7);
+        color: var(--accent-green);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .hero-menu {
+        position: absolute;
+        right: 18px;
+        top: 18px;
+        color: #7c8580;
+      }
+
+      .hero-title {
+        margin: 26px 0 16px;
+        font-size: 34px;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        max-width: 270px;
+      }
+
+      .hero-copy {
+        margin: 0 0 24px;
+        font-size: 16px;
+        line-height: 1.55;
+        color: var(--text-secondary);
+        max-width: 295px;
+      }
+
+      .hero-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(205, 214, 203, 0.75);
+      }
+
+      .meta-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 14px;
+        border-radius: var(--radius-full);
+        background: rgba(223, 233, 215, 0.62);
+        color: var(--accent-green);
+        font-size: 14px;
+      }
+
+      .meta-text {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .section {
+        margin-top: 32px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 700;
+      }
+
+      .section-link {
+        color: var(--accent-green);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .queue {
+        background: transparent;
+        border-top: 1px solid var(--outline);
+      }
+
+      .queue-row {
+        display: grid;
+        grid-template-columns: 44px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--outline);
+      }
+
+      .queue-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+      }
+
+      .queue-icon.urgent {
+        color: var(--accent-coral);
+        background: rgba(233, 106, 90, 0.1);
+      }
+
+      .queue-title {
+        font-size: 17px;
+        font-weight: 600;
+        margin: 0 0 6px;
+      }
+
+      .queue-meta {
+        font-size: 15px;
+        color: var(--text-secondary);
+      }
+
+      .queue-meta strong {
+        color: var(--accent-coral);
+        font-weight: 600;
+      }
+
+      .bottom-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 108px;
+        background: rgba(255, 255, 255, 0.94);
+        border-top: 1px solid rgba(228, 232, 224, 0.95);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 24px 24px;
+      }
+
+      .nav-item {
+        border: 0;
+        background: none;
+        display: grid;
+        place-items: center;
+        gap: 8px;
+        color: #8c958f;
+        font: inherit;
+      }
+
+      .nav-item.active {
+        color: var(--accent-green);
+      }
+
+      .nav-item span:last-child {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .fab {
+        position: absolute;
+        right: 24px;
+        bottom: 122px;
+        width: 84px;
+        height: 84px;
+        border-radius: 999px;
+        border: 4px solid rgba(255, 255, 255, 0.92);
+        background: var(--accent-green);
+        color: #ffffff;
+        box-shadow: 0 18px 36px rgba(77, 139, 82, 0.26);
+        display: grid;
+        place-items: center;
+      }
+
+      .sheet {
+        position: absolute;
+        inset: auto 18px 108px;
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(228, 232, 224, 0.95);
+        border-radius: 26px;
+        padding: 18px;
+        box-shadow: 0 24px 50px rgba(21, 28, 23, 0.12);
+        display: none;
+      }
+
+      .sheet.open {
+        display: block;
+      }
+
+      .sheet h2 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+
+      .sheet input {
+        width: 100%;
+        border: 1px solid rgba(215, 221, 214, 0.96);
+        border-radius: 16px;
+        padding: 14px 16px;
+        font: inherit;
+      }
+
+      .sheet-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .chip-button {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 16px;
+        font: inherit;
+        font-weight: 600;
+      }
+
+      .chip-button.primary {
+        background: var(--accent-green);
+        color: #ffffff;
+      }
+
+      .chip-button.secondary {
+        background: var(--surface-subtle);
+        color: var(--text-primary);
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+      }
+
+      .placeholder-panel {
+        margin-top: 32px;
+        border-radius: var(--radius-xl);
+        background: #ffffff;
+        border: 1px solid rgba(228, 232, 224, 0.9);
+        padding: 24px;
+        box-shadow: 0 16px 40px rgba(27, 35, 30, 0.06);
+      }
+
+      .placeholder-panel h2 {
+        margin: 0 0 12px;
+        font-size: 24px;
+      }
+
+      .placeholder-panel p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-secondary);
+      }
+
+      .material-symbols-rounded {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="phone">
+      <div class="toolbar">
+        <div>
+          <h1>Good morning</h1>
+          <p class="eyebrow">You have <strong style="color: var(--accent-coral)">3 urgent</strong> reminders</p>
+        </div>
+        <button class="icon-button" type="button" aria-label="Open shell menu">
+          <span class="material-symbols-rounded">more_horiz</span>
+        </button>
+      </div>
+
+      <section id="view-home" class="view active" aria-label="Home shell preview">
+        <article class="hero-card">
+          <div class="hero-label">Home Priority</div>
+          <div class="hero-menu material-symbols-rounded">flag</div>
+          <h2 class="hero-title">Prepare client deck</h2>
+          <p class="hero-copy">Finalize slides and speaker notes for the 10 AM presentation.</p>
+          <div class="hero-meta">
+            <div class="meta-chip">
+              <span class="material-symbols-rounded">calendar_month</span>
+              <span>Today, 10:00 AM</span>
+            </div>
+            <div class="meta-text">Slides &amp; Notes</div>
+          </div>
+        </article>
+
+        <section class="section">
+          <div class="section-header">
+            <h3 class="section-title">Urgent queue</h3>
+            <span class="section-link">3 tasks</span>
+          </div>
+          <div class="queue">
+            <div class="queue-row">
+              <div class="queue-icon urgent">
+                <span class="material-symbols-rounded">priority_high</span>
+              </div>
+              <div>
+                <p class="queue-title">Review contract updates</p>
+                <div class="queue-meta"><strong>Today</strong>, 9:00 AM</div>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </div>
+            <div class="queue-row">
+              <div class="queue-icon urgent">
+                <span class="material-symbols-rounded">priority_high</span>
+              </div>
+              <div>
+                <p class="queue-title">Reply to investor email</p>
+                <div class="queue-meta"><strong>Today</strong>, 11:00 AM</div>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </div>
+            <div class="queue-row">
+              <div class="queue-icon urgent">
+                <span class="material-symbols-rounded">priority_high</span>
+              </div>
+              <div>
+                <p class="queue-title">Submit expense report</p>
+                <div class="queue-meta"><strong>Today</strong>, 4:00 PM</div>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-history" class="view" aria-label="History shell preview">
+        <div class="placeholder-panel">
+          <h2>History center</h2>
+          <p>Recent completed and recently deleted sections live here. This screen inherits the same shell and keeps recovery actions low-friction.</p>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view" aria-label="Settings shell preview">
+        <div class="placeholder-panel">
+          <h2>Settings center</h2>
+          <p>Notification status, privacy mode, display preferences, and future sync or pro entry stay grouped here without overtaking the shell hierarchy.</p>
+        </div>
+      </section>
+
+      <section id="quick-add-sheet" class="sheet" aria-label="Quick add sheet">
+        <h2>Quick add</h2>
+        <input type="text" placeholder="Add one thing you can't forget..." />
+        <div class="sheet-actions">
+          <button class="chip-button secondary" type="button" data-close-sheet>Cancel</button>
+          <button class="chip-button primary" type="button" data-close-sheet>Save</button>
+        </div>
+      </section>
+
+      <button id="quick-add-trigger" class="fab" type="button" aria-label="Open quick add">
+        <span class="material-symbols-rounded" style="font-size: 34px">add</span>
+      </button>
+
+      <nav class="bottom-nav" aria-label="Primary navigation">
+        <button class="nav-item active" type="button" data-view="home">
+          <span class="material-symbols-rounded">home</span>
+          <span>Home</span>
+        </button>
+        <button class="nav-item" type="button" data-view="history">
+          <span class="material-symbols-rounded">history</span>
+          <span>History</span>
+        </button>
+        <button class="nav-item" type="button" data-view="settings">
+          <span class="material-symbols-rounded">settings</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+    </main>
+
+    <script>
+      const navItems = Array.from(document.querySelectorAll(".nav-item"));
+      const views = {
+        home: document.getElementById("view-home"),
+        history: document.getElementById("view-history"),
+        settings: document.getElementById("view-settings"),
+      };
+      const quickAddSheet = document.getElementById("quick-add-sheet");
+      const quickAddTrigger = document.getElementById("quick-add-trigger");
+      const closeButtons = document.querySelectorAll("[data-close-sheet]");
+
+      // 中文注释：切换共享壳层的一级目的地，验证底栏导航与内容宿主的关系。
+      function switchView(targetView) {
+        navItems.forEach((item) => {
+          item.classList.toggle("active", item.dataset.view === targetView);
+        });
+        Object.entries(views).forEach(([name, element]) => {
+          element.classList.toggle("active", name === targetView);
+        });
+      }
+
+      // 中文注释：快速添加以独立全局动作存在，避免退化为普通输入条或第四个 tab。
+      function toggleQuickAdd(forceOpen) {
+        const shouldOpen = typeof forceOpen === "boolean" ? forceOpen : !quickAddSheet.classList.contains("open");
+        quickAddSheet.classList.toggle("open", shouldOpen);
+      }
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", () => switchView(item.dataset.view));
+      });
+
+      quickAddTrigger.addEventListener("click", () => toggleQuickAdd());
+
+      closeButtons.forEach((button) => {
+        button.addEventListener("click", () => toggleQuickAdd(false));
+      });
+    </script>
+  </body>
+</html>
