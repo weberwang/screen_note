@@ -3,93 +3,344 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:screen_note/features/history_center/domain/entities/history_section.dart';
+import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
+import 'package:screen_note/features/history_center/application/providers/history_center_runtime_providers.dart';
+import 'package:screen_note/features/history_center/domain/entities/history_center_snapshot.dart';
 import 'package:screen_note/features/history_center/presentation/pages/history_center_page.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mode.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_repository_impl.dart';
-import 'package:screen_note/features/widget_bridge/application/ports/widget_snapshot_store.dart';
-import 'package:screen_note/features/widget_bridge/application/providers/widget_bridge_runtime_providers.dart';
-import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapshot.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
-/// 验证历史页在最近删除分区会显示恢复动作，并在恢复后立即刷新列表。
 void main() {
-  testWidgets('最近删除页恢复事项后会立即移出列表', (WidgetTester tester) async {
-    final TaskFlowDatabase database = TaskFlowDatabase.test(
-      NativeDatabase.memory(),
+  testWidgets('历史页会展示最近完成和最近删除分区', (WidgetTester tester) async {
+    final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+    addTearDown(runtime.dispose);
+    await runtime.repository.createTask(
+      _task(
+        id: 'completed-task',
+        title: '已经完成的事项',
+        status: TaskStatus.completed,
+        anchorAt: DateTime(2026, 6, 14, 10),
+      ),
     );
-    addTearDown(database.close);
-
-    final TaskFlowRepositoryImpl repository = TaskFlowRepositoryImpl(
-      database: database,
-    );
-    final _FakeWidgetSnapshotStore snapshotStore = _FakeWidgetSnapshotStore();
-    final DateTime now = DateTime.utc(2026, 6, 6, 10);
-    await repository.createTask(
+    await runtime.repository.createTask(
       _task(
         id: 'deleted-task',
-        title: '不该被真正删除',
-        createdAt: now,
-        isPrivate: true,
+        title: '需要恢复的事项',
         status: TaskStatus.deleted,
-        deletedAt: now.add(const Duration(hours: 2)),
+        anchorAt: DateTime(2026, 6, 14, 11),
       ),
     );
 
+    await _pumpHistoryPage(tester, runtime: runtime);
+
+    expect(find.text('History'), findsOneWidget);
+    expect(find.text('Recently completed'), findsOneWidget);
+    expect(find.text('已经完成的事项'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Recently deleted'), 200);
+    expect(find.text('Recently deleted'), findsOneWidget);
+    expect(find.text('需要恢复的事项'), findsOneWidget);
+    expect(find.text('Restore'), findsOneWidget);
+  });
+
+  testWidgets('历史页空态会展示信任恢复说明', (WidgetTester tester) async {
+    final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+    addTearDown(runtime.dispose);
+
+    await _pumpHistoryPage(tester, runtime: runtime);
+
+    expect(find.text('Your history is clear for now.'), findsOneWidget);
+    expect(
+      find.textContaining('nothing vanished unexpectedly'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('恢复后会移除已删除事项并写入共享反馈', (WidgetTester tester) async {
+    final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+    addTearDown(runtime.dispose);
+    await runtime.repository.createTask(
+      _task(
+        id: 'deleted-task',
+        title: '待恢复事项',
+        status: TaskStatus.deleted,
+        anchorAt: DateTime(2026, 6, 14, 11),
+      ),
+    );
+
+    final ProviderContainer container = ProviderContainer(
+      overrides: [
+        taskFlowDatabaseProvider.overrideWithValue(runtime.database),
+        taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+        taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
+      ],
+    );
+    addTearDown(container.dispose);
+
     await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          taskFlowDatabaseProvider.overrideWithValue(database),
-          widgetSnapshotStoreProvider.overrideWithValue(snapshotStore),
-        ],
-        child: MaterialApp(
-          locale: const Locale('zh'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: buildScreenNoteLightTheme(),
-          darkTheme: buildScreenNoteDarkTheme(),
-          home: const Scaffold(
-            body: HistoryCenterPage(initialSection: HistorySection.deleted),
-          ),
+      UncontrolledProviderScope(
+        container: container,
+        child: ScreenNoteScreenUtilContract(
+          designSize: screenNoteDesignSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: ScreenNoteTheme.light(),
+              darkTheme: ScreenNoteTheme.dark(),
+              home: const Scaffold(body: HistoryCenterPage()),
+            );
+          },
         ),
       ),
     );
-
     await tester.pumpAndSettle();
 
-    expect(find.text('最近删除'), findsWidgets);
-    expect(find.text('隐私事项'), findsOneWidget);
-    expect(find.text('恢复'), findsOneWidget);
-
-    await tester.tap(find.text('恢复'));
+    await tester.tap(find.text('Restore'));
+    await tester.pump();
     await tester.pumpAndSettle();
 
+    expect(find.text('待恢复事项'), findsNothing);
     expect(
-      (await repository.findTaskById('deleted-task'))?.status,
-      TaskStatus.active,
+      container.read(appShellUiStateControllerProvider).feedback?.text,
+      'Task restored to active.',
     );
+
+    final TaskEntity? restoredTask = await runtime.repository.findTaskById(
+      'deleted-task',
+    );
+    expect(restoredTask?.status, TaskStatus.active);
+    expect(restoredTask?.deletedAt, isNull);
+  });
+
+  group('HistoryCenterController', () {
+    test('refresh 不应依赖基础快照 provider 的二次失效重读', () async {
+      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+      addTearDown(runtime.dispose);
+      var snapshotReadCount = 0;
+
+      final ProviderContainer container = ProviderContainer(
+        overrides: [
+          taskFlowDatabaseProvider.overrideWithValue(runtime.database),
+          taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+          taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
+          historyCenterSnapshotProvider.overrideWith((ref) async {
+            snapshotReadCount += 1;
+            if (snapshotReadCount > 1) {
+              throw StateError('unexpected second history snapshot read');
+            }
+            return ref.read(loadHistoryCenterSnapshotUseCaseProvider).execute();
+          }),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await runtime.repository.createTask(
+        _task(
+          id: 'completed-task',
+          title: '避免重复读取历史快照',
+          status: TaskStatus.completed,
+          anchorAt: DateTime(2026, 6, 14, 10),
+        ),
+      );
+
+      final HistoryCenterSnapshot initialSnapshot = await container.read(
+        historyCenterControllerProvider.future,
+      );
+      expect(initialSnapshot.completedTasks, hasLength(1));
+
+      await container.read(historyCenterControllerProvider.notifier).refresh();
+
+      final HistoryCenterSnapshot refreshedSnapshot = container.read(
+        historyCenterControllerProvider,
+      ).requireValue;
+      expect(refreshedSnapshot.completedTasks, hasLength(1));
+    });
+
+    test('refresh 不应让基础快照 provider 的外部监听者被迫重算', () async {
+      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+      addTearDown(runtime.dispose);
+      var snapshotReadCount = 0;
+
+      final ProviderContainer container = ProviderContainer(
+        overrides: [
+          taskFlowDatabaseProvider.overrideWithValue(runtime.database),
+          taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+          taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
+          historyCenterSnapshotProvider.overrideWith((ref) async {
+            snapshotReadCount += 1;
+            return ref.read(loadHistoryCenterSnapshotUseCaseProvider).execute();
+          }),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final subscription = container.listen<AsyncValue<HistoryCenterSnapshot>>(
+        historyCenterSnapshotProvider,
+        (_, __) {},
+        fireImmediately: true,
+      );
+      addTearDown(subscription.close);
+
+      await runtime.repository.createTask(
+        _task(
+          id: 'completed-task-2',
+          title: '外部监听者不应被迫重算',
+          status: TaskStatus.completed,
+          anchorAt: DateTime(2026, 6, 14, 10),
+        ),
+      );
+
+      await container.read(historyCenterControllerProvider.future);
+      expect(snapshotReadCount, 1);
+
+      await container.read(historyCenterControllerProvider.notifier).refresh();
+
+      expect(snapshotReadCount, 1);
+    });
+
+    test('restoreTask 成功后首页补偿刷新失败也不应让历史恢复链路失败', () async {
+      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+      addTearDown(runtime.dispose);
+      await runtime.repository.createTask(
+        _task(
+          id: 'deleted-task',
+          title: '首页刷新失败时仍应恢复成功',
+          status: TaskStatus.deleted,
+          anchorAt: DateTime(2026, 6, 14, 11),
+        ),
+      );
+
+      final ProviderContainer container = ProviderContainer(
+        overrides: [
+          taskFlowDatabaseProvider.overrideWithValue(runtime.database),
+          taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+          taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
+          taskFlowHomeControllerProvider.overrideWith(
+            _RefreshFailingTaskFlowHomeController.new,
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(historyCenterControllerProvider.future);
+
+      await container.read(historyCenterControllerProvider.notifier).restoreTask(
+        taskId: 'deleted-task',
+        occurredAt: DateTime(2026, 6, 14, 12),
+        successMessage: 'Task restored to active.',
+      );
+
+      final AsyncValue<HistoryCenterSnapshot> restoredState = container.read(
+        historyCenterControllerProvider,
+      );
+      expect(restoredState.hasError, isFalse);
+      expect(restoredState.requireValue.isEmpty, isTrue);
+      expect(
+        container.read(appShellUiStateControllerProvider).feedback?.text,
+        'Task restored to active.',
+      );
+
+      final TaskEntity? restoredTask = await runtime.repository.findTaskById(
+        'deleted-task',
+      );
+      expect(restoredTask?.status, TaskStatus.active);
+      expect(restoredTask?.deletedAt, isNull);
+    });
   });
 }
 
-/// 内存版小组件快照存储，用于隔离历史页测试与真实同步能力。
-final class _FakeWidgetSnapshotStore implements WidgetSnapshotStore {
-  @override
-  Future<bool> saveSnapshot(WidgetSnapshot snapshot) async => true;
+Future<void> _pumpHistoryPage(
+  WidgetTester tester, {
+  required _TaskFlowTestRuntime runtime,
+}) async {
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        taskFlowDatabaseProvider.overrideWithValue(runtime.database),
+        taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+        taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
+      ],
+      child: ScreenNoteScreenUtilContract(
+        designSize: screenNoteDesignSize,
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: ScreenNoteTheme.light(),
+            darkTheme: ScreenNoteTheme.dark(),
+            home: const Scaffold(body: HistoryCenterPage()),
+          );
+        },
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
 }
 
-/// 测试任务构造器，统一生成满足持久化约束的实体。
+/// 历史页测试统一复用内存 task-flow 真源，避免页面装配碰到真实本地库。
+final class _TaskFlowTestRuntime {
+  _TaskFlowTestRuntime({
+    required this.database,
+    required this.repository,
+  });
+
+  final TaskFlowDatabase database;
+  final TaskFlowRepositoryImpl repository;
+
+  static _TaskFlowTestRuntime create() {
+    final TaskFlowDatabase database = TaskFlowDatabase.test(
+      NativeDatabase.memory(),
+    );
+    return _TaskFlowTestRuntime(
+      database: database,
+      repository: TaskFlowRepositoryImpl(database: database),
+    );
+  }
+
+  Future<void> dispose() => database.close();
+}
+
+/// 首页补偿刷新失败替身只用于验证恢复链路的降级语义，不干扰真实恢复写库结果。
+class _RefreshFailingTaskFlowHomeController extends TaskFlowHomeController {
+  @override
+  Future<TaskFeedSnapshot> build() async {
+    return const TaskFeedSnapshot(
+      pinnedTasks: <TaskEntity>[],
+      overdueTasks: <TaskEntity>[],
+      todayTasks: <TaskEntity>[],
+      otherTasks: <TaskEntity>[],
+      activeCount: 0,
+      completedCount: 0,
+      deletedCount: 0,
+    );
+  }
+
+  @override
+  Future<void> refresh() async {
+    throw StateError('refresh failed');
+  }
+}
+
+/// 历史页测试事项工厂统一维护三态时间锚点，避免用例散落不同时间字段组合。
 TaskEntity _task({
   required String id,
   required String title,
-  required DateTime createdAt,
   required TaskStatus status,
-  required bool isPrivate,
-  DateTime? deletedAt,
+  required DateTime anchorAt,
 }) {
   return TaskEntity(
     id: id,
@@ -98,12 +349,12 @@ TaskEntity _task({
     dueAt: null,
     reminderAt: null,
     isPinned: false,
-    isPrivate: isPrivate,
+    isPrivate: false,
     status: status,
     reminderMode: TaskReminderMode.normal,
-    createdAt: createdAt,
-    updatedAt: createdAt,
-    completedAt: null,
-    deletedAt: deletedAt,
+    createdAt: anchorAt.subtract(const Duration(hours: 1)),
+    updatedAt: anchorAt,
+    completedAt: status == TaskStatus.completed ? anchorAt : null,
+    deletedAt: status == TaskStatus.deleted ? anchorAt : null,
   );
 }

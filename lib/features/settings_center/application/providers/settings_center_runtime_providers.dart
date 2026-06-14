@@ -5,10 +5,15 @@ import 'package:screen_note/features/app_shell/application/providers/app_shell_u
 import 'package:screen_note/features/settings_center/application/ports/settings_side_effect_port.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/load_settings_center_snapshot_use_case.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/review_notification_permission_use_case.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/update_language_preference_use_case.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/update_privacy_mode_use_case.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/update_theme_mode_preference_use_case.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/update_widget_display_mode_use_case.dart';
 import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
@@ -77,6 +82,24 @@ UpdateWidgetDisplayModeUseCase updateWidgetDisplayModeUseCase(Ref ref) {
   );
 }
 
+/// 主题偏好更新用例 Provider。
+@riverpod
+UpdateThemeModePreferenceUseCase updateThemeModePreferenceUseCase(Ref ref) {
+  return UpdateThemeModePreferenceUseCase(
+    repository: ref.watch(settingsPreferencesRepositoryProvider),
+    sideEffectPort: ref.watch(settingsSideEffectPortProvider),
+  );
+}
+
+/// 语言偏好更新用例 Provider。
+@riverpod
+UpdateLanguagePreferenceUseCase updateLanguagePreferenceUseCase(Ref ref) {
+  return UpdateLanguagePreferenceUseCase(
+    repository: ref.watch(settingsPreferencesRepositoryProvider),
+    sideEffectPort: ref.watch(settingsSideEffectPortProvider),
+  );
+}
+
 /// 通知权限复查用例 Provider。
 @riverpod
 ReviewNotificationPermissionUseCase reviewNotificationPermissionUseCase(
@@ -93,6 +116,42 @@ Future<SettingsCenterSnapshot> settingsCenterSnapshot(Ref ref) {
   return ref.watch(loadSettingsCenterSnapshotUseCaseProvider).execute();
 }
 
+/// 根应用偏好控制器只承接主题与语言等全局展示偏好，避免根应用直接依赖设置页快照装配。
+@Riverpod(keepAlive: true)
+class SettingsCenterPreferencesController
+    extends _$SettingsCenterPreferencesController {
+  /// 首次构建时读取持久化偏好，作为根应用展示层的稳定来源。
+  @override
+  Future<SettingsCenterPreferences> build() {
+    return ref.watch(settingsPreferencesRepositoryProvider).loadPreferences();
+  }
+
+  /// 用设置更新结果直接覆盖全局偏好，避免根应用还要额外等待仓储重读。
+  void sync(SettingsCenterPreferences preferences) {
+    state = AsyncData<SettingsCenterPreferences>(preferences);
+  }
+
+  /// 主动重读持久化偏好，供外部需要重新对齐根应用状态时复用。
+  Future<void> refresh() async {
+    state = const AsyncLoading<SettingsCenterPreferences>();
+    state = await AsyncValue.guard(
+      () => ref.read(settingsPreferencesRepositoryProvider).loadPreferences(),
+    );
+  }
+}
+
+/// 根应用消费的同步偏好 Provider，加载中的短暂阶段回退到默认值，避免 MaterialApp 出现空配置。
+@Riverpod(keepAlive: true)
+SettingsCenterPreferences currentSettingsCenterPreferences(Ref ref) {
+  final AsyncValue<SettingsCenterPreferences> preferencesAsync = ref.watch(
+    settingsCenterPreferencesControllerProvider,
+  );
+  return preferencesAsync.maybeWhen(
+    data: (SettingsCenterPreferences preferences) => preferences,
+    orElse: () => const SettingsCenterPreferences(),
+  );
+}
+
 /// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 @Riverpod(keepAlive: true)
 class SettingsCenterController extends _$SettingsCenterController {
@@ -104,8 +163,8 @@ class SettingsCenterController extends _$SettingsCenterController {
 
   /// 主动刷新设置页快照，供权限复查或页面重试时复用。
   Future<void> refresh() async {
-    state = const AsyncLoading<SettingsCenterSnapshot>();
-    state = await AsyncValue.guard(_reloadSnapshot);
+    state = _loadingState();
+    state = await AsyncValue.guard(_loadSnapshot);
   }
 
   /// 更新隐私模式，并通过共享壳层反馈告知用户设置已生效。
@@ -113,13 +172,14 @@ class SettingsCenterController extends _$SettingsCenterController {
     required bool enabled,
     required String feedbackText,
   }) async {
-    state = const AsyncLoading<SettingsCenterSnapshot>();
+    state = _loadingState();
     state = await AsyncValue.guard(() async {
-      await ref
+      final SettingsCenterPreferences next = await ref
           .read(updatePrivacyModeUseCaseProvider)
           .execute(enabled: enabled);
+      _syncGlobalPreferences(next);
       _showFeedback(feedbackText);
-      return _reloadSnapshot();
+      return _loadSnapshot();
     });
   }
 
@@ -128,11 +188,46 @@ class SettingsCenterController extends _$SettingsCenterController {
     required WidgetDisplayMode mode,
     required String feedbackText,
   }) async {
-    state = const AsyncLoading<SettingsCenterSnapshot>();
+    state = _loadingState();
     state = await AsyncValue.guard(() async {
-      await ref.read(updateWidgetDisplayModeUseCaseProvider).execute(mode: mode);
+      final SettingsCenterPreferences next = await ref
+          .read(updateWidgetDisplayModeUseCaseProvider)
+          .execute(mode: mode);
+      _syncGlobalPreferences(next);
       _showFeedback(feedbackText);
-      return _reloadSnapshot();
+      return _loadSnapshot();
+    });
+  }
+
+  /// 更新主题偏好，并同步刷新根应用正在消费的全局展示偏好。
+  Future<void> updateThemeModePreference({
+    required SettingsThemeModePreference mode,
+    required String feedbackText,
+  }) async {
+    state = _loadingState();
+    state = await AsyncValue.guard(() async {
+      final SettingsCenterPreferences next = await ref
+          .read(updateThemeModePreferenceUseCaseProvider)
+          .execute(mode: mode);
+      _syncGlobalPreferences(next);
+      _showFeedback(feedbackText);
+      return _loadSnapshot();
+    });
+  }
+
+  /// 更新语言偏好，并同步刷新根应用正在消费的 locale 偏好。
+  Future<void> updateLanguagePreference({
+    required SettingsLanguagePreference language,
+    required String feedbackText,
+  }) async {
+    state = _loadingState();
+    state = await AsyncValue.guard(() async {
+      final SettingsCenterPreferences next = await ref
+          .read(updateLanguagePreferenceUseCaseProvider)
+          .execute(language: language);
+      _syncGlobalPreferences(next);
+      _showFeedback(feedbackText);
+      return _loadSnapshot();
     });
   }
 
@@ -141,7 +236,7 @@ class SettingsCenterController extends _$SettingsCenterController {
     required String grantedFeedbackText,
     required String deferredFeedbackText,
   }) async {
-    state = const AsyncLoading<SettingsCenterSnapshot>();
+    state = _loadingState();
     state = await AsyncValue.guard(() async {
       final NotificationPermissionStatus status = await ref
           .read(reviewNotificationPermissionUseCaseProvider)
@@ -151,7 +246,7 @@ class SettingsCenterController extends _$SettingsCenterController {
             ? grantedFeedbackText
             : deferredFeedbackText,
       );
-      return _reloadSnapshot();
+      return _loadSnapshot();
     });
   }
 
@@ -165,9 +260,23 @@ class SettingsCenterController extends _$SettingsCenterController {
     );
   }
 
-  /// 统一处理设置页快照失效与重新读取，避免刷新策略散落在多个入口。
-  Future<SettingsCenterSnapshot> _reloadSnapshot() async {
-    ref.invalidate(settingsCenterSnapshotProvider);
-    return ref.read(settingsCenterSnapshotProvider.future);
+  /// 设置页更新偏好后直接同步根应用控制器，避免 MaterialApp 还要依赖一次额外异步重读。
+  void _syncGlobalPreferences(SettingsCenterPreferences preferences) {
+    ref
+        .read(settingsCenterPreferencesControllerProvider.notifier)
+        .sync(preferences);
+  }
+
+  /// 已有快照刷新时保留旧数据，避免设置页因二次重载出现短暂白屏。
+  AsyncValue<SettingsCenterSnapshot> _loadingState() {
+    return switch (state) {
+      AsyncData<SettingsCenterSnapshot>() => state,
+      _ => const AsyncLoading<SettingsCenterSnapshot>(),
+    };
+  }
+
+  /// 统一直接读取设置页快照用例，避免依赖基础快照 Provider 的失效重算链路。
+  Future<SettingsCenterSnapshot> _loadSnapshot() {
+    return ref.read(loadSettingsCenterSnapshotUseCaseProvider).execute();
   }
 }

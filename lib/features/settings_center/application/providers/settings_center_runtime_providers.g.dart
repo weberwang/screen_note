@@ -228,7 +228,7 @@ final class DefaultSettingsSideEffectPortProvider
 }
 
 String _$defaultSettingsSideEffectPortHash() =>
-    r'a500e342ca97e911e23172f9c226e3abfe1b3bd4';
+    r'7c2e634e56ca97c7fe8060506f53749ea61f32df';
 
 /// 设置副作用装配点，允许测试或后续能力按 Provider 维度替换。
 
@@ -449,6 +449,118 @@ final class UpdateWidgetDisplayModeUseCaseProvider
 String _$updateWidgetDisplayModeUseCaseHash() =>
     r'6861cfaaa56922401e8ed115894f484322c5f846';
 
+/// 主题偏好更新用例 Provider。
+
+@ProviderFor(updateThemeModePreferenceUseCase)
+const updateThemeModePreferenceUseCaseProvider =
+    UpdateThemeModePreferenceUseCaseProvider._();
+
+/// 主题偏好更新用例 Provider。
+
+final class UpdateThemeModePreferenceUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateThemeModePreferenceUseCase,
+          UpdateThemeModePreferenceUseCase,
+          UpdateThemeModePreferenceUseCase
+        >
+    with $Provider<UpdateThemeModePreferenceUseCase> {
+  /// 主题偏好更新用例 Provider。
+  const UpdateThemeModePreferenceUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateThemeModePreferenceUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateThemeModePreferenceUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateThemeModePreferenceUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateThemeModePreferenceUseCase create(Ref ref) {
+    return updateThemeModePreferenceUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateThemeModePreferenceUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateThemeModePreferenceUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$updateThemeModePreferenceUseCaseHash() =>
+    r'd80a567d2eb0848a9ccf58a354f8fdc6419d1c0b';
+
+/// 语言偏好更新用例 Provider。
+
+@ProviderFor(updateLanguagePreferenceUseCase)
+const updateLanguagePreferenceUseCaseProvider =
+    UpdateLanguagePreferenceUseCaseProvider._();
+
+/// 语言偏好更新用例 Provider。
+
+final class UpdateLanguagePreferenceUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateLanguagePreferenceUseCase,
+          UpdateLanguagePreferenceUseCase,
+          UpdateLanguagePreferenceUseCase
+        >
+    with $Provider<UpdateLanguagePreferenceUseCase> {
+  /// 语言偏好更新用例 Provider。
+  const UpdateLanguagePreferenceUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateLanguagePreferenceUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateLanguagePreferenceUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateLanguagePreferenceUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateLanguagePreferenceUseCase create(Ref ref) {
+    return updateLanguagePreferenceUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateLanguagePreferenceUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateLanguagePreferenceUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$updateLanguagePreferenceUseCaseHash() =>
+    r'8a6171953944176a22ded43f3bb24b58cb364d6d';
+
 /// 通知权限复查用例 Provider。
 
 @ProviderFor(reviewNotificationPermissionUseCase)
@@ -553,6 +665,128 @@ final class SettingsCenterSnapshotProvider
 String _$settingsCenterSnapshotHash() =>
     r'41c5abbe4e5be93ea95ff4fb508a06b3debc1b99';
 
+/// 根应用偏好控制器只承接主题与语言等全局展示偏好，避免根应用直接依赖设置页快照装配。
+
+@ProviderFor(SettingsCenterPreferencesController)
+const settingsCenterPreferencesControllerProvider =
+    SettingsCenterPreferencesControllerProvider._();
+
+/// 根应用偏好控制器只承接主题与语言等全局展示偏好，避免根应用直接依赖设置页快照装配。
+final class SettingsCenterPreferencesControllerProvider
+    extends
+        $AsyncNotifierProvider<
+          SettingsCenterPreferencesController,
+          SettingsCenterPreferences
+        > {
+  /// 根应用偏好控制器只承接主题与语言等全局展示偏好，避免根应用直接依赖设置页快照装配。
+  const SettingsCenterPreferencesControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsCenterPreferencesControllerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$settingsCenterPreferencesControllerHash();
+
+  @$internal
+  @override
+  SettingsCenterPreferencesController create() =>
+      SettingsCenterPreferencesController();
+}
+
+String _$settingsCenterPreferencesControllerHash() =>
+    r'1aa83c42bfbdfdf85b7fa670d5938ae98da1eaf2';
+
+/// 根应用偏好控制器只承接主题与语言等全局展示偏好，避免根应用直接依赖设置页快照装配。
+
+abstract class _$SettingsCenterPreferencesController
+    extends $AsyncNotifier<SettingsCenterPreferences> {
+  FutureOr<SettingsCenterPreferences> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<SettingsCenterPreferences>,
+              SettingsCenterPreferences
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<SettingsCenterPreferences>,
+                SettingsCenterPreferences
+              >,
+              AsyncValue<SettingsCenterPreferences>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// 根应用消费的同步偏好 Provider，加载中的短暂阶段回退到默认值，避免 MaterialApp 出现空配置。
+
+@ProviderFor(currentSettingsCenterPreferences)
+const currentSettingsCenterPreferencesProvider =
+    CurrentSettingsCenterPreferencesProvider._();
+
+/// 根应用消费的同步偏好 Provider，加载中的短暂阶段回退到默认值，避免 MaterialApp 出现空配置。
+
+final class CurrentSettingsCenterPreferencesProvider
+    extends
+        $FunctionalProvider<
+          SettingsCenterPreferences,
+          SettingsCenterPreferences,
+          SettingsCenterPreferences
+        >
+    with $Provider<SettingsCenterPreferences> {
+  /// 根应用消费的同步偏好 Provider，加载中的短暂阶段回退到默认值，避免 MaterialApp 出现空配置。
+  const CurrentSettingsCenterPreferencesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentSettingsCenterPreferencesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentSettingsCenterPreferencesHash();
+
+  @$internal
+  @override
+  $ProviderElement<SettingsCenterPreferences> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SettingsCenterPreferences create(Ref ref) {
+    return currentSettingsCenterPreferences(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SettingsCenterPreferences value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SettingsCenterPreferences>(value),
+    );
+  }
+}
+
+String _$currentSettingsCenterPreferencesHash() =>
+    r'90966193d66085d9f14342b4bd7acaed62d13914';
+
 /// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 
 @ProviderFor(SettingsCenterController)
@@ -586,7 +820,7 @@ final class SettingsCenterControllerProvider
 }
 
 String _$settingsCenterControllerHash() =>
-    r'31c9ea567378ee408a1a7118b44dee55c84930f5';
+    r'c073f67b98b6410ee90f0729f89fdfcb38b1eda3';
 
 /// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 
