@@ -103,16 +103,16 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
 
   /// 主动刷新首页快照，供页面重试或后续系统回流场景复用。
   Future<void> refresh() async {
-    state = const AsyncLoading<TaskFeedSnapshot>();
-    state = await AsyncValue.guard(_reloadSnapshot);
+    state = _loadingState();
+    state = await AsyncValue.guard(_loadSnapshot);
   }
 
   /// 创建快捷事项后立即刷新首页快照，确保首页不会停留在旧状态。
   Future<void> createQuickTask(CreateTaskInput input, {DateTime? now}) async {
-    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = _loadingState();
     state = await AsyncValue.guard(() async {
       await ref.read(createTaskUseCaseProvider).execute(input, now: now);
-      return _reloadSnapshot();
+      return _loadSnapshot();
     });
   }
 
@@ -121,12 +121,12 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
     required String taskId,
     required DateTime occurredAt,
   }) async {
-    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = _loadingState();
     state = await AsyncValue.guard(() async {
       await ref
           .read(updateTaskStatusUseCaseProvider)
           .completeTask(taskId: taskId, occurredAt: occurredAt);
-      return _reloadSnapshot();
+      return _loadSnapshot();
     });
   }
 
@@ -135,18 +135,25 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
     required String taskId,
     required DateTime occurredAt,
   }) async {
-    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = _loadingState();
     state = await AsyncValue.guard(() async {
       await ref
           .read(updateTaskStatusUseCaseProvider)
           .deleteTask(taskId: taskId, occurredAt: occurredAt);
-      return _reloadSnapshot();
+      return _loadSnapshot();
     });
   }
 
-  /// 统一处理首页快照失效与重新读取，避免刷新策略散落在多个入口。
-  Future<TaskFeedSnapshot> _reloadSnapshot() async {
-    ref.invalidate(taskFlowHomeSnapshotProvider);
-    return ref.read(taskFlowHomeSnapshotProvider.future);
+  /// 已有快照刷新时保留旧数据，避免写后刷新把首页短暂清成全屏 loading。
+  AsyncValue<TaskFeedSnapshot> _loadingState() {
+    return switch (state) {
+      AsyncData<TaskFeedSnapshot>() => state,
+      _ => const AsyncLoading<TaskFeedSnapshot>(),
+    };
+  }
+
+  /// 统一读取首页快照用例，避免通过基础快照 Provider 做重复失效和重读。
+  Future<TaskFeedSnapshot> _loadSnapshot() {
+    return ref.read(loadTaskFeedUseCaseProvider).execute();
   }
 }
