@@ -2,4 +2,7 @@
 <resources>
     <string name="quick_add_shortcut_short_label">Quick add</string>
     <string name="quick_add_shortcut_long_label">Quick add task</string>
+    <string name="screen_note_widget_name">Task widget</string>
+    <string name="screen_note_widget_empty_title">Nothing to show yet</string>
+    <string name="screen_note_widget_empty_body">Open the app to add your first task.</string>
 </resources>

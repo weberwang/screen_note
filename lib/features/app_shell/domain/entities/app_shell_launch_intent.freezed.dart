@@ -55,13 +55,14 @@ extension AppShellLaunchIntentPatterns on AppShellLaunchIntent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Home value)?  home,TResult Function( _History value)?  history,TResult Function( _Settings value)?  settings,TResult Function( _FallbackHome value)?  fallbackHome,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Home value)?  home,TResult Function( _History value)?  history,TResult Function( _Settings value)?  settings,TResult Function( _TaskEditor value)?  taskEditor,TResult Function( _FallbackHome value)?  fallbackHome,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Home() when home != null:
 return home(_that);case _History() when history != null:
 return history(_that);case _Settings() when settings != null:
-return settings(_that);case _FallbackHome() when fallbackHome != null:
+return settings(_that);case _TaskEditor() when taskEditor != null:
+return taskEditor(_that);case _FallbackHome() when fallbackHome != null:
 return fallbackHome(_that);case _:
   return orElse();
 
@@ -80,13 +81,14 @@ return fallbackHome(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Home value)  home,required TResult Function( _History value)  history,required TResult Function( _Settings value)  settings,required TResult Function( _FallbackHome value)  fallbackHome,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Home value)  home,required TResult Function( _History value)  history,required TResult Function( _Settings value)  settings,required TResult Function( _TaskEditor value)  taskEditor,required TResult Function( _FallbackHome value)  fallbackHome,}){
 final _that = this;
 switch (_that) {
 case _Home():
 return home(_that);case _History():
 return history(_that);case _Settings():
-return settings(_that);case _FallbackHome():
+return settings(_that);case _TaskEditor():
+return taskEditor(_that);case _FallbackHome():
 return fallbackHome(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +106,14 @@ return fallbackHome(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Home value)?  home,TResult? Function( _History value)?  history,TResult? Function( _Settings value)?  settings,TResult? Function( _FallbackHome value)?  fallbackHome,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Home value)?  home,TResult? Function( _History value)?  history,TResult? Function( _Settings value)?  settings,TResult? Function( _TaskEditor value)?  taskEditor,TResult? Function( _FallbackHome value)?  fallbackHome,}){
 final _that = this;
 switch (_that) {
 case _Home() when home != null:
 return home(_that);case _History() when history != null:
 return history(_that);case _Settings() when settings != null:
-return settings(_that);case _FallbackHome() when fallbackHome != null:
+return settings(_that);case _TaskEditor() when taskEditor != null:
+return taskEditor(_that);case _FallbackHome() when fallbackHome != null:
 return fallbackHome(_that);case _:
   return null;
 
@@ -128,12 +131,13 @@ return fallbackHome(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,TResult Function()?  history,TResult Function()?  settings,TResult Function()?  fallbackHome,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,TResult Function()?  history,TResult Function()?  settings,TResult Function( String taskId)?  taskEditor,TResult Function()?  fallbackHome,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Home() when home != null:
 return home();case _History() when history != null:
 return history();case _Settings() when settings != null:
-return settings();case _FallbackHome() when fallbackHome != null:
+return settings();case _TaskEditor() when taskEditor != null:
+return taskEditor(_that.taskId);case _FallbackHome() when fallbackHome != null:
 return fallbackHome();case _:
   return orElse();
 
@@ -152,12 +156,13 @@ return fallbackHome();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,required TResult Function()  history,required TResult Function()  settings,required TResult Function()  fallbackHome,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,required TResult Function()  history,required TResult Function()  settings,required TResult Function( String taskId)  taskEditor,required TResult Function()  fallbackHome,}) {final _that = this;
 switch (_that) {
 case _Home():
 return home();case _History():
 return history();case _Settings():
-return settings();case _FallbackHome():
+return settings();case _TaskEditor():
+return taskEditor(_that.taskId);case _FallbackHome():
 return fallbackHome();case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +180,13 @@ return fallbackHome();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,TResult? Function()?  history,TResult? Function()?  settings,TResult? Function()?  fallbackHome,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,TResult? Function()?  history,TResult? Function()?  settings,TResult? Function( String taskId)?  taskEditor,TResult? Function()?  fallbackHome,}) {final _that = this;
 switch (_that) {
 case _Home() when home != null:
 return home();case _History() when history != null:
 return history();case _Settings() when settings != null:
-return settings();case _FallbackHome() when fallbackHome != null:
+return settings();case _TaskEditor() when taskEditor != null:
+return taskEditor(_that.taskId);case _FallbackHome() when fallbackHome != null:
 return fallbackHome();case _:
   return null;
 
@@ -284,6 +290,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _TaskEditor implements AppShellLaunchIntent {
+  const _TaskEditor({required this.taskId});
+  
+
+ final  String taskId;
+
+/// Create a copy of AppShellLaunchIntent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TaskEditorCopyWith<_TaskEditor> get copyWith => __$TaskEditorCopyWithImpl<_TaskEditor>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskEditor&&(identical(other.taskId, taskId) || other.taskId == taskId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,taskId);
+
+@override
+String toString() {
+  return 'AppShellLaunchIntent.taskEditor(taskId: $taskId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$TaskEditorCopyWith<$Res> implements $AppShellLaunchIntentCopyWith<$Res> {
+  factory _$TaskEditorCopyWith(_TaskEditor value, $Res Function(_TaskEditor) _then) = __$TaskEditorCopyWithImpl;
+@useResult
+$Res call({
+ String taskId
+});
+
+
+
+
+}
+/// @nodoc
+class __$TaskEditorCopyWithImpl<$Res>
+    implements _$TaskEditorCopyWith<$Res> {
+  __$TaskEditorCopyWithImpl(this._self, this._then);
+
+  final _TaskEditor _self;
+  final $Res Function(_TaskEditor) _then;
+
+/// Create a copy of AppShellLaunchIntent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? taskId = null,}) {
+  return _then(_TaskEditor(
+taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

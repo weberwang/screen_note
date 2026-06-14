@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WidgetSnapshotItem {
 
- String get title; String get statusLabel; String get dueLabel; bool get isPinned; bool get isOverdue; bool get isPrivate; int get rank;
+ String get taskId; String get launchTarget; String get title; String get statusLabel; String get dueLabel; bool get isPinned; bool get isOverdue; bool get isPrivate; int get rank;
 /// Create a copy of WidgetSnapshotItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $WidgetSnapshotItemCopyWith<WidgetSnapshotItem> get copyWith => _$WidgetSnapshot
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WidgetSnapshotItem&&(identical(other.title, title) || other.title == title)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel)&&(identical(other.dueLabel, dueLabel) || other.dueLabel == dueLabel)&&(identical(other.isPinned, isPinned) || other.isPinned == isPinned)&&(identical(other.isOverdue, isOverdue) || other.isOverdue == isOverdue)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.rank, rank) || other.rank == rank));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WidgetSnapshotItem&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.launchTarget, launchTarget) || other.launchTarget == launchTarget)&&(identical(other.title, title) || other.title == title)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel)&&(identical(other.dueLabel, dueLabel) || other.dueLabel == dueLabel)&&(identical(other.isPinned, isPinned) || other.isPinned == isPinned)&&(identical(other.isOverdue, isOverdue) || other.isOverdue == isOverdue)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.rank, rank) || other.rank == rank));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,statusLabel,dueLabel,isPinned,isOverdue,isPrivate,rank);
+int get hashCode => Object.hash(runtimeType,taskId,launchTarget,title,statusLabel,dueLabel,isPinned,isOverdue,isPrivate,rank);
 
 @override
 String toString() {
-  return 'WidgetSnapshotItem(title: $title, statusLabel: $statusLabel, dueLabel: $dueLabel, isPinned: $isPinned, isOverdue: $isOverdue, isPrivate: $isPrivate, rank: $rank)';
+  return 'WidgetSnapshotItem(taskId: $taskId, launchTarget: $launchTarget, title: $title, statusLabel: $statusLabel, dueLabel: $dueLabel, isPinned: $isPinned, isOverdue: $isOverdue, isPrivate: $isPrivate, rank: $rank)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $WidgetSnapshotItemCopyWith<$Res>  {
   factory $WidgetSnapshotItemCopyWith(WidgetSnapshotItem value, $Res Function(WidgetSnapshotItem) _then) = _$WidgetSnapshotItemCopyWithImpl;
 @useResult
 $Res call({
- String title, String statusLabel, String dueLabel, bool isPinned, bool isOverdue, bool isPrivate, int rank
+ String taskId, String launchTarget, String title, String statusLabel, String dueLabel, bool isPinned, bool isOverdue, bool isPrivate, int rank
 });
 
 
@@ -65,9 +65,11 @@ class _$WidgetSnapshotItemCopyWithImpl<$Res>
 
 /// Create a copy of WidgetSnapshotItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? statusLabel = null,Object? dueLabel = null,Object? isPinned = null,Object? isOverdue = null,Object? isPrivate = null,Object? rank = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? taskId = null,Object? launchTarget = null,Object? title = null,Object? statusLabel = null,Object? dueLabel = null,Object? isPinned = null,Object? isOverdue = null,Object? isPrivate = null,Object? rank = null,}) {
   return _then(_self.copyWith(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
+as String,launchTarget: null == launchTarget ? _self.launchTarget : launchTarget // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,statusLabel: null == statusLabel ? _self.statusLabel : statusLabel // ignore: cast_nullable_to_non_nullable
 as String,dueLabel: null == dueLabel ? _self.dueLabel : dueLabel // ignore: cast_nullable_to_non_nullable
 as String,isPinned: null == isPinned ? _self.isPinned : isPinned // ignore: cast_nullable_to_non_nullable
@@ -159,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String statusLabel,  String dueLabel,  bool isPinned,  bool isOverdue,  bool isPrivate,  int rank)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String taskId,  String launchTarget,  String title,  String statusLabel,  String dueLabel,  bool isPinned,  bool isOverdue,  bool isPrivate,  int rank)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WidgetSnapshotItem() when $default != null:
-return $default(_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_that.isOverdue,_that.isPrivate,_that.rank);case _:
+return $default(_that.taskId,_that.launchTarget,_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_that.isOverdue,_that.isPrivate,_that.rank);case _:
   return orElse();
 
 }
@@ -180,10 +182,10 @@ return $default(_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String statusLabel,  String dueLabel,  bool isPinned,  bool isOverdue,  bool isPrivate,  int rank)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String taskId,  String launchTarget,  String title,  String statusLabel,  String dueLabel,  bool isPinned,  bool isOverdue,  bool isPrivate,  int rank)  $default,) {final _that = this;
 switch (_that) {
 case _WidgetSnapshotItem():
-return $default(_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_that.isOverdue,_that.isPrivate,_that.rank);case _:
+return $default(_that.taskId,_that.launchTarget,_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_that.isOverdue,_that.isPrivate,_that.rank);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +202,10 @@ return $default(_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String statusLabel,  String dueLabel,  bool isPinned,  bool isOverdue,  bool isPrivate,  int rank)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String taskId,  String launchTarget,  String title,  String statusLabel,  String dueLabel,  bool isPinned,  bool isOverdue,  bool isPrivate,  int rank)?  $default,) {final _that = this;
 switch (_that) {
 case _WidgetSnapshotItem() when $default != null:
-return $default(_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_that.isOverdue,_that.isPrivate,_that.rank);case _:
+return $default(_that.taskId,_that.launchTarget,_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_that.isOverdue,_that.isPrivate,_that.rank);case _:
   return null;
 
 }
@@ -215,9 +217,11 @@ return $default(_that.title,_that.statusLabel,_that.dueLabel,_that.isPinned,_tha
 @JsonSerializable()
 
 class _WidgetSnapshotItem implements WidgetSnapshotItem {
-  const _WidgetSnapshotItem({required this.title, required this.statusLabel, required this.dueLabel, required this.isPinned, required this.isOverdue, required this.isPrivate, required this.rank});
+  const _WidgetSnapshotItem({required this.taskId, required this.launchTarget, required this.title, required this.statusLabel, required this.dueLabel, required this.isPinned, required this.isOverdue, required this.isPrivate, required this.rank});
   factory _WidgetSnapshotItem.fromJson(Map<String, dynamic> json) => _$WidgetSnapshotItemFromJson(json);
 
+@override final  String taskId;
+@override final  String launchTarget;
 @override final  String title;
 @override final  String statusLabel;
 @override final  String dueLabel;
@@ -239,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WidgetSnapshotItem&&(identical(other.title, title) || other.title == title)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel)&&(identical(other.dueLabel, dueLabel) || other.dueLabel == dueLabel)&&(identical(other.isPinned, isPinned) || other.isPinned == isPinned)&&(identical(other.isOverdue, isOverdue) || other.isOverdue == isOverdue)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.rank, rank) || other.rank == rank));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WidgetSnapshotItem&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.launchTarget, launchTarget) || other.launchTarget == launchTarget)&&(identical(other.title, title) || other.title == title)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel)&&(identical(other.dueLabel, dueLabel) || other.dueLabel == dueLabel)&&(identical(other.isPinned, isPinned) || other.isPinned == isPinned)&&(identical(other.isOverdue, isOverdue) || other.isOverdue == isOverdue)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.rank, rank) || other.rank == rank));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,statusLabel,dueLabel,isPinned,isOverdue,isPrivate,rank);
+int get hashCode => Object.hash(runtimeType,taskId,launchTarget,title,statusLabel,dueLabel,isPinned,isOverdue,isPrivate,rank);
 
 @override
 String toString() {
-  return 'WidgetSnapshotItem(title: $title, statusLabel: $statusLabel, dueLabel: $dueLabel, isPinned: $isPinned, isOverdue: $isOverdue, isPrivate: $isPrivate, rank: $rank)';
+  return 'WidgetSnapshotItem(taskId: $taskId, launchTarget: $launchTarget, title: $title, statusLabel: $statusLabel, dueLabel: $dueLabel, isPinned: $isPinned, isOverdue: $isOverdue, isPrivate: $isPrivate, rank: $rank)';
 }
 
 
@@ -259,7 +263,7 @@ abstract mixin class _$WidgetSnapshotItemCopyWith<$Res> implements $WidgetSnapsh
   factory _$WidgetSnapshotItemCopyWith(_WidgetSnapshotItem value, $Res Function(_WidgetSnapshotItem) _then) = __$WidgetSnapshotItemCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String statusLabel, String dueLabel, bool isPinned, bool isOverdue, bool isPrivate, int rank
+ String taskId, String launchTarget, String title, String statusLabel, String dueLabel, bool isPinned, bool isOverdue, bool isPrivate, int rank
 });
 
 
@@ -276,9 +280,11 @@ class __$WidgetSnapshotItemCopyWithImpl<$Res>
 
 /// Create a copy of WidgetSnapshotItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? statusLabel = null,Object? dueLabel = null,Object? isPinned = null,Object? isOverdue = null,Object? isPrivate = null,Object? rank = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? taskId = null,Object? launchTarget = null,Object? title = null,Object? statusLabel = null,Object? dueLabel = null,Object? isPinned = null,Object? isOverdue = null,Object? isPrivate = null,Object? rank = null,}) {
   return _then(_WidgetSnapshotItem(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
+as String,launchTarget: null == launchTarget ? _self.launchTarget : launchTarget // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,statusLabel: null == statusLabel ? _self.statusLabel : statusLabel // ignore: cast_nullable_to_non_nullable
 as String,dueLabel: null == dueLabel ? _self.dueLabel : dueLabel // ignore: cast_nullable_to_non_nullable
 as String,isPinned: null == isPinned ? _self.isPinned : isPinned // ignore: cast_nullable_to_non_nullable

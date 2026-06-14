@@ -19,6 +19,7 @@ final class HomeWidgetSnapshotStore implements WidgetSnapshotStore {
   static const String _lastValidSnapshotKey =
       'screen_note.widget_snapshot.last_valid';
   static const String _iosWidgetName = 'ScreenNoteLockScreenWidget';
+  static const String _androidWidgetName = 'ScreenNoteWidgetProvider';
 
   final AppLogger _logger;
 
@@ -34,7 +35,10 @@ final class HomeWidgetSnapshotStore implements WidgetSnapshotStore {
       await HomeWidget.saveWidgetData<String>(_lastValidSnapshotKey, payload);
 
       try {
-        await HomeWidget.updateWidget(iOSName: _iosWidgetName);
+        await HomeWidget.updateWidget(
+          iOSName: _iosWidgetName,
+          androidName: _androidWidgetName,
+        );
       } on MissingPluginException {
         _logger.warning('widget_snapshot_refresh_missing_plugin');
       } on PlatformException {

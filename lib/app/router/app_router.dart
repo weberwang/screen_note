@@ -7,6 +7,7 @@ import 'package:screen_note/features/app_shell/domain/entities/app_shell_launch_
 import 'package:screen_note/features/app_shell/presentation/pages/app_shell_page.dart';
 import 'package:screen_note/features/history_center/presentation/pages/history_center_page.dart';
 import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
+import 'package:screen_note/features/task_flow/presentation/pages/task_flow_editor_page.dart';
 import 'package:screen_note/features/task_flow/presentation/pages/task_flow_home_page.dart';
 
 part 'app_router.g.dart';
@@ -17,14 +18,10 @@ part 'app_router.g.dart';
 GoRouter appRouter(Ref ref) {
   final launchBridge = ref.watch(widgetLaunchBridgeProvider);
   const launchResolver = AppShellLaunchResolver();
-  final initialLocation = switch (
-    launchResolver.resolve(launchBridge.rawLaunchLocation)
-  ) {
-    const AppShellLaunchIntent.home() => RoutePaths.home,
-    const AppShellLaunchIntent.history() => RoutePaths.history,
-    const AppShellLaunchIntent.settings() => RoutePaths.settings,
-    _ => RoutePaths.home,
-  };
+  final AppShellLaunchIntent initialIntent = launchResolver.resolve(
+    launchBridge.rawLaunchLocation,
+  );
+  final String initialLocation = locationForAppShellIntent(initialIntent);
 
   return GoRouter(
     // 根路由只消费壳层安全入口，避免把平台原始路径直接灌进共享路由树。
@@ -32,7 +29,10 @@ GoRouter appRouter(Ref ref) {
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return AppShellPage(navigationShell: navigationShell);
+          return AppShellPage(
+            navigationShell: navigationShell,
+            currentLocation: state.uri.path,
+          );
         },
         branches: [
           StatefulShellBranch(
@@ -40,6 +40,14 @@ GoRouter appRouter(Ref ref) {
               GoRoute(
                 path: RoutePaths.home,
                 builder: (context, state) => const TaskFlowHomePage(),
+                routes: [
+                  GoRoute(
+                    path: RoutePaths.taskEditor,
+                    builder: (context, state) => TaskFlowEditorPage(
+                      taskId: state.uri.queryParameters['taskId'],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

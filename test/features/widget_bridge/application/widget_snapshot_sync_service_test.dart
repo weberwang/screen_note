@@ -1,9 +1,9 @@
-import 'dart:ui';
-
+import 'dart:convert';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
@@ -39,7 +39,6 @@ void main() {
       settingsRepository: settingsRepository,
       snapshotStore: snapshotStore,
       projector: const WidgetSnapshotProjector(),
-      locale: const Locale('zh'),
     );
   });
 
@@ -47,10 +46,15 @@ void main() {
     await database.close();
   });
 
-  test('fullContent 模式会把最高优先级事项投影成可读快照', () async {
+  test('fullContent 模式会输出前三条优先事项并写入共享回流字段', () async {
     final DateTime now = DateTime(2026, 6, 6, 8);
     await repository.createTask(
-      _task(id: 'normal', title: '普通事项', createdAt: now),
+      _task(
+        id: 'other',
+        title: '第四顺位的普通事项',
+        createdAt: now,
+        dueAt: DateTime(2026, 6, 8, 10),
+      ),
     );
     await repository.createTask(
       _task(
@@ -61,14 +65,53 @@ void main() {
         dueAt: DateTime(2026, 6, 6, 18),
       ),
     );
+    await repository.createTask(
+      _task(
+        id: 'overdue',
+        title: '已经逾期',
+        createdAt: now,
+        dueAt: DateTime(2026, 6, 5, 9),
+      ),
+    );
+    await repository.createTask(
+      _task(
+        id: 'today',
+        title: '今天跟进',
+        createdAt: now,
+        dueAt: DateTime(2026, 6, 6, 11),
+      ),
+    );
 
     final WidgetSnapshot snapshot = await syncService.loadSnapshot(now: now);
+    final Map<String, dynamic> payload =
+        jsonDecode(jsonEncode(snapshot.toJson())) as Map<String, dynamic>;
+    final List<Map<String, dynamic>> itemPayloads =
+        (payload['items'] as List<dynamic>).cast<Map<String, dynamic>>();
 
     expect(snapshot.displayMode, WidgetDisplayMode.fullContent);
-    expect(snapshot.items, hasLength(1));
-    expect(snapshot.items.single.title, '先处理置顶');
-    expect(snapshot.items.single.statusLabel, '今天');
-    expect(snapshot.items.single.dueLabel, '18:00');
+    expect(snapshot.version, 2);
+    expect(payload['version'], 2);
+    expect(snapshot.items, hasLength(3));
+    expect(snapshot.items.map((item) => item.title).toList(), <String>[
+      '先处理置顶',
+      '已经逾期',
+      '今天跟进',
+    ]);
+    expect(snapshot.items.map((item) => item.rank).toList(), <int>[1, 2, 3]);
+    expect(
+      itemPayloads.map((Map<String, dynamic> item) => item['taskId']).toList(),
+      <String>['pinned', 'overdue', 'today'],
+    );
+    expect(
+      itemPayloads
+          .map((Map<String, dynamic> item) => item['launchTarget'])
+          .toList(),
+      <String>['task', 'task', 'task'],
+    );
+    expect(
+      itemPayloads.map((Map<String, dynamic> item) => item['rank']).toList(),
+      <int>[1, 2, 3],
+    );
     expect(snapshot.hasPrivateContent, isFalse);
   });
 
@@ -83,28 +126,117 @@ void main() {
     );
 
     final WidgetSnapshot snapshot = await syncService.loadSnapshot(now: now);
+    expect(snapshot.items, hasLength(1));
+    final Map<String, dynamic> itemPayload =
+        ((jsonDecode(jsonEncode(snapshot.toJson()))['items'] as List<dynamic>)
+                .single
+            as Map<String, dynamic>);
 
     expect(snapshot.items.single.title, '预览内容已隐藏');
     expect(snapshot.items.single.statusLabel, '安全预览');
     expect(snapshot.items.single.dueLabel, '点按后回到应用查看');
+    expect(itemPayload['taskId'], 'task-1');
+    expect(itemPayload['launchTarget'], 'task');
   });
 
   test('私密事项即使在 fullContent 模式下也必须被安全遮罩', () async {
     final DateTime now = DateTime(2026, 6, 6, 8);
     await repository.createTask(
+      _task(id: 'private-task', title: '私密正文', createdAt: now, isPrivate: true),
+    );
+
+    final WidgetSnapshot snapshot = await syncService.loadSnapshot(now: now);
+    expect(snapshot.items, hasLength(1));
+    final Map<String, dynamic> itemPayload =
+        ((jsonDecode(jsonEncode(snapshot.toJson()))['items'] as List<dynamic>)
+                .single
+            as Map<String, dynamic>);
+
+    expect(snapshot.items.single.title, '隐私事项内容已隐藏');
+    expect(snapshot.items.single.statusLabel, '受保护');
+    expect(snapshot.items.single.isPrivate, isTrue);
+    expect(itemPayload['taskId'], 'private-task');
+    expect(itemPayload['launchTarget'], 'task');
+    expect(snapshot.hasPrivateContent, isTrue);
+  });
+
+  test('第 4 条才是私密事项时不应把 hasPrivateContent 标成 true', () async {
+    final DateTime now = DateTime(2026, 6, 6, 8);
+    await repository.createTask(
       _task(
-        id: 'private-task',
-        title: '私密正文',
+        id: 'pinned',
+        title: '先处理置顶',
+        createdAt: now,
+        isPinned: true,
+        dueAt: DateTime(2026, 6, 6, 18),
+      ),
+    );
+    await repository.createTask(
+      _task(
+        id: 'overdue',
+        title: '已经逾期',
+        createdAt: now,
+        dueAt: DateTime(2026, 6, 5, 9),
+      ),
+    );
+    await repository.createTask(
+      _task(
+        id: 'today',
+        title: '今天跟进',
+        createdAt: now,
+        dueAt: DateTime(2026, 6, 6, 11),
+      ),
+    );
+    await repository.createTask(
+      _task(
+        id: 'private-fourth',
+        title: '第四条私密事项',
         createdAt: now,
         isPrivate: true,
+        dueAt: DateTime(2026, 6, 8, 10),
       ),
     );
 
     final WidgetSnapshot snapshot = await syncService.loadSnapshot(now: now);
 
-    expect(snapshot.items.single.title, '隐私事项内容已隐藏');
-    expect(snapshot.items.single.statusLabel, '受保护');
-    expect(snapshot.items.single.isPrivate, isTrue);
+    expect(snapshot.items, hasLength(3));
+    expect(snapshot.items.every((item) => item.isPrivate == false), isTrue);
+    expect(snapshot.hasPrivateContent, isFalse);
+  });
+
+  test('前三条里包含私密事项时 hasPrivateContent 应为 true', () async {
+    final DateTime now = DateTime(2026, 6, 6, 8);
+    await repository.createTask(
+      _task(
+        id: 'pinned',
+        title: '先处理置顶',
+        createdAt: now,
+        isPinned: true,
+        dueAt: DateTime(2026, 6, 6, 18),
+      ),
+    );
+    await repository.createTask(
+      _task(
+        id: 'private-overdue',
+        title: '前三条里的私密事项',
+        createdAt: now,
+        isPrivate: true,
+        dueAt: DateTime(2026, 6, 5, 9),
+      ),
+    );
+    await repository.createTask(
+      _task(
+        id: 'today',
+        title: '今天跟进',
+        createdAt: now,
+        dueAt: DateTime(2026, 6, 6, 11),
+      ),
+    );
+
+    final WidgetSnapshot snapshot = await syncService.loadSnapshot(now: now);
+
+    expect(snapshot.items, hasLength(3));
+    expect(snapshot.items.any((item) => item.isPrivate), isTrue);
     expect(snapshot.hasPrivateContent, isTrue);
   });
 
@@ -118,7 +250,34 @@ void main() {
 
     expect(synced, isTrue);
     expect(snapshotStore.savedSnapshots, hasLength(1));
-    expect(snapshotStore.savedSnapshots.single.items.single.title, '同步到 Widget');
+    final WidgetSnapshot savedSnapshot = snapshotStore.savedSnapshots.single;
+    expect(savedSnapshot.items, hasLength(1));
+    final List<Map<String, dynamic>> itemPayloads =
+        (jsonDecode(jsonEncode(savedSnapshot.toJson()))['items']
+                as List<dynamic>)
+            .cast<Map<String, dynamic>>();
+    expect(savedSnapshot.items.single.title, '同步到 Widget');
+    expect(itemPayloads.single['taskId'], 'task-1');
+    expect(itemPayloads.single['launchTarget'], 'task');
+  });
+
+  test('共享快照文案应跟随已保存的语言偏好', () async {
+    final DateTime now = DateTime(2026, 6, 6, 8);
+    settingsRepository.preferences = const SettingsCenterPreferences(
+      privacyModeEnabled: false,
+      widgetDisplayMode: WidgetDisplayMode.previewOnly,
+      languagePreference: SettingsLanguagePreference.en,
+    );
+    await repository.createTask(
+      _task(id: 'task-1', title: 'Should stay hidden', createdAt: now),
+    );
+
+    final WidgetSnapshot snapshot = await syncService.loadSnapshot(now: now);
+
+    expect(snapshot.headerTitle, 'Preview Only');
+    expect(snapshot.items.single.title, 'Preview is hidden');
+    expect(snapshot.items.single.statusLabel, 'Safe Preview');
+    expect(snapshot.items.single.dueLabel, 'Open in app');
   });
 }
 

@@ -18,6 +18,13 @@ void main() {
       expect(_buildInitialLocation('/settings/profile'), RoutePaths.settings);
     });
 
+    test('keeps supported task editor raw locations as task editor route', () {
+      expect(
+        _buildInitialLocation('/task-editor?taskId=task-42'),
+        '${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42',
+      );
+    });
+
     test('falls back to home for unsupported lookalike history location', () {
       expect(_buildInitialLocation('/history-foo'), RoutePaths.home);
     });
@@ -52,4 +59,7 @@ final class _FakeWidgetLaunchBridge implements WidgetLaunchBridge {
 
   @override
   final String rawLaunchLocation;
+
+  @override
+  Stream<String> get launchLocations => const Stream<String>.empty();
 }

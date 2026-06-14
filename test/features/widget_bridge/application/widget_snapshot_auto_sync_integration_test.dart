@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:ui';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,6 +17,7 @@ import 'package:screen_note/features/widget_bridge/application/providers/widget_
 import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapshot.dart';
 import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_settings_side_effect_port.dart';
 import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_task_flow_side_effect_port.dart';
+import 'package:screen_note/l10n/app_localizations.dart';
 
 /// 验证默认 Provider 链路下，task-flow 与 settings-center 都会自动联动 Widget 快照同步。
 void main() {
@@ -55,13 +58,23 @@ void main() {
     addTearDown(container.dispose);
     addTearDown(database.close);
 
-    await container.read(createTaskUseCaseProvider).execute(
-      const CreateTaskInput(title: '自动同步锁屏快照', note: ''),
-      now: DateTime.utc(2026, 6, 6, 9),
-    );
-
+    final createdTask = await container
+        .read(createTaskUseCaseProvider)
+        .execute(
+          const CreateTaskInput(title: '自动同步锁屏快照', note: ''),
+          now: DateTime.utc(2026, 6, 6, 9),
+        );
     expect(snapshotStore.savedSnapshots, isNotEmpty);
-    expect(snapshotStore.savedSnapshots.last.items.first.title, '自动同步锁屏快照');
+    final WidgetSnapshot savedSnapshot = snapshotStore.savedSnapshots.last;
+    expect(savedSnapshot.items, hasLength(1));
+    final List<Map<String, dynamic>> itemPayloads =
+        (jsonDecode(jsonEncode(savedSnapshot.toJson()))['items']
+                as List<dynamic>)
+            .cast<Map<String, dynamic>>();
+
+    expect(savedSnapshot.items.first.title, '自动同步锁屏快照');
+    expect(itemPayloads.single['taskId'], createdTask.id);
+    expect(itemPayloads.single['launchTarget'], 'task');
   });
 
   test('更新 Widget 展示模式后会自动刷新共享快照模式', () async {
@@ -101,25 +114,43 @@ void main() {
     addTearDown(container.dispose);
     addTearDown(database.close);
 
-    await container.read(createTaskUseCaseProvider).execute(
-      const CreateTaskInput(title: '切换后刷新模式', note: ''),
-      now: DateTime.utc(2026, 6, 6, 9),
-    );
+    final createdTask = await container
+        .read(createTaskUseCaseProvider)
+        .execute(
+          const CreateTaskInput(title: '切换后刷新模式', note: ''),
+          now: DateTime.utc(2026, 6, 6, 9),
+        );
     snapshotStore.savedSnapshots.clear();
 
-    await container.read(updateWidgetDisplayModeUseCaseProvider).execute(
-      mode: WidgetDisplayMode.previewOnly,
+    await container
+        .read(updateWidgetDisplayModeUseCaseProvider)
+        .execute(mode: WidgetDisplayMode.previewOnly);
+    final AppLocalizations expectedLocalizations = lookupAppLocalizations(
+      const Locale('zh'),
     );
-
     expect(snapshotStore.savedSnapshots, isNotEmpty);
+    final WidgetSnapshot savedSnapshot = snapshotStore.savedSnapshots.last;
+    expect(savedSnapshot.items, hasLength(1));
+    final List<Map<String, dynamic>> itemPayloads =
+        (jsonDecode(jsonEncode(savedSnapshot.toJson()))['items']
+                as List<dynamic>)
+            .cast<Map<String, dynamic>>();
+
+    expect(savedSnapshot.displayMode, WidgetDisplayMode.previewOnly);
     expect(
-      snapshotStore.savedSnapshots.last.displayMode,
-      WidgetDisplayMode.previewOnly,
+      savedSnapshot.items.single.title,
+      expectedLocalizations.widgetSnapshotPreviewTitle,
     );
     expect(
-      snapshotStore.savedSnapshots.last.items.single.title,
-      isNot('切换后刷新模式'),
+      savedSnapshot.items.single.statusLabel,
+      expectedLocalizations.widgetSnapshotStatusPreview,
     );
+    expect(
+      savedSnapshot.items.single.dueLabel,
+      expectedLocalizations.widgetSnapshotOpenInApp,
+    );
+    expect(itemPayloads.single['taskId'], createdTask.id);
+    expect(itemPayloads.single['launchTarget'], 'task');
   });
 }
 

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/load_task_feed_use_case.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
@@ -13,23 +11,21 @@ final class WidgetSnapshotAutoSyncCoordinator {
     required TaskRepository taskRepository,
     required WidgetSnapshotStore snapshotStore,
     required WidgetSnapshotProjector projector,
-    required Locale locale,
     required Future<SettingsCenterPreferences> Function() loadStoredPreferences,
   }) : _loadTaskFeedUseCase = LoadTaskFeedUseCase(repository: taskRepository),
        _snapshotStore = snapshotStore,
        _projector = projector,
-       _locale = locale,
        _loadStoredPreferences = loadStoredPreferences;
 
   final LoadTaskFeedUseCase _loadTaskFeedUseCase;
   final WidgetSnapshotStore _snapshotStore;
   final WidgetSnapshotProjector _projector;
-  final Locale _locale;
   final Future<SettingsCenterPreferences> Function() _loadStoredPreferences;
 
   /// 用当前已持久化偏好生成并同步快照。
   Future<bool> syncStoredPreferences({DateTime? now}) async {
-    final SettingsCenterPreferences preferences = await _loadStoredPreferences();
+    final SettingsCenterPreferences preferences =
+        await _loadStoredPreferences();
     return syncPreferences(preferences, now: now);
   }
 
@@ -42,7 +38,6 @@ final class WidgetSnapshotAutoSyncCoordinator {
     final snapshot = _projector.project(
       taskFeed: taskFeed,
       preferences: preferences,
-      locale: _locale,
       now: now,
     );
     return _snapshotStore.saveSnapshot(snapshot);

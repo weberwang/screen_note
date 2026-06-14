@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/load_task_feed_use_case.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
@@ -15,18 +13,15 @@ final class WidgetSnapshotSyncService {
     required SettingsPreferencesRepository settingsRepository,
     required WidgetSnapshotStore snapshotStore,
     required WidgetSnapshotProjector projector,
-    required Locale locale,
   }) : _loadTaskFeedUseCase = LoadTaskFeedUseCase(repository: taskRepository),
        _settingsRepository = settingsRepository,
        _snapshotStore = snapshotStore,
-       _projector = projector,
-       _locale = locale;
+       _projector = projector;
 
   final LoadTaskFeedUseCase _loadTaskFeedUseCase;
   final SettingsPreferencesRepository _settingsRepository;
   final WidgetSnapshotStore _snapshotStore;
   final WidgetSnapshotProjector _projector;
-  final Locale _locale;
 
   /// 读取当前可用于 Widget / 锁屏的稳定快照。
   Future<WidgetSnapshot> loadSnapshot({DateTime? now}) async {
@@ -35,7 +30,6 @@ final class WidgetSnapshotSyncService {
     return _projector.project(
       taskFeed: taskFeed,
       preferences: settingsPreferences,
-      locale: _locale,
       now: now,
     );
   }

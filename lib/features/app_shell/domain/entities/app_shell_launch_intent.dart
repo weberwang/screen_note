@@ -15,6 +15,11 @@ abstract class AppShellLaunchIntent with _$AppShellLaunchIntent {
   /// 进入设置分支。
   const factory AppShellLaunchIntent.settings() = _Settings;
 
+  /// 进入事项编辑页时，只携带稳定 taskId，避免把原始平台载荷直接透传给页面。
+  const factory AppShellLaunchIntent.taskEditor({
+    required String taskId,
+  }) = _TaskEditor;
+
   /// 未识别入口统一回落到首页。
   const factory AppShellLaunchIntent.fallbackHome() = _FallbackHome;
 }

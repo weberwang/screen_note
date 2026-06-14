@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
@@ -17,13 +18,12 @@ final class WidgetSnapshotProjector {
   WidgetSnapshot project({
     required TaskFeedSnapshot taskFeed,
     required SettingsCenterPreferences preferences,
-    required Locale locale,
     DateTime? now,
     bool hasFallbackContent = false,
   }) {
     final DateTime timestamp = now ?? DateTime.now();
     final AppLocalizations localizations = lookupAppLocalizations(
-      _resolveSupportedLocale(locale),
+      _localeFromPreferences(preferences),
     );
     final List<TaskEntity> orderedTasks = <TaskEntity>[
       ...taskFeed.pinnedTasks,
@@ -31,16 +31,20 @@ final class WidgetSnapshotProjector {
       ...taskFeed.todayTasks,
       ...taskFeed.otherTasks,
     ];
-    final TaskEntity? topTask = orderedTasks.isEmpty ? null : orderedTasks.first;
-
-    final WidgetSnapshotItem? item = topTask == null
-        ? null
-        : _toSnapshotItem(
-            task: topTask,
+    // 共享快照一次最多输出 3 条，后续各平台只负责按尺寸裁剪前 N 条。
+    final List<WidgetSnapshotItem> items = orderedTasks
+        .take(3)
+        .indexed
+        .map(
+          ((int, TaskEntity) entry) => _toSnapshotItem(
+            task: entry.$2,
+            rank: entry.$1 + 1,
             preferences: preferences,
             localizations: localizations,
             now: timestamp,
-          );
+          ),
+        )
+        .toList(growable: false);
 
     return WidgetSnapshot(
       snapshotId: 'widget_${timestamp.toUtc().millisecondsSinceEpoch}',
@@ -53,10 +57,12 @@ final class WidgetSnapshotProjector {
       emptyTitle: localizations.widgetSnapshotEmptyTitle,
       emptyBody: localizations.widgetSnapshotEmptyBody,
       fallbackHint: localizations.widgetSnapshotFallbackHint,
-      items: item == null ? const <WidgetSnapshotItem>[] : <WidgetSnapshotItem>[item],
-      hasPrivateContent: orderedTasks.any((TaskEntity task) => task.isPrivate),
+      items: items,
+      // 该标记只描述本次实际下发给 Widget 的条目里是否含有原始私密事项，
+      // 避免被截断到第 4 条之后的任务把当前 payload 语义污染掉。
+      hasPrivateContent: items.any((WidgetSnapshotItem item) => item.isPrivate),
       hasFallbackContent: hasFallbackContent,
-      version: 1,
+      version: 2,
     );
   }
 
@@ -75,19 +81,23 @@ final class WidgetSnapshotProjector {
 
   WidgetSnapshotItem _toSnapshotItem({
     required TaskEntity task,
+    required int rank,
     required SettingsCenterPreferences preferences,
     required AppLocalizations localizations,
     required DateTime now,
   }) {
     final bool isOverdue = _isOverdue(task, now);
     final bool isDueToday = _isDueToday(task, now);
-    final bool shouldMask = task.isPrivate ||
+    final bool shouldMask =
+        task.isPrivate ||
         preferences.privacyModeEnabled ||
         preferences.widgetDisplayMode == WidgetDisplayMode.previewOnly;
 
     if (shouldMask) {
       final bool isPrivate = task.isPrivate || preferences.privacyModeEnabled;
       return WidgetSnapshotItem(
+        taskId: task.id,
+        launchTarget: 'task',
         title: isPrivate
             ? localizations.widgetSnapshotPrivateTitle
             : localizations.widgetSnapshotPreviewTitle,
@@ -98,11 +108,13 @@ final class WidgetSnapshotProjector {
         isPinned: task.isPinned,
         isOverdue: isOverdue,
         isPrivate: task.isPrivate,
-        rank: 1,
+        rank: rank,
       );
     }
 
     return WidgetSnapshotItem(
+      taskId: task.id,
+      launchTarget: 'task',
       title: task.title,
       statusLabel: _buildStatusLabel(
         task: task,
@@ -118,7 +130,7 @@ final class WidgetSnapshotProjector {
       isPinned: task.isPinned,
       isOverdue: isOverdue,
       isPrivate: task.isPrivate,
-      rank: 1,
+      rank: rank,
     );
   }
 
@@ -180,13 +192,12 @@ final class WidgetSnapshotProjector {
     return dueAt.isBefore(startOfToday);
   }
 
-  Locale _resolveSupportedLocale(Locale locale) {
-    return AppLocalizations.supportedLocales.any(
-          (Locale supportedLocale) =>
-              supportedLocale.languageCode == locale.languageCode,
-        )
-        ? Locale(locale.languageCode)
-        : AppLocalizations.supportedLocales.first;
+  /// Widget 文案跟随用户已保存的语言偏好，避免应用与小组件分属不同语言环境。
+  Locale _localeFromPreferences(SettingsCenterPreferences preferences) {
+    return switch (preferences.languagePreference) {
+      SettingsLanguagePreference.zh => const Locale('zh'),
+      SettingsLanguagePreference.en => const Locale('en'),
+    };
   }
 
   /// 手写时钟格式，避免桥接层额外依赖 locale 初始化。

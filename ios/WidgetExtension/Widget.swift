@@ -1,7 +1,7 @@
 import SwiftUI
 import WidgetKit
 
-/// 锁屏小组件定义。
+/// iOS 小组件定义。
 ///
 /// kind 必须与 Flutter 侧触发 HomeWidget.updateWidget 时传入的 iOSName 保持一致。
 @main
@@ -16,7 +16,7 @@ struct ScreenNoteLockScreenWidget: Widget {
       ScreenNoteWidgetEntryView(entry: entry)
     }
     .configurationDisplayName("Screen Note")
-    .description("展示主应用生成的稳定锁屏快照。")
-    .supportedFamilies([.accessoryRectangular])
+    .description("展示主应用生成的稳定事项快照。")
+    .supportedFamilies([.accessoryRectangular, .systemSmall, .systemMedium])
   }
 }

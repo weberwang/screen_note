@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/app.dart';
+import 'package:screen_note/app/startup/widget_launch_bridge.dart';
 import 'package:screen_note/core/logging/app_logger.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
@@ -10,14 +11,15 @@ import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapsho
 
 /// 执行全局 bootstrap 入口。
 ///
-/// 当前阶段只建立最小可运行启动链：Flutter 绑定、全局错误兜底和 ProviderScope，
-/// 不在这里接入数据库、通知、Widget 真桥接等后续业务依赖。
+/// 当前阶段会在 runApp 前先拿到安全的 Widget 启动桥，保证桌面回流失败时也只降级到首页。
 Future<void> bootstrapAndRunApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureGlobalErrorHandling();
+  final WidgetLaunchBridge launchBridge = await loadSafeWidgetLaunchBridge();
   runApp(
     ProviderScope(
       overrides: [
+        widgetLaunchBridgeProvider.overrideWithValue(launchBridge),
         defaultTaskFlowSideEffectPortProvider.overrideWith((Ref ref) {
           return WidgetSnapshotTaskFlowSideEffectPort(
             coordinator: ref.watch(widgetSnapshotAutoSyncCoordinatorProvider),

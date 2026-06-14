@@ -8,6 +8,8 @@ part of 'widget_snapshot_item.dart';
 
 _WidgetSnapshotItem _$WidgetSnapshotItemFromJson(Map<String, dynamic> json) =>
     _WidgetSnapshotItem(
+      taskId: json['taskId'] as String,
+      launchTarget: json['launchTarget'] as String,
       title: json['title'] as String,
       statusLabel: json['statusLabel'] as String,
       dueLabel: json['dueLabel'] as String,
@@ -19,6 +21,8 @@ _WidgetSnapshotItem _$WidgetSnapshotItemFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$WidgetSnapshotItemToJson(_WidgetSnapshotItem instance) =>
     <String, dynamic>{
+      'taskId': instance.taskId,
+      'launchTarget': instance.launchTarget,
       'title': instance.title,
       'statusLabel': instance.statusLabel,
       'dueLabel': instance.dueLabel,

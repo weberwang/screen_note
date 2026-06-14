@@ -63,7 +63,7 @@ final class WidgetSnapshotAutoSyncCoordinatorProvider
 }
 
 String _$widgetSnapshotAutoSyncCoordinatorHash() =>
-    r'45831392e1460e5be109fd7ef80e22c1bc97a6c3';
+    r'18c6b065152d66b63b89649df9a33543b3750eb8';
 
 /// Widget 快照同步服务 Provider，供后续手动同步或诊断入口统一复用。
 
@@ -116,4 +116,4 @@ final class WidgetSnapshotSyncServiceProvider
 }
 
 String _$widgetSnapshotSyncServiceHash() =>
-    r'15195326c0de73c89547d338a43263dbaa8ddd4f';
+    r'252da6153880e00cc9596445fba0f82879ed892b';

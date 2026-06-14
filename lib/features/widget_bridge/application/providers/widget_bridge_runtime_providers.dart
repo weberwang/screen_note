@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
@@ -9,7 +7,6 @@ import 'package:screen_note/features/task_flow/domain/repositories/task_reposito
 import 'package:screen_note/features/widget_bridge/application/providers/widget_snapshot_shared_providers.dart';
 import 'package:screen_note/features/widget_bridge/application/services/widget_snapshot_auto_sync_coordinator.dart';
 import 'package:screen_note/features/widget_bridge/application/services/widget_snapshot_sync_service.dart';
-import 'package:screen_note/l10n/app_localizations.dart';
 
 export 'widget_snapshot_shared_providers.dart';
 
@@ -27,7 +24,6 @@ WidgetSnapshotAutoSyncCoordinator widgetSnapshotAutoSyncCoordinator(Ref ref) {
     taskRepository: taskRepository,
     snapshotStore: ref.watch(widgetSnapshotStoreProvider),
     projector: ref.watch(widgetSnapshotProjectorProvider),
-    locale: _resolveWidgetLocale(),
     loadStoredPreferences: settingsRepository.loadPreferences,
   );
 }
@@ -40,17 +36,5 @@ WidgetSnapshotSyncService widgetSnapshotSyncService(Ref ref) {
     settingsRepository: ref.watch(settingsPreferencesRepositoryProvider),
     snapshotStore: ref.watch(widgetSnapshotStoreProvider),
     projector: ref.watch(widgetSnapshotProjectorProvider),
-    locale: _resolveWidgetLocale(),
   );
-}
-
-/// 解析系统语言环境；不受支持时保守回退到英文，保证后台同步也有稳定文案。
-Locale _resolveWidgetLocale() {
-  final Locale locale = PlatformDispatcher.instance.locale;
-  return AppLocalizations.supportedLocales.any(
-        (Locale supportedLocale) =>
-            supportedLocale.languageCode == locale.languageCode,
-      )
-      ? Locale(locale.languageCode)
-      : AppLocalizations.supportedLocales.first;
 }

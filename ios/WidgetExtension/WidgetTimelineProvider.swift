@@ -9,7 +9,7 @@ struct ScreenNoteWidgetEntry: TimelineEntry {
   let snapshot: WidgetSnapshotPayload?
 }
 
-/// 锁屏小组件时间线提供器。
+/// 小组件时间线提供器。
 ///
 /// 这里始终基于共享快照生成单条时间线，刷新节奏由 Flutter 侧写入快照后主动触发。
 struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
@@ -52,7 +52,7 @@ struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
       generatedAt: Date(),
       displayMode: .previewOnly,
       headerTitle: "仅安全预览",
-      emptyTitle: "锁屏上还没有可展示的事项",
+      emptyTitle: "小组件上还没有可展示的事项",
       emptyBody: "新增事项后，这里会读取下一次稳定快照。",
       fallbackHint: "保留最后一次有效快照",
       items: [
@@ -63,12 +63,14 @@ struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
           isPinned: true,
           isOverdue: false,
           isPrivate: false,
+          taskId: nil,
+          launchTarget: "home",
           rank: 1
         )
       ],
       hasPrivateContent: false,
       hasFallbackContent: false,
-      version: 1
+      version: 2
     )
   }
 }

@@ -44,6 +44,42 @@ void main() {
       );
     });
 
+    test('preserves task editor locations with a task id', () {
+      final resolver = AppShellLaunchResolver();
+
+      expect(
+        resolver.resolve('/task-editor?taskId=task-42'),
+        const AppShellLaunchIntent.taskEditor(taskId: 'task-42'),
+      );
+    });
+
+    test('falls back when task editor location is missing task id', () {
+      final resolver = AppShellLaunchResolver();
+
+      expect(
+        resolver.resolve('/task-editor'),
+        const AppShellLaunchIntent.fallbackHome(),
+      );
+    });
+
+    test('falls back when task editor location contains extra path segments', () {
+      final resolver = AppShellLaunchResolver();
+
+      expect(
+        resolver.resolve('/task-editor/extra?taskId=task-42'),
+        const AppShellLaunchIntent.fallbackHome(),
+      );
+    });
+
+    test('falls back when task editor task id is only whitespace', () {
+      final resolver = AppShellLaunchResolver();
+
+      expect(
+        resolver.resolve('/task-editor?taskId=%20%20'),
+        const AppShellLaunchIntent.fallbackHome(),
+      );
+    });
+
     test('falls back for prefixed lookalike shell locations', () {
       final resolver = AppShellLaunchResolver();
 

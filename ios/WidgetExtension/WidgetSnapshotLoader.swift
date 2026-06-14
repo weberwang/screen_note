@@ -1,6 +1,6 @@
 import Foundation
 
-/// 锁屏小组件展示模式。
+/// 小组件展示模式。
 ///
 /// Swift 侧只消费 Flutter 已经冻结好的稳定枚举值，避免原生层自行发明额外状态分支。
 enum WidgetDisplayModePayload: String, Codable {
@@ -8,7 +8,7 @@ enum WidgetDisplayModePayload: String, Codable {
   case fullContent
 }
 
-/// 锁屏小组件快照条目。
+/// 小组件快照条目。
 ///
 /// 这里只保留 Widget 渲染所需的稳定字段，不引入完整事项实体或业务状态推导。
 struct WidgetSnapshotItemPayload: Codable {
@@ -18,10 +18,12 @@ struct WidgetSnapshotItemPayload: Codable {
   let isPinned: Bool
   let isOverdue: Bool
   let isPrivate: Bool
+  let taskId: String?
+  let launchTarget: String?
   let rank: Int
 }
 
-/// 锁屏小组件共享快照。
+/// 小组件共享快照。
 ///
 /// 原生层仅读取这份共享快照，不直连数据库，也不在 Swift 侧重新排序或拼装隐私文案。
 struct WidgetSnapshotPayload: Codable {
@@ -45,12 +47,41 @@ struct WidgetSnapshotLoader {
   static let appGroupId = "group.com.example.screenNote.shared"
   static let currentSnapshotKey = "screen_note.widget_snapshot.current"
   static let lastValidSnapshotKey = "screen_note.widget_snapshot.last_valid"
+  static let supportedSnapshotVersion = 2
+
+  /// Flutter 侧 `toIso8601String()` 默认会带毫秒；旧快照若没有毫秒也要兼容读取。
+  private static let iso8601WithFractionalSeconds: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    return formatter
+  }()
+
+  private static let iso8601WithoutFractionalSeconds: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime]
+    return formatter
+  }()
 
   private let decoder: JSONDecoder
 
   init() {
     let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .iso8601
+    decoder.dateDecodingStrategy = .custom { decoder in
+      let container = try decoder.singleValueContainer()
+      let rawValue = try container.decode(String.self)
+
+      if let date = Self.iso8601WithFractionalSeconds.date(from: rawValue) {
+        return date
+      }
+      if let date = Self.iso8601WithoutFractionalSeconds.date(from: rawValue) {
+        return date
+      }
+
+      throw DecodingError.dataCorruptedError(
+        in: container,
+        debugDescription: "Unsupported ISO-8601 date: \(rawValue)"
+      )
+    }
     self.decoder = decoder
   }
 
@@ -73,6 +104,13 @@ struct WidgetSnapshotLoader {
       return nil
     }
 
-    return try? decoder.decode(WidgetSnapshotPayload.self, from: data)
+    guard
+      let snapshot = try? decoder.decode(WidgetSnapshotPayload.self, from: data),
+      snapshot.version == Self.supportedSnapshotVersion
+    else {
+      return nil
+    }
+
+    return snapshot
   }
 }
