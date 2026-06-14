@@ -8,79 +8,30 @@ part of 'settings_center_runtime_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// 设置页偏好存储入口，复用全局 SharedPreferences 基线。
-
-@ProviderFor(settingsSharedPreferences)
-const settingsSharedPreferencesProvider = SettingsSharedPreferencesProvider._();
-
-/// 设置页偏好存储入口，复用全局 SharedPreferences 基线。
-
-final class SettingsSharedPreferencesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<SharedPreferences>,
-          SharedPreferences,
-          FutureOr<SharedPreferences>
-        >
-    with
-        $FutureModifier<SharedPreferences>,
-        $FutureProvider<SharedPreferences> {
-  /// 设置页偏好存储入口，复用全局 SharedPreferences 基线。
-  const SettingsSharedPreferencesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'settingsSharedPreferencesProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$settingsSharedPreferencesHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<SharedPreferences> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<SharedPreferences> create(Ref ref) {
-    return settingsSharedPreferences(ref);
-  }
-}
-
-String _$settingsSharedPreferencesHash() =>
-    r'be0fc3056b57b4714e250e9abcf8881316f6d401';
-
-/// 设置偏好仓储提供器。
+/// 设置偏好仓储 Provider，统一暴露真实本地偏好入口，避免页面层直接碰 shared_preferences。
 
 @ProviderFor(settingsPreferencesRepository)
 const settingsPreferencesRepositoryProvider =
     SettingsPreferencesRepositoryProvider._();
 
-/// 设置偏好仓储提供器。
+/// 设置偏好仓储 Provider，统一暴露真实本地偏好入口，避免页面层直接碰 shared_preferences。
 
 final class SettingsPreferencesRepositoryProvider
     extends
         $FunctionalProvider<
-          AsyncValue<SettingsPreferencesRepository>,
           SettingsPreferencesRepository,
-          FutureOr<SettingsPreferencesRepository>
+          SettingsPreferencesRepository,
+          SettingsPreferencesRepository
         >
-    with
-        $FutureModifier<SettingsPreferencesRepository>,
-        $FutureProvider<SettingsPreferencesRepository> {
-  /// 设置偏好仓储提供器。
+    with $Provider<SettingsPreferencesRepository> {
+  /// 设置偏好仓储 Provider，统一暴露真实本地偏好入口，避免页面层直接碰 shared_preferences。
   const SettingsPreferencesRepositoryProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'settingsPreferencesRepositoryProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -90,25 +41,201 @@ final class SettingsPreferencesRepositoryProvider
 
   @$internal
   @override
-  $FutureProviderElement<SettingsPreferencesRepository> $createElement(
+  $ProviderElement<SettingsPreferencesRepository> $createElement(
     $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  ) => $ProviderElement(pointer);
 
   @override
-  FutureOr<SettingsPreferencesRepository> create(Ref ref) {
+  SettingsPreferencesRepository create(Ref ref) {
     return settingsPreferencesRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SettingsPreferencesRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SettingsPreferencesRepository>(
+        value,
+      ),
+    );
   }
 }
 
 String _$settingsPreferencesRepositoryHash() =>
-    r'55f1d1b4493754e1069cd66b16c16034b140ea8b';
+    r'2874002c008a4c8bd235083539514fc75d7f1e94';
 
-/// 设置副作用端口提供器。
+/// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。
+
+@ProviderFor(settingsNotificationPlugin)
+const settingsNotificationPluginProvider =
+    SettingsNotificationPluginProvider._();
+
+/// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。
+
+final class SettingsNotificationPluginProvider
+    extends
+        $FunctionalProvider<
+          FlutterLocalNotificationsPlugin,
+          FlutterLocalNotificationsPlugin,
+          FlutterLocalNotificationsPlugin
+        >
+    with $Provider<FlutterLocalNotificationsPlugin> {
+  /// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。
+  const SettingsNotificationPluginProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsNotificationPluginProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$settingsNotificationPluginHash();
+
+  @$internal
+  @override
+  $ProviderElement<FlutterLocalNotificationsPlugin> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FlutterLocalNotificationsPlugin create(Ref ref) {
+    return settingsNotificationPlugin(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FlutterLocalNotificationsPlugin value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FlutterLocalNotificationsPlugin>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$settingsNotificationPluginHash() =>
+    r'24101d9dab56b3d0b5433eb76ee0ce762bddc29a';
+
+/// 通知权限仓储 Provider，统一屏蔽平台实现差异与失败降级。
+
+@ProviderFor(notificationPermissionRepository)
+const notificationPermissionRepositoryProvider =
+    NotificationPermissionRepositoryProvider._();
+
+/// 通知权限仓储 Provider，统一屏蔽平台实现差异与失败降级。
+
+final class NotificationPermissionRepositoryProvider
+    extends
+        $FunctionalProvider<
+          NotificationPermissionRepository,
+          NotificationPermissionRepository,
+          NotificationPermissionRepository
+        >
+    with $Provider<NotificationPermissionRepository> {
+  /// 通知权限仓储 Provider，统一屏蔽平台实现差异与失败降级。
+  const NotificationPermissionRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'notificationPermissionRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$notificationPermissionRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<NotificationPermissionRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  NotificationPermissionRepository create(Ref ref) {
+    return notificationPermissionRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(NotificationPermissionRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<NotificationPermissionRepository>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$notificationPermissionRepositoryHash() =>
+    r'4b8f60ff84586689ca3621a9fbfdb8016702d8ad';
+
+/// 默认设置副作用端口，当前接入 Widget 快照自动同步，同时保留独立的可替换入口。
+
+@ProviderFor(defaultSettingsSideEffectPort)
+const defaultSettingsSideEffectPortProvider =
+    DefaultSettingsSideEffectPortProvider._();
+
+/// 默认设置副作用端口，当前接入 Widget 快照自动同步，同时保留独立的可替换入口。
+
+final class DefaultSettingsSideEffectPortProvider
+    extends
+        $FunctionalProvider<
+          SettingsSideEffectPort,
+          SettingsSideEffectPort,
+          SettingsSideEffectPort
+        >
+    with $Provider<SettingsSideEffectPort> {
+  /// 默认设置副作用端口，当前接入 Widget 快照自动同步，同时保留独立的可替换入口。
+  const DefaultSettingsSideEffectPortProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'defaultSettingsSideEffectPortProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$defaultSettingsSideEffectPortHash();
+
+  @$internal
+  @override
+  $ProviderElement<SettingsSideEffectPort> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SettingsSideEffectPort create(Ref ref) {
+    return defaultSettingsSideEffectPort(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SettingsSideEffectPort value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SettingsSideEffectPort>(value),
+    );
+  }
+}
+
+String _$defaultSettingsSideEffectPortHash() =>
+    r'a500e342ca97e911e23172f9c226e3abfe1b3bd4';
+
+/// 设置副作用装配点，允许测试或后续能力按 Provider 维度替换。
 
 @ProviderFor(settingsSideEffectPort)
 const settingsSideEffectPortProvider = SettingsSideEffectPortProvider._();
 
-/// 设置副作用端口提供器。
+/// 设置副作用装配点，允许测试或后续能力按 Provider 维度替换。
 
 final class SettingsSideEffectPortProvider
     extends
@@ -118,14 +245,14 @@ final class SettingsSideEffectPortProvider
           SettingsSideEffectPort
         >
     with $Provider<SettingsSideEffectPort> {
-  /// 设置副作用端口提供器。
+  /// 设置副作用装配点，允许测试或后续能力按 Provider 维度替换。
   const SettingsSideEffectPortProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'settingsSideEffectPortProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -154,121 +281,298 @@ final class SettingsSideEffectPortProvider
 }
 
 String _$settingsSideEffectPortHash() =>
-    r'6925a8ef1fd73d23a0e5c2c64739ff54cd3d3620';
+    r'328c28df3f46d05314482bc8c6c0c8d03b111703';
 
-/// 读取设置偏好用例提供器。
+/// 设置页快照用例 Provider，统一装配偏好、权限状态与次级入口边界。
 
-@ProviderFor(loadSettingsPreferencesUseCase)
-const loadSettingsPreferencesUseCaseProvider =
-    LoadSettingsPreferencesUseCaseProvider._();
+@ProviderFor(loadSettingsCenterSnapshotUseCase)
+const loadSettingsCenterSnapshotUseCaseProvider =
+    LoadSettingsCenterSnapshotUseCaseProvider._();
 
-/// 读取设置偏好用例提供器。
+/// 设置页快照用例 Provider，统一装配偏好、权限状态与次级入口边界。
 
-final class LoadSettingsPreferencesUseCaseProvider
+final class LoadSettingsCenterSnapshotUseCaseProvider
     extends
         $FunctionalProvider<
-          AsyncValue<LoadSettingsPreferencesUseCase>,
-          LoadSettingsPreferencesUseCase,
-          FutureOr<LoadSettingsPreferencesUseCase>
+          LoadSettingsCenterSnapshotUseCase,
+          LoadSettingsCenterSnapshotUseCase,
+          LoadSettingsCenterSnapshotUseCase
         >
-    with
-        $FutureModifier<LoadSettingsPreferencesUseCase>,
-        $FutureProvider<LoadSettingsPreferencesUseCase> {
-  /// 读取设置偏好用例提供器。
-  const LoadSettingsPreferencesUseCaseProvider._()
+    with $Provider<LoadSettingsCenterSnapshotUseCase> {
+  /// 设置页快照用例 Provider，统一装配偏好、权限状态与次级入口边界。
+  const LoadSettingsCenterSnapshotUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'loadSettingsPreferencesUseCaseProvider',
+        name: r'loadSettingsCenterSnapshotUseCaseProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$loadSettingsPreferencesUseCaseHash();
+  String debugGetCreateSourceHash() =>
+      _$loadSettingsCenterSnapshotUseCaseHash();
 
   @$internal
   @override
-  $FutureProviderElement<LoadSettingsPreferencesUseCase> $createElement(
+  $ProviderElement<LoadSettingsCenterSnapshotUseCase> $createElement(
     $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  ) => $ProviderElement(pointer);
 
   @override
-  FutureOr<LoadSettingsPreferencesUseCase> create(Ref ref) {
-    return loadSettingsPreferencesUseCase(ref);
+  LoadSettingsCenterSnapshotUseCase create(Ref ref) {
+    return loadSettingsCenterSnapshotUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LoadSettingsCenterSnapshotUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LoadSettingsCenterSnapshotUseCase>(
+        value,
+      ),
+    );
   }
 }
 
-String _$loadSettingsPreferencesUseCaseHash() =>
-    r'8b174280abb8e7e7a8fe6c95ffce4ca085758c56';
+String _$loadSettingsCenterSnapshotUseCaseHash() =>
+    r'2c21d005f841fbebf6e2e5506057926d3f53134f';
 
-/// 更新设置偏好用例提供器。
+/// 隐私模式更新用例 Provider。
 
-@ProviderFor(updateSettingsPreferencesUseCase)
-const updateSettingsPreferencesUseCaseProvider =
-    UpdateSettingsPreferencesUseCaseProvider._();
+@ProviderFor(updatePrivacyModeUseCase)
+const updatePrivacyModeUseCaseProvider = UpdatePrivacyModeUseCaseProvider._();
 
-/// 更新设置偏好用例提供器。
+/// 隐私模式更新用例 Provider。
 
-final class UpdateSettingsPreferencesUseCaseProvider
+final class UpdatePrivacyModeUseCaseProvider
     extends
         $FunctionalProvider<
-          AsyncValue<UpdateSettingsPreferencesUseCase>,
-          UpdateSettingsPreferencesUseCase,
-          FutureOr<UpdateSettingsPreferencesUseCase>
+          UpdatePrivacyModeUseCase,
+          UpdatePrivacyModeUseCase,
+          UpdatePrivacyModeUseCase
         >
-    with
-        $FutureModifier<UpdateSettingsPreferencesUseCase>,
-        $FutureProvider<UpdateSettingsPreferencesUseCase> {
-  /// 更新设置偏好用例提供器。
-  const UpdateSettingsPreferencesUseCaseProvider._()
+    with $Provider<UpdatePrivacyModeUseCase> {
+  /// 隐私模式更新用例 Provider。
+  const UpdatePrivacyModeUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'updateSettingsPreferencesUseCaseProvider',
+        name: r'updatePrivacyModeUseCaseProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$updateSettingsPreferencesUseCaseHash();
+  String debugGetCreateSourceHash() => _$updatePrivacyModeUseCaseHash();
 
   @$internal
   @override
-  $FutureProviderElement<UpdateSettingsPreferencesUseCase> $createElement(
+  $ProviderElement<UpdatePrivacyModeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdatePrivacyModeUseCase create(Ref ref) {
+    return updatePrivacyModeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdatePrivacyModeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdatePrivacyModeUseCase>(value),
+    );
+  }
+}
+
+String _$updatePrivacyModeUseCaseHash() =>
+    r'81d47fc12201f2be6105b0267ade83c4665f9b06';
+
+/// 展示模式更新用例 Provider。
+
+@ProviderFor(updateWidgetDisplayModeUseCase)
+const updateWidgetDisplayModeUseCaseProvider =
+    UpdateWidgetDisplayModeUseCaseProvider._();
+
+/// 展示模式更新用例 Provider。
+
+final class UpdateWidgetDisplayModeUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateWidgetDisplayModeUseCase,
+          UpdateWidgetDisplayModeUseCase,
+          UpdateWidgetDisplayModeUseCase
+        >
+    with $Provider<UpdateWidgetDisplayModeUseCase> {
+  /// 展示模式更新用例 Provider。
+  const UpdateWidgetDisplayModeUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateWidgetDisplayModeUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateWidgetDisplayModeUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateWidgetDisplayModeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateWidgetDisplayModeUseCase create(Ref ref) {
+    return updateWidgetDisplayModeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateWidgetDisplayModeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateWidgetDisplayModeUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$updateWidgetDisplayModeUseCaseHash() =>
+    r'6861cfaaa56922401e8ed115894f484322c5f846';
+
+/// 通知权限复查用例 Provider。
+
+@ProviderFor(reviewNotificationPermissionUseCase)
+const reviewNotificationPermissionUseCaseProvider =
+    ReviewNotificationPermissionUseCaseProvider._();
+
+/// 通知权限复查用例 Provider。
+
+final class ReviewNotificationPermissionUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ReviewNotificationPermissionUseCase,
+          ReviewNotificationPermissionUseCase,
+          ReviewNotificationPermissionUseCase
+        >
+    with $Provider<ReviewNotificationPermissionUseCase> {
+  /// 通知权限复查用例 Provider。
+  const ReviewNotificationPermissionUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'reviewNotificationPermissionUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$reviewNotificationPermissionUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ReviewNotificationPermissionUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ReviewNotificationPermissionUseCase create(Ref ref) {
+    return reviewNotificationPermissionUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ReviewNotificationPermissionUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ReviewNotificationPermissionUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$reviewNotificationPermissionUseCaseHash() =>
+    r'6ecb947b0581b3e5061891aa52fa7bceb46b4bb9';
+
+/// 设置页基础快照 Provider，供控制器或其他轻量读取场景复用。
+
+@ProviderFor(settingsCenterSnapshot)
+const settingsCenterSnapshotProvider = SettingsCenterSnapshotProvider._();
+
+/// 设置页基础快照 Provider，供控制器或其他轻量读取场景复用。
+
+final class SettingsCenterSnapshotProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<SettingsCenterSnapshot>,
+          SettingsCenterSnapshot,
+          FutureOr<SettingsCenterSnapshot>
+        >
+    with
+        $FutureModifier<SettingsCenterSnapshot>,
+        $FutureProvider<SettingsCenterSnapshot> {
+  /// 设置页基础快照 Provider，供控制器或其他轻量读取场景复用。
+  const SettingsCenterSnapshotProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsCenterSnapshotProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$settingsCenterSnapshotHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<SettingsCenterSnapshot> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<UpdateSettingsPreferencesUseCase> create(Ref ref) {
-    return updateSettingsPreferencesUseCase(ref);
+  FutureOr<SettingsCenterSnapshot> create(Ref ref) {
+    return settingsCenterSnapshot(ref);
   }
 }
 
-String _$updateSettingsPreferencesUseCaseHash() =>
-    r'1ac1c67d7365f6012290d4ed197d27f9b1c78b57';
+String _$settingsCenterSnapshotHash() =>
+    r'41c5abbe4e5be93ea95ff4fb508a06b3debc1b99';
 
-/// 设置页控制器，统一收口偏好读取、切换和保存。
+/// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 
 @ProviderFor(SettingsCenterController)
 const settingsCenterControllerProvider = SettingsCenterControllerProvider._();
 
-/// 设置页控制器，统一收口偏好读取、切换和保存。
+/// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 final class SettingsCenterControllerProvider
     extends
-        $AsyncNotifierProvider<SettingsCenterController, SettingsPreferences> {
-  /// 设置页控制器，统一收口偏好读取、切换和保存。
+        $AsyncNotifierProvider<
+          SettingsCenterController,
+          SettingsCenterSnapshot
+        > {
+  /// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
   const SettingsCenterControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'settingsCenterControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -282,24 +586,28 @@ final class SettingsCenterControllerProvider
 }
 
 String _$settingsCenterControllerHash() =>
-    r'542633a36f11871044ee93d5e108d003a909acba';
+    r'31c9ea567378ee408a1a7118b44dee55c84930f5';
 
-/// 设置页控制器，统一收口偏好读取、切换和保存。
+/// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 
 abstract class _$SettingsCenterController
-    extends $AsyncNotifier<SettingsPreferences> {
-  FutureOr<SettingsPreferences> build();
+    extends $AsyncNotifier<SettingsCenterSnapshot> {
+  FutureOr<SettingsCenterSnapshot> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
     final ref =
-        this.ref as $Ref<AsyncValue<SettingsPreferences>, SettingsPreferences>;
+        this.ref
+            as $Ref<AsyncValue<SettingsCenterSnapshot>, SettingsCenterSnapshot>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<SettingsPreferences>, SettingsPreferences>,
-              AsyncValue<SettingsPreferences>,
+              AnyNotifier<
+                AsyncValue<SettingsCenterSnapshot>,
+                SettingsCenterSnapshot
+              >,
+              AsyncValue<SettingsCenterSnapshot>,
               Object?,
               Object?
             >;

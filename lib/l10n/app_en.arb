@@ -20,9 +20,13 @@
   "@quickAddSheetTitle": {
     "description": "Title used by the global quick add bottom sheet."
   },
-  "quickAddSheetHint": "The real quick-add flow will be connected in the task-flow module stage.",
+  "quickAddSheetHint": "Open the task editor first, then save with a minimal title, note, and privacy setup.",
   "@quickAddSheetHint": {
     "description": "Hint text shown in the bootstrap quick add sheet."
+  },
+  "quickAddSheetContinue": "Continue adding",
+  "@quickAddSheetContinue": {
+    "description": "Primary action in the quick add sheet that opens the task editor."
   },
   "quickAddSheetDismiss": "Close",
   "@quickAddSheetDismiss": {
@@ -60,6 +64,96 @@
   "@homeQueueTitle": {
     "description": "Section title for the bootstrap queue placeholder."
   },
+  "taskFlowHomeLoadFailed": "Home snapshot failed to load.",
+  "@taskFlowHomeLoadFailed": {
+    "description": "Minimal error hint shown when the task-flow home snapshot cannot be loaded."
+  },
+  "taskFlowEmptyTitle": "Nothing needs attention right now.",
+  "@taskFlowEmptyTitle": {
+    "description": "Minimal empty-state title shown when the home snapshot has no active tasks."
+  },
+  "taskFlowEmptyBody": "Create or restore a task, and your focus list will appear here.",
+  "@taskFlowEmptyBody": {
+    "description": "Minimal empty-state body shown on the priority card when the home snapshot is empty."
+  },
+  "taskFlowPrivateTaskHint": "This private task is hidden on the home surface.",
+  "@taskFlowPrivateTaskHint": {
+    "description": "Safe placeholder text shown instead of private task content on the home page."
+  },
+  "taskFlowPriorityFallbackBody": "Keep moving on the next meaningful step.",
+  "@taskFlowPriorityFallbackBody": {
+    "description": "Fallback supporting copy shown on the priority card when a task has no visible note."
+  },
+  "taskFlowPinnedLabel": "Pinned task",
+  "@taskFlowPinnedLabel": {
+    "description": "Status label shown for a pinned priority task on the home page."
+  },
+  "taskFlowNoDueDate": "No due date",
+  "@taskFlowNoDueDate": {
+    "description": "Fallback metadata shown when a home task has no due date."
+  },
+  "taskFlowDueAtLabel": "Due {dateTime}",
+  "@taskFlowDueAtLabel": {
+    "description": "Home task due-date label.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "taskFlowOverdueAtLabel": "Overdue since {dateTime}",
+  "@taskFlowOverdueAtLabel": {
+    "description": "Home urgent queue label shown for overdue tasks.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "taskEditorTitle": "Edit task",
+  "@taskEditorTitle": {
+    "description": "Title shown on the task editor page."
+  },
+  "taskEditorHelperText": "Capture the core task first, then keep the remaining fields minimal before saving.",
+  "@taskEditorHelperText": {
+    "description": "Helper copy shown below the task editor title."
+  },
+  "taskTitleLabel": "Title",
+  "@taskTitleLabel": {
+    "description": "Label for the task title input."
+  },
+  "taskTitleHint": "For example: Connect the editor save flow",
+  "@taskTitleHint": {
+    "description": "Placeholder text for the task title input."
+  },
+  "taskNoteLabel": "Note",
+  "@taskNoteLabel": {
+    "description": "Label for the task note input."
+  },
+  "taskNoteHint": "Add context or the next step for this task.",
+  "@taskNoteHint": {
+    "description": "Placeholder text for the task note input."
+  },
+  "taskPinnedLabel": "Pin as current focus",
+  "@taskPinnedLabel": {
+    "description": "Label for the pinned toggle in the task editor."
+  },
+  "taskPrivateLabel": "Mark as private",
+  "@taskPrivateLabel": {
+    "description": "Label for the private toggle in the task editor."
+  },
+  "taskSaveAction": "Save task",
+  "@taskSaveAction": {
+    "description": "Primary save button label on the task editor page."
+  },
+  "taskTitleRequired": "Enter a task title first.",
+  "@taskTitleRequired": {
+    "description": "Validation message shown when the task title is empty."
+  },
+  "taskCreateFailed": "Save failed. Try again shortly.",
+  "@taskCreateFailed": {
+    "description": "Lightweight error message shown when task creation fails."
+  },
   "homeQueuePlaceholder": "Placeholder item {index}",
   "@homeQueuePlaceholder": {
     "description": "Placeholder task row label used in the bootstrap queue.",
@@ -77,6 +171,60 @@
   "@historyPlaceholderBody": {
     "description": "Body text for the bootstrap history placeholder page."
   },
+  "historyTitle": "History",
+  "@historyTitle": {
+    "description": "Main title shown on the history center page."
+  },
+  "historySubtitle": "Nothing disappears without a trace. Review what was completed or restore what was deleted.",
+  "@historySubtitle": {
+    "description": "Supporting copy shown below the history page title."
+  },
+  "historyCompletedSectionTitle": "Recently completed",
+  "@historyCompletedSectionTitle": {
+    "description": "Section title for recently completed tasks on the history page."
+  },
+  "historyDeletedSectionTitle": "Recently deleted",
+  "@historyDeletedSectionTitle": {
+    "description": "Section title for recently deleted tasks on the history page."
+  },
+  "historyEmptyTitle": "Your history is clear for now.",
+  "@historyEmptyTitle": {
+    "description": "Empty-state title shown when there are no completed or deleted tasks."
+  },
+  "historyEmptyBody": "Completed and deleted tasks will appear here so you can trust that nothing vanished unexpectedly.",
+  "@historyEmptyBody": {
+    "description": "Empty-state body shown on the history page."
+  },
+  "historyLoadFailed": "History failed to load. Try again shortly.",
+  "@historyLoadFailed": {
+    "description": "Lightweight error hint shown when the history snapshot cannot be loaded."
+  },
+  "historyCompletedAtLabel": "Completed {dateTime}",
+  "@historyCompletedAtLabel": {
+    "description": "Timeline metadata shown for a completed task on the history page.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "historyDeletedAtLabel": "Deleted {dateTime}",
+  "@historyDeletedAtLabel": {
+    "description": "Timeline metadata shown for a deleted task on the history page.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "historyRestoreAction": "Restore",
+  "@historyRestoreAction": {
+    "description": "Label for the restore button shown on deleted history rows."
+  },
+  "historyRestoreSuccess": "Task restored to active.",
+  "@historyRestoreSuccess": {
+    "description": "Shared feedback message shown after a deleted task is restored from history."
+  },
   "settingsPlaceholderTitle": "Settings center",
   "@settingsPlaceholderTitle": {
     "description": "Title for the bootstrap settings placeholder page."
@@ -84,5 +232,181 @@
   "settingsPlaceholderBody": "Notification, privacy, display, and future membership settings will land here in later module work.",
   "@settingsPlaceholderBody": {
     "description": "Body text for the bootstrap settings placeholder page."
+  },
+  "settingsTitle": "Settings Center",
+  "@settingsTitle": {
+    "description": "Main title shown on the settings center page."
+  },
+  "settingsSubtitle": "Manage how Screen Note behaves across reminders, privacy, widgets, and recovery-safe system surfaces.",
+  "@settingsSubtitle": {
+    "description": "Supporting copy shown below the settings page title."
+  },
+  "settingsNotificationsSection": "Notifications",
+  "@settingsNotificationsSection": {
+    "description": "Section title for notification settings."
+  },
+  "settingsPrivacySection": "Privacy",
+  "@settingsPrivacySection": {
+    "description": "Section title for privacy settings."
+  },
+  "settingsDisplaySection": "Display",
+  "@settingsDisplaySection": {
+    "description": "Section title for widget and display settings."
+  },
+  "settingsSyncSection": "Sync & Backup",
+  "@settingsSyncSection": {
+    "description": "Section title for sync settings."
+  },
+  "settingsMembershipSection": "Membership",
+  "@settingsMembershipSection": {
+    "description": "Section title for membership entry."
+  },
+  "settingsNotificationStatusTitle": "Notification Status",
+  "@settingsNotificationStatusTitle": {
+    "description": "Title for the notification status row."
+  },
+  "settingsNotificationStatusBody": "Stay updated on reminders and task changes.",
+  "@settingsNotificationStatusBody": {
+    "description": "Description for the notification status row."
+  },
+  "settingsPrivacyModeTitle": "Privacy Mode",
+  "@settingsPrivacyModeTitle": {
+    "description": "Title for the privacy mode row."
+  },
+  "settingsPrivacyModeBody": "Protect task content in previews and widgets.",
+  "@settingsPrivacyModeBody": {
+    "description": "Description for the privacy mode row."
+  },
+  "settingsWidgetDisplayModeTitle": "Widget Display Mode",
+  "@settingsWidgetDisplayModeTitle": {
+    "description": "Title for the widget display mode row."
+  },
+  "settingsWidgetDisplayModeBody": "Choose whether widgets show full content or a safe preview.",
+  "@settingsWidgetDisplayModeBody": {
+    "description": "Description for the widget display mode row."
+  },
+  "settingsSyncStatusTitle": "Sync Status",
+  "@settingsSyncStatusTitle": {
+    "description": "Title for the sync status row."
+  },
+  "settingsSyncStatusBody": "This build keeps a safe local source of truth while later sync entry points stay visible here.",
+  "@settingsSyncStatusBody": {
+    "description": "Description for the sync status row."
+  },
+  "settingsMembershipTitle": "Premium",
+  "@settingsMembershipTitle": {
+    "description": "Title for the membership row."
+  },
+  "settingsMembershipBody": "Membership stays visible but secondary to permissions, privacy, and display safety.",
+  "@settingsMembershipBody": {
+    "description": "Description for the membership row."
+  },
+  "settingsNotificationEnabled": "Enabled",
+  "@settingsNotificationEnabled": {
+    "description": "Value label shown when notifications are enabled."
+  },
+  "settingsNotificationDisabled": "Disabled",
+  "@settingsNotificationDisabled": {
+    "description": "Value label shown when notifications are disabled."
+  },
+  "settingsNotificationUnknown": "Unknown",
+  "@settingsNotificationUnknown": {
+    "description": "Value label shown when notification permissions cannot be read."
+  },
+  "settingsPermissionDowngradedTitle": "Permission downgraded",
+  "@settingsPermissionDowngradedTitle": {
+    "description": "Title shown in the inline degradation notice for notification permissions."
+  },
+  "settingsPermissionDowngradedBody": "Notifications are off. Task creation still works, but reminders are reduced.",
+  "@settingsPermissionDowngradedBody": {
+    "description": "Body shown in the inline degradation notice for notification permissions."
+  },
+  "settingsReviewAction": "Review",
+  "@settingsReviewAction": {
+    "description": "Action label for reviewing notification permission state."
+  },
+  "settingsWidgetDisplayPreviewOnly": "Preview Only",
+  "@settingsWidgetDisplayPreviewOnly": {
+    "description": "Value label for the safe widget preview mode."
+  },
+  "settingsWidgetDisplayFullContent": "Full Content",
+  "@settingsWidgetDisplayFullContent": {
+    "description": "Value label for the full widget content mode."
+  },
+  "settingsSyncLocalOnly": "Local Only",
+  "@settingsSyncLocalOnly": {
+    "description": "Value label shown when sync is still limited to the local source of truth."
+  },
+  "settingsMembershipAvailable": "Available",
+  "@settingsMembershipAvailable": {
+    "description": "Value label shown for the secondary membership entry."
+  },
+  "settingsWidgetDisplayPickerTitle": "Choose a widget display mode",
+  "@settingsWidgetDisplayPickerTitle": {
+    "description": "Title shown in the widget display mode picker sheet."
+  },
+  "settingsPrivacyFeedback": "Privacy setting updated.",
+  "@settingsPrivacyFeedback": {
+    "description": "Shared feedback message shown after updating privacy mode."
+  },
+  "settingsWidgetDisplayFeedback": "Widget display setting updated.",
+  "@settingsWidgetDisplayFeedback": {
+    "description": "Shared feedback message shown after updating widget display mode."
+  },
+  "settingsNotificationGrantedFeedback": "Notification access is now available.",
+  "@settingsNotificationGrantedFeedback": {
+    "description": "Shared feedback shown when notification permission becomes available after review."
+  },
+  "settingsNotificationDeferredFeedback": "Notification access is still limited.",
+  "@settingsNotificationDeferredFeedback": {
+    "description": "Shared feedback shown when notification permission remains limited after review."
+  },
+  "settingsLoadFailed": "Settings failed to load. Try again shortly.",
+  "@settingsLoadFailed": {
+    "description": "Lightweight error hint shown when the settings snapshot cannot be loaded."
+  },
+  "widgetSnapshotEmptyTitle": "No reminder is ready for the widget yet",
+  "@widgetSnapshotEmptyTitle": {
+    "description": "Empty-state title shown inside the widget snapshot when there is no active reminder to project."
+  },
+  "widgetSnapshotEmptyBody": "Create or restore a task and the next stable snapshot will appear here.",
+  "@widgetSnapshotEmptyBody": {
+    "description": "Empty-state body shown inside the widget snapshot when there is no active reminder to project."
+  },
+  "widgetSnapshotFallbackHint": "Showing the last valid widget snapshot.",
+  "@widgetSnapshotFallbackHint": {
+    "description": "Hint shown when the widget is rendering a previously valid fallback snapshot."
+  },
+  "widgetSnapshotPreviewTitle": "Preview is hidden",
+  "@widgetSnapshotPreviewTitle": {
+    "description": "Widget title shown when the user selected preview-only mode for non-private reminders."
+  },
+  "widgetSnapshotPrivateTitle": "Private reminder is hidden",
+  "@widgetSnapshotPrivateTitle": {
+    "description": "Widget title shown when a private reminder must be masked."
+  },
+  "widgetSnapshotStatusPreview": "Safe Preview",
+  "@widgetSnapshotStatusPreview": {
+    "description": "Status label shown for a non-private reminder in preview-only mode."
+  },
+  "widgetSnapshotStatusPrivate": "Protected",
+  "@widgetSnapshotStatusPrivate": {
+    "description": "Status label shown when a private reminder is masked inside the widget."
+  },
+  "widgetSnapshotStatusToday": "Today",
+  "@widgetSnapshotStatusToday": {
+    "description": "Status label shown for reminders due today inside the widget."
+  },
+  "widgetSnapshotStatusOverdue": "Overdue",
+  "@widgetSnapshotStatusOverdue": {
+    "description": "Status label shown for overdue reminders inside the widget."
+  },
+  "widgetSnapshotStatusPinned": "Pinned",
+  "@widgetSnapshotStatusPinned": {
+    "description": "Status label shown for pinned reminders inside the widget."
+  },
+  "widgetSnapshotOpenInApp": "Open in app",
+  "@widgetSnapshotOpenInApp": {
+    "description": "CTA-like helper text shown in the widget snapshot to indicate the safe handoff back to the app."
   }
 }

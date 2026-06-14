@@ -1,144 +1,152 @@
-import 'dart:ui';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:screen_note/core/logging/app_logger.dart';
-import 'package:screen_note/core/storage/app_preferences.dart';
-import 'package:screen_note/features/settings_center/infrastructure/settings_preferences_repository_impl.dart';
 import 'package:screen_note/features/task_flow/application/ports/task_flow_side_effect_port.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/load_task_feed_use_case.dart';
+import 'package:screen_note/features/task_flow/application/use_cases/update_task_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/update_task_status_use_case.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
+import 'package:screen_note/features/task_flow/infrastructure/task_flow_noop_side_effect_port.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_repository_impl.dart';
-import 'package:screen_note/features/widget_bridge/application/providers/widget_snapshot_shared_providers.dart';
-import 'package:screen_note/features/widget_bridge/application/services/widget_snapshot_auto_sync_coordinator.dart';
-import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_task_flow_side_effect_port.dart';
-import 'package:screen_note/l10n/app_localizations.dart';
 
 part 'task_flow_runtime_providers.g.dart';
 
-/// task-flow 数据库提供器，统一托管持久层生命周期。
+/// 运行时数据库 Provider，统一复用 `TaskFlowDatabase` 真源入口，避免页面层直接感知连接细节。
 @Riverpod(keepAlive: true)
 TaskFlowDatabase taskFlowDatabase(Ref ref) {
-  final TaskFlowDatabase database = TaskFlowDatabase();
-  ref.onDispose(database.close);
-  return database;
+  return TaskFlowDatabase();
 }
 
-/// 事项仓储提供器，隔离页面层对 Drift 的直接依赖。
-@riverpod
-TaskRepository taskRepository(Ref ref) {
+/// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
+@Riverpod(keepAlive: true)
+TaskMutationRepository taskFlowMutationRepository(Ref ref) {
   return TaskFlowRepositoryImpl(database: ref.watch(taskFlowDatabaseProvider));
 }
 
-/// 副作用端口提供器，当前先用空实现保住主链路，后续再接提醒与快照刷新。
-@riverpod
+/// 任务只读仓储 Provider，首页和查询用例只依赖读契约，不接触写能力细节。
+@Riverpod(keepAlive: true)
+TaskRepository taskFlowRepository(Ref ref) {
+  return ref.watch(taskFlowMutationRepositoryProvider);
+}
+
+/// 默认副作用端口 Provider，当前先降级到 no-op，后续通知、Widget 等能力都从这里替换接线。
+@Riverpod(keepAlive: true)
+TaskFlowSideEffectPort defaultTaskFlowSideEffectPort(Ref ref) {
+  return const TaskFlowNoopSideEffectPort();
+}
+
+/// 任务流副作用装配点，默认复用降级实现，但保留清晰可替换入口以满足后续能力接入。
+@Riverpod(keepAlive: true)
 TaskFlowSideEffectPort taskFlowSideEffectPort(Ref ref) {
-  final WidgetSnapshotAutoSyncCoordinator coordinator =
-      WidgetSnapshotAutoSyncCoordinator(
-        taskRepository: ref.watch(taskRepositoryProvider),
-        snapshotStore: ref.watch(widgetSnapshotStoreProvider),
-        projector: ref.watch(widgetSnapshotProjectorProvider),
-        locale: _resolveAutoSyncLocale(),
-        loadStoredPreferences: () async {
-          final preferences = await ref.read(sharedPreferencesProvider.future);
-          return SettingsPreferencesRepositoryImpl(
-            preferences: preferences,
-          ).load();
-        },
-      );
-  return WidgetSnapshotTaskFlowSideEffectPort(
-    coordinator: coordinator,
-    logger: AppLogger.instance,
-  );
+  return ref.watch(defaultTaskFlowSideEffectPortProvider);
 }
 
-Locale _resolveAutoSyncLocale() {
-  final Locale locale = PlatformDispatcher.instance.locale;
-  return AppLocalizations.supportedLocales.any(
-        (supportedLocale) => supportedLocale.languageCode == locale.languageCode,
-      )
-      ? Locale(locale.languageCode)
-      : AppLocalizations.supportedLocales.first;
-}
-
-/// 创建事项用例提供器。
+/// 创建事项用例 Provider，供后续编辑页或快捷入口直接读取，不把构造细节散落到展示层。
 @riverpod
 CreateTaskUseCase createTaskUseCase(Ref ref) {
   return CreateTaskUseCase(
-    repository: ref.watch(taskRepositoryProvider),
+    repository: ref.watch(taskFlowMutationRepositoryProvider),
     sideEffectPort: ref.watch(taskFlowSideEffectPortProvider),
     uuid: const Uuid(),
   );
 }
 
-/// 首页任务流读取用例提供器。
+/// 首页快照用例 Provider，统一封装任务分组与优先级选择规则。
 @riverpod
 LoadTaskFeedUseCase loadTaskFeedUseCase(Ref ref) {
-  return LoadTaskFeedUseCase(repository: ref.watch(taskRepositoryProvider));
+  return LoadTaskFeedUseCase(repository: ref.watch(taskFlowRepositoryProvider));
 }
 
-/// 事项状态流转用例提供器。
+/// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
 @riverpod
-UpdateTaskStatusUseCase updateTaskStatusUseCase(Ref ref) {
-  return UpdateTaskStatusUseCase(
-    repository: ref.watch(taskRepositoryProvider),
-    sideEffectPort: ref.watch(taskFlowSideEffectPortProvider),
+Future<TaskEntity?> taskFlowTaskById(Ref ref, String taskId) {
+  return ref.watch(taskFlowRepositoryProvider).findTaskById(taskId);
+}
+
+/// 更新事项用例 Provider，统一承接编辑态保存，不允许页面层误走新建链路。
+@riverpod
+UpdateTaskUseCase updateTaskUseCase(Ref ref) {
+  return UpdateTaskUseCase(
+    repository: ref.watch(taskFlowMutationRepositoryProvider),
+    uuid: const Uuid(),
   );
 }
 
-/// 首页任务流控制器，统一收口首页读取与快速状态变更。
+/// 状态流转用例 Provider，供后续页面直接读取，保持状态写入仍通过应用层编排。
 @riverpod
+UpdateTaskStatusUseCase updateTaskStatusUseCase(Ref ref) {
+  return UpdateTaskStatusUseCase(
+    repository: ref.watch(taskFlowMutationRepositoryProvider),
+    sideEffectPort: ref.watch(taskFlowSideEffectPortProvider),
+    uuid: const Uuid(),
+  );
+}
+
+/// 首页基础快照 Provider，保留 Task 2 的最小快照读取入口，供 controller 或其他轻量读取复用。
+@riverpod
+Future<TaskFeedSnapshot> taskFlowHomeSnapshot(Ref ref) {
+  return ref.watch(loadTaskFeedUseCaseProvider).execute();
+}
+
+/// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
+@Riverpod(keepAlive: true)
 class TaskFlowHomeController extends _$TaskFlowHomeController {
-  /// 构建首页任务流状态。
+  /// 首次构建时读取首页快照。
   @override
-  Future<TaskFeedSnapshot> build() async {
-    return _loadSnapshot();
+  Future<TaskFeedSnapshot> build() {
+    return ref.watch(taskFlowHomeSnapshotProvider.future);
   }
 
-  /// 快速添加事项，默认只要求标题，其余字段由完整编辑页补充。
-  Future<void> createQuickTask(CreateTaskInput input) async {
-    await _mutate(() async {
-      await ref.read(createTaskUseCaseProvider).execute(input);
-    });
-  }
-
-  /// 完成事项。
-  Future<void> completeTask(String taskId) async {
-    await _mutate(() async {
-      await ref.read(updateTaskStatusUseCaseProvider).completeTask(taskId: taskId);
-    });
-  }
-
-  /// 软删除事项。
-  Future<void> deleteTask(String taskId) async {
-    await _mutate(() async {
-      await ref.read(updateTaskStatusUseCaseProvider).deleteTask(taskId: taskId);
-    });
-  }
-
-  /// 主动刷新首页快照。
+  /// 主动刷新首页快照，供页面重试或后续系统回流场景复用。
   Future<void> refresh() async {
-    state = AsyncData(await _loadSnapshot());
+    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = await AsyncValue.guard(_reloadSnapshot);
   }
 
-  Future<void> _mutate(Future<void> Function() operation) async {
-    final AsyncValue<TaskFeedSnapshot> previousState = state;
-    try {
-      await operation();
-      state = AsyncData(await _loadSnapshot());
-    } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
-      state = previousState;
-      rethrow;
-    }
+  /// 创建快捷事项后立即刷新首页快照，确保首页不会停留在旧状态。
+  Future<void> createQuickTask(CreateTaskInput input, {DateTime? now}) async {
+    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = await AsyncValue.guard(() async {
+      await ref.read(createTaskUseCaseProvider).execute(input, now: now);
+      return _reloadSnapshot();
+    });
   }
 
-  Future<TaskFeedSnapshot> _loadSnapshot() {
-    return ref.read(loadTaskFeedUseCaseProvider).execute();
+  /// 完成事项后立即刷新首页快照，避免主事项卡片与队列展示滞后。
+  Future<void> completeTask({
+    required String taskId,
+    required DateTime occurredAt,
+  }) async {
+    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = await AsyncValue.guard(() async {
+      await ref
+          .read(updateTaskStatusUseCaseProvider)
+          .completeTask(taskId: taskId, occurredAt: occurredAt);
+      return _reloadSnapshot();
+    });
+  }
+
+  /// 删除事项后立即刷新首页快照，保证软删除后的首页分组实时收敛。
+  Future<void> deleteTask({
+    required String taskId,
+    required DateTime occurredAt,
+  }) async {
+    state = const AsyncLoading<TaskFeedSnapshot>();
+    state = await AsyncValue.guard(() async {
+      await ref
+          .read(updateTaskStatusUseCaseProvider)
+          .deleteTask(taskId: taskId, occurredAt: occurredAt);
+      return _reloadSnapshot();
+    });
+  }
+
+  /// 统一处理首页快照失效与重新读取，避免刷新策略散落在多个入口。
+  Future<TaskFeedSnapshot> _reloadSnapshot() async {
+    ref.invalidate(taskFlowHomeSnapshotProvider);
+    return ref.read(taskFlowHomeSnapshotProvider.future);
   }
 }

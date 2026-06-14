@@ -4,11 +4,8 @@ import Foundation
 ///
 /// Swift 侧只消费 Flutter 已经冻结好的稳定枚举值，避免原生层自行发明额外状态分支。
 enum WidgetDisplayModePayload: String, Codable {
-  case single
-  case list3
-  case today
-  case `private`
-  case empty
+  case previewOnly
+  case fullContent
 }
 
 /// 锁屏小组件快照条目。

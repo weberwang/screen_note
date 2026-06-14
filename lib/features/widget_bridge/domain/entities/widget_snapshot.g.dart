@@ -39,9 +39,6 @@ Map<String, dynamic> _$WidgetSnapshotToJson(_WidgetSnapshot instance) =>
     };
 
 const _$WidgetDisplayModeEnumMap = {
-  WidgetDisplayMode.single: 'single',
-  WidgetDisplayMode.list3: 'list3',
-  WidgetDisplayMode.today: 'today',
-  WidgetDisplayMode.private: 'private',
-  WidgetDisplayMode.empty: 'empty',
+  WidgetDisplayMode.previewOnly: 'previewOnly',
+  WidgetDisplayMode.fullContent: 'fullContent',
 };

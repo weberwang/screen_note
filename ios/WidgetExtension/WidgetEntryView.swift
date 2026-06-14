@@ -38,34 +38,13 @@ struct ScreenNoteWidgetEntryView: View {
 
   @ViewBuilder
   private func content(for snapshot: WidgetSnapshotPayload) -> some View {
-    switch snapshot.displayMode {
-    case .single, .today, .private:
-      if let item = snapshot.items.first {
-        itemRow(item)
-      } else {
-        emptyView(
-          title: snapshot.emptyTitle,
-          body: snapshot.emptyBody
-        )
-      }
-    case .list3:
-      if snapshot.items.isEmpty {
-        emptyView(
-          title: snapshot.emptyTitle,
-          body: snapshot.emptyBody
-        )
-      } else {
-        VStack(alignment: .leading, spacing: 4) {
-          ForEach(Array(snapshot.items.prefix(3).enumerated()), id: \.offset) { _, item in
-            itemRow(item)
-          }
-        }
-      }
-    case .empty:
+    if snapshot.items.isEmpty {
       emptyView(
         title: snapshot.emptyTitle,
         body: snapshot.emptyBody
       )
+    } else {
+      itemRow(snapshot.items[0])
     }
   }
 

@@ -50,16 +50,16 @@ struct ScreenNoteWidgetTimelineProvider: TimelineProvider {
     WidgetSnapshotPayload(
       snapshotId: "placeholder",
       generatedAt: Date(),
-      displayMode: .single,
-      headerTitle: "单条",
+      displayMode: .previewOnly,
+      headerTitle: "仅安全预览",
       emptyTitle: "锁屏上还没有可展示的事项",
       emptyBody: "新增事项后，这里会读取下一次稳定快照。",
       fallbackHint: "保留最后一次有效快照",
       items: [
         WidgetSnapshotItemPayload(
-          title: "完成锁屏小组件验收",
-          statusLabel: "置顶",
-          dueLabel: "今天 18:00",
+          title: "预览内容已隐藏",
+          statusLabel: "安全预览",
+          dueLabel: "点按后回到应用查看",
           isPinned: true,
           isOverdue: false,
           isPrivate: false,

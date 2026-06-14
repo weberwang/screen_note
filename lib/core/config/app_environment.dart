@@ -12,7 +12,9 @@ final class AppEnvironment {
   /// 当前环境标识。
   static const String environmentName = 'local-only-mvp';
 
+  /// iOS Widget 与快捷入口共用的 App Group 标识。
+  static const String sharedAppGroupId = 'group.com.example.screenNote.shared';
+
   /// 当前是否为生产模式。
   static const bool isProduction = false;
 }
-

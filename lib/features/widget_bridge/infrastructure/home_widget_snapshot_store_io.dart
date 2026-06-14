@@ -35,42 +35,22 @@ final class HomeWidgetSnapshotStore implements WidgetSnapshotStore {
 
       try {
         await HomeWidget.updateWidget(iOSName: _iosWidgetName);
-      } on MissingPluginException catch (error, stackTrace) {
-        _logger.warning(
-          'widget_snapshot_refresh_missing_plugin',
-          error: error,
-          stackTrace: stackTrace,
-        );
-      } on PlatformException catch (error, stackTrace) {
-        _logger.warning(
-          'widget_snapshot_refresh_platform_exception',
-          error: error,
-          stackTrace: stackTrace,
-        );
+      } on MissingPluginException {
+        _logger.warning('widget_snapshot_refresh_missing_plugin');
+      } on PlatformException {
+        _logger.warning('widget_snapshot_refresh_platform_exception');
       }
 
       _logger.info('widget_snapshot_written');
       return true;
-    } on MissingPluginException catch (error, stackTrace) {
-      _logger.warning(
-        'widget_snapshot_store_missing_plugin',
-        error: error,
-        stackTrace: stackTrace,
-      );
+    } on MissingPluginException {
+      _logger.warning('widget_snapshot_store_missing_plugin');
       return false;
-    } on PlatformException catch (error, stackTrace) {
-      _logger.warning(
-        'widget_snapshot_store_platform_exception',
-        error: error,
-        stackTrace: stackTrace,
-      );
+    } on PlatformException {
+      _logger.warning('widget_snapshot_store_platform_exception');
       return false;
-    } catch (error, stackTrace) {
-      _logger.warning(
-        'widget_snapshot_store_failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
+    } catch (_) {
+      _logger.warning('widget_snapshot_store_failed');
       return false;
     }
   }

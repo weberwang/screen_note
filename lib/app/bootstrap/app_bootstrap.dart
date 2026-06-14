@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/app.dart';
+import 'package:screen_note/core/logging/app_logger.dart';
+import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
+import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
+import 'package:screen_note/features/widget_bridge/application/providers/widget_bridge_runtime_providers.dart';
+import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_settings_side_effect_port.dart';
+import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_task_flow_side_effect_port.dart';
 
 /// 执行全局 bootstrap 入口。
 ///
@@ -9,7 +15,25 @@ import 'package:screen_note/app/app.dart';
 Future<void> bootstrapAndRunApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureGlobalErrorHandling();
-  runApp(const ProviderScope(child: ScreenNoteApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        defaultTaskFlowSideEffectPortProvider.overrideWith((Ref ref) {
+          return WidgetSnapshotTaskFlowSideEffectPort(
+            coordinator: ref.watch(widgetSnapshotAutoSyncCoordinatorProvider),
+            logger: ref.watch(appLoggerProvider),
+          );
+        }),
+        defaultSettingsSideEffectPortProvider.overrideWith((Ref ref) {
+          return WidgetSnapshotSettingsSideEffectPort(
+            coordinator: ref.watch(widgetSnapshotAutoSyncCoordinatorProvider),
+            logger: ref.watch(appLoggerProvider),
+          );
+        }),
+      ],
+      child: const ScreenNoteApp(),
+    ),
+  );
 }
 
 /// 配置全局错误展示与上报入口。
@@ -36,4 +60,3 @@ void _configureGlobalErrorHandling() {
     );
   };
 }
-

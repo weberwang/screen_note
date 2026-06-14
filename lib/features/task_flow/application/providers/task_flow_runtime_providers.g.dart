@@ -8,12 +8,12 @@ part of 'task_flow_runtime_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// task-flow 数据库提供器，统一托管持久层生命周期。
+/// 运行时数据库 Provider，统一复用 `TaskFlowDatabase` 真源入口，避免页面层直接感知连接细节。
 
 @ProviderFor(taskFlowDatabase)
 const taskFlowDatabaseProvider = TaskFlowDatabaseProvider._();
 
-/// task-flow 数据库提供器，统一托管持久层生命周期。
+/// 运行时数据库 Provider，统一复用 `TaskFlowDatabase` 真源入口，避免页面层直接感知连接细节。
 
 final class TaskFlowDatabaseProvider
     extends
@@ -23,7 +23,7 @@ final class TaskFlowDatabaseProvider
           TaskFlowDatabase
         >
     with $Provider<TaskFlowDatabase> {
-  /// task-flow 数据库提供器，统一托管持久层生命周期。
+  /// 运行时数据库 Provider，统一复用 `TaskFlowDatabase` 真源入口，避免页面层直接感知连接细节。
   const TaskFlowDatabaseProvider._()
     : super(
         from: null,
@@ -57,32 +57,86 @@ final class TaskFlowDatabaseProvider
   }
 }
 
-String _$taskFlowDatabaseHash() => r'4848cc9a973f0f6110ab37cf9dbadc09009cd072';
+String _$taskFlowDatabaseHash() => r'e5f431fe3632b351f14037102a540a2cbf1d32fc';
 
-/// 事项仓储提供器，隔离页面层对 Drift 的直接依赖。
+/// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
 
-@ProviderFor(taskRepository)
-const taskRepositoryProvider = TaskRepositoryProvider._();
+@ProviderFor(taskFlowMutationRepository)
+const taskFlowMutationRepositoryProvider =
+    TaskFlowMutationRepositoryProvider._();
 
-/// 事项仓储提供器，隔离页面层对 Drift 的直接依赖。
+/// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
 
-final class TaskRepositoryProvider
-    extends $FunctionalProvider<TaskRepository, TaskRepository, TaskRepository>
-    with $Provider<TaskRepository> {
-  /// 事项仓储提供器，隔离页面层对 Drift 的直接依赖。
-  const TaskRepositoryProvider._()
+final class TaskFlowMutationRepositoryProvider
+    extends
+        $FunctionalProvider<
+          TaskMutationRepository,
+          TaskMutationRepository,
+          TaskMutationRepository
+        >
+    with $Provider<TaskMutationRepository> {
+  /// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
+  const TaskFlowMutationRepositoryProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'taskRepositoryProvider',
-        isAutoDispose: true,
+        name: r'taskFlowMutationRepositoryProvider',
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$taskRepositoryHash();
+  String debugGetCreateSourceHash() => _$taskFlowMutationRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<TaskMutationRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  TaskMutationRepository create(Ref ref) {
+    return taskFlowMutationRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TaskMutationRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TaskMutationRepository>(value),
+    );
+  }
+}
+
+String _$taskFlowMutationRepositoryHash() =>
+    r'2d9f93dfa0780efcc7e4dd003e7b2a013e32dea2';
+
+/// 任务只读仓储 Provider，首页和查询用例只依赖读契约，不接触写能力细节。
+
+@ProviderFor(taskFlowRepository)
+const taskFlowRepositoryProvider = TaskFlowRepositoryProvider._();
+
+/// 任务只读仓储 Provider，首页和查询用例只依赖读契约，不接触写能力细节。
+
+final class TaskFlowRepositoryProvider
+    extends $FunctionalProvider<TaskRepository, TaskRepository, TaskRepository>
+    with $Provider<TaskRepository> {
+  /// 任务只读仓储 Provider，首页和查询用例只依赖读契约，不接触写能力细节。
+  const TaskFlowRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'taskFlowRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$taskFlowRepositoryHash();
 
   @$internal
   @override
@@ -91,7 +145,7 @@ final class TaskRepositoryProvider
 
   @override
   TaskRepository create(Ref ref) {
-    return taskRepository(ref);
+    return taskFlowRepository(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -103,14 +157,69 @@ final class TaskRepositoryProvider
   }
 }
 
-String _$taskRepositoryHash() => r'680779c01103e8a811af58e1ace84baabc2d1ae1';
+String _$taskFlowRepositoryHash() =>
+    r'75167c4855a9d6748640cd31239a97b0becd38b4';
 
-/// 副作用端口提供器，当前先用空实现保住主链路，后续再接提醒与快照刷新。
+/// 默认副作用端口 Provider，当前先降级到 no-op，后续通知、Widget 等能力都从这里替换接线。
+
+@ProviderFor(defaultTaskFlowSideEffectPort)
+const defaultTaskFlowSideEffectPortProvider =
+    DefaultTaskFlowSideEffectPortProvider._();
+
+/// 默认副作用端口 Provider，当前先降级到 no-op，后续通知、Widget 等能力都从这里替换接线。
+
+final class DefaultTaskFlowSideEffectPortProvider
+    extends
+        $FunctionalProvider<
+          TaskFlowSideEffectPort,
+          TaskFlowSideEffectPort,
+          TaskFlowSideEffectPort
+        >
+    with $Provider<TaskFlowSideEffectPort> {
+  /// 默认副作用端口 Provider，当前先降级到 no-op，后续通知、Widget 等能力都从这里替换接线。
+  const DefaultTaskFlowSideEffectPortProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'defaultTaskFlowSideEffectPortProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$defaultTaskFlowSideEffectPortHash();
+
+  @$internal
+  @override
+  $ProviderElement<TaskFlowSideEffectPort> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  TaskFlowSideEffectPort create(Ref ref) {
+    return defaultTaskFlowSideEffectPort(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TaskFlowSideEffectPort value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TaskFlowSideEffectPort>(value),
+    );
+  }
+}
+
+String _$defaultTaskFlowSideEffectPortHash() =>
+    r'4bba894333cf094e52cb13d487d0bf7d5682e923';
+
+/// 任务流副作用装配点，默认复用降级实现，但保留清晰可替换入口以满足后续能力接入。
 
 @ProviderFor(taskFlowSideEffectPort)
 const taskFlowSideEffectPortProvider = TaskFlowSideEffectPortProvider._();
 
-/// 副作用端口提供器，当前先用空实现保住主链路，后续再接提醒与快照刷新。
+/// 任务流副作用装配点，默认复用降级实现，但保留清晰可替换入口以满足后续能力接入。
 
 final class TaskFlowSideEffectPortProvider
     extends
@@ -120,14 +229,14 @@ final class TaskFlowSideEffectPortProvider
           TaskFlowSideEffectPort
         >
     with $Provider<TaskFlowSideEffectPort> {
-  /// 副作用端口提供器，当前先用空实现保住主链路，后续再接提醒与快照刷新。
+  /// 任务流副作用装配点，默认复用降级实现，但保留清晰可替换入口以满足后续能力接入。
   const TaskFlowSideEffectPortProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'taskFlowSideEffectPortProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -156,14 +265,14 @@ final class TaskFlowSideEffectPortProvider
 }
 
 String _$taskFlowSideEffectPortHash() =>
-    r'f8085d4feae9c6e1140c1ad7efd0de8992ca4763';
+    r'8028b9ab5508a56528e87a8b77f0e3885b17d33f';
 
-/// 创建事项用例提供器。
+/// 创建事项用例 Provider，供后续编辑页或快捷入口直接读取，不把构造细节散落到展示层。
 
 @ProviderFor(createTaskUseCase)
 const createTaskUseCaseProvider = CreateTaskUseCaseProvider._();
 
-/// 创建事项用例提供器。
+/// 创建事项用例 Provider，供后续编辑页或快捷入口直接读取，不把构造细节散落到展示层。
 
 final class CreateTaskUseCaseProvider
     extends
@@ -173,7 +282,7 @@ final class CreateTaskUseCaseProvider
           CreateTaskUseCase
         >
     with $Provider<CreateTaskUseCase> {
-  /// 创建事项用例提供器。
+  /// 创建事项用例 Provider，供后续编辑页或快捷入口直接读取，不把构造细节散落到展示层。
   const CreateTaskUseCaseProvider._()
     : super(
         from: null,
@@ -208,14 +317,14 @@ final class CreateTaskUseCaseProvider
   }
 }
 
-String _$createTaskUseCaseHash() => r'a9cc5159f4e5b1e23207a6c1f6a10995159fe302';
+String _$createTaskUseCaseHash() => r'4d801a03bae24268958130c28f857345b8434ab3';
 
-/// 首页任务流读取用例提供器。
+/// 首页快照用例 Provider，统一封装任务分组与优先级选择规则。
 
 @ProviderFor(loadTaskFeedUseCase)
 const loadTaskFeedUseCaseProvider = LoadTaskFeedUseCaseProvider._();
 
-/// 首页任务流读取用例提供器。
+/// 首页快照用例 Provider，统一封装任务分组与优先级选择规则。
 
 final class LoadTaskFeedUseCaseProvider
     extends
@@ -225,7 +334,7 @@ final class LoadTaskFeedUseCaseProvider
           LoadTaskFeedUseCase
         >
     with $Provider<LoadTaskFeedUseCase> {
-  /// 首页任务流读取用例提供器。
+  /// 首页快照用例 Provider，统一封装任务分组与优先级选择规则。
   const LoadTaskFeedUseCaseProvider._()
     : super(
         from: null,
@@ -261,14 +370,150 @@ final class LoadTaskFeedUseCaseProvider
 }
 
 String _$loadTaskFeedUseCaseHash() =>
-    r'd3c77deb76d18aa073ff1a06f3353b69c35e1b79';
+    r'05f75827c90189916a0bdca88e0d5b57753782cf';
 
-/// 事项状态流转用例提供器。
+/// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
+
+@ProviderFor(taskFlowTaskById)
+const taskFlowTaskByIdProvider = TaskFlowTaskByIdFamily._();
+
+/// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
+
+final class TaskFlowTaskByIdProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<TaskEntity?>,
+          TaskEntity?,
+          FutureOr<TaskEntity?>
+        >
+    with $FutureModifier<TaskEntity?>, $FutureProvider<TaskEntity?> {
+  /// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
+  const TaskFlowTaskByIdProvider._({
+    required TaskFlowTaskByIdFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'taskFlowTaskByIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$taskFlowTaskByIdHash();
+
+  @override
+  String toString() {
+    return r'taskFlowTaskByIdProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<TaskEntity?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<TaskEntity?> create(Ref ref) {
+    final argument = this.argument as String;
+    return taskFlowTaskById(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TaskFlowTaskByIdProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$taskFlowTaskByIdHash() => r'b9107b3f2a47510daf971b6359dd0d3295021dff';
+
+/// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
+
+final class TaskFlowTaskByIdFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<TaskEntity?>, String> {
+  const TaskFlowTaskByIdFamily._()
+    : super(
+        retry: null,
+        name: r'taskFlowTaskByIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
+
+  TaskFlowTaskByIdProvider call(String taskId) =>
+      TaskFlowTaskByIdProvider._(argument: taskId, from: this);
+
+  @override
+  String toString() => r'taskFlowTaskByIdProvider';
+}
+
+/// 更新事项用例 Provider，统一承接编辑态保存，不允许页面层误走新建链路。
+
+@ProviderFor(updateTaskUseCase)
+const updateTaskUseCaseProvider = UpdateTaskUseCaseProvider._();
+
+/// 更新事项用例 Provider，统一承接编辑态保存，不允许页面层误走新建链路。
+
+final class UpdateTaskUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateTaskUseCase,
+          UpdateTaskUseCase,
+          UpdateTaskUseCase
+        >
+    with $Provider<UpdateTaskUseCase> {
+  /// 更新事项用例 Provider，统一承接编辑态保存，不允许页面层误走新建链路。
+  const UpdateTaskUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateTaskUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateTaskUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateTaskUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateTaskUseCase create(Ref ref) {
+    return updateTaskUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateTaskUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateTaskUseCase>(value),
+    );
+  }
+}
+
+String _$updateTaskUseCaseHash() => r'3207f048c89fed8e21842eaa37a1214fbe18e580';
+
+/// 状态流转用例 Provider，供后续页面直接读取，保持状态写入仍通过应用层编排。
 
 @ProviderFor(updateTaskStatusUseCase)
 const updateTaskStatusUseCaseProvider = UpdateTaskStatusUseCaseProvider._();
 
-/// 事项状态流转用例提供器。
+/// 状态流转用例 Provider，供后续页面直接读取，保持状态写入仍通过应用层编排。
 
 final class UpdateTaskStatusUseCaseProvider
     extends
@@ -278,7 +523,7 @@ final class UpdateTaskStatusUseCaseProvider
           UpdateTaskStatusUseCase
         >
     with $Provider<UpdateTaskStatusUseCase> {
-  /// 事项状态流转用例提供器。
+  /// 状态流转用例 Provider，供后续页面直接读取，保持状态写入仍通过应用层编排。
   const UpdateTaskStatusUseCaseProvider._()
     : super(
         from: null,
@@ -314,24 +559,69 @@ final class UpdateTaskStatusUseCaseProvider
 }
 
 String _$updateTaskStatusUseCaseHash() =>
-    r'eef24e42b1ad2842770973ea1e75eb3b682bf4a7';
+    r'b288d680009210887c713108b6d5e5e8bed4d808';
 
-/// 首页任务流控制器，统一收口首页读取与快速状态变更。
+/// 首页基础快照 Provider，保留 Task 2 的最小快照读取入口，供 controller 或其他轻量读取复用。
+
+@ProviderFor(taskFlowHomeSnapshot)
+const taskFlowHomeSnapshotProvider = TaskFlowHomeSnapshotProvider._();
+
+/// 首页基础快照 Provider，保留 Task 2 的最小快照读取入口，供 controller 或其他轻量读取复用。
+
+final class TaskFlowHomeSnapshotProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<TaskFeedSnapshot>,
+          TaskFeedSnapshot,
+          FutureOr<TaskFeedSnapshot>
+        >
+    with $FutureModifier<TaskFeedSnapshot>, $FutureProvider<TaskFeedSnapshot> {
+  /// 首页基础快照 Provider，保留 Task 2 的最小快照读取入口，供 controller 或其他轻量读取复用。
+  const TaskFlowHomeSnapshotProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'taskFlowHomeSnapshotProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$taskFlowHomeSnapshotHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<TaskFeedSnapshot> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<TaskFeedSnapshot> create(Ref ref) {
+    return taskFlowHomeSnapshot(ref);
+  }
+}
+
+String _$taskFlowHomeSnapshotHash() =>
+    r'f70759a38ca3fef193792c630afd8f4443884753';
+
+/// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
 
 @ProviderFor(TaskFlowHomeController)
 const taskFlowHomeControllerProvider = TaskFlowHomeControllerProvider._();
 
-/// 首页任务流控制器，统一收口首页读取与快速状态变更。
+/// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
 final class TaskFlowHomeControllerProvider
     extends $AsyncNotifierProvider<TaskFlowHomeController, TaskFeedSnapshot> {
-  /// 首页任务流控制器，统一收口首页读取与快速状态变更。
+  /// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
   const TaskFlowHomeControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'taskFlowHomeControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -345,9 +635,9 @@ final class TaskFlowHomeControllerProvider
 }
 
 String _$taskFlowHomeControllerHash() =>
-    r'641d667c0aba04069eb4f06d78f1fe813474e7fc';
+    r'f0a7669e1ea8af1a0cb441862a39b2b2aa72f94a';
 
-/// 首页任务流控制器，统一收口首页读取与快速状态变更。
+/// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
 
 abstract class _$TaskFlowHomeController
     extends $AsyncNotifier<TaskFeedSnapshot> {

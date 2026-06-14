@@ -1,50 +1,144 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:screen_note/features/settings_center/application/use_cases/load_settings_preferences_use_case.dart';
-import 'package:screen_note/features/settings_center/application/use_cases/update_settings_preferences_use_case.dart';
-import 'package:screen_note/features/settings_center/domain/entities/settings_preferences.dart';
+import 'package:screen_note/features/settings_center/application/ports/settings_side_effect_port.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/load_settings_center_snapshot_use_case.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/review_notification_permission_use_case.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/update_privacy_mode_use_case.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/update_widget_display_mode_use_case.dart';
+import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_membership_state.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_sync_status.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
-import 'package:screen_note/features/settings_center/infrastructure/settings_preferences_repository_impl.dart';
-import 'package:screen_note/features/settings_center/infrastructure/settings_side_effect_noop_port.dart';
+import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
+import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 
-/// 验证 settings-center 的最小正式能力：偏好读取、写入与即时回显。
 void main() {
-  late SettingsPreferencesRepositoryImpl repository;
-  late LoadSettingsPreferencesUseCase loadUseCase;
-  late UpdateSettingsPreferencesUseCase updateUseCase;
-
-  setUp(() async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    repository = SettingsPreferencesRepositoryImpl(preferences: preferences);
-    loadUseCase = LoadSettingsPreferencesUseCase(repository: repository);
-    updateUseCase = UpdateSettingsPreferencesUseCase(
-      repository: repository,
-      sideEffectPort: const SettingsSideEffectNoopPort(),
-    );
-  });
-
-  test('默认偏好会采用隐私优先与三条展示样式', () async {
-    final SettingsPreferences snapshot = await loadUseCase.execute();
-
-    expect(snapshot.maskPrivateContent, isTrue);
-    expect(snapshot.notificationsEnabled, isTrue);
-    expect(snapshot.widgetDisplayMode, WidgetDisplayMode.list3);
-  });
-
-  test('更新偏好后会持久化隐私开关和锁屏样式', () async {
-    await updateUseCase.execute(
-      const SettingsPreferences(
-        maskPrivateContent: false,
-        notificationsEnabled: false,
-        widgetDisplayMode: WidgetDisplayMode.today,
+  test('加载设置快照会装配偏好、通知权限、同步与会员边界', () async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(
+        privacyModeEnabled: true,
+        widgetDisplayMode: WidgetDisplayMode.previewOnly,
       ),
     );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.disabled,
+    );
+    final useCase = LoadSettingsCenterSnapshotUseCase(
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+    );
 
-    final SettingsPreferences snapshot = await loadUseCase.execute();
-    expect(snapshot.maskPrivateContent, isFalse);
-    expect(snapshot.notificationsEnabled, isFalse);
-    expect(snapshot.widgetDisplayMode, WidgetDisplayMode.today);
+    final snapshot = await useCase.execute();
+
+    expect(
+      snapshot.notificationPermissionStatus,
+      NotificationPermissionStatus.disabled,
+    );
+    expect(snapshot.preferences.privacyModeEnabled, isTrue);
+    expect(snapshot.syncStatus, SettingsSyncStatus.localOnly);
+    expect(snapshot.membershipState, SettingsMembershipState.available);
   });
+
+  test('开启隐私模式时会把 fullContent 收敛为 previewOnly', () async {
+    final repository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(
+        privacyModeEnabled: false,
+        widgetDisplayMode: WidgetDisplayMode.fullContent,
+      ),
+    );
+    final sideEffectPort = _RecordingSettingsSideEffectPort();
+    final useCase = UpdatePrivacyModeUseCase(
+      repository: repository,
+      sideEffectPort: sideEffectPort,
+    );
+
+    final updated = await useCase.execute(enabled: true);
+
+    expect(updated.privacyModeEnabled, isTrue);
+    expect(updated.widgetDisplayMode, WidgetDisplayMode.previewOnly);
+    expect(sideEffectPort.recordedPreferences.single, updated);
+  });
+
+  test('隐私模式开启时更新 fullContent 会被强制收敛为 previewOnly', () async {
+    final repository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(
+        privacyModeEnabled: true,
+        widgetDisplayMode: WidgetDisplayMode.previewOnly,
+      ),
+    );
+    final sideEffectPort = _RecordingSettingsSideEffectPort();
+    final useCase = UpdateWidgetDisplayModeUseCase(
+      repository: repository,
+      sideEffectPort: sideEffectPort,
+    );
+
+    final updated = await useCase.execute(mode: WidgetDisplayMode.fullContent);
+
+    expect(updated.widgetDisplayMode, WidgetDisplayMode.previewOnly);
+    expect(sideEffectPort.recordedPreferences.single, updated);
+  });
+
+  test('通知权限复查会返回仓储提供的最新状态', () async {
+    final repository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.disabled,
+      requestResult: NotificationPermissionStatus.enabled,
+    );
+    final useCase = ReviewNotificationPermissionUseCase(repository: repository);
+
+    final status = await useCase.execute();
+
+    expect(status, NotificationPermissionStatus.enabled);
+  });
+}
+
+/// 内存偏好仓储只用于用例测试，避免把 shared_preferences 引入规则测试。
+final class _InMemorySettingsPreferencesRepository
+    implements SettingsPreferencesRepository {
+  _InMemorySettingsPreferencesRepository({
+    required SettingsCenterPreferences initial,
+  }) : _current = initial;
+
+  SettingsCenterPreferences _current;
+
+  @override
+  Future<SettingsCenterPreferences> loadPreferences() async => _current;
+
+  @override
+  Future<void> savePreferences(SettingsCenterPreferences preferences) async {
+    _current = preferences;
+  }
+}
+
+/// 假通知仓储只用于测试权限链路，不依赖真实平台通道。
+final class _FakeNotificationPermissionRepository
+    implements NotificationPermissionRepository {
+  _FakeNotificationPermissionRepository({
+    required NotificationPermissionStatus initialStatus,
+    NotificationPermissionStatus? requestResult,
+  }) : _current = initialStatus,
+       _requestResult = requestResult ?? initialStatus;
+
+  NotificationPermissionStatus _current;
+  final NotificationPermissionStatus _requestResult;
+
+  @override
+  Future<NotificationPermissionStatus> readStatus() async => _current;
+
+  @override
+  Future<NotificationPermissionStatus> requestPermission() async {
+    _current = _requestResult;
+    return _current;
+  }
+}
+
+/// 记录型设置副作用端口，用于验证偏好更新成功后确实触发了共享联动。
+final class _RecordingSettingsSideEffectPort implements SettingsSideEffectPort {
+  final List<SettingsCenterPreferences> recordedPreferences =
+      <SettingsCenterPreferences>[];
+
+  @override
+  Future<void> onPreferencesChanged(SettingsCenterPreferences preferences) async {
+    recordedPreferences.add(preferences);
+  }
 }

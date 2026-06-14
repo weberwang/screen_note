@@ -131,8 +131,14 @@ abstract class AppLocalizations {
   /// Hint text shown in the bootstrap quick add sheet.
   ///
   /// In en, this message translates to:
-  /// **'The real quick-add flow will be connected in the task-flow module stage.'**
+  /// **'Open the task editor first, then save with a minimal title, note, and privacy setup.'**
   String get quickAddSheetHint;
+
+  /// Primary action in the quick add sheet that opens the task editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue adding'**
+  String get quickAddSheetContinue;
 
   /// Dismiss button label for the bootstrap quick add sheet.
   ///
@@ -188,6 +194,126 @@ abstract class AppLocalizations {
   /// **'Urgent queue'**
   String get homeQueueTitle;
 
+  /// Minimal error hint shown when the task-flow home snapshot cannot be loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Home snapshot failed to load.'**
+  String get taskFlowHomeLoadFailed;
+
+  /// Minimal empty-state title shown when the home snapshot has no active tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs attention right now.'**
+  String get taskFlowEmptyTitle;
+
+  /// Minimal empty-state body shown on the priority card when the home snapshot is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or restore a task, and your focus list will appear here.'**
+  String get taskFlowEmptyBody;
+
+  /// Safe placeholder text shown instead of private task content on the home page.
+  ///
+  /// In en, this message translates to:
+  /// **'This private task is hidden on the home surface.'**
+  String get taskFlowPrivateTaskHint;
+
+  /// Fallback supporting copy shown on the priority card when a task has no visible note.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep moving on the next meaningful step.'**
+  String get taskFlowPriorityFallbackBody;
+
+  /// Status label shown for a pinned priority task on the home page.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned task'**
+  String get taskFlowPinnedLabel;
+
+  /// Fallback metadata shown when a home task has no due date.
+  ///
+  /// In en, this message translates to:
+  /// **'No due date'**
+  String get taskFlowNoDueDate;
+
+  /// Home task due-date label.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {dateTime}'**
+  String taskFlowDueAtLabel(String dateTime);
+
+  /// Home urgent queue label shown for overdue tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue since {dateTime}'**
+  String taskFlowOverdueAtLabel(String dateTime);
+
+  /// Title shown on the task editor page.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit task'**
+  String get taskEditorTitle;
+
+  /// Helper copy shown below the task editor title.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture the core task first, then keep the remaining fields minimal before saving.'**
+  String get taskEditorHelperText;
+
+  /// Label for the task title input.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get taskTitleLabel;
+
+  /// Placeholder text for the task title input.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: Connect the editor save flow'**
+  String get taskTitleHint;
+
+  /// Label for the task note input.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get taskNoteLabel;
+
+  /// Placeholder text for the task note input.
+  ///
+  /// In en, this message translates to:
+  /// **'Add context or the next step for this task.'**
+  String get taskNoteHint;
+
+  /// Label for the pinned toggle in the task editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin as current focus'**
+  String get taskPinnedLabel;
+
+  /// Label for the private toggle in the task editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as private'**
+  String get taskPrivateLabel;
+
+  /// Primary save button label on the task editor page.
+  ///
+  /// In en, this message translates to:
+  /// **'Save task'**
+  String get taskSaveAction;
+
+  /// Validation message shown when the task title is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a task title first.'**
+  String get taskTitleRequired;
+
+  /// Lightweight error message shown when task creation fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Save failed. Try again shortly.'**
+  String get taskCreateFailed;
+
   /// Placeholder task row label used in the bootstrap queue.
   ///
   /// In en, this message translates to:
@@ -206,6 +332,72 @@ abstract class AppLocalizations {
   /// **'Recent completed and recently deleted flows will connect here after the shared bootstrap is stable.'**
   String get historyPlaceholderBody;
 
+  /// Main title shown on the history center page.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get historyTitle;
+
+  /// Supporting copy shown below the history page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing disappears without a trace. Review what was completed or restore what was deleted.'**
+  String get historySubtitle;
+
+  /// Section title for recently completed tasks on the history page.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently completed'**
+  String get historyCompletedSectionTitle;
+
+  /// Section title for recently deleted tasks on the history page.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently deleted'**
+  String get historyDeletedSectionTitle;
+
+  /// Empty-state title shown when there are no completed or deleted tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Your history is clear for now.'**
+  String get historyEmptyTitle;
+
+  /// Empty-state body shown on the history page.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed and deleted tasks will appear here so you can trust that nothing vanished unexpectedly.'**
+  String get historyEmptyBody;
+
+  /// Lightweight error hint shown when the history snapshot cannot be loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'History failed to load. Try again shortly.'**
+  String get historyLoadFailed;
+
+  /// Timeline metadata shown for a completed task on the history page.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed {dateTime}'**
+  String historyCompletedAtLabel(String dateTime);
+
+  /// Timeline metadata shown for a deleted task on the history page.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted {dateTime}'**
+  String historyDeletedAtLabel(String dateTime);
+
+  /// Label for the restore button shown on deleted history rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get historyRestoreAction;
+
+  /// Shared feedback message shown after a deleted task is restored from history.
+  ///
+  /// In en, this message translates to:
+  /// **'Task restored to active.'**
+  String get historyRestoreSuccess;
+
   /// Title for the bootstrap settings placeholder page.
   ///
   /// In en, this message translates to:
@@ -217,6 +409,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification, privacy, display, and future membership settings will land here in later module work.'**
   String get settingsPlaceholderBody;
+
+  /// Main title shown on the settings center page.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings Center'**
+  String get settingsTitle;
+
+  /// Supporting copy shown below the settings page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage how Screen Note behaves across reminders, privacy, widgets, and recovery-safe system surfaces.'**
+  String get settingsSubtitle;
+
+  /// Section title for notification settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsNotificationsSection;
+
+  /// Section title for privacy settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get settingsPrivacySection;
+
+  /// Section title for widget and display settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Display'**
+  String get settingsDisplaySection;
+
+  /// Section title for sync settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync & Backup'**
+  String get settingsSyncSection;
+
+  /// Section title for membership entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership'**
+  String get settingsMembershipSection;
+
+  /// Title for the notification status row.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Status'**
+  String get settingsNotificationStatusTitle;
+
+  /// Description for the notification status row.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay updated on reminders and task changes.'**
+  String get settingsNotificationStatusBody;
+
+  /// Title for the privacy mode row.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Mode'**
+  String get settingsPrivacyModeTitle;
+
+  /// Description for the privacy mode row.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect task content in previews and widgets.'**
+  String get settingsPrivacyModeBody;
+
+  /// Title for the widget display mode row.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget Display Mode'**
+  String get settingsWidgetDisplayModeTitle;
+
+  /// Description for the widget display mode row.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose whether widgets show full content or a safe preview.'**
+  String get settingsWidgetDisplayModeBody;
+
+  /// Title for the sync status row.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Status'**
+  String get settingsSyncStatusTitle;
+
+  /// Description for the sync status row.
+  ///
+  /// In en, this message translates to:
+  /// **'This build keeps a safe local source of truth while later sync entry points stay visible here.'**
+  String get settingsSyncStatusBody;
+
+  /// Title for the membership row.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get settingsMembershipTitle;
+
+  /// Description for the membership row.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership stays visible but secondary to permissions, privacy, and display safety.'**
+  String get settingsMembershipBody;
+
+  /// Value label shown when notifications are enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get settingsNotificationEnabled;
+
+  /// Value label shown when notifications are disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get settingsNotificationDisabled;
+
+  /// Value label shown when notification permissions cannot be read.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get settingsNotificationUnknown;
+
+  /// Title shown in the inline degradation notice for notification permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission downgraded'**
+  String get settingsPermissionDowngradedTitle;
+
+  /// Body shown in the inline degradation notice for notification permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off. Task creation still works, but reminders are reduced.'**
+  String get settingsPermissionDowngradedBody;
+
+  /// Action label for reviewing notification permission state.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get settingsReviewAction;
+
+  /// Value label for the safe widget preview mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Only'**
+  String get settingsWidgetDisplayPreviewOnly;
+
+  /// Value label for the full widget content mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Content'**
+  String get settingsWidgetDisplayFullContent;
+
+  /// Value label shown when sync is still limited to the local source of truth.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Only'**
+  String get settingsSyncLocalOnly;
+
+  /// Value label shown for the secondary membership entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get settingsMembershipAvailable;
+
+  /// Title shown in the widget display mode picker sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a widget display mode'**
+  String get settingsWidgetDisplayPickerTitle;
+
+  /// Shared feedback message shown after updating privacy mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy setting updated.'**
+  String get settingsPrivacyFeedback;
+
+  /// Shared feedback message shown after updating widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget display setting updated.'**
+  String get settingsWidgetDisplayFeedback;
+
+  /// Shared feedback shown when notification permission becomes available after review.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification access is now available.'**
+  String get settingsNotificationGrantedFeedback;
+
+  /// Shared feedback shown when notification permission remains limited after review.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification access is still limited.'**
+  String get settingsNotificationDeferredFeedback;
+
+  /// Lightweight error hint shown when the settings snapshot cannot be loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings failed to load. Try again shortly.'**
+  String get settingsLoadFailed;
+
+  /// Empty-state title shown inside the widget snapshot when there is no active reminder to project.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder is ready for the widget yet'**
+  String get widgetSnapshotEmptyTitle;
+
+  /// Empty-state body shown inside the widget snapshot when there is no active reminder to project.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or restore a task and the next stable snapshot will appear here.'**
+  String get widgetSnapshotEmptyBody;
+
+  /// Hint shown when the widget is rendering a previously valid fallback snapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing the last valid widget snapshot.'**
+  String get widgetSnapshotFallbackHint;
+
+  /// Widget title shown when the user selected preview-only mode for non-private reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview is hidden'**
+  String get widgetSnapshotPreviewTitle;
+
+  /// Widget title shown when a private reminder must be masked.
+  ///
+  /// In en, this message translates to:
+  /// **'Private reminder is hidden'**
+  String get widgetSnapshotPrivateTitle;
+
+  /// Status label shown for a non-private reminder in preview-only mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe Preview'**
+  String get widgetSnapshotStatusPreview;
+
+  /// Status label shown when a private reminder is masked inside the widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected'**
+  String get widgetSnapshotStatusPrivate;
+
+  /// Status label shown for reminders due today inside the widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get widgetSnapshotStatusToday;
+
+  /// Status label shown for overdue reminders inside the widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get widgetSnapshotStatusOverdue;
+
+  /// Status label shown for pinned reminders inside the widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get widgetSnapshotStatusPinned;
+
+  /// CTA-like helper text shown in the widget snapshot to indicate the safe handoff back to the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in app'**
+  String get widgetSnapshotOpenInApp;
 }
 
 class _AppLocalizationsDelegate

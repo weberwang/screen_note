@@ -5,7 +5,13 @@ source_type: preview_comp
 platform_identifier: ios_device
 module_preview_policy:
   module_refinement_default: no_generate
-  generated_module_preview_paths: []
+  generated_module_preview_paths:
+    - docs/project/modules/task-flow/task-flow-home.png
+    - docs/project/modules/task-flow/task-flow-editor.png
+    - docs/project/modules/history-center/history-center-history.png
+    - docs/project/modules/settings-center/settings-center-settings.png
+    - docs/project/modules/widget-bridge/widget-bridge-priority-widget.png
+    - docs/project/modules/widget-bridge/widget-bridge-private-widget.png
 theme_freeze_files:
   light: light-theme-freeze.yaml
   dark: dark-theme-freeze.yaml
@@ -172,6 +178,10 @@ theme_freeze_files:
 - `module_refinement_default: no_generate`
 - 模块阶段默认不生成新的真实设备图
 - 若后续显式批准模块图像证据，生成路径必须明确回写
+- 当前已按自动工作流显式批准 `task-flow` 模块效果图证据，路径为 `docs/project/modules/task-flow/task-flow-home.png` 与 `docs/project/modules/task-flow/task-flow-editor.png`
+- 当前已按自动工作流显式批准 `history-center` 模块效果图证据，路径为 `docs/project/modules/history-center/history-center-history.png`
+- 当前已按自动工作流显式批准 `settings-center` 模块效果图证据，路径为 `docs/project/modules/settings-center/settings-center-settings.png`
+- 当前已按自动工作流显式批准 `widget-bridge` 模块效果图证据，路径为 `docs/project/modules/widget-bridge/widget-bridge-priority-widget.png` 与 `docs/project/modules/widget-bridge/widget-bridge-private-widget.png`
 
 ## downstream_reference_index
 

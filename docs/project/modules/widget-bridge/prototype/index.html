@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Widget Bridge Prototype</title>
+    <style>
+      :root {
+        --bg: #fbfaf7;
+        --surface: #ffffff;
+        --surface-soft: #f6f4ee;
+        --line: #e4e8e0;
+        --text: #1f2328;
+        --text-soft: #657068;
+        --green: #4d8b52;
+        --orange: #f08a32;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "SF Pro Text", "PingFang SC", sans-serif;
+        background:
+          radial-gradient(circle at top, #ffffff 0%, var(--bg) 58%, #f3f1ea 100%);
+        color: var(--text);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 48px 24px 64px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 34px;
+        line-height: 1.15;
+      }
+
+      p {
+        margin: 0;
+        color: var(--text-soft);
+        line-height: 1.6;
+      }
+
+      .grid {
+        display: grid;
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      .widget {
+        max-width: 540px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--surface);
+        box-shadow: 0 22px 44px rgba(31, 35, 40, 0.08);
+      }
+
+      .widget-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .item {
+        padding: 18px;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #fffdf7 0%, var(--surface-soft) 100%);
+        border: 1px solid #efe7d5;
+      }
+
+      .item-title {
+        margin: 0 0 8px;
+        font-size: 28px;
+        line-height: 1.15;
+        font-weight: 700;
+      }
+
+      .item-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--text-soft);
+        font-size: 14px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #fff3e4;
+        color: var(--orange);
+        font-weight: 600;
+      }
+
+      .chip.safe {
+        background: #edf4ee;
+        color: var(--green);
+      }
+
+      .footer {
+        margin-top: 14px;
+        font-size: 14px;
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      .empty {
+        padding: 18px;
+        border-radius: 22px;
+        background: var(--surface-soft);
+        border: 1px solid var(--line);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Widget Bridge Prototype</h1>
+      <p>共享设计源只覆盖稳定快照结构与安全回流语义，不把 Widget 扩写成完整 App 页面。</p>
+
+      <div class="grid">
+        <section class="widget">
+          <div class="widget-header">
+            <span>Full Content</span>
+            <span>Accessory Rectangular</span>
+          </div>
+          <div class="item">
+            <h2 class="item-title">Prepare meeting notes</h2>
+            <div class="item-meta">
+              <span class="chip">Today</span>
+              <span>18:00</span>
+              <span>#1</span>
+            </div>
+          </div>
+          <div class="footer">点按后回到应用查看</div>
+        </section>
+
+        <section class="widget">
+          <div class="widget-header">
+            <span>Preview Only</span>
+            <span>Accessory Rectangular</span>
+          </div>
+          <div class="item">
+            <h2 class="item-title">隐私事项内容已隐藏</h2>
+            <div class="item-meta">
+              <span class="chip safe">受保护</span>
+              <span>点按后回到应用查看</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="widget">
+          <div class="widget-header">
+            <span>Empty</span>
+            <span>Accessory Rectangular</span>
+          </div>
+          <div class="empty">
+            <h2 class="item-title" style="font-size: 22px">当前还没有可投影到 Widget 的事项</h2>
+            <p>新增或恢复一条事项后，这里会显示下一次稳定快照。</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+  </html>

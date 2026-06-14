@@ -4,7 +4,7 @@ import 'package:screen_note/features/widget_bridge/application/ports/widget_snap
 import 'home_widget_snapshot_store_stub.dart'
     if (dart.library.io) 'home_widget_snapshot_store_io.dart' as implementation;
 
-/// 创建小组件快照存储实现；非原生平台自动退回降级存储，保证主链路不被插件能力阻断。
+/// 创建 Widget 快照存储实现；非原生平台自动退回降级存储，保证主链路不被插件能力阻断。
 WidgetSnapshotStore createWidgetSnapshotStore({required AppLogger logger}) {
   return implementation.createWidgetSnapshotStore(logger: logger);
 }

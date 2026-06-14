@@ -8,12 +8,12 @@ part of 'widget_snapshot_shared_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// 小组件快照存储提供器，统一复用真实平台实现与测试替换入口。
+/// Widget 快照存储 Provider，统一暴露真实平台实现与测试替换入口。
 
 @ProviderFor(widgetSnapshotStore)
 const widgetSnapshotStoreProvider = WidgetSnapshotStoreProvider._();
 
-/// 小组件快照存储提供器，统一复用真实平台实现与测试替换入口。
+/// Widget 快照存储 Provider，统一暴露真实平台实现与测试替换入口。
 
 final class WidgetSnapshotStoreProvider
     extends
@@ -23,7 +23,7 @@ final class WidgetSnapshotStoreProvider
           WidgetSnapshotStore
         >
     with $Provider<WidgetSnapshotStore> {
-  /// 小组件快照存储提供器，统一复用真实平台实现与测试替换入口。
+  /// Widget 快照存储 Provider，统一暴露真实平台实现与测试替换入口。
   const WidgetSnapshotStoreProvider._()
     : super(
         from: null,
@@ -59,14 +59,14 @@ final class WidgetSnapshotStoreProvider
 }
 
 String _$widgetSnapshotStoreHash() =>
-    r'a7c16f10dddbfeae18302dbb5f21b7c87da0eef6';
+    r'450947652c8a9af78b5dcd29a8d8b429c3a75474';
 
-/// 小组件快照投影器提供器。
+/// Widget 快照投影器 Provider。
 
 @ProviderFor(widgetSnapshotProjector)
 const widgetSnapshotProjectorProvider = WidgetSnapshotProjectorProvider._();
 
-/// 小组件快照投影器提供器。
+/// Widget 快照投影器 Provider。
 
 final class WidgetSnapshotProjectorProvider
     extends
@@ -76,7 +76,7 @@ final class WidgetSnapshotProjectorProvider
           WidgetSnapshotProjector
         >
     with $Provider<WidgetSnapshotProjector> {
-  /// 小组件快照投影器提供器。
+  /// Widget 快照投影器 Provider。
   const WidgetSnapshotProjectorProvider._()
     : super(
         from: null,

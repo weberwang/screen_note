@@ -7,9 +7,9 @@ import 'package:screen_note/features/widget_bridge/application/ports/widget_snap
 import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapshot.dart';
 import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapshot_projector.dart';
 
-/// 小组件快照同步服务，统一收口事实源读取、投影和共享存储写入。
+/// Widget 快照同步服务，统一收口事实源读取、投影和共享存储写入。
 final class WidgetSnapshotSyncService {
-  /// 创建同步服务。
+  /// 创建 Widget 快照同步服务。
   WidgetSnapshotSyncService({
     required TaskRepository taskRepository,
     required SettingsPreferencesRepository settingsRepository,
@@ -28,10 +28,10 @@ final class WidgetSnapshotSyncService {
   final WidgetSnapshotProjector _projector;
   final Locale _locale;
 
-  /// 读取当前可用于锁屏展示的稳定快照。
+  /// 读取当前可用于 Widget / 锁屏的稳定快照。
   Future<WidgetSnapshot> loadSnapshot({DateTime? now}) async {
     final taskFeed = await _loadTaskFeedUseCase.execute(now: now);
-    final settingsPreferences = await _settingsRepository.load();
+    final settingsPreferences = await _settingsRepository.loadPreferences();
     return _projector.project(
       taskFeed: taskFeed,
       preferences: settingsPreferences,
@@ -40,7 +40,7 @@ final class WidgetSnapshotSyncService {
     );
   }
 
-  /// 生成并写入当前稳定快照；返回值只表示写入是否成功，不会影响业务主链路。
+  /// 生成并写入当前稳定快照；返回值只表示桥接是否成功，不会影响业务主链路。
   Future<bool> syncSnapshot({DateTime? now}) async {
     final WidgetSnapshot snapshot = await loadSnapshot(now: now);
     return _snapshotStore.saveSnapshot(snapshot);

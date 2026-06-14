@@ -6,10 +6,10 @@ import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapsh
 part 'widget_snapshot.freezed.dart';
 part 'widget_snapshot.g.dart';
 
-/// 锁屏小组件共享快照，统一描述展示模式、条目列表与降级标记。
+/// Widget 共享快照，统一描述当前展示模式、条目列表与降级标记。
 @freezed
 abstract class WidgetSnapshot with _$WidgetSnapshot {
-  /// 创建共享快照。
+  /// 创建 Widget 共享快照。
   const factory WidgetSnapshot({
     required String snapshotId,
     required DateTime generatedAt,
@@ -24,7 +24,7 @@ abstract class WidgetSnapshot with _$WidgetSnapshot {
     required int version,
   }) = _WidgetSnapshot;
 
-  /// 从 JSON 读取共享快照，供 Flutter 和原生层共享同一份序列化合同。
+  /// 从 JSON 解析共享快照，供 Flutter 与系统扩展共享同一序列化结构。
   factory WidgetSnapshot.fromJson(Map<String, dynamic> json) =>
       _$WidgetSnapshotFromJson(json);
 }
