@@ -57,6 +57,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeQueueTitle => '紧急队列';
 
   @override
+  String get homeHistoryTitle => '历史状态';
+
+  @override
+  String homeHistoryCompletedCount(int count) {
+    return '已完成 $count';
+  }
+
+  @override
+  String homeHistoryDeletedCount(int count) {
+    return '已删除 $count';
+  }
+
+  @override
+  String get homeHistorySummaryBody => '完成或删除过的事项会留在历史里，方便你继续追溯或恢复。';
+
+  @override
+  String get homeHistoryEmptyBody => '当前还没有历史记录；完成或删除后，这里会保留可追溯线索。';
+
+  @override
+  String get homeHistoryAction => '查看历史';
+
+  @override
   String get taskFlowHomeLoadFailed => '首页快照加载失败';
 
   @override
@@ -214,6 +236,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsWidgetDisplayModeBody => '选择小组件显示完整内容，还是只显示安全预览。';
 
   @override
+  String get settingsWidgetInstallTitle => '添加桌面小组件';
+
+  @override
+  String get settingsWidgetInstallBody =>
+      '查看把 Screen Note 放到桌面的步骤；在支持的 Android 桌面上也可直接请求添加。';
+
+  @override
+  String get settingsWidgetInstallAndroidGuide =>
+      '把 Screen Note 放到桌面后可以更快查看当前事项。在支持的 Android 桌面上，你可以直接在这里请求添加；如果桌面不支持，请长按桌面后打开“小组件”，再选择 Screen Note。';
+
+  @override
+  String get settingsWidgetInstallIosGuide =>
+      '长按主屏幕，点“编辑”，再选“添加小组件”，然后搜索 Screen Note。';
+
+  @override
+  String get settingsWidgetInstallAction => '添加到桌面';
+
+  @override
+  String get settingsThemeModeTitle => '主题';
+
+  @override
+  String get settingsThemeModeBody => '选择应用跟随系统外观，还是固定保持浅色或深色主题。';
+
+  @override
+  String get settingsLanguageTitle => '语言';
+
+  @override
+  String get settingsLanguageBody => '选择应用内统一使用的语言。';
+
+  @override
   String get settingsSyncStatusTitle => '同步状态';
 
   @override
@@ -250,6 +302,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsWidgetDisplayFullContent => '显示完整内容';
 
   @override
+  String get settingsThemeModeSystem => '跟随系统';
+
+  @override
+  String get settingsThemeModeLight => '浅色';
+
+  @override
+  String get settingsThemeModeDark => '深色';
+
+  @override
+  String get settingsLanguageZh => '简体中文';
+
+  @override
+  String get settingsLanguageEn => 'English';
+
+  @override
   String get settingsSyncLocalOnly => '仅本地';
 
   @override
@@ -259,16 +326,37 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsWidgetDisplayPickerTitle => '选择 Widget 展示模式';
 
   @override
+  String get settingsThemeModePickerTitle => '选择主题';
+
+  @override
+  String get settingsLanguagePickerTitle => '选择语言';
+
+  @override
   String get settingsPrivacyFeedback => '隐私设置已更新';
 
   @override
   String get settingsWidgetDisplayFeedback => 'Widget 展示设置已更新';
 
   @override
+  String get settingsThemeModeFeedback => '主题设置已更新';
+
+  @override
+  String get settingsLanguageFeedback => '语言设置已更新';
+
+  @override
   String get settingsNotificationGrantedFeedback => '通知权限现在可用了';
 
   @override
   String get settingsNotificationDeferredFeedback => '通知权限仍然受限';
+
+  @override
+  String get settingsWidgetInstallRequestedFeedback => '已向桌面发出小组件添加请求';
+
+  @override
+  String get settingsWidgetInstallUnsupportedFeedback => '当前桌面不支持直接添加小组件';
+
+  @override
+  String get settingsWidgetInstallFailedFeedback => '添加请求失败，请从系统小组件列表手动添加';
 
   @override
   String get settingsLoadFailed => '设置内容加载失败，请稍后再试';

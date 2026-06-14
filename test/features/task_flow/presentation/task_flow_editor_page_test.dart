@@ -1,4 +1,5 @@
 import 'package:drift/native.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -64,6 +65,35 @@ void main() {
       expect(find.byType(TextField), findsNothing);
       expect(find.text('补齐编辑页保存链路'), findsOneWidget);
       expect(tasks.map((task) => task.title), contains('补齐编辑页保存链路'));
+    });
+
+    testWidgets('标题为空时会显示 iOS 风格居中轻提示', (WidgetTester tester) async {
+      final _TestRuntime runtime = _TestRuntime.create();
+      addTearDown(runtime.dispose);
+
+      await _pumpApp(tester, runtime: runtime);
+
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byType(AppShellQuickAddSheet),
+          matching: find.byType(FilledButton),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(FilledButton));
+      await tester.pump();
+
+      expect(find.byType(CupertinoPopupSurface), findsOneWidget);
+      expect(find.byType(SnackBar), findsNothing);
+      expect(find.text('请先输入事项标题'), findsOneWidget);
+
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pump();
+
+      expect(find.byType(CupertinoPopupSurface), findsNothing);
     });
 
     testWidgets('已有事项进入 editor 时会预填原始内容', (WidgetTester tester) async {

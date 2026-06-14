@@ -60,6 +60,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeQueueTitle => 'Urgent queue';
 
   @override
+  String get homeHistoryTitle => 'History status';
+
+  @override
+  String homeHistoryCompletedCount(int count) {
+    return 'Completed $count';
+  }
+
+  @override
+  String homeHistoryDeletedCount(int count) {
+    return 'Deleted $count';
+  }
+
+  @override
+  String get homeHistorySummaryBody =>
+      'Completed and deleted tasks stay traceable in history so you can review or restore them later.';
+
+  @override
+  String get homeHistoryEmptyBody =>
+      'No history yet. Once a task is completed or deleted, a traceable status will appear here.';
+
+  @override
+  String get homeHistoryAction => 'View history';
+
+  @override
   String get taskFlowHomeLoadFailed => 'Home snapshot failed to load.';
 
   @override
@@ -229,6 +253,38 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose whether widgets show full content or a safe preview.';
 
   @override
+  String get settingsWidgetInstallTitle => 'Add Home Widget';
+
+  @override
+  String get settingsWidgetInstallBody =>
+      'See how to place Screen Note on the Home Screen, or request a direct add on supported Android launchers.';
+
+  @override
+  String get settingsWidgetInstallAndroidGuide =>
+      'Add Screen Note to the Home Screen for faster access. On supported Android launchers, you can request the widget directly here. If the launcher declines, long-press the Home Screen, open Widgets, and choose Screen Note.';
+
+  @override
+  String get settingsWidgetInstallIosGuide =>
+      'Touch and hold the Home Screen, tap Edit, then choose Add Widget and search for Screen Note.';
+
+  @override
+  String get settingsWidgetInstallAction => 'Add to Home Screen';
+
+  @override
+  String get settingsThemeModeTitle => 'Theme';
+
+  @override
+  String get settingsThemeModeBody =>
+      'Choose whether the app follows the system appearance or stays in a fixed light or dark theme.';
+
+  @override
+  String get settingsLanguageTitle => 'Language';
+
+  @override
+  String get settingsLanguageBody =>
+      'Choose the language used across the app surfaces.';
+
+  @override
   String get settingsSyncStatusTitle => 'Sync Status';
 
   @override
@@ -268,6 +324,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsWidgetDisplayFullContent => 'Full Content';
 
   @override
+  String get settingsThemeModeSystem => 'Follow System';
+
+  @override
+  String get settingsThemeModeLight => 'Light';
+
+  @override
+  String get settingsThemeModeDark => 'Dark';
+
+  @override
+  String get settingsLanguageZh => 'Simplified Chinese';
+
+  @override
+  String get settingsLanguageEn => 'English';
+
+  @override
   String get settingsSyncLocalOnly => 'Local Only';
 
   @override
@@ -277,10 +348,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsWidgetDisplayPickerTitle => 'Choose a widget display mode';
 
   @override
+  String get settingsThemeModePickerTitle => 'Choose a theme';
+
+  @override
+  String get settingsLanguagePickerTitle => 'Choose a language';
+
+  @override
   String get settingsPrivacyFeedback => 'Privacy setting updated.';
 
   @override
   String get settingsWidgetDisplayFeedback => 'Widget display setting updated.';
+
+  @override
+  String get settingsThemeModeFeedback => 'Theme setting updated.';
+
+  @override
+  String get settingsLanguageFeedback => 'Language setting updated.';
 
   @override
   String get settingsNotificationGrantedFeedback =>
@@ -289,6 +372,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsNotificationDeferredFeedback =>
       'Notification access is still limited.';
+
+  @override
+  String get settingsWidgetInstallRequestedFeedback =>
+      'Widget request sent to the launcher.';
+
+  @override
+  String get settingsWidgetInstallUnsupportedFeedback =>
+      'This launcher does not support direct widget pinning.';
+
+  @override
+  String get settingsWidgetInstallFailedFeedback =>
+      'Widget request failed. Please add it from the system widget picker.';
 
   @override
   String get settingsLoadFailed =>

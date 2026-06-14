@@ -176,6 +176,60 @@ final class NotificationPermissionRepositoryProvider
 String _$notificationPermissionRepositoryHash() =>
     r'4b8f60ff84586689ca3621a9fbfdb8016702d8ad';
 
+/// 小组件安装仓储 Provider，统一封装设置页对桌面固定能力的访问。
+
+@ProviderFor(widgetInstallationRepository)
+const widgetInstallationRepositoryProvider =
+    WidgetInstallationRepositoryProvider._();
+
+/// 小组件安装仓储 Provider，统一封装设置页对桌面固定能力的访问。
+
+final class WidgetInstallationRepositoryProvider
+    extends
+        $FunctionalProvider<
+          WidgetInstallationRepository,
+          WidgetInstallationRepository,
+          WidgetInstallationRepository
+        >
+    with $Provider<WidgetInstallationRepository> {
+  /// 小组件安装仓储 Provider，统一封装设置页对桌面固定能力的访问。
+  const WidgetInstallationRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'widgetInstallationRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$widgetInstallationRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<WidgetInstallationRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  WidgetInstallationRepository create(Ref ref) {
+    return widgetInstallationRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(WidgetInstallationRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<WidgetInstallationRepository>(value),
+    );
+  }
+}
+
+String _$widgetInstallationRepositoryHash() =>
+    r'9996bda628379a741042265e5795b19f693cfd92';
+
 /// 默认设置副作用端口，当前接入 Widget 快照自动同步，同时保留独立的可替换入口。
 
 @ProviderFor(defaultSettingsSideEffectPort)
@@ -561,6 +615,59 @@ final class UpdateLanguagePreferenceUseCaseProvider
 String _$updateLanguagePreferenceUseCaseHash() =>
     r'8a6171953944176a22ded43f3bb24b58cb364d6d';
 
+/// 小组件添加用例 Provider。
+
+@ProviderFor(requestPinWidgetUseCase)
+const requestPinWidgetUseCaseProvider = RequestPinWidgetUseCaseProvider._();
+
+/// 小组件添加用例 Provider。
+
+final class RequestPinWidgetUseCaseProvider
+    extends
+        $FunctionalProvider<
+          RequestPinWidgetUseCase,
+          RequestPinWidgetUseCase,
+          RequestPinWidgetUseCase
+        >
+    with $Provider<RequestPinWidgetUseCase> {
+  /// 小组件添加用例 Provider。
+  const RequestPinWidgetUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'requestPinWidgetUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$requestPinWidgetUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<RequestPinWidgetUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RequestPinWidgetUseCase create(Ref ref) {
+    return requestPinWidgetUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RequestPinWidgetUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RequestPinWidgetUseCase>(value),
+    );
+  }
+}
+
+String _$requestPinWidgetUseCaseHash() =>
+    r'5de6edfe1080b277e426b83709db12bb654cd17a';
+
 /// 通知权限复查用例 Provider。
 
 @ProviderFor(reviewNotificationPermissionUseCase)
@@ -820,7 +927,7 @@ final class SettingsCenterControllerProvider
 }
 
 String _$settingsCenterControllerHash() =>
-    r'c073f67b98b6410ee90f0729f89fdfcb38b1eda3';
+    r'1dda6f4d7eb8d13ba4a1e2f6d491942acef85c84';
 
 /// 设置页控制器统一承接快照刷新、偏好更新与通知权限复查。
 

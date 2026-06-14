@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/app.dart';
+import 'package:screen_note/app/bootstrap/local_notifications_bootstrap.dart';
 import 'package:screen_note/app/startup/widget_launch_bridge.dart';
 import 'package:screen_note/core/logging/app_logger.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
@@ -15,6 +16,7 @@ import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapsho
 Future<void> bootstrapAndRunApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureGlobalErrorHandling();
+  await initializeScreenNoteLocalNotifications();
   final WidgetLaunchBridge launchBridge = await loadSafeWidgetLaunchBridge();
   runApp(
     ProviderScope(

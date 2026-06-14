@@ -64,6 +64,40 @@
   "@homeQueueTitle": {
     "description": "首页紧急队列标题。"
   },
+  "homeHistoryTitle": "历史状态",
+  "@homeHistoryTitle": {
+    "description": "首页历史状态概览分区标题。"
+  },
+  "homeHistoryCompletedCount": "已完成 {count}",
+  "@homeHistoryCompletedCount": {
+    "description": "首页历史状态概览里的最近完成计数文案。",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeHistoryDeletedCount": "已删除 {count}",
+  "@homeHistoryDeletedCount": {
+    "description": "首页历史状态概览里的最近删除计数文案。",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeHistorySummaryBody": "完成或删除过的事项会留在历史里，方便你继续追溯或恢复。",
+  "@homeHistorySummaryBody": {
+    "description": "首页历史状态概览在已有历史记录时展示的说明文案。"
+  },
+  "homeHistoryEmptyBody": "当前还没有历史记录；完成或删除后，这里会保留可追溯线索。",
+  "@homeHistoryEmptyBody": {
+    "description": "首页历史状态概览在历史为空时展示的说明文案。"
+  },
+  "homeHistoryAction": "查看历史",
+  "@homeHistoryAction": {
+    "description": "首页历史状态概览底部跳转到历史中心的动作文案。"
+  },
   "taskFlowHomeLoadFailed": "首页快照加载失败",
   "@taskFlowHomeLoadFailed": {
     "description": "首页真实快照加载失败时展示的最小提示文案。"
@@ -285,6 +319,42 @@
   "@settingsWidgetDisplayModeBody": {
     "description": "Widget 展示模式设置行说明文案。"
   },
+  "settingsWidgetInstallTitle": "添加桌面小组件",
+  "@settingsWidgetInstallTitle": {
+    "description": "设置页添加桌面小组件入口标题。"
+  },
+  "settingsWidgetInstallBody": "查看把 Screen Note 放到桌面的步骤；在支持的 Android 桌面上也可直接请求添加。",
+  "@settingsWidgetInstallBody": {
+    "description": "设置页添加桌面小组件入口说明文案。"
+  },
+  "settingsWidgetInstallAndroidGuide": "把 Screen Note 放到桌面后可以更快查看当前事项。在支持的 Android 桌面上，你可以直接在这里请求添加；如果桌面不支持，请长按桌面后打开“小组件”，再选择 Screen Note。",
+  "@settingsWidgetInstallAndroidGuide": {
+    "description": "Android 下小组件添加引导弹层正文。"
+  },
+  "settingsWidgetInstallIosGuide": "长按主屏幕，点“编辑”，再选“添加小组件”，然后搜索 Screen Note。",
+  "@settingsWidgetInstallIosGuide": {
+    "description": "iOS 下小组件添加引导弹层正文。"
+  },
+  "settingsWidgetInstallAction": "添加到桌面",
+  "@settingsWidgetInstallAction": {
+    "description": "支持的 Android 桌面上触发添加小组件动作的按钮文案。"
+  },
+  "settingsThemeModeTitle": "主题",
+  "@settingsThemeModeTitle": {
+    "description": "主题偏好设置行标题。"
+  },
+  "settingsThemeModeBody": "选择应用跟随系统外观，还是固定保持浅色或深色主题。",
+  "@settingsThemeModeBody": {
+    "description": "主题偏好设置行说明文案。"
+  },
+  "settingsLanguageTitle": "语言",
+  "@settingsLanguageTitle": {
+    "description": "语言偏好设置行标题。"
+  },
+  "settingsLanguageBody": "选择应用内统一使用的语言。",
+  "@settingsLanguageBody": {
+    "description": "语言偏好设置行说明文案。"
+  },
   "settingsSyncStatusTitle": "同步状态",
   "@settingsSyncStatusTitle": {
     "description": "同步状态设置行标题。"
@@ -333,6 +403,26 @@
   "@settingsWidgetDisplayFullContent": {
     "description": "Widget 完整内容模式文案。"
   },
+  "settingsThemeModeSystem": "跟随系统",
+  "@settingsThemeModeSystem": {
+    "description": "主题偏好为跟随系统时的值文案。"
+  },
+  "settingsThemeModeLight": "浅色",
+  "@settingsThemeModeLight": {
+    "description": "主题偏好为浅色时的值文案。"
+  },
+  "settingsThemeModeDark": "深色",
+  "@settingsThemeModeDark": {
+    "description": "主题偏好为深色时的值文案。"
+  },
+  "settingsLanguageZh": "简体中文",
+  "@settingsLanguageZh": {
+    "description": "语言偏好为简体中文时的值文案。"
+  },
+  "settingsLanguageEn": "English",
+  "@settingsLanguageEn": {
+    "description": "语言偏好为英文时的值文案。"
+  },
   "settingsSyncLocalOnly": "仅本地",
   "@settingsSyncLocalOnly": {
     "description": "同步仍以本地为主时展示的状态文案。"
@@ -345,6 +435,14 @@
   "@settingsWidgetDisplayPickerTitle": {
     "description": "Widget 展示模式底部面板标题。"
   },
+  "settingsThemeModePickerTitle": "选择主题",
+  "@settingsThemeModePickerTitle": {
+    "description": "主题偏好底部选择面板标题。"
+  },
+  "settingsLanguagePickerTitle": "选择语言",
+  "@settingsLanguagePickerTitle": {
+    "description": "语言偏好底部选择面板标题。"
+  },
   "settingsPrivacyFeedback": "隐私设置已更新",
   "@settingsPrivacyFeedback": {
     "description": "更新隐私模式后在共享壳层展示的反馈文案。"
@@ -353,6 +451,14 @@
   "@settingsWidgetDisplayFeedback": {
     "description": "更新 Widget 展示模式后在共享壳层展示的反馈文案。"
   },
+  "settingsThemeModeFeedback": "主题设置已更新",
+  "@settingsThemeModeFeedback": {
+    "description": "主题偏好更新后的共享反馈文案。"
+  },
+  "settingsLanguageFeedback": "语言设置已更新",
+  "@settingsLanguageFeedback": {
+    "description": "语言偏好更新后的共享反馈文案。"
+  },
   "settingsNotificationGrantedFeedback": "通知权限现在可用了",
   "@settingsNotificationGrantedFeedback": {
     "description": "复查通知权限后变为可用时展示的共享反馈文案。"
@@ -360,6 +466,18 @@
   "settingsNotificationDeferredFeedback": "通知权限仍然受限",
   "@settingsNotificationDeferredFeedback": {
     "description": "复查通知权限后仍受限时展示的共享反馈文案。"
+  },
+  "settingsWidgetInstallRequestedFeedback": "已向桌面发出小组件添加请求",
+  "@settingsWidgetInstallRequestedFeedback": {
+    "description": "请求桌面添加小组件后展示的共享反馈文案。"
+  },
+  "settingsWidgetInstallUnsupportedFeedback": "当前桌面不支持直接添加小组件",
+  "@settingsWidgetInstallUnsupportedFeedback": {
+    "description": "当前桌面不支持直接固定小组件时展示的共享反馈文案。"
+  },
+  "settingsWidgetInstallFailedFeedback": "添加请求失败，请从系统小组件列表手动添加",
+  "@settingsWidgetInstallFailedFeedback": {
+    "description": "直接添加小组件失败时展示的共享反馈文案。"
   },
   "settingsLoadFailed": "设置内容加载失败，请稍后再试",
   "@settingsLoadFailed": {

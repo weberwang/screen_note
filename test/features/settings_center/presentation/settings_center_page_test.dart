@@ -14,6 +14,8 @@ import 'package:screen_note/features/settings_center/domain/entities/settings_me
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_sync_status.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
+import 'package:screen_note/features/settings_center/domain/entities/widget_pin_request_result.dart';
+import 'package:screen_note/features/settings_center/domain/repositories/widget_installation_repository.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
@@ -45,10 +47,109 @@ void main() {
     expect(find.text('Display'), findsOneWidget);
     expect(find.text('Theme'), findsOneWidget);
     expect(find.text('Language'), findsOneWidget);
+    expect(find.text('Add Home Widget'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Sync & Backup'), 200);
     expect(find.text('Sync & Backup'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Membership'), 120);
     expect(find.text('Membership'), findsOneWidget);
+  });
+
+  testWidgets('iOS 下点添加桌面小组件会打开添加步骤引导', (tester) async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+      platform: TargetPlatform.iOS,
+    );
+
+    await tester.scrollUntilVisible(find.text('Add Home Widget'), 120);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add Home Widget'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Add Home Widget'), findsNWidgets(2));
+    expect(
+      find.text(
+        'Touch and hold the Home Screen, tap Edit, then choose Add Widget and search for Screen Note.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Android 下可以从设置页触发添加到桌面动作', (tester) async {
+    _prepareTestViewport(tester);
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+    final widgetInstallationRepository = _FakeWidgetInstallationRepository(
+      result: WidgetPinRequestResult.requested,
+    );
+    final ProviderContainer container = ProviderContainer(
+      overrides: [
+        settingsPreferencesRepositoryProvider.overrideWithValue(
+          preferencesRepository,
+        ),
+        notificationPermissionRepositoryProvider.overrideWithValue(
+          notificationRepository,
+        ),
+        widgetInstallationRepositoryProvider.overrideWithValue(
+          widgetInstallationRepository,
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: ScreenNoteScreenUtilContract(
+          designSize: screenNoteDesignSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: ScreenNoteTheme.light().copyWith(
+                splashFactory: NoSplash.splashFactory,
+                platform: TargetPlatform.android,
+              ),
+              darkTheme: ScreenNoteTheme.dark().copyWith(
+                splashFactory: NoSplash.splashFactory,
+                platform: TargetPlatform.android,
+              ),
+              home: const Scaffold(body: SettingsCenterPage()),
+            );
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(find.text('Add Home Widget'), 120);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add Home Widget'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add to Home Screen'));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(widgetInstallationRepository.requestCount, 1);
+    expect(
+      container.read(appShellUiStateControllerProvider).feedback?.text,
+      'Widget request sent to the launcher.',
+    );
   });
 
   testWidgets('切换隐私模式会更新偏好并写入共享反馈', (tester) async {
@@ -419,6 +520,8 @@ Future<void> _pumpSettingsPage(
   WidgetTester tester, {
   required SettingsPreferencesRepository preferencesRepository,
   required NotificationPermissionRepository notificationRepository,
+  WidgetInstallationRepository? widgetInstallationRepository,
+  TargetPlatform platform = TargetPlatform.android,
 }) async {
   _prepareTestViewport(tester);
 
@@ -431,6 +534,10 @@ Future<void> _pumpSettingsPage(
         notificationPermissionRepositoryProvider.overrideWithValue(
           notificationRepository,
         ),
+        if (widgetInstallationRepository != null)
+          widgetInstallationRepositoryProvider.overrideWithValue(
+            widgetInstallationRepository,
+          ),
       ],
       child: ScreenNoteScreenUtilContract(
         designSize: screenNoteDesignSize,
@@ -443,9 +550,11 @@ Future<void> _pumpSettingsPage(
             supportedLocales: AppLocalizations.supportedLocales,
             theme: ScreenNoteTheme.light().copyWith(
               splashFactory: NoSplash.splashFactory,
+              platform: platform,
             ),
             darkTheme: ScreenNoteTheme.dark().copyWith(
               splashFactory: NoSplash.splashFactory,
+              platform: platform,
             ),
             home: const Scaffold(body: SettingsCenterPage()),
           );
@@ -524,5 +633,20 @@ final class _FakeNotificationPermissionRepository
   Future<NotificationPermissionStatus> requestPermission() async {
     _current = _requestResult;
     return _current;
+  }
+}
+
+/// 假小组件安装仓储用于验证设置页入口会把动作交给应用层而不是页面直接碰插件。
+final class _FakeWidgetInstallationRepository
+    implements WidgetInstallationRepository {
+  _FakeWidgetInstallationRepository({required this.result});
+
+  final WidgetPinRequestResult result;
+  int requestCount = 0;
+
+  @override
+  Future<WidgetPinRequestResult> requestPinWidget() async {
+    requestCount += 1;
+    return result;
   }
 }

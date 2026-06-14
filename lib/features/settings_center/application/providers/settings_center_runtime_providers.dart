@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
 import 'package:screen_note/features/settings_center/application/ports/settings_side_effect_port.dart';
+import 'package:screen_note/features/settings_center/application/use_cases/request_pin_widget_use_case.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/load_settings_center_snapshot_use_case.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/review_notification_permission_use_case.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/update_language_preference_use_case.dart';
@@ -14,10 +15,13 @@ import 'package:screen_note/features/settings_center/domain/entities/settings_ce
 import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
+import 'package:screen_note/features/settings_center/domain/entities/widget_pin_request_result.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
+import 'package:screen_note/features/settings_center/domain/repositories/widget_installation_repository.dart';
 import 'package:screen_note/features/settings_center/infrastructure/flutter_local_notifications_permission_repository.dart';
+import 'package:screen_note/features/settings_center/infrastructure/home_widget_installation_repository.dart';
 import 'package:screen_note/features/settings_center/infrastructure/settings_center_noop_side_effect_port.dart';
 import 'package:screen_note/features/settings_center/infrastructure/shared_preferences_settings_preferences_repository.dart';
 
@@ -41,6 +45,12 @@ NotificationPermissionRepository notificationPermissionRepository(Ref ref) {
   return FlutterLocalNotificationsPermissionRepository(
     plugin: ref.watch(settingsNotificationPluginProvider),
   );
+}
+
+/// 小组件安装仓储 Provider，统一封装设置页对桌面固定能力的访问。
+@Riverpod(keepAlive: true)
+WidgetInstallationRepository widgetInstallationRepository(Ref ref) {
+  return const HomeWidgetInstallationRepository();
 }
 
 /// 默认设置副作用端口，当前接入 Widget 快照自动同步，同时保留独立的可替换入口。
@@ -97,6 +107,14 @@ UpdateLanguagePreferenceUseCase updateLanguagePreferenceUseCase(Ref ref) {
   return UpdateLanguagePreferenceUseCase(
     repository: ref.watch(settingsPreferencesRepositoryProvider),
     sideEffectPort: ref.watch(settingsSideEffectPortProvider),
+  );
+}
+
+/// 小组件添加用例 Provider。
+@riverpod
+RequestPinWidgetUseCase requestPinWidgetUseCase(Ref ref) {
+  return RequestPinWidgetUseCase(
+    repository: ref.watch(widgetInstallationRepositoryProvider),
   );
 }
 
@@ -248,6 +266,24 @@ class SettingsCenterController extends _$SettingsCenterController {
       );
       return _loadSnapshot();
     });
+  }
+
+  /// 触发桌面小组件添加请求，并把平台结果映射成共享轻反馈。
+  Future<void> requestPinWidget({
+    required String requestedFeedbackText,
+    required String unsupportedFeedbackText,
+    required String failedFeedbackText,
+  }) async {
+    final WidgetPinRequestResult result = await ref
+        .read(requestPinWidgetUseCaseProvider)
+        .execute();
+    _showFeedback(
+      switch (result) {
+        WidgetPinRequestResult.requested => requestedFeedbackText,
+        WidgetPinRequestResult.unsupported => unsupportedFeedbackText,
+        WidgetPinRequestResult.failed => failedFeedbackText,
+      },
+    );
   }
 
   /// 统一复用共享壳层轻反馈宿主，避免设置页私自引入另一套提示系统。

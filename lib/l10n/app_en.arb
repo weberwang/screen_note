@@ -64,6 +64,40 @@
   "@homeQueueTitle": {
     "description": "Section title for the bootstrap queue placeholder."
   },
+  "homeHistoryTitle": "History status",
+  "@homeHistoryTitle": {
+    "description": "Section title for the lightweight history status summary on the home page."
+  },
+  "homeHistoryCompletedCount": "Completed {count}",
+  "@homeHistoryCompletedCount": {
+    "description": "Completed count shown in the home history status summary.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeHistoryDeletedCount": "Deleted {count}",
+  "@homeHistoryDeletedCount": {
+    "description": "Deleted count shown in the home history status summary.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeHistorySummaryBody": "Completed and deleted tasks stay traceable in history so you can review or restore them later.",
+  "@homeHistorySummaryBody": {
+    "description": "Supporting copy shown in the home history status summary when history is not empty."
+  },
+  "homeHistoryEmptyBody": "No history yet. Once a task is completed or deleted, a traceable status will appear here.",
+  "@homeHistoryEmptyBody": {
+    "description": "Supporting copy shown in the home history status summary when history is empty."
+  },
+  "homeHistoryAction": "View history",
+  "@homeHistoryAction": {
+    "description": "Action label shown at the bottom of the home history status summary."
+  },
   "taskFlowHomeLoadFailed": "Home snapshot failed to load.",
   "@taskFlowHomeLoadFailed": {
     "description": "Minimal error hint shown when the task-flow home snapshot cannot be loaded."
@@ -285,6 +319,42 @@
   "@settingsWidgetDisplayModeBody": {
     "description": "Description for the widget display mode row."
   },
+  "settingsWidgetInstallTitle": "Add Home Widget",
+  "@settingsWidgetInstallTitle": {
+    "description": "Title for the add home widget entry in settings."
+  },
+  "settingsWidgetInstallBody": "See how to place Screen Note on the Home Screen, or request a direct add on supported Android launchers.",
+  "@settingsWidgetInstallBody": {
+    "description": "Description for the add home widget entry in settings."
+  },
+  "settingsWidgetInstallAndroidGuide": "Add Screen Note to the Home Screen for faster access. On supported Android launchers, you can request the widget directly here. If the launcher declines, long-press the Home Screen, open Widgets, and choose Screen Note.",
+  "@settingsWidgetInstallAndroidGuide": {
+    "description": "Guide text shown in the widget install bottom sheet on Android."
+  },
+  "settingsWidgetInstallIosGuide": "Touch and hold the Home Screen, tap Edit, then choose Add Widget and search for Screen Note.",
+  "@settingsWidgetInstallIosGuide": {
+    "description": "Guide text shown in the widget install bottom sheet on iOS."
+  },
+  "settingsWidgetInstallAction": "Add to Home Screen",
+  "@settingsWidgetInstallAction": {
+    "description": "Action label used to request pinning the widget on supported Android launchers."
+  },
+  "settingsThemeModeTitle": "Theme",
+  "@settingsThemeModeTitle": {
+    "description": "Title for the theme preference row."
+  },
+  "settingsThemeModeBody": "Choose whether the app follows the system appearance or stays in a fixed light or dark theme.",
+  "@settingsThemeModeBody": {
+    "description": "Description for the theme preference row."
+  },
+  "settingsLanguageTitle": "Language",
+  "@settingsLanguageTitle": {
+    "description": "Title for the language preference row."
+  },
+  "settingsLanguageBody": "Choose the language used across the app surfaces.",
+  "@settingsLanguageBody": {
+    "description": "Description for the language preference row."
+  },
   "settingsSyncStatusTitle": "Sync Status",
   "@settingsSyncStatusTitle": {
     "description": "Title for the sync status row."
@@ -333,6 +403,26 @@
   "@settingsWidgetDisplayFullContent": {
     "description": "Value label for the full widget content mode."
   },
+  "settingsThemeModeSystem": "Follow System",
+  "@settingsThemeModeSystem": {
+    "description": "Value label shown for the system theme mode preference."
+  },
+  "settingsThemeModeLight": "Light",
+  "@settingsThemeModeLight": {
+    "description": "Value label shown for the light theme mode preference."
+  },
+  "settingsThemeModeDark": "Dark",
+  "@settingsThemeModeDark": {
+    "description": "Value label shown for the dark theme mode preference."
+  },
+  "settingsLanguageZh": "Simplified Chinese",
+  "@settingsLanguageZh": {
+    "description": "Value label shown for the Simplified Chinese language preference."
+  },
+  "settingsLanguageEn": "English",
+  "@settingsLanguageEn": {
+    "description": "Value label shown for the English language preference."
+  },
   "settingsSyncLocalOnly": "Local Only",
   "@settingsSyncLocalOnly": {
     "description": "Value label shown when sync is still limited to the local source of truth."
@@ -345,6 +435,14 @@
   "@settingsWidgetDisplayPickerTitle": {
     "description": "Title shown in the widget display mode picker sheet."
   },
+  "settingsThemeModePickerTitle": "Choose a theme",
+  "@settingsThemeModePickerTitle": {
+    "description": "Title shown in the theme mode picker sheet."
+  },
+  "settingsLanguagePickerTitle": "Choose a language",
+  "@settingsLanguagePickerTitle": {
+    "description": "Title shown in the language picker sheet."
+  },
   "settingsPrivacyFeedback": "Privacy setting updated.",
   "@settingsPrivacyFeedback": {
     "description": "Shared feedback message shown after updating privacy mode."
@@ -353,6 +451,14 @@
   "@settingsWidgetDisplayFeedback": {
     "description": "Shared feedback message shown after updating widget display mode."
   },
+  "settingsThemeModeFeedback": "Theme setting updated.",
+  "@settingsThemeModeFeedback": {
+    "description": "Shared feedback message shown after updating the theme mode preference."
+  },
+  "settingsLanguageFeedback": "Language setting updated.",
+  "@settingsLanguageFeedback": {
+    "description": "Shared feedback message shown after updating the language preference."
+  },
   "settingsNotificationGrantedFeedback": "Notification access is now available.",
   "@settingsNotificationGrantedFeedback": {
     "description": "Shared feedback shown when notification permission becomes available after review."
@@ -360,6 +466,18 @@
   "settingsNotificationDeferredFeedback": "Notification access is still limited.",
   "@settingsNotificationDeferredFeedback": {
     "description": "Shared feedback shown when notification permission remains limited after review."
+  },
+  "settingsWidgetInstallRequestedFeedback": "Widget request sent to the launcher.",
+  "@settingsWidgetInstallRequestedFeedback": {
+    "description": "Shared feedback shown after requesting the launcher to pin the widget."
+  },
+  "settingsWidgetInstallUnsupportedFeedback": "This launcher does not support direct widget pinning.",
+  "@settingsWidgetInstallUnsupportedFeedback": {
+    "description": "Shared feedback shown when direct widget pinning is unsupported."
+  },
+  "settingsWidgetInstallFailedFeedback": "Widget request failed. Please add it from the system widget picker.",
+  "@settingsWidgetInstallFailedFeedback": {
+    "description": "Shared feedback shown when direct widget pinning fails."
   },
   "settingsLoadFailed": "Settings failed to load. Try again shortly.",
   "@settingsLoadFailed": {

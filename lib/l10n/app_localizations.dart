@@ -194,6 +194,42 @@ abstract class AppLocalizations {
   /// **'Urgent queue'**
   String get homeQueueTitle;
 
+  /// Section title for the lightweight history status summary on the home page.
+  ///
+  /// In en, this message translates to:
+  /// **'History status'**
+  String get homeHistoryTitle;
+
+  /// Completed count shown in the home history status summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed {count}'**
+  String homeHistoryCompletedCount(int count);
+
+  /// Deleted count shown in the home history status summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted {count}'**
+  String homeHistoryDeletedCount(int count);
+
+  /// Supporting copy shown in the home history status summary when history is not empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed and deleted tasks stay traceable in history so you can review or restore them later.'**
+  String get homeHistorySummaryBody;
+
+  /// Supporting copy shown in the home history status summary when history is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No history yet. Once a task is completed or deleted, a traceable status will appear here.'**
+  String get homeHistoryEmptyBody;
+
+  /// Action label shown at the bottom of the home history status summary.
+  ///
+  /// In en, this message translates to:
+  /// **'View history'**
+  String get homeHistoryAction;
+
   /// Minimal error hint shown when the task-flow home snapshot cannot be loaded.
   ///
   /// In en, this message translates to:
@@ -488,6 +524,60 @@ abstract class AppLocalizations {
   /// **'Choose whether widgets show full content or a safe preview.'**
   String get settingsWidgetDisplayModeBody;
 
+  /// Title for the add home widget entry in settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Home Widget'**
+  String get settingsWidgetInstallTitle;
+
+  /// Description for the add home widget entry in settings.
+  ///
+  /// In en, this message translates to:
+  /// **'See how to place Screen Note on the Home Screen, or request a direct add on supported Android launchers.'**
+  String get settingsWidgetInstallBody;
+
+  /// Guide text shown in the widget install bottom sheet on Android.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Screen Note to the Home Screen for faster access. On supported Android launchers, you can request the widget directly here. If the launcher declines, long-press the Home Screen, open Widgets, and choose Screen Note.'**
+  String get settingsWidgetInstallAndroidGuide;
+
+  /// Guide text shown in the widget install bottom sheet on iOS.
+  ///
+  /// In en, this message translates to:
+  /// **'Touch and hold the Home Screen, tap Edit, then choose Add Widget and search for Screen Note.'**
+  String get settingsWidgetInstallIosGuide;
+
+  /// Action label used to request pinning the widget on supported Android launchers.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Home Screen'**
+  String get settingsWidgetInstallAction;
+
+  /// Title for the theme preference row.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsThemeModeTitle;
+
+  /// Description for the theme preference row.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose whether the app follows the system appearance or stays in a fixed light or dark theme.'**
+  String get settingsThemeModeBody;
+
+  /// Title for the language preference row.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageTitle;
+
+  /// Description for the language preference row.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language used across the app surfaces.'**
+  String get settingsLanguageBody;
+
   /// Title for the sync status row.
   ///
   /// In en, this message translates to:
@@ -560,6 +650,36 @@ abstract class AppLocalizations {
   /// **'Full Content'**
   String get settingsWidgetDisplayFullContent;
 
+  /// Value label shown for the system theme mode preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow System'**
+  String get settingsThemeModeSystem;
+
+  /// Value label shown for the light theme mode preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeModeLight;
+
+  /// Value label shown for the dark theme mode preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeModeDark;
+
+  /// Value label shown for the Simplified Chinese language preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Simplified Chinese'**
+  String get settingsLanguageZh;
+
+  /// Value label shown for the English language preference.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageEn;
+
   /// Value label shown when sync is still limited to the local source of truth.
   ///
   /// In en, this message translates to:
@@ -578,6 +698,18 @@ abstract class AppLocalizations {
   /// **'Choose a widget display mode'**
   String get settingsWidgetDisplayPickerTitle;
 
+  /// Title shown in the theme mode picker sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a theme'**
+  String get settingsThemeModePickerTitle;
+
+  /// Title shown in the language picker sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a language'**
+  String get settingsLanguagePickerTitle;
+
   /// Shared feedback message shown after updating privacy mode.
   ///
   /// In en, this message translates to:
@@ -590,6 +722,18 @@ abstract class AppLocalizations {
   /// **'Widget display setting updated.'**
   String get settingsWidgetDisplayFeedback;
 
+  /// Shared feedback message shown after updating the theme mode preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme setting updated.'**
+  String get settingsThemeModeFeedback;
+
+  /// Shared feedback message shown after updating the language preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Language setting updated.'**
+  String get settingsLanguageFeedback;
+
   /// Shared feedback shown when notification permission becomes available after review.
   ///
   /// In en, this message translates to:
@@ -601,6 +745,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification access is still limited.'**
   String get settingsNotificationDeferredFeedback;
+
+  /// Shared feedback shown after requesting the launcher to pin the widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget request sent to the launcher.'**
+  String get settingsWidgetInstallRequestedFeedback;
+
+  /// Shared feedback shown when direct widget pinning is unsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This launcher does not support direct widget pinning.'**
+  String get settingsWidgetInstallUnsupportedFeedback;
+
+  /// Shared feedback shown when direct widget pinning fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget request failed. Please add it from the system widget picker.'**
+  String get settingsWidgetInstallFailedFeedback;
 
   /// Lightweight error hint shown when the settings snapshot cannot be loaded.
   ///
