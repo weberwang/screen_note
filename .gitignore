@@ -38,6 +38,13 @@ migrate_working_dir/
 **/*.gen.dart
 **/*.mocks.dart
 
+# Local code intelligence / workflow runtime artifacts
+.codegraph/
+tmp/flutter-workflow-orchestrator/
+
+# Large local generation outputs
+/output/
+
 # Symbolication related
 app.*.symbols
 
