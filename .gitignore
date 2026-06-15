@@ -56,3 +56,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .omo/
+
+# FVM 本地 SDK 缓存目录
+.fvm/
