@@ -19,11 +19,11 @@ const loadHistoryCenterSnapshotUseCaseProvider =
 final class LoadHistoryCenterSnapshotUseCaseProvider
     extends
         $FunctionalProvider<
-          LoadHistoryCenterSnapshotUseCase,
-          LoadHistoryCenterSnapshotUseCase,
-          LoadHistoryCenterSnapshotUseCase
+          LoadHistorySnapshotUseCase,
+          LoadHistorySnapshotUseCase,
+          LoadHistorySnapshotUseCase
         >
-    with $Provider<LoadHistoryCenterSnapshotUseCase> {
+    with $Provider<LoadHistorySnapshotUseCase> {
   /// 历史页快照用例 Provider，统一复用 task-flow 只读仓储，不单独引入新的历史真源。
   const LoadHistoryCenterSnapshotUseCaseProvider._()
     : super(
@@ -41,28 +41,26 @@ final class LoadHistoryCenterSnapshotUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<LoadHistoryCenterSnapshotUseCase> $createElement(
+  $ProviderElement<LoadHistorySnapshotUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  LoadHistoryCenterSnapshotUseCase create(Ref ref) {
+  LoadHistorySnapshotUseCase create(Ref ref) {
     return loadHistoryCenterSnapshotUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LoadHistoryCenterSnapshotUseCase value) {
+  Override overrideWithValue(LoadHistorySnapshotUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<LoadHistoryCenterSnapshotUseCase>(
-        value,
-      ),
+      providerOverride: $SyncValueProvider<LoadHistorySnapshotUseCase>(value),
     );
   }
 }
 
 String _$loadHistoryCenterSnapshotUseCaseHash() =>
-    r'd5136a84f5af3396f54a917d47b8fee3b6d45ace';
+    r'0103f17e21949514868e3c918fd3c92d47b30c40';
 
 /// 历史页基础快照 Provider，保留独立的读取入口，避免页面直接耦合仓储查询细节。
 
@@ -74,13 +72,11 @@ const historyCenterSnapshotProvider = HistoryCenterSnapshotProvider._();
 final class HistoryCenterSnapshotProvider
     extends
         $FunctionalProvider<
-          AsyncValue<HistoryCenterSnapshot>,
-          HistoryCenterSnapshot,
-          FutureOr<HistoryCenterSnapshot>
+          AsyncValue<HistorySnapshot>,
+          HistorySnapshot,
+          FutureOr<HistorySnapshot>
         >
-    with
-        $FutureModifier<HistoryCenterSnapshot>,
-        $FutureProvider<HistoryCenterSnapshot> {
+    with $FutureModifier<HistorySnapshot>, $FutureProvider<HistorySnapshot> {
   /// 历史页基础快照 Provider，保留独立的读取入口，避免页面直接耦合仓储查询细节。
   const HistoryCenterSnapshotProvider._()
     : super(
@@ -98,18 +94,18 @@ final class HistoryCenterSnapshotProvider
 
   @$internal
   @override
-  $FutureProviderElement<HistoryCenterSnapshot> $createElement(
+  $FutureProviderElement<HistorySnapshot> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<HistoryCenterSnapshot> create(Ref ref) {
+  FutureOr<HistorySnapshot> create(Ref ref) {
     return historyCenterSnapshot(ref);
   }
 }
 
 String _$historyCenterSnapshotHash() =>
-    r'2b745b8b2e147e5e52c2bc05871ad59bc5122113';
+    r'bb77c25415a54f59a8e995aeb11fff6c71bb2768';
 
 /// 历史页控制器统一承接刷新与恢复链路，避免页面直接编排跨模块状态。
 
@@ -118,8 +114,7 @@ const historyCenterControllerProvider = HistoryCenterControllerProvider._();
 
 /// 历史页控制器统一承接刷新与恢复链路，避免页面直接编排跨模块状态。
 final class HistoryCenterControllerProvider
-    extends
-        $AsyncNotifierProvider<HistoryCenterController, HistoryCenterSnapshot> {
+    extends $AsyncNotifierProvider<HistoryCenterController, HistorySnapshot> {
   /// 历史页控制器统一承接刷新与恢复链路，避免页面直接编排跨模块状态。
   const HistoryCenterControllerProvider._()
     : super(
@@ -141,28 +136,23 @@ final class HistoryCenterControllerProvider
 }
 
 String _$historyCenterControllerHash() =>
-    r'04dd0fbae0ef8a5e66ae74a78b05a3720217418a';
+    r'74d8fa3fe46440bc0065829fda18a7c62d29e6c7';
 
 /// 历史页控制器统一承接刷新与恢复链路，避免页面直接编排跨模块状态。
 
 abstract class _$HistoryCenterController
-    extends $AsyncNotifier<HistoryCenterSnapshot> {
-  FutureOr<HistoryCenterSnapshot> build();
+    extends $AsyncNotifier<HistorySnapshot> {
+  FutureOr<HistorySnapshot> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref =
-        this.ref
-            as $Ref<AsyncValue<HistoryCenterSnapshot>, HistoryCenterSnapshot>;
+    final ref = this.ref as $Ref<AsyncValue<HistorySnapshot>, HistorySnapshot>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<
-                AsyncValue<HistoryCenterSnapshot>,
-                HistoryCenterSnapshot
-              >,
-              AsyncValue<HistoryCenterSnapshot>,
+              AnyNotifier<AsyncValue<HistorySnapshot>, HistorySnapshot>,
+              AsyncValue<HistorySnapshot>,
               Object?,
               Object?
             >;

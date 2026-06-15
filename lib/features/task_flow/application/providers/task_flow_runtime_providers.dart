@@ -23,7 +23,7 @@ TaskFlowDatabase taskFlowDatabase(Ref ref) {
 
 /// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
 @Riverpod(keepAlive: true)
-TaskMutationRepository taskFlowMutationRepository(Ref ref) {
+TaskRepository taskFlowMutationRepository(Ref ref) {
   return TaskFlowRepositoryImpl(database: ref.watch(taskFlowDatabaseProvider));
 }
 

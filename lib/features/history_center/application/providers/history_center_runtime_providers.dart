@@ -1,23 +1,23 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
-import 'package:screen_note/features/history_center/application/use_cases/load_history_center_snapshot_use_case.dart';
-import 'package:screen_note/features/history_center/domain/entities/history_center_snapshot.dart';
+import 'package:screen_note/features/history_center/application/use_cases/load_history_snapshot_use_case.dart';
+import 'package:screen_note/features/history_center/domain/entities/history_snapshot.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 
 part 'history_center_runtime_providers.g.dart';
 
 /// 历史页快照用例 Provider，统一复用 task-flow 只读仓储，不单独引入新的历史真源。
 @riverpod
-LoadHistoryCenterSnapshotUseCase loadHistoryCenterSnapshotUseCase(Ref ref) {
-  return LoadHistoryCenterSnapshotUseCase(
+LoadHistorySnapshotUseCase loadHistoryCenterSnapshotUseCase(Ref ref) {
+  return LoadHistorySnapshotUseCase(
     repository: ref.watch(taskFlowRepositoryProvider),
   );
 }
 
 /// 历史页基础快照 Provider，保留独立的读取入口，避免页面直接耦合仓储查询细节。
 @riverpod
-Future<HistoryCenterSnapshot> historyCenterSnapshot(Ref ref) {
+Future<HistorySnapshot> historyCenterSnapshot(Ref ref) {
   return ref.watch(loadHistoryCenterSnapshotUseCaseProvider).execute();
 }
 
@@ -26,7 +26,7 @@ Future<HistoryCenterSnapshot> historyCenterSnapshot(Ref ref) {
 class HistoryCenterController extends _$HistoryCenterController {
   /// 首次构建时读取历史快照。
   @override
-  Future<HistoryCenterSnapshot> build() {
+  Future<HistorySnapshot> build() {
     return ref.watch(historyCenterSnapshotProvider.future);
   }
 
@@ -73,15 +73,15 @@ class HistoryCenterController extends _$HistoryCenterController {
   }
 
   /// 已有快照刷新时保留旧数据，避免恢复或手动刷新把历史页短暂清成全屏 loading。
-  AsyncValue<HistoryCenterSnapshot> _loadingState() {
+  AsyncValue<HistorySnapshot> _loadingState() {
     return switch (state) {
-      AsyncData<HistoryCenterSnapshot>() => state,
-      _ => const AsyncLoading<HistoryCenterSnapshot>(),
+      AsyncData<HistorySnapshot>() => state,
+      _ => const AsyncLoading<HistorySnapshot>(),
     };
   }
 
   /// 统一直接读取历史快照用例，避免通过基础快照 Provider 做额外失效和重读。
-  Future<HistoryCenterSnapshot> _loadSnapshot() {
+  Future<HistorySnapshot> _loadSnapshot() {
     return ref.read(loadHistoryCenterSnapshotUseCaseProvider).execute();
   }
 }

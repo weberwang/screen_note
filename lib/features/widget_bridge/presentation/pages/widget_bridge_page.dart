@@ -222,6 +222,10 @@ class _WidgetBridgeContent extends StatelessWidget {
       WidgetDisplayMode.today => localizations.widgetDisplayModeToday,
       WidgetDisplayMode.private => localizations.widgetDisplayModePrivate,
       WidgetDisplayMode.empty => localizations.widgetDisplayModeEmpty,
+      WidgetDisplayMode.previewOnly =>
+        localizations.settingsWidgetDisplayPreviewOnly,
+      WidgetDisplayMode.fullContent =>
+        localizations.settingsWidgetDisplayFullContent,
     };
   }
 }
@@ -259,7 +263,8 @@ class _WidgetPreviewFrame extends StatelessWidget {
                 title: snapshot.emptyTitle,
                 body: snapshot.emptyBody,
               )
-            else if (snapshot.displayMode == WidgetDisplayMode.list3)
+            else if (snapshot.displayMode == WidgetDisplayMode.list3 ||
+                snapshot.displayMode == WidgetDisplayMode.fullContent)
               Column(
                 children: snapshot.items
                     .map(

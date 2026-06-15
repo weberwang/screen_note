@@ -1,7 +1,7 @@
-import 'package:screen_note/features/settings_center/domain/entities/settings_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 
-/// 读取设置偏好的用例，统一输出页面所需的当前偏好快照。
+/// 读取设置偏好的用例，统一向页面输出当前稳定偏好。
 final class LoadSettingsPreferencesUseCase {
   /// 创建读取用例。
   const LoadSettingsPreferencesUseCase({
@@ -11,7 +11,7 @@ final class LoadSettingsPreferencesUseCase {
   final SettingsPreferencesRepository _repository;
 
   /// 执行读取逻辑。
-  Future<SettingsPreferences> execute() {
-    return _repository.load();
+  Future<SettingsCenterPreferences> execute() {
+    return _repository.loadPreferences();
   }
 }

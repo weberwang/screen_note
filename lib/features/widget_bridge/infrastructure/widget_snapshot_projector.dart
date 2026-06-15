@@ -72,6 +72,16 @@ final class WidgetSnapshotProjector {
     required WidgetDisplayMode displayMode,
   }) {
     return switch (displayMode) {
+      WidgetDisplayMode.single =>
+        localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.list3 =>
+        localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.today =>
+        localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.private =>
+        localizations.settingsWidgetDisplayPreviewOnly,
+      WidgetDisplayMode.empty =>
+        localizations.settingsWidgetDisplayPreviewOnly,
       WidgetDisplayMode.previewOnly =>
         localizations.settingsWidgetDisplayPreviewOnly,
       WidgetDisplayMode.fullContent =>

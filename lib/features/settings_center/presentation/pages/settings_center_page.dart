@@ -582,6 +582,12 @@ class SettingsCenterPage extends HookConsumerWidget {
     AppLocalizations localizations,
   ) {
     return switch (mode) {
+      WidgetDisplayMode.single => localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.list3 => localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.today => localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.private =>
+        localizations.settingsWidgetDisplayPreviewOnly,
+      WidgetDisplayMode.empty => localizations.settingsWidgetDisplayPreviewOnly,
       WidgetDisplayMode.previewOnly =>
         localizations.settingsWidgetDisplayPreviewOnly,
       WidgetDisplayMode.fullContent =>

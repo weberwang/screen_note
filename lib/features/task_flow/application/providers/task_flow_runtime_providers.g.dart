@@ -68,13 +68,8 @@ const taskFlowMutationRepositoryProvider =
 /// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
 
 final class TaskFlowMutationRepositoryProvider
-    extends
-        $FunctionalProvider<
-          TaskMutationRepository,
-          TaskMutationRepository,
-          TaskMutationRepository
-        >
-    with $Provider<TaskMutationRepository> {
+    extends $FunctionalProvider<TaskRepository, TaskRepository, TaskRepository>
+    with $Provider<TaskRepository> {
   /// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
   const TaskFlowMutationRepositoryProvider._()
     : super(
@@ -92,26 +87,25 @@ final class TaskFlowMutationRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<TaskMutationRepository> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  $ProviderElement<TaskRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  TaskMutationRepository create(Ref ref) {
+  TaskRepository create(Ref ref) {
     return taskFlowMutationRepository(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(TaskMutationRepository value) {
+  Override overrideWithValue(TaskRepository value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<TaskMutationRepository>(value),
+      providerOverride: $SyncValueProvider<TaskRepository>(value),
     );
   }
 }
 
 String _$taskFlowMutationRepositoryHash() =>
-    r'2d9f93dfa0780efcc7e4dd003e7b2a013e32dea2';
+    r'70a76123a597ac31c5428ab05bd1622a08572ed4';
 
 /// 任务只读仓储 Provider，首页和查询用例只依赖读契约，不接触写能力细节。
 
@@ -212,7 +206,7 @@ final class DefaultTaskFlowSideEffectPortProvider
 }
 
 String _$defaultTaskFlowSideEffectPortHash() =>
-    r'4bba894333cf094e52cb13d487d0bf7d5682e923';
+    r'cd1993c07eddfaef480f10d32e6dddb1f9f19f75';
 
 /// 任务流副作用装配点，默认复用降级实现，但保留清晰可替换入口以满足后续能力接入。
 
@@ -635,7 +629,7 @@ final class TaskFlowHomeControllerProvider
 }
 
 String _$taskFlowHomeControllerHash() =>
-    r'f0a7669e1ea8af1a0cb441862a39b2b2aa72f94a';
+    r'0e7af69adf0bcbb828244c67fa5e79301c059b08';
 
 /// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
 
