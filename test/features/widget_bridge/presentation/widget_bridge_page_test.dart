@@ -16,11 +16,14 @@ import 'package:screen_note/features/widget_bridge/application/providers/widget_
 import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapshot.dart';
 import 'package:screen_note/features/widget_bridge/presentation/pages/widget_bridge_page.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 验证 widget-bridge 会渲染真实快照预览，并把手动同步交给共享存储端口。
 void main() {
-  testWidgets('预览页会把隐私事项渲染成安全摘要并允许手动同步快照', (WidgetTester tester) async {
+  testWidgets('预览页会把隐私事项渲染成安全摘要并允许手动同步快照', (
+    WidgetTester tester,
+  ) async {
     SharedPreferences.setMockInitialValues(<String, Object>{
       'settings.maskPrivateContent': true,
       'settings.widgetDisplayMode': 'list3',
@@ -37,7 +40,7 @@ void main() {
     final DateTime now = DateTime.utc(2026, 6, 6, 8);
 
     await repository.createTask(
-      _task(id: 'pinned', title: '先处理置顶', createdAt: now, isPinned: true),
+      _task(id: 'pinned', title: '先处理置顶项', createdAt: now, isPinned: true),
     );
     await repository.createTask(
       _task(
@@ -59,13 +62,20 @@ void main() {
           settingsSharedPreferencesProvider.overrideWith((ref) async => preferences),
           widgetSnapshotStoreProvider.overrideWithValue(snapshotStore),
         ],
-        child: MaterialApp(
-          locale: const Locale('zh'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: buildScreenNoteLightTheme(),
-          darkTheme: buildScreenNoteDarkTheme(),
-          home: const Scaffold(body: WidgetBridgePage()),
+        child: ScreenNoteScreenUtilContract(
+          designSize: screenNoteDesignSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              locale: const Locale('zh'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: buildScreenNoteLightTheme(),
+              darkTheme: buildScreenNoteDarkTheme(),
+              home: const Scaffold(body: WidgetBridgePage()),
+            );
+          },
         ),
       ),
     );
@@ -86,8 +96,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(snapshotStore.savedSnapshots, hasLength(1));
-    expect(find.text('已同步最新稳定快照。'), findsOneWidget);
+    expect(find.text(_localizations(tester).widgetSyncSuccess), findsOneWidget);
   });
+}
+
+/// 读取当前页面的本地化实例，避免测试里硬编码提示文案。
+AppLocalizations _localizations(WidgetTester tester) {
+  return AppLocalizations.of(tester.element(find.byType(WidgetBridgePage)));
 }
 
 /// 内存版共享存储端口，用于验证页面动作确实触发了快照同步。

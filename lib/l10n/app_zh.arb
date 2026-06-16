@@ -527,4 +527,65 @@
   "@widgetSnapshotOpenInApp": {
     "description": "Widget 安全回流到应用时展示的辅助提示文案。"
   }
+  ,
+  "widgetSettingsTitle": "Widget 预览",
+  "@widgetSettingsTitle": {
+    "description": "Widget 预览页标题。"
+  },
+  "widgetSettingsSubtitle": "预览当前稳定快照，并在需要时手动同步到系统小组件。",
+  "@widgetSettingsSubtitle": {
+    "description": "Widget 预览页标题下的辅助说明。"
+  },
+  "widgetSyncSuccess": "已同步最新稳定快照。",
+  "@widgetSyncSuccess": {
+    "description": "手动同步 Widget 快照成功后的反馈文案。"
+  },
+  "widgetSyncFailed": "同步 Widget 快照失败。",
+  "@widgetSyncFailed": {
+    "description": "手动同步 Widget 快照失败后的反馈文案。"
+  },
+  "widgetPreviewModeMetric": "显示模式",
+  "@widgetPreviewModeMetric": {
+    "description": "Widget 预览指标中的显示模式标签。"
+  },
+  "widgetPreviewVisibleMetric": "可见条目",
+  "@widgetPreviewVisibleMetric": {
+    "description": "Widget 预览指标中的可见条目数量标签。"
+  },
+  "widgetPreviewPrivateMetric": "私密条目",
+  "@widgetPreviewPrivateMetric": {
+    "description": "Widget 预览指标中的私密条目数量标签。"
+  },
+  "widgetDisplayModeSingle": "单条聚焦",
+  "@widgetDisplayModeSingle": {
+    "description": "单条聚焦 Widget 展示模式文案。"
+  },
+  "widgetDisplayModeList3": "三条列表",
+  "@widgetDisplayModeList3": {
+    "description": "三条列表 Widget 展示模式文案。"
+  },
+  "widgetDisplayModeToday": "今日优先",
+  "@widgetDisplayModeToday": {
+    "description": "今日优先 Widget 展示模式文案。"
+  },
+  "widgetDisplayModePrivate": "私密遮罩",
+  "@widgetDisplayModePrivate": {
+    "description": "私密遮罩 Widget 展示模式文案。"
+  },
+  "widgetDisplayModeEmpty": "空态占位",
+  "@widgetDisplayModeEmpty": {
+    "description": "空态占位 Widget 展示模式文案。"
+  },
+  "widgetFallbackPreviewTitle": "手动同步",
+  "@widgetFallbackPreviewTitle": {
+    "description": "Widget 预览页手动同步卡片标题。"
+  },
+  "widgetSyncAction": "立即同步",
+  "@widgetSyncAction": {
+    "description": "手动同步 Widget 快照的动作文案。"
+  },
+  "retryAction": "重试",
+  "@retryAction": {
+    "description": "通用重试动作文案。"
+  }
 }

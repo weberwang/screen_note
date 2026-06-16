@@ -33,7 +33,7 @@ class SettingsCenterPage extends HookConsumerWidget {
       child: snapshotAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (Object error, StackTrace stackTrace) => Padding(
-          padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 120.h),
+          padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
           child: ScreenNotePanel(
             child: Text(
               localizations.settingsLoadFailed,
@@ -44,7 +44,8 @@ class SettingsCenterPage extends HookConsumerWidget {
         data: (SettingsCenterSnapshot snapshot) => CustomScrollView(
           slivers: <Widget>[
             SliverPadding(
-              padding: EdgeInsets.fromLTRB(24.w, 20.h, 24.w, 120.h),
+              // 外层 SafeArea 已处理底部安全区，这里只保留轻量留白避免尾部空洞。
+              padding: EdgeInsets.fromLTRB(24.w, 20.h, 24.w, 24.h),
               sliver: SliverList.list(
                 children: <Widget>[
                   Text(
@@ -138,7 +139,8 @@ class SettingsCenterPage extends HookConsumerWidget {
                 snapshot.notificationPermissionStatus,
                 localizations,
               ),
-              valueColor: snapshot.notificationPermissionStatus ==
+              valueColor:
+                  snapshot.notificationPermissionStatus ==
                       NotificationPermissionStatus.enabled
                   ? const Color(0xFF4D8B52)
                   : const Color(0xFFE96A5A),
@@ -319,7 +321,8 @@ class SettingsCenterPage extends HookConsumerWidget {
     required AppLocalizations localizations,
   }) {
     final TargetPlatform platform = Theme.of(context).platform;
-    final bool supportsDirectPin = !kIsWeb && platform == TargetPlatform.android;
+    final bool supportsDirectPin =
+        !kIsWeb && platform == TargetPlatform.android;
 
     return showModalBottomSheet<void>(
       context: context,
@@ -411,7 +414,8 @@ class SettingsCenterPage extends HookConsumerWidget {
         title: localizations.settingsMembershipTitle,
         description: localizations.settingsMembershipBody,
         trailing: _ValueTrailing(
-          valueText: snapshot.membershipState == SettingsMembershipState.available
+          valueText:
+              snapshot.membershipState == SettingsMembershipState.available
               ? localizations.settingsMembershipAvailable
               : localizations.settingsMembershipAvailable,
         ),
@@ -444,17 +448,15 @@ class SettingsCenterPage extends HookConsumerWidget {
                 _ModeSheetTile(
                   title: localizations.settingsWidgetDisplayPreviewOnly,
                   selected: currentMode == WidgetDisplayMode.previewOnly,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(WidgetDisplayMode.previewOnly),
+                  onTap: () =>
+                      Navigator.of(context).pop(WidgetDisplayMode.previewOnly),
                 ),
                 SizedBox(height: 8.h),
                 _ModeSheetTile(
                   title: localizations.settingsWidgetDisplayFullContent,
                   selected: currentMode == WidgetDisplayMode.fullContent,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(WidgetDisplayMode.fullContent),
+                  onTap: () =>
+                      Navigator.of(context).pop(WidgetDisplayMode.fullContent),
                 ),
               ],
             ),
@@ -505,8 +507,9 @@ class SettingsCenterPage extends HookConsumerWidget {
                 _ModeSheetTile(
                   title: localizations.settingsThemeModeDark,
                   selected: currentMode == SettingsThemeModePreference.dark,
-                  onTap: () =>
-                      Navigator.of(context).pop(SettingsThemeModePreference.dark),
+                  onTap: () => Navigator.of(
+                    context,
+                  ).pop(SettingsThemeModePreference.dark),
                 ),
               ],
             ),
@@ -541,17 +544,15 @@ class SettingsCenterPage extends HookConsumerWidget {
                 _ModeSheetTile(
                   title: localizations.settingsLanguageZh,
                   selected: currentLanguage == SettingsLanguagePreference.zh,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(SettingsLanguagePreference.zh),
+                  onTap: () =>
+                      Navigator.of(context).pop(SettingsLanguagePreference.zh),
                 ),
                 SizedBox(height: 8.h),
                 _ModeSheetTile(
                   title: localizations.settingsLanguageEn,
                   selected: currentLanguage == SettingsLanguagePreference.en,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(SettingsLanguagePreference.en),
+                  onTap: () =>
+                      Navigator.of(context).pop(SettingsLanguagePreference.en),
                 ),
               ],
             ),
@@ -582,7 +583,8 @@ class SettingsCenterPage extends HookConsumerWidget {
     AppLocalizations localizations,
   ) {
     return switch (mode) {
-      WidgetDisplayMode.single => localizations.settingsWidgetDisplayFullContent,
+      WidgetDisplayMode.single =>
+        localizations.settingsWidgetDisplayFullContent,
       WidgetDisplayMode.list3 => localizations.settingsWidgetDisplayFullContent,
       WidgetDisplayMode.today => localizations.settingsWidgetDisplayFullContent,
       WidgetDisplayMode.private =>
@@ -635,16 +637,18 @@ final class _ValueTrailing extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 132.w),
-          child: Text(
-            valueText,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: valueColor,
-              fontWeight: FontWeight.w600,
+        Flexible(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 132.w),
+            child: Text(
+              valueText,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.right,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: valueColor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),

@@ -835,6 +835,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open in app'**
   String get widgetSnapshotOpenInApp;
+
+  /// Title shown on the widget bridge preview page.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget Preview'**
+  String get widgetSettingsTitle;
+
+  /// Supporting copy shown below the widget bridge page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview the current stable snapshot and manually sync it to the system widget when needed.'**
+  String get widgetSettingsSubtitle;
+
+  /// Feedback shown after manually syncing the widget snapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest stable widget snapshot synced.'**
+  String get widgetSyncSuccess;
+
+  /// Feedback shown when manually syncing the widget snapshot fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget snapshot sync failed.'**
+  String get widgetSyncFailed;
+
+  /// Metric label for the current widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Display mode'**
+  String get widgetPreviewModeMetric;
+
+  /// Metric label for the count of currently visible widget items.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible items'**
+  String get widgetPreviewVisibleMetric;
+
+  /// Metric label for the count of private items in the widget snapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Private items'**
+  String get widgetPreviewPrivateMetric;
+
+  /// Label for the single-focus widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Focus'**
+  String get widgetDisplayModeSingle;
+
+  /// Label for the three-item widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Three-item List'**
+  String get widgetDisplayModeList3;
+
+  /// Label for the today-priority widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Today First'**
+  String get widgetDisplayModeToday;
+
+  /// Label for the private-safe widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Private Safe'**
+  String get widgetDisplayModePrivate;
+
+  /// Label for the empty-state widget display mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty Placeholder'**
+  String get widgetDisplayModeEmpty;
+
+  /// Title shown above the manual sync action on the widget bridge page.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Sync'**
+  String get widgetFallbackPreviewTitle;
+
+  /// Action label used to manually sync the widget snapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get widgetSyncAction;
+
+  /// Generic retry action label.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryAction;
 }
 
 class _AppLocalizationsDelegate

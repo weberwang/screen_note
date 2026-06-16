@@ -424,4 +424,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get widgetSnapshotOpenInApp => 'Open in app';
+
+  @override
+  String get widgetSettingsTitle => 'Widget Preview';
+
+  @override
+  String get widgetSettingsSubtitle =>
+      'Preview the current stable snapshot and manually sync it to the system widget when needed.';
+
+  @override
+  String get widgetSyncSuccess => 'Latest stable widget snapshot synced.';
+
+  @override
+  String get widgetSyncFailed => 'Widget snapshot sync failed.';
+
+  @override
+  String get widgetPreviewModeMetric => 'Display mode';
+
+  @override
+  String get widgetPreviewVisibleMetric => 'Visible items';
+
+  @override
+  String get widgetPreviewPrivateMetric => 'Private items';
+
+  @override
+  String get widgetDisplayModeSingle => 'Single Focus';
+
+  @override
+  String get widgetDisplayModeList3 => 'Three-item List';
+
+  @override
+  String get widgetDisplayModeToday => 'Today First';
+
+  @override
+  String get widgetDisplayModePrivate => 'Private Safe';
+
+  @override
+  String get widgetDisplayModeEmpty => 'Empty Placeholder';
+
+  @override
+  String get widgetFallbackPreviewTitle => 'Manual Sync';
+
+  @override
+  String get widgetSyncAction => 'Sync now';
+
+  @override
+  String get retryAction => 'Retry';
 }

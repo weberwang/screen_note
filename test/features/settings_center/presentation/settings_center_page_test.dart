@@ -23,9 +23,10 @@ import 'package:screen_note/features/settings_center/presentation/pages/settings
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
 void main() {
-  testWidgets('设置页会展示通知、隐私、展示模式、同步与会员分区', (tester) async {
+  testWidgets('璁剧疆椤典細灞曠ず閫氱煡銆侀殣绉併€佸睍绀烘ā寮忋€佸悓姝ヤ笌浼氬憳鍒嗗尯', (tester) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
     );
@@ -54,7 +55,7 @@ void main() {
     expect(find.text('Membership'), findsOneWidget);
   });
 
-  testWidgets('iOS 下点添加桌面小组件会打开添加步骤引导', (tester) async {
+  testWidgets('iOS 涓嬬偣娣诲姞妗岄潰灏忕粍浠朵細鎵撳紑娣诲姞姝ラ寮曞', (tester) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
     );
@@ -83,7 +84,7 @@ void main() {
     );
   });
 
-  testWidgets('Android 下可以从设置页触发添加到桌面动作', (tester) async {
+  testWidgets('Android 涓嬪彲浠ヤ粠璁剧疆椤佃Е鍙戞坊鍔犲埌妗岄潰鍔ㄤ綔', (tester) async {
     _prepareTestViewport(tester);
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
@@ -152,7 +153,7 @@ void main() {
     );
   });
 
-  testWidgets('切换隐私模式会更新偏好并写入共享反馈', (tester) async {
+  testWidgets('鍒囨崲闅愮妯″紡浼氭洿鏂板亸濂藉苟鍐欏叆鍏变韩鍙嶉', (tester) async {
     _prepareTestViewport(tester);
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(
@@ -215,7 +216,9 @@ void main() {
     );
   });
 
-  testWidgets('隐私模式开启时选择 Full Content 仍会保持 Preview Only', (tester) async {
+  testWidgets('闅愮妯″紡寮€鍚椂閫夋嫨 Full Content 浠嶄細淇濇寔 Preview Only', (
+    tester,
+  ) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(
         privacyModeEnabled: true,
@@ -244,7 +247,7 @@ void main() {
     expect(stored.widgetDisplayMode, WidgetDisplayMode.previewOnly);
   });
 
-  testWidgets('复查通知权限后会更新状态并移除降级提示', (tester) async {
+  testWidgets('澶嶆煡閫氱煡鏉冮檺鍚庝細鏇存柊鐘舵€佸苟绉婚櫎闄嶇骇鎻愮ず', (tester) async {
     _prepareTestViewport(tester);
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
@@ -308,7 +311,7 @@ void main() {
       NotificationPermissionStatus.enabled,
     );
   });
-  testWidgets('切换主题和语言后会写入偏好仓储', (tester) async {
+  testWidgets('鍒囨崲涓婚鍜岃瑷€鍚庝細鍐欏叆鍋忓ソ浠撳偍', (tester) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
     );
@@ -349,13 +352,14 @@ void main() {
     final SettingsCenterSnapshot initialSnapshot = _buildSettingsCenterSnapshot(
       notificationPermissionStatus: NotificationPermissionStatus.disabled,
     );
-    final SettingsCenterSnapshot refreshedSnapshot = _buildSettingsCenterSnapshot(
-      notificationPermissionStatus: NotificationPermissionStatus.enabled,
-      preferences: const SettingsCenterPreferences(
-        privacyModeEnabled: true,
-        widgetDisplayMode: WidgetDisplayMode.previewOnly,
-      ),
-    );
+    final SettingsCenterSnapshot refreshedSnapshot =
+        _buildSettingsCenterSnapshot(
+          notificationPermissionStatus: NotificationPermissionStatus.enabled,
+          preferences: const SettingsCenterPreferences(
+            privacyModeEnabled: true,
+            widgetDisplayMode: WidgetDisplayMode.previewOnly,
+          ),
+        );
     var snapshotReadCount = 0;
     final ProviderContainer container = ProviderContainer(
       overrides: [
@@ -372,7 +376,9 @@ void main() {
         settingsCenterSnapshotProvider.overrideWith((ref) async {
           snapshotReadCount += 1;
           if (snapshotReadCount > 1) {
-            throw StateError('unexpected second settingsCenterSnapshotProvider read');
+            throw StateError(
+              'unexpected second settingsCenterSnapshotProvider read',
+            );
           }
           return initialSnapshot;
         }),
@@ -399,13 +405,14 @@ void main() {
     final SettingsCenterSnapshot initialSnapshot = _buildSettingsCenterSnapshot(
       notificationPermissionStatus: NotificationPermissionStatus.disabled,
     );
-    final SettingsCenterSnapshot refreshedSnapshot = _buildSettingsCenterSnapshot(
-      notificationPermissionStatus: NotificationPermissionStatus.enabled,
-      preferences: const SettingsCenterPreferences(
-        privacyModeEnabled: true,
-        widgetDisplayMode: WidgetDisplayMode.previewOnly,
-      ),
-    );
+    final SettingsCenterSnapshot refreshedSnapshot =
+        _buildSettingsCenterSnapshot(
+          notificationPermissionStatus: NotificationPermissionStatus.enabled,
+          preferences: const SettingsCenterPreferences(
+            privacyModeEnabled: true,
+            widgetDisplayMode: WidgetDisplayMode.previewOnly,
+          ),
+        );
     var snapshotReadCount = 0;
     final ProviderContainer container = ProviderContainer(
       overrides: [
@@ -459,13 +466,16 @@ void main() {
   });
 
   test('更新主题偏好后应同步全局 currentSettingsCenterPreferencesProvider', () async {
-    final SettingsCenterSnapshot initialSnapshot = _buildSettingsCenterSnapshot();
+    final SettingsCenterSnapshot initialSnapshot =
+        _buildSettingsCenterSnapshot();
     final settingsRepository = _InMemorySettingsPreferencesRepository(
       initial: initialSnapshot.preferences,
     );
     final ProviderContainer container = ProviderContainer(
       overrides: [
-        settingsPreferencesRepositoryProvider.overrideWithValue(settingsRepository),
+        settingsPreferencesRepositoryProvider.overrideWithValue(
+          settingsRepository,
+        ),
         notificationPermissionRepositoryProvider.overrideWithValue(
           _FakeNotificationPermissionRepository(
             initialStatus: NotificationPermissionStatus.enabled,
@@ -481,14 +491,18 @@ void main() {
       initialSnapshot.preferences,
     );
 
-    await container.read(settingsCenterControllerProvider.notifier).updateThemeModePreference(
-      mode: SettingsThemeModePreference.dark,
-      feedbackText: 'theme updated',
-    );
+    await container
+        .read(settingsCenterControllerProvider.notifier)
+        .updateThemeModePreference(
+          mode: SettingsThemeModePreference.dark,
+          feedbackText: 'theme updated',
+        );
 
-    // 这是根应用真正消费的偏好来源，必须和设置控制器内的更新结果同步前进。
+    // 杩欐槸鏍瑰簲鐢ㄧ湡姝ｆ秷璐圭殑鍋忓ソ鏉ユ簮锛屽繀椤诲拰璁剧疆鎺у埗鍣ㄥ唴鐨勬洿鏂扮粨鏋滃悓姝ュ墠杩涖€?
     expect(
-      container.read(currentSettingsCenterPreferencesProvider).themeModePreference,
+      container
+          .read(currentSettingsCenterPreferencesProvider)
+          .themeModePreference,
       SettingsThemeModePreference.dark,
     );
     expect(
@@ -499,6 +513,39 @@ void main() {
           .themeModePreference,
       SettingsThemeModePreference.dark,
     );
+  });
+  testWidgets('设置页滚动到底部时最后一个分组下方不会保留过大空白', (tester) async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+      locale: const Locale('zh'),
+      viewportSize: const Size(600, 844),
+    );
+
+    await tester.scrollUntilVisible(find.byType(ScreenNotePanel).last, 200);
+    await tester.pumpAndSettle();
+
+    final ScrollableState scrollableState = tester.state(
+      find.byType(Scrollable),
+    );
+    scrollableState.position.jumpTo(scrollableState.position.maxScrollExtent);
+    await tester.pumpAndSettle();
+
+    final Rect lastPanelRect = tester.getRect(
+      find.byType(ScreenNotePanel).last,
+    );
+    final Rect viewportRect = tester.getRect(find.byType(Scrollable));
+
+    // 底部只保留安全区和轻量留白，避免最后一个分组下方出现明显空洞。
+    expect(viewportRect.bottom - lastPanelRect.bottom, lessThanOrEqualTo(56));
   });
 }
 
@@ -522,8 +569,10 @@ Future<void> _pumpSettingsPage(
   required NotificationPermissionRepository notificationRepository,
   WidgetInstallationRepository? widgetInstallationRepository,
   TargetPlatform platform = TargetPlatform.android,
+  Locale locale = const Locale('en'),
+  Size viewportSize = const Size(390, 844),
 }) async {
-  _prepareTestViewport(tester);
+  _prepareTestViewport(tester, viewportSize: viewportSize);
 
   await tester.pumpWidget(
     ProviderScope(
@@ -545,7 +594,7 @@ Future<void> _pumpSettingsPage(
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
-            locale: const Locale('en'),
+            locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             theme: ScreenNoteTheme.light().copyWith(
@@ -565,14 +614,17 @@ Future<void> _pumpSettingsPage(
   await tester.pumpAndSettle();
 }
 
-void _prepareTestViewport(WidgetTester tester) {
+void _prepareTestViewport(
+  WidgetTester tester, {
+  Size viewportSize = const Size(390, 844),
+}) {
   tester.view.devicePixelRatio = 1;
-  tester.view.physicalSize = const Size(390, 844);
+  tester.view.physicalSize = viewportSize;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
 }
 
-/// 内存偏好仓储用于页面测试，避免依赖 shared_preferences 的全局静态缓存。
+/// 鍐呭瓨鍋忓ソ浠撳偍鐢ㄤ簬椤甸潰娴嬭瘯锛岄伩鍏嶄緷璧?shared_preferences 鐨勫叏灞€闈欐€佺紦瀛樸€?
 final class _InMemorySettingsPreferencesRepository
     implements SettingsPreferencesRepository {
   _InMemorySettingsPreferencesRepository({
@@ -590,7 +642,7 @@ final class _InMemorySettingsPreferencesRepository
   }
 }
 
-/// 延迟仓储用于卡住 refresh 中的快照重载，验证控制器是否保留已有数据。
+/// 寤惰繜浠撳偍鐢ㄤ簬鍗′綇 refresh 涓殑蹇収閲嶈浇锛岄獙璇佹帶鍒跺櫒鏄惁淇濈暀宸叉湁鏁版嵁銆?
 final class _DelayedSettingsPreferencesRepository
     implements SettingsPreferencesRepository {
   _DelayedSettingsPreferencesRepository({
@@ -614,7 +666,7 @@ final class _DelayedSettingsPreferencesRepository
   }
 }
 
-/// 假通知仓储用于页面测试，允许精确控制复查前后的权限状态。
+/// 鍋囬€氱煡浠撳偍鐢ㄤ簬椤甸潰娴嬭瘯锛屽厑璁哥簿纭帶鍒跺鏌ュ墠鍚庣殑鏉冮檺鐘舵€併€?
 final class _FakeNotificationPermissionRepository
     implements NotificationPermissionRepository {
   _FakeNotificationPermissionRepository({
@@ -636,7 +688,7 @@ final class _FakeNotificationPermissionRepository
   }
 }
 
-/// 假小组件安装仓储用于验证设置页入口会把动作交给应用层而不是页面直接碰插件。
+/// 鍋囧皬缁勪欢瀹夎浠撳偍鐢ㄤ簬楠岃瘉璁剧疆椤靛叆鍙ｄ細鎶婂姩浣滀氦缁欏簲鐢ㄥ眰鑰屼笉鏄〉闈㈢洿鎺ョ鎻掍欢銆?
 final class _FakeWidgetInstallationRepository
     implements WidgetInstallationRepository {
   _FakeWidgetInstallationRepository({required this.result});

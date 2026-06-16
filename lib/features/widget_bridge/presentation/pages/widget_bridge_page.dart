@@ -68,14 +68,14 @@ class WidgetBridgePage extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         _InfoCard(
-          title: localizations.widgetInstallGuideTitle,
-          body: localizations.widgetInstallGuideBody,
+          title: localizations.settingsWidgetInstallTitle,
+          body: localizations.settingsWidgetInstallBody,
           icon: Icons.phone_iphone_outlined,
         ),
         const SizedBox(height: 16),
         _InfoCard(
-          title: localizations.widgetPreviewMaskPrivateTitle,
-          body: localizations.widgetPreviewMaskPrivateBody,
+          title: localizations.widgetSnapshotPrivateTitle,
+          body: localizations.settingsPrivacyModeBody,
           icon: Icons.lock_outline_rounded,
         ),
       ],
@@ -395,7 +395,7 @@ class _ActionCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            localizations.widgetPreviewFallbackHint,
+            localizations.widgetSnapshotFallbackHint,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),

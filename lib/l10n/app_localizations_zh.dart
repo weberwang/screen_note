@@ -393,4 +393,49 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get widgetSnapshotOpenInApp => '点按后回到应用查看';
+
+  @override
+  String get widgetSettingsTitle => 'Widget 预览';
+
+  @override
+  String get widgetSettingsSubtitle => '预览当前稳定快照，并在需要时手动同步到系统小组件。';
+
+  @override
+  String get widgetSyncSuccess => '已同步最新稳定快照。';
+
+  @override
+  String get widgetSyncFailed => '同步 Widget 快照失败。';
+
+  @override
+  String get widgetPreviewModeMetric => '显示模式';
+
+  @override
+  String get widgetPreviewVisibleMetric => '可见条目';
+
+  @override
+  String get widgetPreviewPrivateMetric => '私密条目';
+
+  @override
+  String get widgetDisplayModeSingle => '单条聚焦';
+
+  @override
+  String get widgetDisplayModeList3 => '三条列表';
+
+  @override
+  String get widgetDisplayModeToday => '今日优先';
+
+  @override
+  String get widgetDisplayModePrivate => '私密遮罩';
+
+  @override
+  String get widgetDisplayModeEmpty => '空态占位';
+
+  @override
+  String get widgetFallbackPreviewTitle => '手动同步';
+
+  @override
+  String get widgetSyncAction => '立即同步';
+
+  @override
+  String get retryAction => '重试';
 }

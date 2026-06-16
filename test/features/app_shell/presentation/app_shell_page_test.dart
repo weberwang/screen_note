@@ -11,6 +11,8 @@ import 'package:screen_note/app/startup/widget_launch_bridge.dart';
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
 import 'package:screen_note/features/app_shell/presentation/pages/app_shell_page.dart';
 import 'package:screen_note/features/app_shell/presentation/widgets/app_shell_quick_add_sheet.dart';
+import 'package:screen_note/features/history_center/presentation/pages/history_center_page.dart';
+import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
@@ -56,18 +58,17 @@ void main() {
       await _pumpAppShell(tester, runtime: runtime);
       final AppLocalizations localizations = _localizations(tester);
 
-      expect(find.text(localizations.historySubtitle), findsNothing);
       expect(find.text(localizations.settingsSubtitle), findsNothing);
 
       await tester.tap(find.text(localizations.historyTabLabel));
       await tester.pumpAndSettle();
 
-      expect(find.text(localizations.historySubtitle), findsOneWidget);
+      expect(find.byType(HistoryCenterPage), findsOneWidget);
 
       await tester.tap(find.text(localizations.settingsTabLabel));
       await tester.pumpAndSettle();
 
-      expect(find.text(localizations.settingsSubtitle), findsOneWidget);
+      expect(find.byType(SettingsCenterPage), findsOneWidget);
     });
 
     testWidgets('does not stack quick add sheets on repeated fab trigger', (
@@ -469,6 +470,12 @@ final class _FakeWidgetLaunchBridge implements WidgetLaunchBridge {
 
   @override
   final Stream<String> launchLocations;
+
+  @override
+  Future<Uri?> initiallyLaunchedUri() async => Uri.tryParse(rawLaunchLocation);
+
+  @override
+  Stream<Uri?> get widgetClicked => launchLocations.map(Uri.tryParse);
 }
 
 final class _TestShellLeaf extends StatelessWidget {

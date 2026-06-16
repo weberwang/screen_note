@@ -526,5 +526,65 @@
   "widgetSnapshotOpenInApp": "Open in app",
   "@widgetSnapshotOpenInApp": {
     "description": "CTA-like helper text shown in the widget snapshot to indicate the safe handoff back to the app."
+  },
+  "widgetSettingsTitle": "Widget Preview",
+  "@widgetSettingsTitle": {
+    "description": "Title shown on the widget bridge preview page."
+  },
+  "widgetSettingsSubtitle": "Preview the current stable snapshot and manually sync it to the system widget when needed.",
+  "@widgetSettingsSubtitle": {
+    "description": "Supporting copy shown below the widget bridge page title."
+  },
+  "widgetSyncSuccess": "Latest stable widget snapshot synced.",
+  "@widgetSyncSuccess": {
+    "description": "Feedback shown after manually syncing the widget snapshot."
+  },
+  "widgetSyncFailed": "Widget snapshot sync failed.",
+  "@widgetSyncFailed": {
+    "description": "Feedback shown when manually syncing the widget snapshot fails."
+  },
+  "widgetPreviewModeMetric": "Display mode",
+  "@widgetPreviewModeMetric": {
+    "description": "Metric label for the current widget display mode."
+  },
+  "widgetPreviewVisibleMetric": "Visible items",
+  "@widgetPreviewVisibleMetric": {
+    "description": "Metric label for the count of currently visible widget items."
+  },
+  "widgetPreviewPrivateMetric": "Private items",
+  "@widgetPreviewPrivateMetric": {
+    "description": "Metric label for the count of private items in the widget snapshot."
+  },
+  "widgetDisplayModeSingle": "Single Focus",
+  "@widgetDisplayModeSingle": {
+    "description": "Label for the single-focus widget display mode."
+  },
+  "widgetDisplayModeList3": "Three-item List",
+  "@widgetDisplayModeList3": {
+    "description": "Label for the three-item widget display mode."
+  },
+  "widgetDisplayModeToday": "Today First",
+  "@widgetDisplayModeToday": {
+    "description": "Label for the today-priority widget display mode."
+  },
+  "widgetDisplayModePrivate": "Private Safe",
+  "@widgetDisplayModePrivate": {
+    "description": "Label for the private-safe widget display mode."
+  },
+  "widgetDisplayModeEmpty": "Empty Placeholder",
+  "@widgetDisplayModeEmpty": {
+    "description": "Label for the empty-state widget display mode."
+  },
+  "widgetFallbackPreviewTitle": "Manual Sync",
+  "@widgetFallbackPreviewTitle": {
+    "description": "Title shown above the manual sync action on the widget bridge page."
+  },
+  "widgetSyncAction": "Sync now",
+  "@widgetSyncAction": {
+    "description": "Action label used to manually sync the widget snapshot."
+  },
+  "retryAction": "Retry",
+  "@retryAction": {
+    "description": "Generic retry action label."
   }
 }

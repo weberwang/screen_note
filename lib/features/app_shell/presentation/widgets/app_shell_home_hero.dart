@@ -45,7 +45,7 @@ class AppShellHomeHero extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      localizations.appShellGreetingLabel,
+                      localizations.homeGreetingTitle,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: palette.inkSecondary,
                       ),
@@ -66,7 +66,7 @@ class AppShellHomeHero extends StatelessWidget {
           ),
           SizedBox(height: compact ? 18 : 28),
           Text(
-            localizations.appShellHomeHeadline,
+            localizations.homePriorityTitle,
             style: theme.textTheme.displayLarge?.copyWith(
               height: 1.02,
               fontSize: compact ? 42 : 56,
@@ -76,7 +76,7 @@ class AppShellHomeHero extends StatelessWidget {
           const _ShellAccentWave(),
           SizedBox(height: compact ? 10 : 16),
           Text(
-            localizations.appShellHomeSubtitle,
+            localizations.homePriorityBody,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: palette.inkSecondary,
             ),
