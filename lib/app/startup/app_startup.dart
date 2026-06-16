@@ -1,3 +1,6 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:screen_note/core/logging/app_logger.dart';
 import 'package:screen_note/core/storage/app_preferences.dart';
 import 'package:screen_note/core/storage/app_secure_storage.dart';
@@ -7,32 +10,23 @@ final class AppStartup {
   /// 创建应用启动预热器。
   const AppStartup();
 
-  /// 预热轻量存储、时区和安全存储等基础设施。
+  /// 预热轻量存储与安全存储等基础设施。
   Future<void> initialize() async {
-    final AppPreferences preferences = AppPreferences();
-    await preferences.ensureInitialized();
-    try {
-      await initializeLocalTimezone();
-    } catch (error, stackTrace) {
-      // 启动阶段平台时区能力失败时只允许降级，不能阻断应用主链路。
-      AppLogger.instance.warning(
-        'initialize_local_timezone_failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
-    }
+    final AppLogger logger = AppLogger();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final AppPreferences preferences = AppPreferences(sharedPreferences);
+    // 这里仅触发底层实例创建，避免历史调用点依赖已删除的 ensureInitialized 旧接口。
+    preferences.getBool('bootstrap.warmup');
 
     try {
-      await const AppSecureStorage().warmUp();
-    } catch (error, stackTrace) {
-      // 安全存储预热只用于提早暴露平台问题，失败时保留日志并继续启动。
-      AppLogger.instance.warning(
-        'warm_up_secure_storage_failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
+      final secureStorage = AppSecureStorage(const FlutterSecureStorage());
+      await secureStorage.read('__warmup__');
+    } catch (_) {
+      // 安全存储预热失败只允许降级，不能阻断应用主链路。
+      logger.warning('warm_up_secure_storage_failed');
     }
 
-    AppLogger.instance.info('app_startup_completed');
+    logger.info('app_startup_completed');
   }
 }

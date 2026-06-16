@@ -1,7 +1,4 @@
 /// 统一描述当前应用的运行环境。
-///
-/// 目前项目仍是本地优先 MVP，因此环境对象只暴露最小常量，
-/// 不引入 flavor、远端配置或密钥装配。
 final class AppEnvironment {
   /// 创建环境对象。
   const AppEnvironment._();
@@ -17,4 +14,7 @@ final class AppEnvironment {
 
   /// 当前是否为生产模式。
   static const bool isProduction = false;
+
+  /// 当前未接入真实远端时保留空基地址，兼容网络层旧调用。
+  static const String? apiBaseUrl = null;
 }

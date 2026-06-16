@@ -9,14 +9,18 @@ part 'widget_launch_bridge.g.dart';
 const Duration _defaultWidgetLaunchBridgeTimeout = Duration(milliseconds: 300);
 
 /// 启动桥接负责把系统入口解析为安全的首个落点。
-///
-/// 当前 bootstrap 阶段先提供无副作用默认实现，后续再接 Widget、深链或系统快捷入口。
 abstract interface class WidgetLaunchBridge {
   /// 返回平台原始入口位置；壳层路由会基于它归一化到安全一级入口。
   String get rawLaunchLocation;
 
   /// 运行中点击 Widget 时，桥接会持续输出已经归一化过的安全落点。
   Stream<String> get launchLocations;
+
+  /// 兼容旧测试读取首启 URI 的接口，统一从当前安全落点反推。
+  Future<Uri?> initiallyLaunchedUri() async => Uri.tryParse(rawLaunchLocation);
+
+  /// 兼容旧测试订阅 Widget 点击流的接口，统一把安全落点包装回 URI。
+  Stream<Uri?> get widgetClicked => launchLocations.map(Uri.tryParse);
 }
 
 /// 默认桥接不做任何平台分发，统一安全落到首页。
@@ -29,6 +33,12 @@ final class NoopWidgetLaunchBridge implements WidgetLaunchBridge {
 
   @override
   Stream<String> get launchLocations => const Stream<String>.empty();
+
+  @override
+  Future<Uri?> initiallyLaunchedUri() async => null;
+
+  @override
+  Stream<Uri?> get widgetClicked => const Stream<Uri?>.empty();
 }
 
 /// HomeWidget 桥接只负责把桌面小组件回流统一归一到壳层可接受的安全落点。
@@ -63,6 +73,12 @@ final class HomeWidgetLaunchBridge implements WidgetLaunchBridge {
   @override
   Stream<String> get launchLocations => _launchLocations;
 
+  @override
+  Future<Uri?> initiallyLaunchedUri() async => Uri.tryParse(rawLaunchLocation);
+
+  @override
+  Stream<Uri?> get widgetClicked => _launchLocations.map(Uri.tryParse);
+
   /// 只接受来自 Widget 的安全参数；未知或缺失参数统一回首页。
   static String _normalize(Uri? uri) {
     if (uri == null || uri.queryParameters['source'] != 'widget') {
@@ -95,7 +111,7 @@ final class HomeWidgetLaunchBridge implements WidgetLaunchBridge {
   }
 }
 
-/// 统一安全加载 Widget 启动桥；任何异常都只能降级到首页，不能阻断应用启动。
+/// 统一安全加载 Widget 启动桥；任何异常都只允许降级到首页，不能阻断应用启动。
 Future<WidgetLaunchBridge> loadSafeWidgetLaunchBridge({
   Future<HomeWidgetLaunchBridge> Function()? loader,
   Duration timeout = _defaultWidgetLaunchBridgeTimeout,
@@ -121,8 +137,7 @@ StreamTransformer<Uri?, String> _safeLaunchLocationTransformer() {
   );
 }
 
-/// 根路由只依赖这个 Provider 获取安全初始落点，
-/// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
+/// 根路由只依赖这个 Provider 获取安全初始落点。
 @Riverpod(keepAlive: true)
 WidgetLaunchBridge widgetLaunchBridge(Ref ref) {
   return const NoopWidgetLaunchBridge();

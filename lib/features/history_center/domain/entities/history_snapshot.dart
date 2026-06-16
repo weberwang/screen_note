@@ -12,4 +12,10 @@ abstract class HistorySnapshot with _$HistorySnapshot {
     required List<TaskEntity> completedTasks,
     required List<TaskEntity> deletedTasks,
   }) = _HistorySnapshot;
+
+  /// 兼容旧测试对空态快照的直接判断，避免每处都手写双列表判空。
+  const HistorySnapshot._();
+
+  /// 当前是否没有已完成或已删除的历史记录。
+  bool get isEmpty => completedTasks.isEmpty && deletedTasks.isEmpty;
 }

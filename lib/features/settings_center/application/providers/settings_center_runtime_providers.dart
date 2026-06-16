@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
 import 'package:screen_note/features/settings_center/application/ports/settings_side_effect_port.dart';
@@ -27,10 +28,17 @@ import 'package:screen_note/features/settings_center/infrastructure/shared_prefe
 
 part 'settings_center_runtime_providers.g.dart';
 
+@Riverpod(keepAlive: true)
+Future<SharedPreferences> settingsSharedPreferences(Ref ref) async {
+  return SharedPreferences.getInstance();
+}
+
 /// 设置偏好仓储 Provider，统一暴露真实本地偏好入口，避免页面层直接碰 shared_preferences。
 @Riverpod(keepAlive: true)
 SettingsPreferencesRepository settingsPreferencesRepository(Ref ref) {
-  return const SharedPreferencesSettingsPreferencesRepository();
+  return SharedPreferencesSettingsPreferencesRepository(
+    loadSharedPreferences: () => ref.watch(settingsSharedPreferencesProvider.future),
+  );
 }
 
 /// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。

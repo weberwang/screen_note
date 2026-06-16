@@ -62,4 +62,10 @@ final class _FakeWidgetLaunchBridge implements WidgetLaunchBridge {
 
   @override
   Stream<String> get launchLocations => const Stream<String>.empty();
+
+  @override
+  Future<Uri?> initiallyLaunchedUri() async => Uri.tryParse(rawLaunchLocation);
+
+  @override
+  Stream<Uri?> get widgetClicked => const Stream<Uri?>.empty();
 }

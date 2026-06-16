@@ -256,6 +256,12 @@ final class _FakeWidgetLaunchBridge implements WidgetLaunchBridge {
 
   @override
   Stream<String> get launchLocations => const Stream<String>.empty();
+
+  @override
+  Future<Uri?> initiallyLaunchedUri() async => Uri.tryParse(rawLaunchLocation);
+
+  @override
+  Stream<Uri?> get widgetClicked => const Stream<Uri?>.empty();
 }
 
 /// refresh 失败替身只复现“保存后刷新降级失败”的场景，避免误伤真实写库结果。

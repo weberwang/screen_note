@@ -11,6 +11,7 @@ import 'package:screen_note/features/task_flow/application/providers/task_flow_r
 import 'package:screen_note/features/task_flow/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/load_task_feed_use_case.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_event_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mode.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
@@ -540,6 +541,11 @@ final class _DelayedTaskRepository implements TaskRepository {
   }
 
   @override
+  Future<void> createTask(TaskEntity task) {
+    return _delegate.createTask(task);
+  }
+
+  @override
   Future<List<TaskEntity>> loadTasksByStatus(TaskStatus status) async {
     await _gate;
     return _delegate.loadTasksByStatus(status);
@@ -549,6 +555,16 @@ final class _DelayedTaskRepository implements TaskRepository {
   Future<int> countTasksByStatus(TaskStatus status) async {
     await _gate;
     return _delegate.countTasksByStatus(status);
+  }
+
+  @override
+  Future<void> updateTask(TaskEntity task) {
+    return _delegate.updateTask(task);
+  }
+
+  @override
+  Future<void> appendEvent(TaskEventEntity event) {
+    return _delegate.appendEvent(event);
   }
 }
 

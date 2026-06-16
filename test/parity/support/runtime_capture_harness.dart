@@ -9,9 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:screen_note/app/app.dart';
 import 'package:screen_note/app/router/app_router.dart';
+import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/app/startup/widget_launch_bridge.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
-import 'package:screen_note/features/settings_center/domain/entities/settings_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/infrastructure/settings_preferences_repository_impl.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
@@ -118,10 +119,9 @@ Future<void> _seedFixture({
       SettingsPreferencesRepositoryImpl(preferences: preferences);
   final DateTime now = DateTime.utc(2026, 6, 6, 8);
 
-  await settingsRepository.save(
-    SettingsPreferences(
-      maskPrivateContent: true,
-      notificationsEnabled: true,
+  await settingsRepository.savePreferences(
+    SettingsCenterPreferences(
+      privacyModeEnabled: true,
       widgetDisplayMode: switch (fixture) {
         RuntimeCaptureFixture.widgetEmpty => WidgetDisplayMode.empty,
         _ => WidgetDisplayMode.list3,
@@ -247,6 +247,12 @@ final class _FakeWidgetSnapshotStore implements WidgetSnapshotStore {
 final class _FakeWidgetLaunchBridge implements WidgetLaunchBridge {
   /// 创建测试用启动桥接。
   const _FakeWidgetLaunchBridge();
+
+  @override
+  String get rawLaunchLocation => RoutePaths.home;
+
+  @override
+  Stream<String> get launchLocations => const Stream<String>.empty();
 
   @override
   Future<Uri?> initiallyLaunchedUri() async => null;

@@ -50,10 +50,10 @@ void main() {
     expect(find.byType(AppBar), findsNothing);
     expect(find.byKey(const Key('app-shell-home-hero')), findsOneWidget);
     expect(find.byKey(const Key('app-shell-home-landscape-band')), findsOneWidget);
-    expect(find.text(localizations.appShellGreetingLabel), findsOneWidget);
-    expect(find.text(localizations.appShellHomeHeadline), findsOneWidget);
+    expect(find.text(localizations.homeGreetingTitle), findsOneWidget);
+    expect(find.text(localizations.homePriorityTitle), findsOneWidget);
 
-    await tester.tap(find.text(localizations.settingsCenterTabLabel));
+    await tester.tap(find.text(localizations.settingsTabLabel));
     await tester.pumpAndSettle();
 
     expect(find.byType(AppShellPage), findsOneWidget);
@@ -62,6 +62,6 @@ void main() {
     expect(find.byKey(const Key('app-shell-home-cta')), findsNothing);
     expect(find.byType(AppBar), findsNothing);
     expect(find.byKey(const Key('app-shell-home-hero')), findsNothing);
-    expect(find.text(localizations.settingsPageHelperText), findsOneWidget);
+    expect(find.text(localizations.settingsSubtitle), findsOneWidget);
   });
 }

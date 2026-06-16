@@ -8,6 +8,49 @@ part of 'settings_center_runtime_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+
+@ProviderFor(settingsSharedPreferences)
+const settingsSharedPreferencesProvider = SettingsSharedPreferencesProvider._();
+
+final class SettingsSharedPreferencesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<SharedPreferences>,
+          SharedPreferences,
+          FutureOr<SharedPreferences>
+        >
+    with
+        $FutureModifier<SharedPreferences>,
+        $FutureProvider<SharedPreferences> {
+  const SettingsSharedPreferencesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'settingsSharedPreferencesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$settingsSharedPreferencesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<SharedPreferences> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<SharedPreferences> create(Ref ref) {
+    return settingsSharedPreferences(ref);
+  }
+}
+
+String _$settingsSharedPreferencesHash() =>
+    r'4f71685a03ee755629f2fe2cdd83362b4e26c9f5';
+
 /// 设置偏好仓储 Provider，统一暴露真实本地偏好入口，避免页面层直接碰 shared_preferences。
 
 @ProviderFor(settingsPreferencesRepository)
@@ -62,7 +105,7 @@ final class SettingsPreferencesRepositoryProvider
 }
 
 String _$settingsPreferencesRepositoryHash() =>
-    r'2874002c008a4c8bd235083539514fc75d7f1e94';
+    r'5a5374bd46fdab0375538296f956d0fd184fdfc3';
 
 /// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。
 

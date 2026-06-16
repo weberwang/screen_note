@@ -7,6 +7,7 @@ import 'package:screen_note/features/task_flow/domain/repositories/task_reposito
 import 'package:screen_note/features/widget_bridge/application/providers/widget_snapshot_shared_providers.dart';
 import 'package:screen_note/features/widget_bridge/application/services/widget_snapshot_auto_sync_coordinator.dart';
 import 'package:screen_note/features/widget_bridge/application/services/widget_snapshot_sync_service.dart';
+import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapshot.dart';
 
 export 'widget_snapshot_shared_providers.dart';
 
@@ -37,4 +38,29 @@ WidgetSnapshotSyncService widgetSnapshotSyncService(Ref ref) {
     snapshotStore: ref.watch(widgetSnapshotStoreProvider),
     projector: ref.watch(widgetSnapshotProjectorProvider),
   );
+}
+
+@Riverpod(keepAlive: true)
+class WidgetBridgeController extends _$WidgetBridgeController {
+  @override
+  Future<WidgetSnapshot> build() {
+    return ref.watch(widgetSnapshotSyncServiceProvider).loadSnapshot();
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncLoading<WidgetSnapshot>();
+    state = await AsyncValue.guard(
+      () => ref.read(widgetSnapshotSyncServiceProvider).loadSnapshot(),
+    );
+  }
+
+  Future<bool> syncSnapshot() async {
+    final bool synced = await ref
+        .read(widgetSnapshotSyncServiceProvider)
+        .syncSnapshot();
+    if (synced) {
+      await refresh();
+    }
+    return synced;
+  }
 }

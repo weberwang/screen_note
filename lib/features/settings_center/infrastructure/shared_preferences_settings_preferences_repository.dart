@@ -8,11 +8,15 @@ import 'package:screen_note/features/settings_center/infrastructure/settings_pre
 final class SharedPreferencesSettingsPreferencesRepository
     implements SettingsPreferencesRepository {
   /// 创建 SharedPreferences 偏好仓储入口。
-  const SharedPreferencesSettingsPreferencesRepository();
+  const SharedPreferencesSettingsPreferencesRepository({
+    required Future<SharedPreferences> Function() loadSharedPreferences,
+  }) : _loadSharedPreferences = loadSharedPreferences;
+
+  final Future<SharedPreferences> Function() _loadSharedPreferences;
 
   /// 统一延迟获取 SharedPreferences，避免 provider 同步构造阶段依赖异步初始化。
   Future<SettingsPreferencesRepositoryImpl> _loadRepository() async {
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final SharedPreferences preferences = await _loadSharedPreferences();
     return SettingsPreferencesRepositoryImpl(preferences: preferences);
   }
 

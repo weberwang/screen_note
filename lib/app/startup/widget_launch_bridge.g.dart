@@ -8,14 +8,12 @@ part of 'widget_launch_bridge.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// 根路由只依赖这个 Provider 获取安全初始落点，
-/// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
+/// 根路由只依赖这个 Provider 获取安全初始落点。
 
 @ProviderFor(widgetLaunchBridge)
 const widgetLaunchBridgeProvider = WidgetLaunchBridgeProvider._();
 
-/// 根路由只依赖这个 Provider 获取安全初始落点，
-/// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
+/// 根路由只依赖这个 Provider 获取安全初始落点。
 
 final class WidgetLaunchBridgeProvider
     extends
@@ -25,8 +23,7 @@ final class WidgetLaunchBridgeProvider
           WidgetLaunchBridge
         >
     with $Provider<WidgetLaunchBridge> {
-  /// 根路由只依赖这个 Provider 获取安全初始落点，
-  /// 避免直接把平台入口逻辑揉进 `GoRouter` 构造过程。
+  /// 根路由只依赖这个 Provider 获取安全初始落点。
   const WidgetLaunchBridgeProvider._()
     : super(
         from: null,

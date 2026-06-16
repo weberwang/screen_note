@@ -161,3 +161,87 @@ final class ScreenNoteTheme {
   }
 }
 
+abstract final class ScreenNoteSpacing {
+  static const double pageHorizontal = 24;
+  static const double sectionGap = 24;
+}
+
+abstract final class ScreenNoteRadii {
+  static const BorderRadius small = BorderRadius.all(Radius.circular(16));
+}
+
+final class ScreenNoteThemePalette {
+  const ScreenNoteThemePalette({
+    required this.backgroundTop,
+    required this.backgroundBottom,
+    required this.surfaceRaised,
+    required this.surfaceCard,
+    required this.surfacePaper,
+    required this.surfaceMuted,
+    required this.lineSoft,
+    required this.inkPrimary,
+    required this.inkSecondary,
+    required this.accentAmber,
+    required this.statusDone,
+    required this.statusPrivate,
+    required this.shadowSoft,
+  });
+
+  final Color backgroundTop;
+  final Color backgroundBottom;
+  final Color surfaceRaised;
+  final Color surfaceCard;
+  final Color surfacePaper;
+  final Color surfaceMuted;
+  final Color lineSoft;
+  final Color inkPrimary;
+  final Color inkSecondary;
+  final Color accentAmber;
+  final Color statusDone;
+  final Color statusPrivate;
+  final Color shadowSoft;
+}
+
+extension ScreenNoteThemeContext on BuildContext {
+  ScreenNoteThemePalette get screenNotePalette {
+    final bool isDark = Theme.of(this).brightness == Brightness.dark;
+    if (isDark) {
+      return const ScreenNoteThemePalette(
+        backgroundTop: Color(0xFF101513),
+        backgroundBottom: Color(0xFF151A17),
+        surfaceRaised: Color(0xFF171D1A),
+        surfaceCard: Color(0xFF1B221E),
+        surfacePaper: Color(0xFF222924),
+        surfaceMuted: Color(0xFF2B332E),
+        lineSoft: Color(0xFF2D3530),
+        inkPrimary: Color(0xFFF2F4EF),
+        inkSecondary: Color(0xFFC4CBC5),
+        accentAmber: Color(0xFFE2C16B),
+        statusDone: Color(0xFF6FAE73),
+        statusPrivate: Color(0xFFF08A7B),
+        shadowSoft: Color(0x22000000),
+      );
+    }
+
+    return const ScreenNoteThemePalette(
+      backgroundTop: Color(0xFFF7F5EF),
+      backgroundBottom: Color(0xFFFBFAF7),
+      surfaceRaised: Color(0xFFFFFFFF),
+      surfaceCard: Color(0xFFF8F6F0),
+      surfacePaper: Color(0xFFF2F0E8),
+      surfaceMuted: Color(0xFFEAF0E7),
+      lineSoft: Color(0xFFE4E8E0),
+      inkPrimary: Color(0xFF1F2328),
+      inkSecondary: Color(0xFF5F6762),
+      accentAmber: Color(0xFFC99A2E),
+      statusDone: Color(0xFF4D8B52),
+      statusPrivate: Color(0xFFE96A5A),
+      shadowSoft: Color(0x14000000),
+    );
+  }
+}
+
+ThemeData buildScreenNoteLightTheme() => ScreenNoteTheme.light();
+
+ThemeData buildScreenNoteDarkTheme() => ScreenNoteTheme.dark();
+

@@ -117,3 +117,49 @@ final class WidgetSnapshotSyncServiceProvider
 
 String _$widgetSnapshotSyncServiceHash() =>
     r'252da6153880e00cc9596445fba0f82879ed892b';
+
+@ProviderFor(WidgetBridgeController)
+const widgetBridgeControllerProvider = WidgetBridgeControllerProvider._();
+
+final class WidgetBridgeControllerProvider
+    extends $AsyncNotifierProvider<WidgetBridgeController, WidgetSnapshot> {
+  const WidgetBridgeControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'widgetBridgeControllerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$widgetBridgeControllerHash();
+
+  @$internal
+  @override
+  WidgetBridgeController create() => WidgetBridgeController();
+}
+
+String _$widgetBridgeControllerHash() =>
+    r'5d60a8c2e53f5e11f7dce70777a684659b2e167f';
+
+abstract class _$WidgetBridgeController extends $AsyncNotifier<WidgetSnapshot> {
+  FutureOr<WidgetSnapshot> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<WidgetSnapshot>, WidgetSnapshot>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<WidgetSnapshot>, WidgetSnapshot>,
+              AsyncValue<WidgetSnapshot>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

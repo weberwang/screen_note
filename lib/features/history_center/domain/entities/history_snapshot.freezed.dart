@@ -206,8 +206,8 @@ return $default(_that.completedTasks,_that.deletedTasks);case _:
 /// @nodoc
 
 
-class _HistorySnapshot implements HistorySnapshot {
-  const _HistorySnapshot({required final  List<TaskEntity> completedTasks, required final  List<TaskEntity> deletedTasks}): _completedTasks = completedTasks,_deletedTasks = deletedTasks;
+class _HistorySnapshot extends HistorySnapshot {
+  const _HistorySnapshot({required final  List<TaskEntity> completedTasks, required final  List<TaskEntity> deletedTasks}): _completedTasks = completedTasks,_deletedTasks = deletedTasks,super._();
   
 
  final  List<TaskEntity> _completedTasks;
