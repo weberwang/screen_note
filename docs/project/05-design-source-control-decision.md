@@ -46,5 +46,5 @@
 - `docs/project/modules/app-shell/app-shell.impl.md`
 - `docs/project/modules/task-flow/task-flow.impl.md`
 - `docs/project/modules/widget-bridge/widget-bridge.impl.md`
-- `tmp/flutter-workflow-orchestrator/workflow-record.md`
+- `docs/project/00-workflow-record.md`
 

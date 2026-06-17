@@ -7,10 +7,7 @@ import 'package:screen_note/l10n/app_localizations.dart';
 /// 不把快速添加混入导航结构。
 class AppShellNavigationSurface extends StatelessWidget {
   /// 创建共享底栏组件。
-  const AppShellNavigationSurface({
-    required this.navigationShell,
-    super.key,
-  });
+  const AppShellNavigationSurface({required this.navigationShell, super.key});
 
   /// 当前根级分支宿主。
   final StatefulNavigationShell navigationShell;
@@ -20,6 +17,7 @@ class AppShellNavigationSurface extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
 
     return NavigationBar(
+      key: const Key('app-shell-nav-surface'),
       height: 86.h,
       selectedIndex: navigationShell.currentIndex,
       onDestinationSelected: (index) {

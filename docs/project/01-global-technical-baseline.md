@@ -3,7 +3,7 @@
 ## 0. 文档信息
 
 - 文档名称：屏记全局技术基线
-- 上游 PRD：[screen-note-prd-2026-05-22.md](D:/Projects/Flutter/screen_note/docs/screen-note-prd-2026-05-22.md)
+- 上游 PRD：[screen-note-prd-2026-05-22.md](D:/Projects/Flutter/screen_note/docs/project/screen-note-prd-2026-05-22.md)
 - 适用阶段：`technical_baseline_ready` 到共享设计冻结前
 - 目标平台：iOS 主平台，Android 仅保留验证与等待名单能力
 - 设计基线视口：`390 x 844 px`

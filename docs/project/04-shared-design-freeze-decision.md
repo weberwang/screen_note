@@ -9,7 +9,7 @@
 
 ## Reviewed Inputs
 
-- [screen-note-prd-2026-05-22.md](D:/Projects/Flutter/screen_note/docs/screen-note-prd-2026-05-22.md)
+- [screen-note-prd-2026-05-22.md](D:/Projects/Flutter/screen_note/docs/project/screen-note-prd-2026-05-22.md)
 - [01-global-technical-baseline.md](D:/Projects/Flutter/screen_note/docs/project/01-global-technical-baseline.md)
 - [02-product-design-clarification-packet.md](D:/Projects/Flutter/screen_note/docs/project/02-product-design-clarification-packet.md)
 - [DESIGN.md](D:/Projects/Flutter/screen_note/DESIGN.md)
