@@ -379,7 +379,7 @@ void main() {
 
       final subscription = container.listen<AsyncValue<TaskFeedSnapshot>>(
         taskFlowHomeSnapshotProvider,
-        (_, __) {},
+        (previous, next) {},
         fireImmediately: true,
       );
       addTearDown(subscription.close);

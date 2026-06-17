@@ -2,17 +2,17 @@
 artifact_type: flutter_workflow_record
 workflow_status: active
 execution_mode: auto
-current_stage: architecture_ready
+current_stage: implementing
 current_module: task-flow
-confirmation_status: pending_confirmation
-next_skill: none
+confirmation_status: not_required
+next_skill: superpowers:spec
 pending_next_stage: none
-pending_next_skill: superpowers:writing-plans
+pending_next_skill: none
 pending_status_updates: none
-route_lock: architecture_ready|task-flow|spec_review_gate|none|none
+route_lock: implementing|history-center|superpowers:spec|implementing|code_status=in_progress
 execution_owner: orchestrator
 last_receipt_status: advanced
-auto_progress_delta: wrote_task_flow_spec_and_waiting_user_review
+auto_progress_delta: landed_task_flow_module_code_and_opened_history_center_spec_entry
 record_scope: durable_project_record
 record_updated_at: 2026-06-17
 ---
@@ -23,51 +23,55 @@ record_updated_at: 2026-06-17
 
 - 当前工作流保持在 `--auto`，并已从旧的 `app-shell implementing` 记录纠偏回真实串行顺序。
 - `app-shell` 已作为已验证的首个模块保留完成态，当前活跃模块为 `task-flow`。
-- `task-flow` 已完成模块效果图、原型回放、原型实现、设计源包、冻结评审与架构映射。
+- `task-flow` 已完成模块效果图、原型回放、原型实现、设计源包、冻结评审、架构映射与当前冻结范围内的代码落地。
+- `task-flow` 聚焦测试与静态检查已通过，当前串行模块应切到 `history-center` 的实现入口准备。
 - 后续待继续推进的模块仍为 `history-center`、`settings-center`、`widget-bridge`。
 
 ## current_stage_detail
 
-- 当前阶段仍为 `architecture_ready`，因为 `task-flow` 已具备可执行的 [`task-flow.impl.md`](/E:/Projects/flutter/screen_note/docs/project/modules/task-flow/task-flow.impl.md)、冻结设计源、架构文档与正式实现 `Spec`。
+- 当前阶段已进入 `implementing`，因为 `task-flow` 的冻结范围代码已落地并通过模块聚焦验证。
 - 主验证平台仍为 `ios_device`，冻结视口仍为 `390 x 844 px`，本轮所有产物都延续浅色模式、单主任务优先与轻列表节奏。
-- 当前 route lock 为 `architecture_ready|task-flow|spec_review_gate|none|none`。
-- `Spec` 已产出，但按 `@superpowers brainstorming` 规则，必须先完成用户审阅，之后才能进入 `writing-plans`。
+- 当前 route lock 为 `implementing|history-center|superpowers:spec|implementing|code_status=in_progress`。
+- `task-flow` 已完成当前轮次实现，下一合法串行动作应切换到 `history-center` 的 `Spec` 入口，而不是继续在 `task-flow` 上扩范围。
 
 ## current_module_detail
 
 - current_module: `task-flow`
 - impl_status: `landed`
 - design_source_status: `frozen`
-- code_status: `not_started`
+- code_status: `landed`
 - generation_trace_status: `prototype_packet_generated`
 - architecture_trace_status: `ready`
-- spec_trace_status: `written_waiting_user_review`
+- spec_trace_status: `approved`
+- plan_trace_status: `executed`
 - latest_visual_evidence:
   - [task-flow-home.png](/E:/Projects/flutter/screen_note/docs/project/modules/task-flow/task-flow-home.png)
   - [task-flow-editor.png](/E:/Projects/flutter/screen_note/docs/project/modules/task-flow/task-flow-editor.png)
 - prototype_packet_status: `frozen_ready_for_architecture`
 - high_fidelity_freeze_status: `passed`
-- 说明：当前模块已具备实现文档、模块效果图、原型回放文档、模块 HTML 原型、设计源包、冻结决议、架构文档与正式 `Spec`，正在等待用户审阅 `Spec` 后进入 `Plan`。
+- verification_trace_status: `task_flow_tests_and_analyze_passed`
+- 说明：当前模块已完成首页展示层、编辑页保存回流、deep link 编辑链路与聚焦测试/静态检查收口，当前冻结范围内可视为已落地。
 
 ## next_action
 
-- next_skill: `none`
-- 原因：`Spec` 已经写入，当前合法下一步取决于用户是否确认这份 `Spec`，在确认前不能进入 `writing-plans`。
+- next_skill: `superpowers:spec`
+- 原因：`task-flow` 当前轮次已完成，下一步应按串行模块顺序切到 `history-center` 的实现入口。
 - 最小必需输入：
-  - 你对 [2026-06-17-task-flow-implementation-design.md](/E:/Projects/flutter/screen_note/docs/superpowers/specs/2026-06-17-task-flow-implementation-design.md) 的审阅结果
+  - [00-module-index.md](/E:/Projects/flutter/screen_note/docs/project/00-module-index.md)
+  - [history-center.impl.md](/E:/Projects/flutter/screen_note/docs/project/modules/history-center/history-center.impl.md)
 
 ## confirmation_gate
 
-- confirmation_status: `pending_confirmation`
-- 原因：`@superpowers brainstorming` 要求 `Spec` 写入后先由用户审阅，确认后才能进入 `writing-plans`。
+- confirmation_status: `not_required`
+- 原因：当前没有新的人工确认门禁。
 - pending_next_stage: `none`
-- pending_next_skill: `superpowers:writing-plans`
+- pending_next_skill: `none`
 - pending_status_updates: `none`
-- user_facing_confirmation_target: `task-flow 实现 Spec`
+- user_facing_confirmation_target: `not_applicable`
 
 ## blockers
 
-- `waiting_for_user_confirmation`
+- `none`
 
 ## global_artifact_index
 
@@ -97,13 +101,14 @@ record_updated_at: 2026-06-17
 - task_flow_freeze_decision: [task-flow-freeze-decision.md](/E:/Projects/flutter/screen_note/docs/project/modules/task-flow/task-flow-freeze-decision.md)
 - task_flow_architecture: [task-flow-architecture.md](/E:/Projects/flutter/screen_note/docs/project/modules/task-flow/task-flow-architecture.md)
 - task_flow_superpowers_spec: [2026-06-17-task-flow-implementation-design.md](/E:/Projects/flutter/screen_note/docs/superpowers/specs/2026-06-17-task-flow-implementation-design.md)
+- task_flow_superpowers_module_plan: [2026-06-17-task-flow-module-implementation.md](/E:/Projects/flutter/screen_note/docs/superpowers/plans/2026-06-17-task-flow-module-implementation.md)
 
 ## module_status_table
 
 | module | impl_status | design_source_status | code_status | note |
 | --- | --- | --- | --- | --- |
 | app-shell | landed | frozen | landed | 已完成本轮验证并作为串行首模块保留完成态 |
-| task-flow | landed | frozen | not_started | 已写入 Spec，等待用户审阅后进入 Plan |
+| task-flow | landed | frozen | landed | 当前冻结范围代码已落地，聚焦测试与静态检查已通过 |
 | history-center | implementation_final | not_started | not_started | 仅验证到 `impl.md` 存在，尚未进入模块设计源链路 |
 | settings-center | implementation_final | not_started | not_started | 仅验证到 `impl.md` 存在，尚未进入模块设计源链路 |
 | widget-bridge | implementation_final | frozen | not_started | 已有原型、冻结与架构产物，但本轮未验证代码完成态 |
@@ -121,3 +126,8 @@ record_updated_at: 2026-06-17
 - 2026-06-17：已生成 [task-flow-architecture.md](/E:/Projects/flutter/screen_note/docs/project/modules/task-flow/task-flow-architecture.md)，当前阶段推进为 `architecture_ready`，下一合法动作改为 `superpowers:spec`。
 - 2026-06-17：已生成 [2026-06-17-task-flow-implementation-design.md](/E:/Projects/flutter/screen_note/docs/superpowers/specs/2026-06-17-task-flow-implementation-design.md)，当前等待用户审阅 Spec，审阅通过后进入 `superpowers:writing-plans`。
 - 2026-06-17：根据用户审阅意见，已将“保存后自动刷新首页任务”“保存后自动回到首页”补入 `task-flow` 实现 Spec，继续等待 Spec 审阅确认。
+- 2026-06-17：用户明确选择继续完成整个 `task-flow` 模块，而不是仅完成“保存后回首页”小范围事项。
+- 2026-06-17：已生成 [2026-06-17-task-flow-module-implementation.md](/E:/Projects/flutter/screen_note/docs/superpowers/plans/2026-06-17-task-flow-module-implementation.md)，并按 `Subagent-Driven` 启动 Task 1。
+- 2026-06-17：Task 1 完成首页空态、历史状态摘要、进入 editor 跳转与首页结构收口，并通过 `test/features/task_flow/presentation/task_flow_home_page_test.dart`。
+- 2026-06-17：Task 2 完成编辑页校验提示、既有事项回填、编辑保存不新增第二条事项、保存后回首页与 deep link 回流测试壳收口。
+- 2026-06-17：`fvm flutter test test/features/task_flow` 与 `fvm flutter analyze lib/features/task_flow test/features/task_flow` 均通过，`task-flow` 当前冻结范围代码推进为 `code_status=landed`。
