@@ -27,7 +27,9 @@ void main() {
     final ProviderContainer container = ProviderContainer(
       overrides: [
         taskFlowDatabaseProvider.overrideWithValue(database),
-        settingsSharedPreferencesProvider.overrideWith((ref) async => preferences),
+        settingsSharedPreferencesProvider.overrideWith(
+          (ref) async => preferences,
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -46,10 +48,26 @@ void main() {
 
     expect(find.byType(AppShellPage), findsOneWidget);
     expect(find.byKey(const Key('app-shell-nav-surface')), findsOneWidget);
-    expect(find.byKey(const Key('app-shell-home-cta')), findsOneWidget);
     expect(find.byType(AppBar), findsNothing);
-    expect(find.byKey(const Key('app-shell-home-hero')), findsOneWidget);
-    expect(find.byKey(const Key('app-shell-home-landscape-band')), findsOneWidget);
+    expect(
+      find.byKey(const Key('task-flow-home-shell-top-action')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('task-flow-home-priority-card')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('task-flow-home-priority-meta-row')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('task-flow-home-priority-status-chip')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('task-flow-home-queue-row-0')), findsOneWidget);
+    expect(find.byKey(const Key('task-flow-home-queue-row-1')), findsOneWidget);
+    expect(find.byKey(const Key('task-flow-home-queue-row-2')), findsOneWidget);
     expect(find.text(localizations.homeGreetingTitle), findsOneWidget);
     expect(find.text(localizations.homePriorityTitle), findsOneWidget);
 
@@ -59,9 +77,11 @@ void main() {
     expect(find.byType(AppShellPage), findsOneWidget);
     expect(find.byType(SettingsCenterPage), findsOneWidget);
     expect(find.byKey(const Key('app-shell-nav-surface')), findsOneWidget);
-    expect(find.byKey(const Key('app-shell-home-cta')), findsNothing);
-    expect(find.byType(AppBar), findsNothing);
-    expect(find.byKey(const Key('app-shell-home-hero')), findsNothing);
-    expect(find.text(localizations.settingsSubtitle), findsOneWidget);
-  });
-}
+     expect(find.byType(AppBar), findsNothing);
+     expect(
+       find.byKey(const Key('task-flow-home-shell-top-action')),
+       findsNothing,
+     );
+     expect(find.byKey(const Key('task-flow-home-priority-card')), findsNothing);
+   });
+ }
