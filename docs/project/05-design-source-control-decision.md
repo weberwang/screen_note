@@ -48,3 +48,50 @@
 - `docs/project/modules/widget-bridge/widget-bridge.impl.md`
 - `tmp/flutter-workflow-orchestrator/workflow-record.md`
 
+---
+
+## design_source_decision
+
+- active_module: `settings-center`
+- active_selected_source: `docs/project/modules/settings-center/settings-center-settings.png`
+- conflicting_sources:
+  - `docs/project/modules/settings-center/settings-center-design-source-packet.md`
+  - `docs/project/modules/settings-center/settings-center.impl.md`
+- decision_summary: 用户于 `2026-06-17` 明确指定本轮 `settings-center` 还原以冻结截图为准；当截图与模块冻结文档在 `Sync / Membership` 当前展示值上冲突时，后续原型与显示层统一按截图落地，即 `Synced / Active`。
+
+## source_artifacts
+
+- [settings-center-settings.png](D:/Projects/Flutter/screen_note/docs/project/modules/settings-center/settings-center-settings.png)
+- [settings-center-design-source-packet.md](D:/Projects/Flutter/screen_note/docs/project/modules/settings-center/settings-center-design-source-packet.md)
+- [settings-center.impl.md](D:/Projects/Flutter/screen_note/docs/project/modules/settings-center/settings-center.impl.md)
+- [settings-center-freeze-decision.md](D:/Projects/Flutter/screen_note/docs/project/modules/settings-center/settings-center-freeze-decision.md)
+- [prototype/index.html](D:/Projects/Flutter/screen_note/docs/project/modules/settings-center/prototype/index.html)
+
+## change_classification
+
+- type: `design_change`
+- reason: 这是用户对模块冻结后视觉事实与文档冲突的显式裁决，影响模块原型、显示层文案和快照状态，不属于代码保真微调。
+
+## allowed_actions
+
+- 以 `settings-center-settings.png` 为准刷新 `settings-center` 模块原型
+- 同步修正文档中的 `Sync / Membership` 当前展示值
+- 按更新后的设计源恢复 Flutter 显示层与测试
+
+## forbidden_actions
+
+- 不得继续把 `localOnly / available` 作为本轮显示层主标准
+- 不得借本次裁决顺手扩大到新的页面结构或新增分区
+- 不得把截图优先解释成重新开启新的生图方向
+
+## rollback_stage
+
+- `module_design_frozen`
+- 说明：本次不回退共享设计方向，只在模块冻结范围内完成一次用户批准的设计源裁决与同步刷新。
+
+## document_update_location
+
+- `docs/project/modules/settings-center/settings-center-design-source-packet.md`
+- `docs/project/modules/settings-center/settings-center.impl.md`
+- `docs/project/modules/settings-center/settings-center-freeze-decision.md`
+- `docs/project/modules/settings-center/prototype/index.html`

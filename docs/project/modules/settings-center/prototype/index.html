@@ -53,22 +53,130 @@
 
       .screen {
         min-height: 844px;
-        padding: 28px 24px 128px;
+        padding: 10px 24px 128px;
+      }
+
+      .status-bar {
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 6px 0 2px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .status-icons {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .signal {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        height: 14px;
+      }
+
+      .signal span {
+        width: 3px;
+        border-radius: 999px;
+        background: var(--text-primary);
+      }
+
+      .signal span:nth-child(1) {
+        height: 5px;
+      }
+
+      .signal span:nth-child(2) {
+        height: 8px;
+      }
+
+      .signal span:nth-child(3) {
+        height: 11px;
+      }
+
+      .signal span:nth-child(4) {
+        height: 14px;
+      }
+
+      .wifi {
+        width: 16px;
+        height: 12px;
+        position: relative;
+      }
+
+      .wifi::before,
+      .wifi::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 2px solid var(--text-primary);
+        border-color: var(--text-primary) transparent transparent transparent;
+        border-radius: 50%;
+      }
+
+      .wifi::before {
+        width: 16px;
+        height: 16px;
+        top: -4px;
+      }
+
+      .wifi::after {
+        width: 10px;
+        height: 10px;
+        top: 0;
+      }
+
+      .battery {
+        width: 28px;
+        height: 14px;
+        border: 2px solid var(--text-primary);
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .battery::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        right: -4px;
+        width: 2px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--text-primary);
+      }
+
+      .battery::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        border-radius: 2px;
+        background: var(--text-primary);
       }
 
       .page-title {
-        margin: 18px 0 10px;
-        font-size: 38px;
-        line-height: 1.05;
-        font-weight: 700;
+        margin: 14px 0 10px;
+        font-size: 34px;
+        line-height: 1.02;
+        font-weight: 730;
         letter-spacing: -0.03em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .page-subtitle {
         margin: 0 0 28px;
         color: var(--text-secondary);
-        font-size: 19px;
-        line-height: 1.48;
+        max-width: 100%;
+        font-size: 15px;
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .group {
@@ -77,11 +185,12 @@
 
       .group-label {
         margin: 0 0 10px;
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 700;
         color: #7b837e;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.03em;
         text-transform: uppercase;
+        white-space: nowrap;
       }
 
       .panel {
@@ -116,16 +225,22 @@
 
       .row-copy strong {
         display: block;
-        font-size: 17px;
+        font-size: 14px;
         line-height: 1.26;
         font-weight: 600;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .row-copy span {
         color: var(--text-secondary);
-        font-size: 15px;
-        line-height: 1.4;
+        font-size: 12px;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .row-value {
@@ -133,8 +248,9 @@
         align-items: center;
         gap: 8px;
         color: var(--green);
-        font-size: 15px;
+        font-size: 12px;
         font-weight: 600;
+        white-space: nowrap;
       }
 
       .degradation {
@@ -149,6 +265,11 @@
         color: var(--coral);
       }
 
+      .privacy-note {
+        background: linear-gradient(135deg, #f1f8f0 0%, #f7fbf4 100%);
+        color: var(--green);
+      }
+
       .degradation .row-copy strong,
       .degradation .row-copy span {
         color: inherit;
@@ -157,14 +278,40 @@
       .degradation .action {
         border: 1px solid rgba(233, 106, 90, 0.36);
         border-radius: 16px;
-        padding: 10px 14px;
-        font-size: 15px;
+        padding: 8px 12px;
+        font-size: 12px;
         font-weight: 600;
         background: rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+      }
+
+      .privacy-note .action {
+        border-color: rgba(77, 139, 82, 0.22);
+        color: var(--green);
       }
 
       .membership-card {
         background: linear-gradient(180deg, #fffdf8 0%, #fbf6eb 100%);
+      }
+
+      .membership-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .membership-badge-mark {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        background: rgba(77, 139, 82, 0.14);
+        color: var(--green);
+        display: grid;
+        place-items: center;
+      }
+
+      .membership-row {
+        grid-template-columns: 52px 1fr 44px;
       }
 
       .fab {
@@ -223,21 +370,34 @@
   <body>
     <main class="phone">
       <section class="screen" aria-label="Settings center page">
+        <div class="status-bar" aria-hidden="true">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="signal">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="wifi"></div>
+            <div class="battery"></div>
+          </div>
+        </div>
         <h1 class="page-title">Settings Center</h1>
         <p class="page-subtitle">
-          Manage how Screen Note behaves across reminders, privacy, widgets, and recovery-safe system surfaces.
+          Manage how Screen Note works across your device and keep your notes safe.
         </p>
 
         <section class="group">
-          <p class="group-label">Permissions & Alerts</p>
+          <p class="group-label">NOTIFICATIONS</p>
           <div class="panel">
             <div class="row">
               <div class="row-icon">
-                <span class="material-symbols-rounded">notifications</span>
+                <span class="material-symbols-rounded">notifications_none</span>
               </div>
               <div class="row-copy">
                 <strong>Notification Status</strong>
-                <span>Stay updated on reminders and task changes.</span>
+                <span>Stay updated on saves and sync activity.</span>
               </div>
               <div class="row-value">
                 <span>Disabled</span>
@@ -246,38 +406,48 @@
             </div>
             <div class="degradation">
               <div class="row-icon" style="background: rgba(233, 106, 90, 0.12); color: var(--coral);">
-                <span class="material-symbols-rounded">warning</span>
+                <span class="material-symbols-rounded">notifications_off</span>
               </div>
               <div class="row-copy">
-                <strong>Permission downgraded</strong>
-                <span>Notifications are off. Task creation still works, but reminders are reduced.</span>
+                <strong>Notifications are turned off.</strong>
+                <span>You may miss important updates about your notes.</span>
               </div>
-              <button class="action" type="button">Review</button>
+              <button class="action" type="button">Enable</button>
             </div>
           </div>
         </section>
 
         <section class="group">
-          <p class="group-label">Privacy</p>
+          <p class="group-label">PRIVACY</p>
           <div class="panel">
             <div class="row">
               <div class="row-icon">
-                <span class="material-symbols-rounded">shield_lock</span>
+                <span class="material-symbols-rounded">shield</span>
               </div>
               <div class="row-copy">
                 <strong>Privacy Mode</strong>
-                <span>Protect task content in previews and widgets.</span>
+                <span>Hide sensitive content in previews.</span>
               </div>
               <div class="row-value">
                 <span>On</span>
                 <span class="material-symbols-rounded">chevron_right</span>
               </div>
             </div>
+            <div class="degradation privacy-note">
+              <div class="row-icon" style="background: rgba(77, 139, 82, 0.12); color: var(--green);">
+                <span class="material-symbols-rounded">visibility_off</span>
+              </div>
+              <div class="row-copy">
+                <strong>Privacy mode is on.</strong>
+                <span>Previews are blurred in recents and widgets.</span>
+              </div>
+              <button class="action" type="button">Learn more</button>
+            </div>
           </div>
         </section>
 
         <section class="group">
-          <p class="group-label">Display</p>
+          <p class="group-label">WIDGET</p>
           <div class="panel">
             <div class="row">
               <div class="row-icon">
@@ -285,10 +455,10 @@
               </div>
               <div class="row-copy">
                 <strong>Widget Display Mode</strong>
-                <span>Choose whether widgets show full content or safe preview text.</span>
+                <span>Choose what shows in your widget.</span>
               </div>
               <div class="row-value">
-                <span>Preview Only</span>
+                <span>Blurred Previews</span>
                 <span class="material-symbols-rounded">chevron_right</span>
               </div>
             </div>
@@ -296,18 +466,18 @@
         </section>
 
         <section class="group">
-          <p class="group-label">Sync & Backup</p>
+          <p class="group-label">SYNC</p>
           <div class="panel">
             <div class="row">
               <div class="row-icon">
-                <span class="material-symbols-rounded">cloud_done</span>
+                <span class="material-symbols-rounded">cloud</span>
               </div>
               <div class="row-copy">
                 <strong>Sync Status</strong>
-                <span>Current build keeps a safe local source of truth and shows later sync entry points here.</span>
+                <span>Last synced just now</span>
               </div>
               <div class="row-value">
-                <span>Local Only</span>
+                <span>Synced</span>
                 <span class="material-symbols-rounded">chevron_right</span>
               </div>
             </div>
@@ -315,19 +485,33 @@
         </section>
 
         <section class="group">
-          <p class="group-label">Membership</p>
+          <p class="group-label">MEMBERSHIP</p>
           <div class="panel membership-card">
             <div class="row">
               <div class="row-icon" style="background: var(--gold-soft);">
-                <span class="material-symbols-rounded">workspace_premium</span>
+                <span class="material-symbols-rounded">crown</span>
               </div>
               <div class="row-copy">
-                <strong>Premium</strong>
-                <span>Membership stays visible but secondary to permissions, privacy, and display safety.</span>
+                <strong>Screen Note Pro</strong>
+                <span>Manage your plan and benefits.</span>
               </div>
               <div class="row-value">
-                <span>Available</span>
+                <span>Active</span>
                 <span class="material-symbols-rounded">chevron_right</span>
+              </div>
+            </div>
+            <div class="row membership-row" style="border-bottom: none; background: rgba(255, 252, 245, 0.7);">
+              <div class="row-icon" style="background: rgba(214, 182, 99, 0.12); color: var(--green);">
+                <span class="material-symbols-rounded">verified</span>
+              </div>
+              <div class="row-copy">
+                <strong>You're using Screen Note Pro</strong>
+                <span>Thank you for supporting a focused and private note-taking experience.</span>
+              </div>
+              <div class="membership-badge">
+                <div class="membership-badge-mark">
+                  <span class="material-symbols-rounded">military_tech</span>
+                </div>
               </div>
             </div>
           </div>

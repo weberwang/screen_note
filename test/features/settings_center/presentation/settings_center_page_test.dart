@@ -14,8 +14,6 @@ import 'package:screen_note/features/settings_center/domain/entities/settings_me
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_sync_status.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
-import 'package:screen_note/features/settings_center/domain/entities/widget_pin_request_result.dart';
-import 'package:screen_note/features/settings_center/domain/repositories/widget_installation_repository.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
@@ -41,23 +39,23 @@ void main() {
     );
 
     expect(find.text('Settings Center'), findsOneWidget);
-    expect(find.text('Notifications'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Privacy'), 120);
-    expect(find.text('Privacy'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Display'), 120);
-    expect(find.text('Display'), findsOneWidget);
-    expect(find.text('Theme'), findsOneWidget);
-    expect(find.text('Language'), findsOneWidget);
-    expect(find.text('Add Home Widget'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Sync & Backup'), 200);
-    expect(find.text('Sync & Backup'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Membership'), 120);
-    expect(find.text('Membership'), findsOneWidget);
+    expect(find.text('NOTIFICATIONS'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('PRIVACY'), 120);
+    expect(find.text('PRIVACY'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('WIDGET'), 120);
+    expect(find.text('WIDGET'), findsOneWidget);
+    expect(find.text('Theme'), findsNothing);
+    expect(find.text('Language'), findsNothing);
+    expect(find.text('Add Home Widget'), findsNothing);
+    await tester.scrollUntilVisible(find.text('SYNC'), 200);
+    expect(find.text('SYNC'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('MEMBERSHIP'), 120);
+    expect(find.text('MEMBERSHIP'), findsOneWidget);
   });
 
-  testWidgets('iOS 涓嬬偣娣诲姞妗岄潰灏忕粍浠朵細鎵撳紑娣诲姞姝ラ寮曞', (tester) async {
+  testWidgets('隐私分区会显示截图定义的安全说明块', (tester) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
-      initial: const SettingsCenterPreferences(),
+      initial: const SettingsCenterPreferences(privacyModeEnabled: true),
     );
     final notificationRepository = _FakeNotificationPermissionRepository(
       initialStatus: NotificationPermissionStatus.enabled,
@@ -67,89 +65,117 @@ void main() {
       tester,
       preferencesRepository: preferencesRepository,
       notificationRepository: notificationRepository,
-      platform: TargetPlatform.iOS,
     );
 
-    await tester.scrollUntilVisible(find.text('Add Home Widget'), 120);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Add Home Widget'));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Privacy Mode'), 120);
 
-    expect(find.text('Add Home Widget'), findsNWidgets(2));
+    expect(find.text('Privacy mode is on.'), findsOneWidget);
     expect(
-      find.text(
-        'Touch and hold the Home Screen, tap Edit, then choose Add Widget and search for Screen Note.',
-      ),
+      find.text('Previews are blurred in recents and widgets.'),
       findsOneWidget,
     );
+    expect(find.text('Learn more'), findsOneWidget);
   });
 
-  testWidgets('Android 涓嬪彲浠ヤ粠璁剧疆椤佃Е鍙戞坊鍔犲埌妗岄潰鍔ㄤ綔', (tester) async {
-    _prepareTestViewport(tester);
+  testWidgets('隐私分区使用状态值行而不是原生开关', (tester) async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(privacyModeEnabled: true),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+    );
+
+    await tester.scrollUntilVisible(find.text('Privacy Mode'), 120);
+
+    expect(find.byType(Switch), findsNothing);
+    expect(find.text('On'), findsOneWidget);
+  });
+
+  testWidgets('同步与会员分区会按截图显示 Synced 和 Active', (tester) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
     );
     final notificationRepository = _FakeNotificationPermissionRepository(
       initialStatus: NotificationPermissionStatus.enabled,
     );
-    final widgetInstallationRepository = _FakeWidgetInstallationRepository(
-      result: WidgetPinRequestResult.requested,
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
     );
-    final ProviderContainer container = ProviderContainer(
-      overrides: [
-        settingsPreferencesRepositoryProvider.overrideWithValue(
-          preferencesRepository,
-        ),
-        notificationPermissionRepositoryProvider.overrideWithValue(
-          notificationRepository,
-        ),
-        widgetInstallationRepositoryProvider.overrideWithValue(
-          widgetInstallationRepository,
-        ),
-      ],
+
+    await tester.scrollUntilVisible(find.text('Sync Status'), 160);
+    expect(find.text('Synced'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Screen Note Pro'), 160);
+    expect(find.text('Active'), findsOneWidget);
+  });
+
+  testWidgets('设置页主要文本会优先保持单行显示', (tester) async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(privacyModeEnabled: true),
     );
-    addTearDown(container.dispose);
-
-    await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: ScreenNoteScreenUtilContract(
-          designSize: screenNoteDesignSize,
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (context, child) {
-            return MaterialApp(
-              locale: const Locale('en'),
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              theme: ScreenNoteTheme.light().copyWith(
-                splashFactory: NoSplash.splashFactory,
-                platform: TargetPlatform.android,
-              ),
-              darkTheme: ScreenNoteTheme.dark().copyWith(
-                splashFactory: NoSplash.splashFactory,
-                platform: TargetPlatform.android,
-              ),
-              home: const Scaffold(body: SettingsCenterPage()),
-            );
-          },
-        ),
-      ),
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.disabled,
     );
-    await tester.pumpAndSettle();
 
-    await tester.scrollUntilVisible(find.text('Add Home Widget'), 120);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Add Home Widget'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Add to Home Screen'));
-    await tester.pump();
-    await tester.pumpAndSettle();
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+    );
 
-    expect(widgetInstallationRepository.requestCount, 1);
-    expect(
-      container.read(appShellUiStateControllerProvider).feedback?.text,
-      'Widget request sent to the launcher.',
+    _expectSingleLineText(
+      tester,
+      'Settings Center',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+    _expectSingleLineText(
+      tester,
+      'Manage how Screen Note works across your device and keep your notes safe.',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+    _expectSingleLineText(
+      tester,
+      'Notification Status',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+    _expectSingleLineText(
+      tester,
+      'Stay updated on saves and sync activity.',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+
+    await tester.scrollUntilVisible(find.text('Privacy mode is on.'), 120);
+
+    _expectSingleLineText(
+      tester,
+      'Privacy mode is on.',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+    _expectSingleLineText(
+      tester,
+      'Previews are blurred in recents and widgets.',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+
+    await tester.scrollUntilVisible(find.text('Synced'), 160);
+    _expectSingleLineText(
+      tester,
+      'Synced',
+      expectedOverflow: TextOverflow.ellipsis,
+    );
+
+    await tester.scrollUntilVisible(find.text("You're using Screen Note Pro"), 160);
+    _expectSingleLineText(
+      tester,
+      "You're using Screen Note Pro",
+      expectedOverflow: TextOverflow.ellipsis,
     );
   });
 
@@ -294,15 +320,15 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Permission downgraded'), findsOneWidget);
+    expect(find.text('Notifications are turned off.'), findsOneWidget);
 
-    await tester.ensureVisible(find.text('Review'));
+    await tester.ensureVisible(find.text('Enable'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Review'));
+    await tester.tap(find.text('Enable'));
     await tester.pump();
     await tester.pumpAndSettle();
 
-    expect(find.text('Permission downgraded'), findsNothing);
+    expect(find.text('Notifications are turned off.'), findsNothing);
     expect(
       container
           .read(settingsCenterControllerProvider)
@@ -311,7 +337,7 @@ void main() {
       NotificationPermissionStatus.enabled,
     );
   });
-  testWidgets('鍒囨崲涓婚鍜岃瑷€鍚庝細鍐欏叆鍋忓ソ浠撳偍', (tester) async {
+  testWidgets('会员分区会显示截图定义的次级说明块', (tester) async {
     final preferencesRepository = _InMemorySettingsPreferencesRepository(
       initial: const SettingsCenterPreferences(),
     );
@@ -325,27 +351,15 @@ void main() {
       notificationRepository: notificationRepository,
     );
 
-    await tester.scrollUntilVisible(find.text('Theme'), 120);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Theme'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Dark'));
-    await tester.pump();
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Screen Note Pro'), 180);
 
-    var stored = await preferencesRepository.loadPreferences();
-    expect(stored.themeModePreference, SettingsThemeModePreference.dark);
-
-    await tester.scrollUntilVisible(find.text('Language'), 120);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Language'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Simplified Chinese').last);
-    await tester.pump();
-    await tester.pumpAndSettle();
-
-    stored = await preferencesRepository.loadPreferences();
-    expect(stored.languagePreference, SettingsLanguagePreference.zh);
+    expect(find.text("You're using Screen Note Pro"), findsOneWidget);
+    expect(
+      find.text(
+        'Thank you for supporting a focused and private note-taking experience.',
+      ),
+      findsOneWidget,
+    );
   });
 
   test('refresh 不应依赖 settingsCenterSnapshotProvider 的二次失效重读', () async {
@@ -558,8 +572,8 @@ SettingsCenterSnapshot _buildSettingsCenterSnapshot({
   return SettingsCenterSnapshot(
     notificationPermissionStatus: notificationPermissionStatus,
     preferences: preferences,
-    syncStatus: SettingsSyncStatus.localOnly,
-    membershipState: SettingsMembershipState.available,
+    syncStatus: SettingsSyncStatus.synced,
+    membershipState: SettingsMembershipState.active,
   );
 }
 
@@ -567,7 +581,6 @@ Future<void> _pumpSettingsPage(
   WidgetTester tester, {
   required SettingsPreferencesRepository preferencesRepository,
   required NotificationPermissionRepository notificationRepository,
-  WidgetInstallationRepository? widgetInstallationRepository,
   TargetPlatform platform = TargetPlatform.android,
   Locale locale = const Locale('en'),
   Size viewportSize = const Size(390, 844),
@@ -583,10 +596,6 @@ Future<void> _pumpSettingsPage(
         notificationPermissionRepositoryProvider.overrideWithValue(
           notificationRepository,
         ),
-        if (widgetInstallationRepository != null)
-          widgetInstallationRepositoryProvider.overrideWithValue(
-            widgetInstallationRepository,
-          ),
       ],
       child: ScreenNoteScreenUtilContract(
         designSize: screenNoteDesignSize,
@@ -622,6 +631,17 @@ void _prepareTestViewport(
   tester.view.physicalSize = viewportSize;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
+}
+
+/// 断言关键文本节点启用单行与省略策略，避免页面文字再次撑高布局。
+void _expectSingleLineText(
+  WidgetTester tester,
+  String text, {
+  required TextOverflow expectedOverflow,
+}) {
+  final Text widget = tester.widget<Text>(find.text(text).first);
+  expect(widget.maxLines, 1);
+  expect(widget.overflow, expectedOverflow);
 }
 
 /// 鍐呭瓨鍋忓ソ浠撳偍鐢ㄤ簬椤甸潰娴嬭瘯锛岄伩鍏嶄緷璧?shared_preferences 鐨勫叏灞€闈欐€佺紦瀛樸€?
@@ -688,17 +708,3 @@ final class _FakeNotificationPermissionRepository
   }
 }
 
-/// 鍋囧皬缁勪欢瀹夎浠撳偍鐢ㄤ簬楠岃瘉璁剧疆椤靛叆鍙ｄ細鎶婂姩浣滀氦缁欏簲鐢ㄥ眰鑰屼笉鏄〉闈㈢洿鎺ョ鎻掍欢銆?
-final class _FakeWidgetInstallationRepository
-    implements WidgetInstallationRepository {
-  _FakeWidgetInstallationRepository({required this.result});
-
-  final WidgetPinRequestResult result;
-  int requestCount = 0;
-
-  @override
-  Future<WidgetPinRequestResult> requestPinWidget() async {
-    requestCount += 1;
-    return result;
-  }
-}

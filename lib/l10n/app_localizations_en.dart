@@ -47,6 +47,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeGreetingSubtitle => 'Focus on what matters most today.';
 
   @override
+  String get homeTodayChip => 'Today';
+
+  @override
   String get homePriorityLabel => 'PRIORITY';
 
   @override
@@ -102,6 +105,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Keep moving on the next meaningful step.';
 
   @override
+  String get taskFlowPriorityContinueAction => 'Continue';
+
+  @override
+  String get taskFlowPriorityEmptyAction => 'Start task';
+
+  @override
+  String get taskFlowPrivateTitle => 'Private task';
+
+  @override
   String get taskFlowPinnedLabel => 'Pinned task';
 
   @override
@@ -118,11 +130,50 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get taskFlowOverdueSectionTitle => 'Overdue';
+
+  @override
+  String get taskFlowUpNextSectionTitle => 'Up next';
+
+  @override
   String get taskEditorTitle => 'Edit task';
+
+  @override
+  String get taskEditorTopSaveAction => 'Save';
 
   @override
   String get taskEditorHelperText =>
       'Capture the core task first, then keep the remaining fields minimal before saving.';
+
+  @override
+  String get taskEditorDueDateLabel => 'Due date';
+
+  @override
+  String get taskEditorDueTimeLabel => 'Due time';
+
+  @override
+  String get taskEditorNoDueDate => 'Not set';
+
+  @override
+  String get taskEditorNoDueTime => 'Not set';
+
+  @override
+  String get taskEditorFocusLabel => 'Current focus';
+
+  @override
+  String get taskEditorFocusPinnedValue => 'Pinned task';
+
+  @override
+  String get taskEditorFocusNormalValue => 'Regular task';
+
+  @override
+  String get taskEditorPrivacyFieldLabel => 'Privacy';
+
+  @override
+  String get taskEditorPrivacyPublicValue => 'Visible';
+
+  @override
+  String get taskEditorPrivacyPrivateValue => 'Private';
 
   @override
   String get taskTitleLabel => 'Title';
@@ -177,11 +228,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyDeletedSectionTitle => 'Recently deleted';
 
   @override
-  String get historyEmptyTitle => 'Your history is clear for now.';
+  String get historyEmptyTitle => 'No history yet';
 
   @override
   String get historyEmptyBody =>
-      'Completed and deleted tasks will appear here so you can trust that nothing vanished unexpectedly.';
+      'Completed or deleted tasks will appear here when you need them.';
+
+  @override
+  String get historyEmptyAddAction => 'Create task';
 
   @override
   String get historyLoadFailed => 'History failed to load. Try again shortly.';
@@ -214,43 +268,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSubtitle =>
-      'Manage how Screen Note behaves across reminders, privacy, widgets, and recovery-safe system surfaces.';
+      'Manage how Screen Note works across your device and keep your notes safe.';
 
   @override
-  String get settingsNotificationsSection => 'Notifications';
+  String get settingsNotificationsSection => 'NOTIFICATIONS';
 
   @override
-  String get settingsPrivacySection => 'Privacy';
+  String get settingsPrivacySection => 'PRIVACY';
 
   @override
-  String get settingsDisplaySection => 'Display';
+  String get settingsDisplaySection => 'WIDGET';
 
   @override
-  String get settingsSyncSection => 'Sync & Backup';
+  String get settingsSyncSection => 'SYNC';
 
   @override
-  String get settingsMembershipSection => 'Membership';
+  String get settingsMembershipSection => 'MEMBERSHIP';
 
   @override
   String get settingsNotificationStatusTitle => 'Notification Status';
 
   @override
   String get settingsNotificationStatusBody =>
-      'Stay updated on reminders and task changes.';
+      'Stay updated on saves and sync activity.';
 
   @override
   String get settingsPrivacyModeTitle => 'Privacy Mode';
 
   @override
-  String get settingsPrivacyModeBody =>
-      'Protect task content in previews and widgets.';
+  String get settingsPrivacyModeBody => 'Hide sensitive content in previews.';
 
   @override
   String get settingsWidgetDisplayModeTitle => 'Widget Display Mode';
 
   @override
   String get settingsWidgetDisplayModeBody =>
-      'Choose whether widgets show full content or a safe preview.';
+      'Choose what shows in your widget.';
 
   @override
   String get settingsWidgetInstallTitle => 'Add Home Widget';
@@ -288,15 +341,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSyncStatusTitle => 'Sync Status';
 
   @override
-  String get settingsSyncStatusBody =>
-      'This build keeps a safe local source of truth while later sync entry points stay visible here.';
+  String get settingsSyncStatusBody => 'Last synced just now';
 
   @override
-  String get settingsMembershipTitle => 'Premium';
+  String get settingsMembershipTitle => 'Screen Note Pro';
 
   @override
-  String get settingsMembershipBody =>
-      'Membership stays visible but secondary to permissions, privacy, and display safety.';
+  String get settingsMembershipBody => 'Manage your plan and benefits.';
 
   @override
   String get settingsNotificationEnabled => 'Enabled';
@@ -308,17 +359,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNotificationUnknown => 'Unknown';
 
   @override
-  String get settingsPermissionDowngradedTitle => 'Permission downgraded';
+  String get settingsPermissionDowngradedTitle =>
+      'Notifications are turned off.';
 
   @override
   String get settingsPermissionDowngradedBody =>
-      'Notifications are off. Task creation still works, but reminders are reduced.';
+      'You may miss important updates about your notes.';
 
   @override
-  String get settingsReviewAction => 'Review';
+  String get settingsReviewAction => 'Enable';
 
   @override
-  String get settingsWidgetDisplayPreviewOnly => 'Preview Only';
+  String get settingsWidgetDisplayPreviewOnly => 'Blurred Previews';
+
+  @override
+  String get settingsPrivacyModeOn => 'On';
+
+  @override
+  String get settingsPrivacyModeOff => 'Off';
 
   @override
   String get settingsWidgetDisplayFullContent => 'Full Content';
@@ -342,7 +400,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSyncLocalOnly => 'Local Only';
 
   @override
+  String get settingsSyncSynced => 'Synced';
+
+  @override
   String get settingsMembershipAvailable => 'Available';
+
+  @override
+  String get settingsPrivacyProtectionTitle => 'Privacy mode is on.';
+
+  @override
+  String get settingsPrivacyProtectionBody =>
+      'Previews are blurred in recents and widgets.';
+
+  @override
+  String get settingsPrivacyProtectionAction => 'Learn more';
+
+  @override
+  String get settingsMembershipSupportTitle => 'You\'re using Screen Note Pro';
+
+  @override
+  String get settingsMembershipSupportBody =>
+      'Thank you for supporting a focused and private note-taking experience.';
+
+  @override
+  String get settingsMembershipActive => 'Active';
 
   @override
   String get settingsWidgetDisplayPickerTitle => 'Choose a widget display mode';

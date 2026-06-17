@@ -45,6 +45,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeGreetingSubtitle => '先把今天最重要的事放在最前面。';
 
   @override
+  String get homeTodayChip => 'Today';
+
+  @override
   String get homePriorityLabel => '当前重点';
 
   @override
@@ -94,6 +97,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskFlowPriorityFallbackBody => '先继续推进下一步最有价值的动作。';
 
   @override
+  String get taskFlowPriorityContinueAction => '继续处理';
+
+  @override
+  String get taskFlowPriorityEmptyAction => '开始添加';
+
+  @override
+  String get taskFlowPrivateTitle => '私密事项';
+
+  @override
   String get taskFlowPinnedLabel => '置顶事项';
 
   @override
@@ -110,10 +122,49 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get taskFlowOverdueSectionTitle => '逾期待处理';
+
+  @override
+  String get taskFlowUpNextSectionTitle => '接下来';
+
+  @override
   String get taskEditorTitle => '编辑事项';
 
   @override
+  String get taskEditorTopSaveAction => '保存';
+
+  @override
   String get taskEditorHelperText => '先写下这条事项的核心内容，其他字段保持最小输入即可保存。';
+
+  @override
+  String get taskEditorDueDateLabel => '截止日期';
+
+  @override
+  String get taskEditorDueTimeLabel => '截止时间';
+
+  @override
+  String get taskEditorNoDueDate => '未设置';
+
+  @override
+  String get taskEditorNoDueTime => '未设置';
+
+  @override
+  String get taskEditorFocusLabel => '当前重点';
+
+  @override
+  String get taskEditorFocusPinnedValue => '置顶事项';
+
+  @override
+  String get taskEditorFocusNormalValue => '普通事项';
+
+  @override
+  String get taskEditorPrivacyFieldLabel => '隐私';
+
+  @override
+  String get taskEditorPrivacyPublicValue => '公开';
+
+  @override
+  String get taskEditorPrivacyPrivateValue => '私密';
 
   @override
   String get taskTitleLabel => '标题';
@@ -166,10 +217,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get historyDeletedSectionTitle => '最近删除';
 
   @override
-  String get historyEmptyTitle => '当前还没有历史记录';
+  String get historyEmptyTitle => '还没有历史记录';
 
   @override
-  String get historyEmptyBody => '完成或删除过的事项会出现在这里，方便你确认它们仍然可追溯、可找回。';
+  String get historyEmptyBody => '当你完成或删除事项时，它们会在需要时出现在这里。';
+
+  @override
+  String get historyEmptyAddAction => '新建事项';
 
   @override
   String get historyLoadFailed => '历史记录加载失败，请稍后再试';
@@ -200,7 +254,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTitle => '设置中心';
 
   @override
-  String get settingsSubtitle => '统一管理提醒、隐私、小组件展示以及后续系统能力入口，同时保持主链路可继续使用。';
+  String get settingsSubtitle => '统一管理 Screen Note 在设备上的工作方式，并继续保护你的笔记安全。';
 
   @override
   String get settingsNotificationsSection => '通知';
@@ -209,31 +263,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsPrivacySection => '隐私';
 
   @override
-  String get settingsDisplaySection => '展示';
+  String get settingsDisplaySection => '小组件';
 
   @override
-  String get settingsSyncSection => '同步与备份';
+  String get settingsSyncSection => '同步';
 
   @override
-  String get settingsMembershipSection => '权益入口';
+  String get settingsMembershipSection => '会员';
 
   @override
   String get settingsNotificationStatusTitle => '通知状态';
 
   @override
-  String get settingsNotificationStatusBody => '查看提醒与事项状态变化是否还能被正常送达。';
+  String get settingsNotificationStatusBody => '查看保存和同步动态是否仍能被正常送达。';
 
   @override
   String get settingsPrivacyModeTitle => '隐私模式';
 
   @override
-  String get settingsPrivacyModeBody => '保护锁屏预览和小组件中的事项正文不被直接暴露。';
+  String get settingsPrivacyModeBody => '在预览中隐藏敏感内容。';
 
   @override
   String get settingsWidgetDisplayModeTitle => 'Widget 展示模式';
 
   @override
-  String get settingsWidgetDisplayModeBody => '选择小组件显示完整内容，还是只显示安全预览。';
+  String get settingsWidgetDisplayModeBody => '选择小组件中显示什么内容。';
 
   @override
   String get settingsWidgetInstallTitle => '添加桌面小组件';
@@ -269,13 +323,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsSyncStatusTitle => '同步状态';
 
   @override
-  String get settingsSyncStatusBody => '当前版本以本地真源为主，后续同步入口会继续挂在这里。';
+  String get settingsSyncStatusBody => '刚刚完成同步';
 
   @override
-  String get settingsMembershipTitle => '高级权益';
+  String get settingsMembershipTitle => 'Screen Note Pro';
 
   @override
-  String get settingsMembershipBody => '权益入口继续可见，但它必须弱于通知、隐私和展示安全这些核心设置。';
+  String get settingsMembershipBody => '管理你的方案与权益。';
 
   @override
   String get settingsNotificationEnabled => '已开启';
@@ -287,16 +341,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsNotificationUnknown => '未知';
 
   @override
-  String get settingsPermissionDowngradedTitle => '能力已降级';
+  String get settingsPermissionDowngradedTitle => '通知已关闭。';
 
   @override
-  String get settingsPermissionDowngradedBody => '通知未开启。事项创建仍可继续，但提醒链路会降级运行。';
+  String get settingsPermissionDowngradedBody => '你可能会错过与笔记相关的重要更新。';
 
   @override
-  String get settingsReviewAction => '复查';
+  String get settingsReviewAction => '启用';
 
   @override
-  String get settingsWidgetDisplayPreviewOnly => '仅安全预览';
+  String get settingsWidgetDisplayPreviewOnly => '模糊预览';
+
+  @override
+  String get settingsPrivacyModeOn => '开启';
+
+  @override
+  String get settingsPrivacyModeOff => '关闭';
 
   @override
   String get settingsWidgetDisplayFullContent => '显示完整内容';
@@ -320,7 +380,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsSyncLocalOnly => '仅本地';
 
   @override
+  String get settingsSyncSynced => '已同步';
+
+  @override
   String get settingsMembershipAvailable => '可查看';
+
+  @override
+  String get settingsPrivacyProtectionTitle => '隐私模式已开启。';
+
+  @override
+  String get settingsPrivacyProtectionBody => '最近记录和小组件中的预览内容都会被模糊处理。';
+
+  @override
+  String get settingsPrivacyProtectionAction => '了解更多';
+
+  @override
+  String get settingsMembershipSupportTitle => '你正在使用 Screen Note Pro';
+
+  @override
+  String get settingsMembershipSupportBody => '感谢你支持更专注、更私密的笔记体验。';
+
+  @override
+  String get settingsMembershipActive => '已激活';
 
   @override
   String get settingsWidgetDisplayPickerTitle => '选择 Widget 展示模式';

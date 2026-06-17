@@ -48,6 +48,10 @@
   "@homeGreetingSubtitle": {
     "description": "首页问候区副标题。"
   },
+  "homeTodayChip": "Today",
+  "@homeTodayChip": {
+    "description": "首页问候区下方的时间语义胶囊文案。"
+  },
   "homePriorityLabel": "当前重点",
   "@homePriorityLabel": {
     "description": "首页主事项卡片顶部标签。"
@@ -118,6 +122,18 @@
   "@taskFlowPriorityFallbackBody": {
     "description": "主事项没有可展示备注时使用的补充说明文案。"
   },
+  "taskFlowPriorityContinueAction": "继续处理",
+  "@taskFlowPriorityContinueAction": {
+    "description": "首页主事项卡片右侧主 CTA 文案。"
+  },
+  "taskFlowPriorityEmptyAction": "开始添加",
+  "@taskFlowPriorityEmptyAction": {
+    "description": "首页主事项为空时卡片右侧主 CTA 文案。"
+  },
+  "taskFlowPrivateTitle": "私密事项",
+  "@taskFlowPrivateTitle": {
+    "description": "首页对私密事项统一展示的安全标题。"
+  },
   "taskFlowPinnedLabel": "置顶事项",
   "@taskFlowPinnedLabel": {
     "description": "首页主事项卡片展示置顶事项时使用的状态文案。"
@@ -144,13 +160,65 @@
       }
     }
   },
+  "taskFlowOverdueSectionTitle": "逾期待处理",
+  "@taskFlowOverdueSectionTitle": {
+    "description": "首页逾期事项分区标题。"
+  },
+  "taskFlowUpNextSectionTitle": "接下来",
+  "@taskFlowUpNextSectionTitle": {
+    "description": "首页非逾期事项队列分区标题。"
+  },
   "taskEditorTitle": "编辑事项",
   "@taskEditorTitle": {
     "description": "事项编辑页标题。"
   },
+  "taskEditorTopSaveAction": "保存",
+  "@taskEditorTopSaveAction": {
+    "description": "事项编辑页顶部轻量保存动作文案。"
+  },
   "taskEditorHelperText": "先写下这条事项的核心内容，其他字段保持最小输入即可保存。",
   "@taskEditorHelperText": {
     "description": "事项编辑页标题下的辅助说明。"
+  },
+  "taskEditorDueDateLabel": "截止日期",
+  "@taskEditorDueDateLabel": {
+    "description": "事项编辑页截止日期字段标题。"
+  },
+  "taskEditorDueTimeLabel": "截止时间",
+  "@taskEditorDueTimeLabel": {
+    "description": "事项编辑页截止时间字段标题。"
+  },
+  "taskEditorNoDueDate": "未设置",
+  "@taskEditorNoDueDate": {
+    "description": "事项编辑页截止日期尚未设置时展示的值文案。"
+  },
+  "taskEditorNoDueTime": "未设置",
+  "@taskEditorNoDueTime": {
+    "description": "事项编辑页截止时间尚未设置时展示的值文案。"
+  },
+  "taskEditorFocusLabel": "当前重点",
+  "@taskEditorFocusLabel": {
+    "description": "事项编辑页重点状态字段标题。"
+  },
+  "taskEditorFocusPinnedValue": "置顶事项",
+  "@taskEditorFocusPinnedValue": {
+    "description": "事项编辑页重点状态为置顶时展示的值文案。"
+  },
+  "taskEditorFocusNormalValue": "普通事项",
+  "@taskEditorFocusNormalValue": {
+    "description": "事项编辑页重点状态为普通时展示的值文案。"
+  },
+  "taskEditorPrivacyFieldLabel": "隐私",
+  "@taskEditorPrivacyFieldLabel": {
+    "description": "事项编辑页隐私字段标题。"
+  },
+  "taskEditorPrivacyPublicValue": "公开",
+  "@taskEditorPrivacyPublicValue": {
+    "description": "事项编辑页隐私字段为公开时展示的值文案。"
+  },
+  "taskEditorPrivacyPrivateValue": "私密",
+  "@taskEditorPrivacyPrivateValue": {
+    "description": "事项编辑页隐私字段为私密时展示的值文案。"
   },
   "taskTitleLabel": "标题",
   "@taskTitleLabel": {
@@ -221,13 +289,17 @@
   "@historyDeletedSectionTitle": {
     "description": "历史中心最近删除分区标题。"
   },
-  "historyEmptyTitle": "当前还没有历史记录",
+  "historyEmptyTitle": "还没有历史记录",
   "@historyEmptyTitle": {
     "description": "历史中心在最近完成和最近删除都为空时展示的空态标题。"
   },
-  "historyEmptyBody": "完成或删除过的事项会出现在这里，方便你确认它们仍然可追溯、可找回。",
+  "historyEmptyBody": "当你完成或删除事项时，它们会在需要时出现在这里。",
   "@historyEmptyBody": {
     "description": "历史中心空态时展示的补充说明。"
+  },
+  "historyEmptyAddAction": "新建事项",
+  "@historyEmptyAddAction": {
+    "description": "历史中心空状态底部加号动作的提示与无障碍标签。"
   },
   "historyLoadFailed": "历史记录加载失败，请稍后再试",
   "@historyLoadFailed": {
@@ -271,7 +343,7 @@
   "@settingsTitle": {
     "description": "设置中心页面主标题。"
   },
-  "settingsSubtitle": "统一管理提醒、隐私、小组件展示以及后续系统能力入口，同时保持主链路可继续使用。",
+  "settingsSubtitle": "统一管理 Screen Note 在设备上的工作方式，并继续保护你的笔记安全。",
   "@settingsSubtitle": {
     "description": "设置中心标题下的辅助说明文案。"
   },
@@ -283,15 +355,15 @@
   "@settingsPrivacySection": {
     "description": "隐私设置分区标题。"
   },
-  "settingsDisplaySection": "展示",
+  "settingsDisplaySection": "小组件",
   "@settingsDisplaySection": {
     "description": "展示与 Widget 设置分区标题。"
   },
-  "settingsSyncSection": "同步与备份",
+  "settingsSyncSection": "同步",
   "@settingsSyncSection": {
     "description": "同步设置分区标题。"
   },
-  "settingsMembershipSection": "权益入口",
+  "settingsMembershipSection": "会员",
   "@settingsMembershipSection": {
     "description": "会员入口分区标题。"
   },
@@ -299,7 +371,7 @@
   "@settingsNotificationStatusTitle": {
     "description": "通知状态设置行标题。"
   },
-  "settingsNotificationStatusBody": "查看提醒与事项状态变化是否还能被正常送达。",
+  "settingsNotificationStatusBody": "查看保存和同步动态是否仍能被正常送达。",
   "@settingsNotificationStatusBody": {
     "description": "通知状态设置行说明文案。"
   },
@@ -307,7 +379,7 @@
   "@settingsPrivacyModeTitle": {
     "description": "隐私模式设置行标题。"
   },
-  "settingsPrivacyModeBody": "保护锁屏预览和小组件中的事项正文不被直接暴露。",
+  "settingsPrivacyModeBody": "在预览中隐藏敏感内容。",
   "@settingsPrivacyModeBody": {
     "description": "隐私模式设置行说明文案。"
   },
@@ -315,7 +387,7 @@
   "@settingsWidgetDisplayModeTitle": {
     "description": "Widget 展示模式设置行标题。"
   },
-  "settingsWidgetDisplayModeBody": "选择小组件显示完整内容，还是只显示安全预览。",
+  "settingsWidgetDisplayModeBody": "选择小组件中显示什么内容。",
   "@settingsWidgetDisplayModeBody": {
     "description": "Widget 展示模式设置行说明文案。"
   },
@@ -359,15 +431,15 @@
   "@settingsSyncStatusTitle": {
     "description": "同步状态设置行标题。"
   },
-  "settingsSyncStatusBody": "当前版本以本地真源为主，后续同步入口会继续挂在这里。",
+  "settingsSyncStatusBody": "刚刚完成同步",
   "@settingsSyncStatusBody": {
     "description": "同步状态设置行说明文案。"
   },
-  "settingsMembershipTitle": "高级权益",
+  "settingsMembershipTitle": "Screen Note Pro",
   "@settingsMembershipTitle": {
     "description": "会员入口设置行标题。"
   },
-  "settingsMembershipBody": "权益入口继续可见，但它必须弱于通知、隐私和展示安全这些核心设置。",
+  "settingsMembershipBody": "管理你的方案与权益。",
   "@settingsMembershipBody": {
     "description": "会员入口设置行说明文案。"
   },
@@ -383,21 +455,29 @@
   "@settingsNotificationUnknown": {
     "description": "通知权限无法读取时展示的状态文案。"
   },
-  "settingsPermissionDowngradedTitle": "能力已降级",
+  "settingsPermissionDowngradedTitle": "通知已关闭。",
   "@settingsPermissionDowngradedTitle": {
     "description": "通知权限降级提示块标题。"
   },
-  "settingsPermissionDowngradedBody": "通知未开启。事项创建仍可继续，但提醒链路会降级运行。",
+  "settingsPermissionDowngradedBody": "你可能会错过与笔记相关的重要更新。",
   "@settingsPermissionDowngradedBody": {
     "description": "通知权限降级提示块正文。"
   },
-  "settingsReviewAction": "复查",
+  "settingsReviewAction": "启用",
   "@settingsReviewAction": {
     "description": "通知权限复查动作按钮文案。"
   },
-  "settingsWidgetDisplayPreviewOnly": "仅安全预览",
+  "settingsWidgetDisplayPreviewOnly": "模糊预览",
   "@settingsWidgetDisplayPreviewOnly": {
     "description": "Widget 安全预览模式文案。"
+  },
+  "settingsPrivacyModeOn": "开启",
+  "@settingsPrivacyModeOn": {
+    "description": "隐私模式开启时显示在设置行右侧的当前值文案。"
+  },
+  "settingsPrivacyModeOff": "关闭",
+  "@settingsPrivacyModeOff": {
+    "description": "隐私模式关闭时显示在设置行右侧的当前值文案。"
   },
   "settingsWidgetDisplayFullContent": "显示完整内容",
   "@settingsWidgetDisplayFullContent": {
@@ -427,9 +507,37 @@
   "@settingsSyncLocalOnly": {
     "description": "同步仍以本地为主时展示的状态文案。"
   },
+  "settingsSyncSynced": "已同步",
+  "@settingsSyncSynced": {
+    "description": "截图优先的设置页中，用于表示当前同步状态已完成的显示文案。"
+  },
   "settingsMembershipAvailable": "可查看",
+  "settingsPrivacyProtectionTitle": "隐私模式已开启。",
+  "@settingsPrivacyProtectionTitle": {
+    "description": "隐私模式说明块标题，用于说明当前安全预览保护已经生效。"
+  },
+  "settingsPrivacyProtectionBody": "最近记录和小组件中的预览内容都会被模糊处理。",
+  "@settingsPrivacyProtectionBody": {
+    "description": "隐私模式说明块正文，用于解释当前预览保护的具体效果。"
+  },
+  "settingsPrivacyProtectionAction": "了解更多",
+  "@settingsPrivacyProtectionAction": {
+    "description": "隐私模式说明块中的次级操作文案。"
+  },
+  "settingsMembershipSupportTitle": "你正在使用 Screen Note Pro",
+  "@settingsMembershipSupportTitle": {
+    "description": "会员分区次级说明块标题，用于表达当前 Pro 状态。"
+  },
+  "settingsMembershipSupportBody": "感谢你支持更专注、更私密的笔记体验。",
+  "@settingsMembershipSupportBody": {
+    "description": "会员分区次级说明块正文，用于表达感谢但不抢主链路。"
+  },
   "@settingsMembershipAvailable": {
     "description": "会员入口次级可见时展示的状态文案。"
+  },
+  "settingsMembershipActive": "已激活",
+  "@settingsMembershipActive": {
+    "description": "截图优先的设置页中，用于表示当前会员状态已启用的显示文案。"
   },
   "settingsWidgetDisplayPickerTitle": "选择 Widget 展示模式",
   "@settingsWidgetDisplayPickerTitle": {

@@ -25,8 +25,9 @@ final class LoadSettingsCenterSnapshotUseCase {
     return SettingsCenterSnapshot(
       notificationPermissionStatus: notificationPermissionStatus,
       preferences: preferences,
-      syncStatus: SettingsSyncStatus.localOnly,
-      membershipState: SettingsMembershipState.available,
+      // 本轮显示层还原已由用户明确指定以冻结截图为准，因此默认快照值同步切到截图中的已同步与已激活表达。
+      syncStatus: SettingsSyncStatus.synced,
+      membershipState: SettingsMembershipState.active,
     );
   }
 }

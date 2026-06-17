@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
-import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_membership_state.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_sync_status.dart';
-import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_degradation_notice.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_option_row.dart';
@@ -50,16 +47,24 @@ class SettingsCenterPage extends HookConsumerWidget {
                 children: <Widget>[
                   Text(
                     localizations.settingsTitle,
-                    style: theme.textTheme.displaySmall,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      fontSize: 28.sp,
+                      height: 1.0,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 8.h),
                   Text(
                     localizations.settingsSubtitle,
                     style: theme.textTheme.bodyLarge?.copyWith(
+                      fontSize: 14.sp,
                       color: const Color(0xFF5F6762),
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 28.h),
+                  SizedBox(height: 22.h),
                   SettingsSectionHeader(
                     title: localizations.settingsNotificationsSection,
                   ),
@@ -93,9 +98,7 @@ class SettingsCenterPage extends HookConsumerWidget {
                     localizations: localizations,
                   ),
                   SizedBox(height: 20.h),
-                  SettingsSectionHeader(
-                    title: localizations.settingsSyncSection,
-                  ),
+                  SettingsSectionHeader(title: localizations.settingsSyncSection),
                   SizedBox(height: 10.h),
                   _buildSyncGroup(
                     snapshot: snapshot,
@@ -107,6 +110,7 @@ class SettingsCenterPage extends HookConsumerWidget {
                   ),
                   SizedBox(height: 10.h),
                   _buildMembershipGroup(
+                    context: context,
                     snapshot: snapshot,
                     localizations: localizations,
                   ),
@@ -119,7 +123,7 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
-  /// 通知分区优先表达当前权限状态，并在降级时提供轻量复查入口。
+  /// 通知分区优先表达当前权限状态，并在降级时提供轻量启用入口。
   Widget _buildNotificationsGroup({
     required BuildContext context,
     required WidgetRef ref,
@@ -169,40 +173,8 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
-  /// 隐私分区通过开关直接表达当前安全边界，并把写入逻辑统一回收到控制器。
+  /// 隐私分区保持“状态值行 + 说明块”结构，避免原生开关破坏冻结稿的行式节奏。
   Widget _buildPrivacyGroup({
-    required BuildContext context,
-    required WidgetRef ref,
-    required SettingsCenterSnapshot snapshot,
-    required AppLocalizations localizations,
-  }) {
-    return ScreenNotePanel(
-      padding: EdgeInsets.all(0.w),
-      child: SettingsOptionRow(
-        icon: Icons.shield_outlined,
-        title: localizations.settingsPrivacyModeTitle,
-        description: localizations.settingsPrivacyModeBody,
-        onTap: () => ref
-            .read(settingsCenterControllerProvider.notifier)
-            .updatePrivacyMode(
-              enabled: !snapshot.preferences.privacyModeEnabled,
-              feedbackText: localizations.settingsPrivacyFeedback,
-            ),
-        trailing: Switch.adaptive(
-          value: snapshot.preferences.privacyModeEnabled,
-          onChanged: (bool enabled) => ref
-              .read(settingsCenterControllerProvider.notifier)
-              .updatePrivacyMode(
-                enabled: enabled,
-                feedbackText: localizations.settingsPrivacyFeedback,
-              ),
-        ),
-      ),
-    );
-  }
-
-  /// 展示模式分区通过底部选项面板切换当前值，但最终安全约束仍由应用层决定。
-  Widget _buildDisplayGroup({
     required BuildContext context,
     required WidgetRef ref,
     required SettingsCenterSnapshot snapshot,
@@ -213,176 +185,88 @@ class SettingsCenterPage extends HookConsumerWidget {
       child: Column(
         children: <Widget>[
           SettingsOptionRow(
-            icon: Icons.widgets_outlined,
-            title: localizations.settingsWidgetDisplayModeTitle,
-            description: localizations.settingsWidgetDisplayModeBody,
+            icon: Icons.shield_outlined,
+            title: localizations.settingsPrivacyModeTitle,
+            description: localizations.settingsPrivacyModeBody,
+            onTap: () => ref
+                .read(settingsCenterControllerProvider.notifier)
+                .updatePrivacyMode(
+                  enabled: !snapshot.preferences.privacyModeEnabled,
+                  feedbackText: localizations.settingsPrivacyFeedback,
+                ),
             trailing: _ValueTrailing(
-              valueText: _widgetDisplayModeText(
-                snapshot.preferences.widgetDisplayMode,
-                localizations,
-              ),
-            ),
-            onTap: () async {
-              final WidgetDisplayMode? selection = await _pickWidgetDisplayMode(
-                context: context,
-                currentMode: snapshot.preferences.widgetDisplayMode,
+              valueText: _privacyModeText(
+                enabled: snapshot.preferences.privacyModeEnabled,
                 localizations: localizations,
-              );
-              if (selection == null || !context.mounted) {
-                return;
-              }
-              await ref
-                  .read(settingsCenterControllerProvider.notifier)
-                  .updateWidgetDisplayMode(
-                    mode: selection,
-                    feedbackText: localizations.settingsWidgetDisplayFeedback,
-                  );
-            },
-          ),
-          Divider(height: 1, indent: 84.w, endIndent: 18.w),
-          SettingsOptionRow(
-            icon: Icons.add_to_home_screen_outlined,
-            title: localizations.settingsWidgetInstallTitle,
-            description: localizations.settingsWidgetInstallBody,
-            trailing: const _ChevronTrailing(),
-            onTap: () => _showWidgetInstallGuide(
-              context: context,
-              ref: ref,
-              localizations: localizations,
-            ),
-          ),
-          Divider(height: 1, indent: 84.w, endIndent: 18.w),
-          SettingsOptionRow(
-            icon: Icons.brightness_6_outlined,
-            title: localizations.settingsThemeModeTitle,
-            description: localizations.settingsThemeModeBody,
-            trailing: _ValueTrailing(
-              valueText: _themeModePreferenceText(
-                snapshot.preferences.themeModePreference,
-                localizations,
               ),
             ),
-            onTap: () async {
-              final SettingsThemeModePreference? selection =
-                  await _pickThemeModePreference(
-                    context: context,
-                    currentMode: snapshot.preferences.themeModePreference,
-                    localizations: localizations,
-                  );
-              if (selection == null || !context.mounted) {
-                return;
-              }
-              await ref
-                  .read(settingsCenterControllerProvider.notifier)
-                  .updateThemeModePreference(
-                    mode: selection,
-                    feedbackText: localizations.settingsThemeModeFeedback,
-                  );
-            },
           ),
-          Divider(height: 1, indent: 84.w, endIndent: 18.w),
-          SettingsOptionRow(
-            icon: Icons.language_rounded,
-            title: localizations.settingsLanguageTitle,
-            description: localizations.settingsLanguageBody,
-            trailing: _ValueTrailing(
-              valueText: _languagePreferenceText(
-                snapshot.preferences.languagePreference,
-                localizations,
+          if (snapshot.preferences.privacyModeEnabled)
+            Padding(
+              padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 12.h),
+              child: _buildSupportNotice(
+                context: context,
+                icon: Icons.visibility_off_outlined,
+                title: localizations.settingsPrivacyProtectionTitle,
+                body: localizations.settingsPrivacyProtectionBody,
+                surfaceColor: const Color(0xFFF1F8F0),
+                iconSurfaceColor: const Color(0xFFE5F3E5),
+                accentColor: const Color(0xFF4D8B52),
+                trailing: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFF4D8B52),
+                    side: const BorderSide(color: Color(0x334D8B52)),
+                  ),
+                  child: Text(localizations.settingsPrivacyProtectionAction),
+                ),
               ),
             ),
-            onTap: () async {
-              final SettingsLanguagePreference? selection =
-                  await _pickLanguagePreference(
-                    context: context,
-                    currentLanguage: snapshot.preferences.languagePreference,
-                    localizations: localizations,
-                  );
-              if (selection == null || !context.mounted) {
-                return;
-              }
-              await ref
-                  .read(settingsCenterControllerProvider.notifier)
-                  .updateLanguagePreference(
-                    language: selection,
-                    feedbackText: localizations.settingsLanguageFeedback,
-                  );
-            },
-          ),
         ],
       ),
     );
   }
 
-  /// 小组件入口统一通过底部引导承接，避免把平台差异说明塞进主列表描述里。
-  Future<void> _showWidgetInstallGuide({
+  /// 小组件分区只保留冻结稿里的单一展示模式入口，避免继续堆叠额外设置项。
+  Widget _buildDisplayGroup({
     required BuildContext context,
     required WidgetRef ref,
+    required SettingsCenterSnapshot snapshot,
     required AppLocalizations localizations,
   }) {
-    final TargetPlatform platform = Theme.of(context).platform;
-    final bool supportsDirectPin =
-        !kIsWeb && platform == TargetPlatform.android;
-
-    return showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (BuildContext sheetContext) {
-        return SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    localizations.settingsWidgetInstallTitle,
-                    style: Theme.of(sheetContext).textTheme.titleLarge,
-                  ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    supportsDirectPin
-                        ? localizations.settingsWidgetInstallAndroidGuide
-                        : localizations.settingsWidgetInstallIosGuide,
-                    style: Theme.of(sheetContext).textTheme.bodyLarge?.copyWith(
-                      color: const Color(0xFF5F6762),
-                    ),
-                  ),
-                  if (supportsDirectPin) ...<Widget>[
-                    SizedBox(height: 20.h),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: () async {
-                          await ref
-                              .read(settingsCenterControllerProvider.notifier)
-                              .requestPinWidget(
-                                requestedFeedbackText: localizations
-                                    .settingsWidgetInstallRequestedFeedback,
-                                unsupportedFeedbackText: localizations
-                                    .settingsWidgetInstallUnsupportedFeedback,
-                                failedFeedbackText: localizations
-                                    .settingsWidgetInstallFailedFeedback,
-                              );
-                          if (sheetContext.mounted) {
-                            Navigator.of(sheetContext).pop();
-                          }
-                        },
-                        child: Text(localizations.settingsWidgetInstallAction),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
+    return ScreenNotePanel(
+      padding: EdgeInsets.all(0.w),
+      child: SettingsOptionRow(
+        icon: Icons.widgets_outlined,
+        title: localizations.settingsWidgetDisplayModeTitle,
+        description: localizations.settingsWidgetDisplayModeBody,
+        trailing: _ValueTrailing(
+          valueText: _widgetDisplayModeText(
+            snapshot.preferences.widgetDisplayMode,
+            localizations,
           ),
-        );
-      },
+        ),
+        onTap: () async {
+          final WidgetDisplayMode? selection = await _pickWidgetDisplayMode(
+            context: context,
+            currentMode: snapshot.preferences.widgetDisplayMode,
+            localizations: localizations,
+          );
+          if (selection == null || !context.mounted) {
+            return;
+          }
+          await ref
+              .read(settingsCenterControllerProvider.notifier)
+              .updateWidgetDisplayMode(
+                mode: selection,
+                feedbackText: localizations.settingsWidgetDisplayFeedback,
+              );
+        },
+      ),
     );
   }
 
-  /// 同步分区当前只表达本地真源边界，不虚构未接入的账号或后端链路。
+  /// 同步分区当前跟随冻结截图展示已同步状态，但仍不在当前模块扩展真实账号链路。
   Widget _buildSyncGroup({
     required SettingsCenterSnapshot snapshot,
     required AppLocalizations localizations,
@@ -394,31 +278,59 @@ class SettingsCenterPage extends HookConsumerWidget {
         title: localizations.settingsSyncStatusTitle,
         description: localizations.settingsSyncStatusBody,
         trailing: _ValueTrailing(
-          valueText: snapshot.syncStatus == SettingsSyncStatus.localOnly
-              ? localizations.settingsSyncLocalOnly
-              : localizations.settingsSyncLocalOnly,
+          valueText: _syncStatusText(snapshot.syncStatus, localizations),
         ),
       ),
     );
   }
 
-  /// 会员分区只保留次级入口表达，避免营销信息盖过系统设置主链路。
+  /// 会员分区保留主入口 + 次级感谢说明，但整体权重必须低于系统能力设置主链路。
   Widget _buildMembershipGroup({
+    required BuildContext context,
     required SettingsCenterSnapshot snapshot,
     required AppLocalizations localizations,
   }) {
     return ScreenNotePanel(
       padding: EdgeInsets.all(0.w),
-      child: SettingsOptionRow(
-        icon: Icons.workspace_premium_outlined,
-        title: localizations.settingsMembershipTitle,
-        description: localizations.settingsMembershipBody,
-        trailing: _ValueTrailing(
-          valueText:
-              snapshot.membershipState == SettingsMembershipState.available
-              ? localizations.settingsMembershipAvailable
-              : localizations.settingsMembershipAvailable,
-        ),
+      child: Column(
+        children: <Widget>[
+          SettingsOptionRow(
+            icon: Icons.workspace_premium_outlined,
+            title: localizations.settingsMembershipTitle,
+            description: localizations.settingsMembershipBody,
+            trailing: _ValueTrailing(
+              valueText: _membershipStateText(
+                snapshot.membershipState,
+                localizations,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 12.h),
+            child: _buildSupportNotice(
+              context: context,
+              icon: Icons.verified_rounded,
+              title: localizations.settingsMembershipSupportTitle,
+              body: localizations.settingsMembershipSupportBody,
+              surfaceColor: const Color(0xFFFFFAF1),
+              iconSurfaceColor: const Color(0xFFF8F0D9),
+              accentColor: const Color(0xFF4D8B52),
+              trailing: Container(
+                width: 44.w,
+                height: 44.w,
+                decoration: const BoxDecoration(
+                  color: Color(0x224D8B52),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.military_tech_rounded,
+                  color: const Color(0xFF4D8B52),
+                  size: 22.sp,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -466,102 +378,6 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
-  /// 主题模式通过底部面板切换，保持设置页行结构清爽且不在行内塞入复杂控件。
-  Future<SettingsThemeModePreference?> _pickThemeModePreference({
-    required BuildContext context,
-    required SettingsThemeModePreference currentMode,
-    required AppLocalizations localizations,
-  }) {
-    return showModalBottomSheet<SettingsThemeModePreference>(
-      context: context,
-      showDragHandle: true,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  localizations.settingsThemeModePickerTitle,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(height: 12.h),
-                _ModeSheetTile(
-                  title: localizations.settingsThemeModeSystem,
-                  selected: currentMode == SettingsThemeModePreference.system,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(SettingsThemeModePreference.system),
-                ),
-                SizedBox(height: 8.h),
-                _ModeSheetTile(
-                  title: localizations.settingsThemeModeLight,
-                  selected: currentMode == SettingsThemeModePreference.light,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(SettingsThemeModePreference.light),
-                ),
-                SizedBox(height: 8.h),
-                _ModeSheetTile(
-                  title: localizations.settingsThemeModeDark,
-                  selected: currentMode == SettingsThemeModePreference.dark,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).pop(SettingsThemeModePreference.dark),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  /// 语言偏好通过底部面板切换，避免设置页主列表直接承载多选逻辑。
-  Future<SettingsLanguagePreference?> _pickLanguagePreference({
-    required BuildContext context,
-    required SettingsLanguagePreference currentLanguage,
-    required AppLocalizations localizations,
-  }) {
-    return showModalBottomSheet<SettingsLanguagePreference>(
-      context: context,
-      showDragHandle: true,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  localizations.settingsLanguagePickerTitle,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(height: 12.h),
-                _ModeSheetTile(
-                  title: localizations.settingsLanguageZh,
-                  selected: currentLanguage == SettingsLanguagePreference.zh,
-                  onTap: () =>
-                      Navigator.of(context).pop(SettingsLanguagePreference.zh),
-                ),
-                SizedBox(height: 8.h),
-                _ModeSheetTile(
-                  title: localizations.settingsLanguageEn,
-                  selected: currentLanguage == SettingsLanguagePreference.en,
-                  onTap: () =>
-                      Navigator.of(context).pop(SettingsLanguagePreference.en),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   /// 通知权限状态文案统一收口在页面层解析，避免业务层承载最终展示文本。
   String _notificationStatusText(
     NotificationPermissionStatus status,
@@ -597,32 +413,107 @@ class SettingsCenterPage extends HookConsumerWidget {
     };
   }
 
-  /// 主题模式文案统一在页面层映射，保持领域层只承载枚举事实而不承载展示语言。
-  String _themeModePreferenceText(
-    SettingsThemeModePreference mode,
+  /// 隐私模式文案统一在页面层映射，保证显示层和截图中的状态短语保持一致。
+  String _privacyModeText({
+    required bool enabled,
+    required AppLocalizations localizations,
+  }) {
+    return enabled
+        ? localizations.settingsPrivacyModeOn
+        : localizations.settingsPrivacyModeOff;
+  }
+
+  /// 同步状态文案统一在页面层映射，确保截图批准后的状态值只在显示层解释。
+  String _syncStatusText(
+    SettingsSyncStatus status,
     AppLocalizations localizations,
   ) {
-    return switch (mode) {
-      SettingsThemeModePreference.system =>
-        localizations.settingsThemeModeSystem,
-      SettingsThemeModePreference.light => localizations.settingsThemeModeLight,
-      SettingsThemeModePreference.dark => localizations.settingsThemeModeDark,
+    return switch (status) {
+      SettingsSyncStatus.localOnly => localizations.settingsSyncLocalOnly,
+      SettingsSyncStatus.synced => localizations.settingsSyncSynced,
     };
   }
 
-  /// 语言偏好文案统一在页面层映射，避免领域层侵入最终展示字符串。
-  String _languagePreferenceText(
-    SettingsLanguagePreference language,
+  /// 会员状态文案统一在页面层映射，避免领域枚举直接承载最终展示语言。
+  String _membershipStateText(
+    SettingsMembershipState state,
     AppLocalizations localizations,
   ) {
-    return switch (language) {
-      SettingsLanguagePreference.zh => localizations.settingsLanguageZh,
-      SettingsLanguagePreference.en => localizations.settingsLanguageEn,
+    return switch (state) {
+      SettingsMembershipState.available =>
+        localizations.settingsMembershipAvailable,
+      SettingsMembershipState.active => localizations.settingsMembershipActive,
     };
+  }
+
+  /// 截图中的绿色和暖色说明块共用同一结构，这里只抽布局骨架，不改变各自的语义归属。
+  Widget _buildSupportNotice({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+    required String body,
+    required Color surfaceColor,
+    required Color iconSurfaceColor,
+    required Color accentColor,
+    required Widget trailing,
+  }) {
+    final ThemeData theme = Theme.of(context);
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: surfaceColor,
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 52.w,
+            height: 52.w,
+            decoration: BoxDecoration(
+              color: iconSurfaceColor,
+              borderRadius: BorderRadius.circular(18.r),
+            ),
+            child: Icon(icon, color: accentColor, size: 24.sp),
+          ),
+          SizedBox(width: 14.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 14.sp,
+                    color: accentColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  body,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontSize: 11.sp,
+                    color: accentColor.withValues(alpha: 0.86),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 12.w),
+          trailing,
+        ],
+      ),
+    );
   }
 }
 
-/// 右侧值组件统一维持当前值 + 进入箭头的次级结构，避免每个设置行重复手写。
+/// 右侧值组件统一维持当前值加进入箭头的次级结构，避免每个设置行重复手写。
 final class _ValueTrailing extends StatelessWidget {
   const _ValueTrailing({
     required this.valueText,
@@ -642,10 +533,11 @@ final class _ValueTrailing extends StatelessWidget {
             constraints: BoxConstraints(maxWidth: 132.w),
             child: Text(
               valueText,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 12.sp,
                 color: valueColor,
                 fontWeight: FontWeight.w600,
               ),
@@ -659,20 +551,6 @@ final class _ValueTrailing extends StatelessWidget {
           size: 22.sp,
         ),
       ],
-    );
-  }
-}
-
-/// 纯进入型设置行统一复用箭头尾部，避免为单个入口再复制一份右侧结构。
-final class _ChevronTrailing extends StatelessWidget {
-  const _ChevronTrailing();
-
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      Icons.chevron_right_rounded,
-      color: const Color(0xFF98A09B),
-      size: 22.sp,
     );
   }
 }

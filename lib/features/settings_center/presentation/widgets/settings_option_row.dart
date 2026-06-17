@@ -51,15 +51,21 @@ class SettingsOptionRow extends StatelessWidget {
                   Text(
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 6.h),
+                  SizedBox(height: 4.h),
                   Text(
                     description,
                     style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 12.sp,
                       color: const Color(0xFF5F6762),
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

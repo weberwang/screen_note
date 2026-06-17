@@ -48,8 +48,8 @@ void main() {
       snapshot.preferences.languagePreference,
       SettingsLanguagePreference.zh,
     );
-    expect(snapshot.syncStatus, SettingsSyncStatus.localOnly);
-    expect(snapshot.membershipState, SettingsMembershipState.available);
+    expect(snapshot.syncStatus, SettingsSyncStatus.synced);
+    expect(snapshot.membershipState, SettingsMembershipState.active);
   });
 
   test('开启隐私模式时会把 fullContent 收敛为 previewOnly', () async {

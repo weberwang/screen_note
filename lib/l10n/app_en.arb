@@ -48,6 +48,10 @@
   "@homeGreetingSubtitle": {
     "description": "Supporting copy shown below the bootstrap home greeting."
   },
+  "homeTodayChip": "Today",
+  "@homeTodayChip": {
+    "description": "Context chip shown below the home greeting."
+  },
   "homePriorityLabel": "PRIORITY",
   "@homePriorityLabel": {
     "description": "Badge label on the bootstrap priority panel."
@@ -118,6 +122,18 @@
   "@taskFlowPriorityFallbackBody": {
     "description": "Fallback supporting copy shown on the priority card when a task has no visible note."
   },
+  "taskFlowPriorityContinueAction": "Continue",
+  "@taskFlowPriorityContinueAction": {
+    "description": "Primary CTA label shown on the home priority card."
+  },
+  "taskFlowPriorityEmptyAction": "Start task",
+  "@taskFlowPriorityEmptyAction": {
+    "description": "Primary CTA label shown on the empty home priority card."
+  },
+  "taskFlowPrivateTitle": "Private task",
+  "@taskFlowPrivateTitle": {
+    "description": "Safe title shown for a private task on the home surface."
+  },
   "taskFlowPinnedLabel": "Pinned task",
   "@taskFlowPinnedLabel": {
     "description": "Status label shown for a pinned priority task on the home page."
@@ -144,13 +160,65 @@
       }
     }
   },
+  "taskFlowOverdueSectionTitle": "Overdue",
+  "@taskFlowOverdueSectionTitle": {
+    "description": "Section title shown for overdue tasks on the home page."
+  },
+  "taskFlowUpNextSectionTitle": "Up next",
+  "@taskFlowUpNextSectionTitle": {
+    "description": "Section title shown for non-overdue tasks on the home page."
+  },
   "taskEditorTitle": "Edit task",
   "@taskEditorTitle": {
     "description": "Title shown on the task editor page."
   },
+  "taskEditorTopSaveAction": "Save",
+  "@taskEditorTopSaveAction": {
+    "description": "Lightweight save action shown at the top of the task editor page."
+  },
   "taskEditorHelperText": "Capture the core task first, then keep the remaining fields minimal before saving.",
   "@taskEditorHelperText": {
     "description": "Helper copy shown below the task editor title."
+  },
+  "taskEditorDueDateLabel": "Due date",
+  "@taskEditorDueDateLabel": {
+    "description": "Field label shown for the due date row on the task editor page."
+  },
+  "taskEditorDueTimeLabel": "Due time",
+  "@taskEditorDueTimeLabel": {
+    "description": "Field label shown for the due time row on the task editor page."
+  },
+  "taskEditorNoDueDate": "Not set",
+  "@taskEditorNoDueDate": {
+    "description": "Fallback value shown when the due date is not set on the task editor page."
+  },
+  "taskEditorNoDueTime": "Not set",
+  "@taskEditorNoDueTime": {
+    "description": "Fallback value shown when the due time is not set on the task editor page."
+  },
+  "taskEditorFocusLabel": "Current focus",
+  "@taskEditorFocusLabel": {
+    "description": "Field label shown for the focus row on the task editor page."
+  },
+  "taskEditorFocusPinnedValue": "Pinned task",
+  "@taskEditorFocusPinnedValue": {
+    "description": "Value shown when the task is pinned on the task editor page."
+  },
+  "taskEditorFocusNormalValue": "Regular task",
+  "@taskEditorFocusNormalValue": {
+    "description": "Value shown when the task is not pinned on the task editor page."
+  },
+  "taskEditorPrivacyFieldLabel": "Privacy",
+  "@taskEditorPrivacyFieldLabel": {
+    "description": "Field label shown for the privacy row on the task editor page."
+  },
+  "taskEditorPrivacyPublicValue": "Visible",
+  "@taskEditorPrivacyPublicValue": {
+    "description": "Value shown when the task is visible on the task editor page."
+  },
+  "taskEditorPrivacyPrivateValue": "Private",
+  "@taskEditorPrivacyPrivateValue": {
+    "description": "Value shown when the task is private on the task editor page."
   },
   "taskTitleLabel": "Title",
   "@taskTitleLabel": {
@@ -221,13 +289,17 @@
   "@historyDeletedSectionTitle": {
     "description": "Section title for recently deleted tasks on the history page."
   },
-  "historyEmptyTitle": "Your history is clear for now.",
+  "historyEmptyTitle": "No history yet",
   "@historyEmptyTitle": {
     "description": "Empty-state title shown when there are no completed or deleted tasks."
   },
-  "historyEmptyBody": "Completed and deleted tasks will appear here so you can trust that nothing vanished unexpectedly.",
+  "historyEmptyBody": "Completed or deleted tasks will appear here when you need them.",
   "@historyEmptyBody": {
     "description": "Empty-state body shown on the history page."
+  },
+  "historyEmptyAddAction": "Create task",
+  "@historyEmptyAddAction": {
+    "description": "Tooltip and accessibility label for the add action shown on the history empty state."
   },
   "historyLoadFailed": "History failed to load. Try again shortly.",
   "@historyLoadFailed": {
@@ -271,27 +343,27 @@
   "@settingsTitle": {
     "description": "Main title shown on the settings center page."
   },
-  "settingsSubtitle": "Manage how Screen Note behaves across reminders, privacy, widgets, and recovery-safe system surfaces.",
+  "settingsSubtitle": "Manage how Screen Note works across your device and keep your notes safe.",
   "@settingsSubtitle": {
     "description": "Supporting copy shown below the settings page title."
   },
-  "settingsNotificationsSection": "Notifications",
+  "settingsNotificationsSection": "NOTIFICATIONS",
   "@settingsNotificationsSection": {
     "description": "Section title for notification settings."
   },
-  "settingsPrivacySection": "Privacy",
+  "settingsPrivacySection": "PRIVACY",
   "@settingsPrivacySection": {
     "description": "Section title for privacy settings."
   },
-  "settingsDisplaySection": "Display",
+  "settingsDisplaySection": "WIDGET",
   "@settingsDisplaySection": {
     "description": "Section title for widget and display settings."
   },
-  "settingsSyncSection": "Sync & Backup",
+  "settingsSyncSection": "SYNC",
   "@settingsSyncSection": {
     "description": "Section title for sync settings."
   },
-  "settingsMembershipSection": "Membership",
+  "settingsMembershipSection": "MEMBERSHIP",
   "@settingsMembershipSection": {
     "description": "Section title for membership entry."
   },
@@ -299,7 +371,7 @@
   "@settingsNotificationStatusTitle": {
     "description": "Title for the notification status row."
   },
-  "settingsNotificationStatusBody": "Stay updated on reminders and task changes.",
+  "settingsNotificationStatusBody": "Stay updated on saves and sync activity.",
   "@settingsNotificationStatusBody": {
     "description": "Description for the notification status row."
   },
@@ -307,7 +379,7 @@
   "@settingsPrivacyModeTitle": {
     "description": "Title for the privacy mode row."
   },
-  "settingsPrivacyModeBody": "Protect task content in previews and widgets.",
+  "settingsPrivacyModeBody": "Hide sensitive content in previews.",
   "@settingsPrivacyModeBody": {
     "description": "Description for the privacy mode row."
   },
@@ -315,7 +387,7 @@
   "@settingsWidgetDisplayModeTitle": {
     "description": "Title for the widget display mode row."
   },
-  "settingsWidgetDisplayModeBody": "Choose whether widgets show full content or a safe preview.",
+  "settingsWidgetDisplayModeBody": "Choose what shows in your widget.",
   "@settingsWidgetDisplayModeBody": {
     "description": "Description for the widget display mode row."
   },
@@ -359,15 +431,15 @@
   "@settingsSyncStatusTitle": {
     "description": "Title for the sync status row."
   },
-  "settingsSyncStatusBody": "This build keeps a safe local source of truth while later sync entry points stay visible here.",
+  "settingsSyncStatusBody": "Last synced just now",
   "@settingsSyncStatusBody": {
     "description": "Description for the sync status row."
   },
-  "settingsMembershipTitle": "Premium",
+  "settingsMembershipTitle": "Screen Note Pro",
   "@settingsMembershipTitle": {
     "description": "Title for the membership row."
   },
-  "settingsMembershipBody": "Membership stays visible but secondary to permissions, privacy, and display safety.",
+  "settingsMembershipBody": "Manage your plan and benefits.",
   "@settingsMembershipBody": {
     "description": "Description for the membership row."
   },
@@ -383,21 +455,29 @@
   "@settingsNotificationUnknown": {
     "description": "Value label shown when notification permissions cannot be read."
   },
-  "settingsPermissionDowngradedTitle": "Permission downgraded",
+  "settingsPermissionDowngradedTitle": "Notifications are turned off.",
   "@settingsPermissionDowngradedTitle": {
     "description": "Title shown in the inline degradation notice for notification permissions."
   },
-  "settingsPermissionDowngradedBody": "Notifications are off. Task creation still works, but reminders are reduced.",
+  "settingsPermissionDowngradedBody": "You may miss important updates about your notes.",
   "@settingsPermissionDowngradedBody": {
     "description": "Body shown in the inline degradation notice for notification permissions."
   },
-  "settingsReviewAction": "Review",
+  "settingsReviewAction": "Enable",
   "@settingsReviewAction": {
     "description": "Action label for reviewing notification permission state."
   },
-  "settingsWidgetDisplayPreviewOnly": "Preview Only",
+  "settingsWidgetDisplayPreviewOnly": "Blurred Previews",
   "@settingsWidgetDisplayPreviewOnly": {
     "description": "Value label for the safe widget preview mode."
+  },
+  "settingsPrivacyModeOn": "On",
+  "@settingsPrivacyModeOn": {
+    "description": "Current privacy mode value shown on the settings row when safe preview protection is enabled."
+  },
+  "settingsPrivacyModeOff": "Off",
+  "@settingsPrivacyModeOff": {
+    "description": "Current privacy mode value shown on the settings row when safe preview protection is disabled."
   },
   "settingsWidgetDisplayFullContent": "Full Content",
   "@settingsWidgetDisplayFullContent": {
@@ -427,9 +507,37 @@
   "@settingsSyncLocalOnly": {
     "description": "Value label shown when sync is still limited to the local source of truth."
   },
+  "settingsSyncSynced": "Synced",
+  "@settingsSyncSynced": {
+    "description": "Current sync state value shown on the settings row when the screenshot-approved design displays a synced state."
+  },
   "settingsMembershipAvailable": "Available",
+  "settingsPrivacyProtectionTitle": "Privacy mode is on.",
+  "@settingsPrivacyProtectionTitle": {
+    "description": "Inline supportive title shown under the privacy mode row when the current safe mode is active."
+  },
+  "settingsPrivacyProtectionBody": "Previews are blurred in recents and widgets.",
+  "@settingsPrivacyProtectionBody": {
+    "description": "Inline supportive body shown under the privacy mode row to explain the current preview protection behavior."
+  },
+  "settingsPrivacyProtectionAction": "Learn more",
+  "@settingsPrivacyProtectionAction": {
+    "description": "Inline secondary action shown in the privacy support notice."
+  },
+  "settingsMembershipSupportTitle": "You're using Screen Note Pro",
+  "@settingsMembershipSupportTitle": {
+    "description": "Secondary membership support note title shown below the main membership row."
+  },
+  "settingsMembershipSupportBody": "Thank you for supporting a focused and private note-taking experience.",
+  "@settingsMembershipSupportBody": {
+    "description": "Secondary membership support note body shown below the main membership row."
+  },
   "@settingsMembershipAvailable": {
     "description": "Value label shown for the secondary membership entry."
+  },
+  "settingsMembershipActive": "Active",
+  "@settingsMembershipActive": {
+    "description": "Current membership state value shown on the settings row when the screenshot-approved design displays an active subscription."
   },
   "settingsWidgetDisplayPickerTitle": "Choose a widget display mode",
   "@settingsWidgetDisplayPickerTitle": {

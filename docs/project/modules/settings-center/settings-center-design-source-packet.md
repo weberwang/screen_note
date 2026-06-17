@@ -39,12 +39,12 @@
 
 ## 4. State Matrix
 
-- `ideal`: 所有设置分区都存在，通知可用、隐私清楚、展示模式明确、同步状态稳定
+- `ideal`: 所有设置分区都存在，通知可用、隐私清楚、展示模式明确、同步状态显示为 `Synced`、会员入口显示为 `Active`
 - `notification_permission_denied`: 通知状态显示为降级，但不阻断设置页访问
 - `private_safe`: 隐私模式开启，锁屏与 Widget 预览继续安全
 - `widget_display_mode`: 可展示不同小组件可见策略，但不能绕开隐私规则
-- `sync_not_enabled`: 同步入口保留，但说明当前仍以本地真源为主
-- `membership_secondary`: 会员入口存在但保持次级权重
+- `sync_synced`: 同步入口保留，但当前展示值按冻结截图呈现为 `Synced`
+- `membership_active_secondary`: 会员入口存在且当前展示值为 `Active`，同时继续保持次级权重
 - `loading`: 分区骨架稳定，不把设置页重排成另一套结构
 - `error`: 失败以轻量说明呈现，不演化成全屏错误页
 
@@ -100,3 +100,4 @@
 - 所有权限失败都按降级提示处理，不允许阻断设置页主链路访问。
 - Widget 展示模式必须受隐私模式约束，不能出现更宽松的泄露路径。
 - 会员入口只能是次级内容，不允许反过来定义设置页层级。
+- 本轮显示层还原中，`Sync / Membership` 的当前值以用户批准的冻结截图为准，分别展示为 `Synced / Active`。

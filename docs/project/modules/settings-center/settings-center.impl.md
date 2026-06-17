@@ -70,11 +70,13 @@
 
 - 所有权限失败都按降级提示处理
 - 不允许因为未授权而阻断设置页主链路访问
+- 当冻结截图与旧实现文档冲突时，本轮以用户批准的截图显示值为准
 
 ## 后续视觉与实现准备
 
 - module_effect_image_target: `settings list with notification, privacy, display mode and upgrade entry`
 - high_fidelity_priority: `clear grouped settings hierarchy with restrained promotional weight`
+- approved_visual_value_override: `sync=Synced, membership=Active`
 
 ## Provenance
 
