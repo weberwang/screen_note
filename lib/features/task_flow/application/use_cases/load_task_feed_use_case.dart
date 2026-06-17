@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
 
+import 'package:screen_note/features/task_flow/application/ports/task_flow_degradation_hint_source.dart';
 import 'package:screen_note/features/task_flow/application/ports/task_flow_side_effect_port.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_flow_degradation_hint.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
@@ -11,11 +13,14 @@ final class LoadTaskFeedUseCase {
   /// 创建加载用例。
   const LoadTaskFeedUseCase({
     required TaskRepository repository,
+    TaskFlowDegradationHintSource? degradationHintSource,
     TaskFlowSideEffectPort? sideEffectPort,
   }) : _repository = repository,
+       _degradationHintSource = degradationHintSource,
        _sideEffectPort = sideEffectPort;
 
   final TaskRepository _repository;
+  final TaskFlowDegradationHintSource? _degradationHintSource;
   final TaskFlowSideEffectPort? _sideEffectPort;
 
   /// 读取首页任务快照。
@@ -30,6 +35,9 @@ final class LoadTaskFeedUseCase {
     final int deletedCount = await _repository.countTasksByStatus(
       TaskStatus.deleted,
     );
+    final List<TaskFlowDegradationHint> degradationHints =
+        await _degradationHintSource?.loadHints() ??
+        const <TaskFlowDegradationHint>[];
 
     final List<TaskEntity> pinnedTasks = _sortByDisplayPriority(
       activeTasks.where((TaskEntity task) => task.isPinned).toList(),
@@ -63,6 +71,7 @@ final class LoadTaskFeedUseCase {
       activeCount: activeTasks.length,
       completedCount: completedCount,
       deletedCount: deletedCount,
+      degradationHints: degradationHints,
     );
 
     if (_sideEffectPort != null) {

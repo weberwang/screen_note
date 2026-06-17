@@ -9,12 +9,16 @@ import 'package:screen_note/features/task_flow/application/use_cases/update_task
 import 'package:screen_note/features/task_flow/application/use_cases/update_task_status_use_case.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_event_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_flow_degradation_hint.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mode.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
+import 'package:screen_note/features/task_flow/infrastructure/task_flow_notification_permission_degradation_hint_source.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_noop_side_effect_port.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_repository_impl.dart';
+import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
+import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 
 void main() {
   late TaskFlowDatabase database;
@@ -153,6 +157,30 @@ void main() {
       'normal',
     ]);
     expect(snapshot.activeCount, 4);
+  });
+
+  test('loadTaskFeed 会补齐通知权限降级提示', () async {
+    final DateTime now = DateTime(2026, 6, 4, 10);
+    await repository.createTask(
+      _buildTask(id: 'task-1', title: '需要权限提示', createdAt: now),
+    );
+
+    final LoadTaskFeedUseCase useCase = LoadTaskFeedUseCase(
+      repository: repository,
+      degradationHintSource:
+          const TaskFlowNotificationPermissionDegradationHintSource(
+            notificationRepository: _FakeNotificationPermissionRepository(
+              status: NotificationPermissionStatus.disabled,
+            ),
+          ),
+    );
+
+    final TaskFeedSnapshot snapshot = await useCase.execute(now: now);
+
+    expect(
+      snapshot.degradationHints,
+      contains(TaskFlowDegradationHint.notificationPermissionDenied),
+    );
   });
 
   test('complete delete restore 只通过 active completed deleted 三态流转', () async {
@@ -392,4 +420,24 @@ Future<int> _countEventsById(TaskFlowDatabase database, String eventId) async {
             ..where(database.taskEventRecords.id.equals(eventId)))
           .getSingle();
   return result.read(countExpression) ?? 0;
+}
+
+/// 通知权限替身只服务首页快照用例测试，避免把能力降级断言绑到真实平台插件。
+final class _FakeNotificationPermissionRepository
+    implements NotificationPermissionRepository {
+  const _FakeNotificationPermissionRepository({
+    required NotificationPermissionStatus status,
+  }) : _status = status;
+
+  final NotificationPermissionStatus _status;
+
+  @override
+  Future<NotificationPermissionStatus> readStatus() async {
+    return _status;
+  }
+
+  @override
+  Future<NotificationPermissionStatus> requestPermission() async {
+    return _status;
+  }
 }

@@ -1,16 +1,21 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
+import 'package:screen_note/features/task_flow/application/ports/task_flow_degradation_hint_source.dart';
 import 'package:screen_note/features/task_flow/application/ports/task_flow_side_effect_port.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/load_task_feed_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/update_task_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/update_task_status_use_case.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_flow_degradation_hint.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_noop_side_effect_port.dart';
+import 'package:screen_note/features/task_flow/infrastructure/task_flow_notification_permission_degradation_hint_source.dart';
+import 'package:screen_note/features/task_flow/infrastructure/task_flow_noop_degradation_hint_source.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_repository_impl.dart';
 
 part 'task_flow_runtime_providers.g.dart';
@@ -45,6 +50,20 @@ TaskFlowSideEffectPort taskFlowSideEffectPort(Ref ref) {
   return ref.watch(defaultTaskFlowSideEffectPortProvider);
 }
 
+/// 首页降级提示来源默认先接通知权限状态，后续其他能力降级仍可沿这个入口继续汇总。
+@Riverpod(keepAlive: true)
+TaskFlowDegradationHintSource taskFlowDegradationHintSource(Ref ref) {
+  try {
+    return TaskFlowNotificationPermissionDegradationHintSource(
+      notificationRepository: ref.watch(
+        notificationPermissionRepositoryProvider,
+      ),
+    );
+  } catch (_) {
+    return const TaskFlowNoopDegradationHintSource();
+  }
+}
+
 /// 创建事项用例 Provider，供后续编辑页或快捷入口直接读取，不把构造细节散落到展示层。
 @riverpod
 CreateTaskUseCase createTaskUseCase(Ref ref) {
@@ -58,7 +77,10 @@ CreateTaskUseCase createTaskUseCase(Ref ref) {
 /// 首页快照用例 Provider，统一封装任务分组与优先级选择规则。
 @riverpod
 LoadTaskFeedUseCase loadTaskFeedUseCase(Ref ref) {
-  return LoadTaskFeedUseCase(repository: ref.watch(taskFlowRepositoryProvider));
+  return LoadTaskFeedUseCase(
+    repository: ref.watch(taskFlowRepositoryProvider),
+    degradationHintSource: ref.watch(taskFlowDegradationHintSourceProvider),
+  );
 }
 
 /// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
@@ -103,14 +125,12 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
 
   /// 主动刷新首页快照，供页面重试或后续系统回流场景复用。
   Future<void> refresh() async {
-    state = _loadingState();
-    state = await AsyncValue.guard(_loadSnapshot);
+    await _runWithSnapshotFallback(_loadSnapshot);
   }
 
   /// 创建快捷事项后立即刷新首页快照，确保首页不会停留在旧状态。
   Future<void> createQuickTask(CreateTaskInput input, {DateTime? now}) async {
-    state = _loadingState();
-    state = await AsyncValue.guard(() async {
+    await _runWithSnapshotFallback(() async {
       await ref.read(createTaskUseCaseProvider).execute(input, now: now);
       return _loadSnapshot();
     });
@@ -121,8 +141,7 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
     required String taskId,
     required DateTime occurredAt,
   }) async {
-    state = _loadingState();
-    state = await AsyncValue.guard(() async {
+    await _runWithSnapshotFallback(() async {
       await ref
           .read(updateTaskStatusUseCaseProvider)
           .completeTask(taskId: taskId, occurredAt: occurredAt);
@@ -135,8 +154,7 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
     required String taskId,
     required DateTime occurredAt,
   }) async {
-    state = _loadingState();
-    state = await AsyncValue.guard(() async {
+    await _runWithSnapshotFallback(() async {
       await ref
           .read(updateTaskStatusUseCaseProvider)
           .deleteTask(taskId: taskId, occurredAt: occurredAt);
@@ -150,6 +168,43 @@ class TaskFlowHomeController extends _$TaskFlowHomeController {
       AsyncData<TaskFeedSnapshot>() => state,
       _ => const AsyncLoading<TaskFeedSnapshot>(),
     };
+  }
+
+  /// 读取失败但已有旧快照时，只追加降级提示而不把首页整体打成错误页。
+  Future<void> _runWithSnapshotFallback(
+    Future<TaskFeedSnapshot> Function() loader,
+  ) async {
+    final TaskFeedSnapshot? previousSnapshot = switch (state) {
+      AsyncData<TaskFeedSnapshot>(:final value) => value,
+      _ => null,
+    };
+    state = _loadingState();
+    try {
+      state = AsyncData<TaskFeedSnapshot>(await loader());
+    } catch (error, stackTrace) {
+      if (previousSnapshot == null) {
+        state = AsyncError<TaskFeedSnapshot>(error, stackTrace);
+        return;
+      }
+      state = AsyncData<TaskFeedSnapshot>(
+        _appendRefreshFailureHint(previousSnapshot),
+      );
+    }
+  }
+
+  /// 旧快照回退时去重追加刷新失败提示，避免连续失败把同一条提示重复堆叠。
+  TaskFeedSnapshot _appendRefreshFailureHint(TaskFeedSnapshot snapshot) {
+    if (snapshot.degradationHints.contains(
+      TaskFlowDegradationHint.refreshFailed,
+    )) {
+      return snapshot;
+    }
+    return snapshot.copyWith(
+      degradationHints: <TaskFlowDegradationHint>[
+        ...snapshot.degradationHints,
+        TaskFlowDegradationHint.refreshFailed,
+      ],
+    );
   }
 
   /// 统一读取首页快照用例，避免通过基础快照 Provider 做重复失效和重读。

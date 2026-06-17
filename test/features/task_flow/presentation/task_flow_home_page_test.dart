@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/router/route_paths.dart';
 
+import 'package:screen_note/features/task_flow/application/ports/task_flow_degradation_hint_source.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/create_task_use_case.dart';
 import 'package:screen_note/features/task_flow/application/use_cases/load_task_feed_use_case.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_event_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_flow_degradation_hint.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mode.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
@@ -104,6 +106,42 @@ void main() {
       expect(find.text('首页快照加载失败'), findsOneWidget);
     });
 
+    testWidgets('降级时会保留主事项并展示轻提示', (WidgetTester tester) async {
+      await _pumpHomePage(
+        tester,
+        child: ProviderScope(
+          overrides: [
+            taskFlowHomeControllerProvider.overrideWith(
+              () => _FakeTaskFlowHomeController(
+                snapshot: TaskFeedSnapshot(
+                  pinnedTasks: <TaskEntity>[
+                    _buildTask(
+                      id: 'priority',
+                      title: '保留主事项卡片',
+                      createdAt: DateTime(2026, 6, 14, 8),
+                    ),
+                  ],
+                  overdueTasks: const <TaskEntity>[],
+                  todayTasks: const <TaskEntity>[],
+                  otherTasks: const <TaskEntity>[],
+                  activeCount: 1,
+                  completedCount: 0,
+                  deletedCount: 0,
+                  degradationHints: const <TaskFlowDegradationHint>[
+                    TaskFlowDegradationHint.notificationPermissionDenied,
+                  ],
+                ),
+              ),
+            ),
+          ],
+          child: const Scaffold(body: TaskFlowHomePage()),
+        ),
+      );
+
+      expect(find.text('保留主事项卡片'), findsOneWidget);
+      expect(find.text('部分能力已降级'), findsOneWidget);
+    });
+
     testWidgets('点击主事项卡片会进入事项编辑页', (WidgetTester tester) async {
       final TaskFlowDatabase database = TaskFlowDatabase.test(
         NativeDatabase.memory(),
@@ -125,10 +163,7 @@ void main() {
 
       await _pumpHomeRouter(
         tester,
-        runtime: _HomeRouterRuntime(
-          database: database,
-          repository: repository,
-        ),
+        runtime: _HomeRouterRuntime(database: database, repository: repository),
       );
 
       await tester.tap(find.text('点击主事项卡片进入编辑页'));
@@ -166,10 +201,7 @@ void main() {
 
       await _pumpHomeRouter(
         tester,
-        runtime: _HomeRouterRuntime(
-          database: database,
-          repository: repository,
-        ),
+        runtime: _HomeRouterRuntime(database: database, repository: repository),
       );
 
       await tester.tap(find.text('点击队列行进入编辑页'));
@@ -230,14 +262,16 @@ void main() {
       );
       expect(initialSnapshot.activeCount, 0);
 
-      await container.read(taskFlowHomeControllerProvider.notifier).createQuickTask(
-        const CreateTaskInput(title: '新的快捷事项', note: ''),
-        now: DateTime(2026, 6, 14, 9),
-      );
+      await container
+          .read(taskFlowHomeControllerProvider.notifier)
+          .createQuickTask(
+            const CreateTaskInput(title: '新的快捷事项', note: ''),
+            now: DateTime(2026, 6, 14, 9),
+          );
 
-      final TaskFeedSnapshot refreshedSnapshot = container.read(
-        taskFlowHomeControllerProvider,
-      ).requireValue;
+      final TaskFeedSnapshot refreshedSnapshot = container
+          .read(taskFlowHomeControllerProvider)
+          .requireValue;
       expect(refreshedSnapshot.activeCount, 1);
       expect(
         refreshedSnapshot.otherTasks.map((TaskEntity task) => task.title),
@@ -269,14 +303,14 @@ void main() {
           taskFlowHomeSnapshotProvider.overrideWith((ref) async {
             snapshotReadCount += 1;
             if (snapshotReadCount == 1) {
-              return LoadTaskFeedUseCase(repository: repository).execute(
-                now: DateTime(2026, 6, 14, 8),
-              );
+              return LoadTaskFeedUseCase(
+                repository: repository,
+              ).execute(now: DateTime(2026, 6, 14, 8));
             }
             await Future<void>.delayed(const Duration(seconds: 1));
-            return LoadTaskFeedUseCase(repository: repository).execute(
-              now: DateTime(2026, 6, 14, 8),
-            );
+            return LoadTaskFeedUseCase(
+              repository: repository,
+            ).execute(now: DateTime(2026, 6, 14, 8));
           }),
         ],
       );
@@ -349,9 +383,9 @@ void main() {
 
       await container.read(taskFlowHomeControllerProvider.notifier).refresh();
 
-      final TaskFeedSnapshot refreshedSnapshot = container.read(
-        taskFlowHomeControllerProvider,
-      ).requireValue;
+      final TaskFeedSnapshot refreshedSnapshot = container
+          .read(taskFlowHomeControllerProvider)
+          .requireValue;
       expect(refreshedSnapshot.activeCount, 1);
     });
 
@@ -399,6 +433,64 @@ void main() {
 
       expect(snapshotReadCount, 1);
     });
+
+    test('refresh 失败时会保留旧快照并追加降级提示', () async {
+      final TaskFlowDatabase database = TaskFlowDatabase.test(
+        NativeDatabase.memory(),
+      );
+      final TaskFlowRepositoryImpl repository = TaskFlowRepositoryImpl(
+        database: database,
+      );
+      var shouldFailRefresh = false;
+      final ProviderContainer container = ProviderContainer(
+        overrides: [
+          taskFlowDatabaseProvider.overrideWithValue(database),
+          taskFlowMutationRepositoryProvider.overrideWithValue(repository),
+          taskFlowRepositoryProvider.overrideWithValue(repository),
+          loadTaskFeedUseCaseProvider.overrideWith(
+            (ref) => LoadTaskFeedUseCase(
+              repository: repository,
+              degradationHintSource: _FakeDegradationHintSource(
+                onLoad: () {
+                  if (shouldFailRefresh) {
+                    throw StateError('refresh failed');
+                  }
+                  return const <TaskFlowDegradationHint>[];
+                },
+              ),
+            ),
+          ),
+        ],
+      );
+      addTearDown(database.close);
+      addTearDown(container.dispose);
+
+      await repository.createTask(
+        _buildTask(
+          id: 'task-3',
+          title: '刷新失败后保留旧快照',
+          createdAt: DateTime(2026, 6, 14, 8),
+        ),
+      );
+
+      final TaskFeedSnapshot initialSnapshot = await container.read(
+        taskFlowHomeControllerProvider.future,
+      );
+      expect(initialSnapshot.activeCount, 1);
+
+      shouldFailRefresh = true;
+      await container.read(taskFlowHomeControllerProvider.notifier).refresh();
+
+      final AsyncValue<TaskFeedSnapshot> refreshedState = container.read(
+        taskFlowHomeControllerProvider,
+      );
+      expect(refreshedState.hasValue, isTrue);
+      expect(refreshedState.requireValue.activeCount, 1);
+      expect(
+        refreshedState.requireValue.degradationHints,
+        contains(TaskFlowDegradationHint.refreshFailed),
+      );
+    });
   });
 }
 
@@ -433,7 +525,9 @@ Future<void> _pumpHomeRouter(
     ProviderScope(
       overrides: [
         taskFlowDatabaseProvider.overrideWithValue(runtime.database),
-        taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+        taskFlowMutationRepositoryProvider.overrideWithValue(
+          runtime.repository,
+        ),
         taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
       ],
       child: ScreenNoteScreenUtilContract(
@@ -458,20 +552,14 @@ Future<void> _pumpHomeRouter(
 
 /// 首页路由测试运行时显式持有内存真源，保证路由断言不依赖真实本地数据库。
 final class _HomeRouterRuntime {
-  const _HomeRouterRuntime({
-    required this.database,
-    required this.repository,
-  });
+  const _HomeRouterRuntime({required this.database, required this.repository});
 
   final TaskFlowDatabase database;
   final TaskFlowRepositoryImpl repository;
 }
 
 /// 统一泵起首页测试外壳，确保主题、本地化与 ScreenUtil 契约和正式环境一致。
-Future<void> _pumpHomePage(
-  WidgetTester tester, {
-  required Widget child,
-}) async {
+Future<void> _pumpHomePage(WidgetTester tester, {required Widget child}) async {
   tester.view.devicePixelRatio = 1;
   tester.view.physicalSize = const Size(1170, 2532);
   addTearDown(tester.view.resetPhysicalSize);
@@ -574,10 +662,7 @@ final class _DelayedTaskRepository implements TaskMutationRepository {
 
 /// 测试替身控制器只服务页面状态覆盖，避免页面测试被真实仓储装配分散注意力。
 class _FakeTaskFlowHomeController extends TaskFlowHomeController {
-  _FakeTaskFlowHomeController({
-    this.snapshot,
-    this.error,
-  });
+  _FakeTaskFlowHomeController({this.snapshot, this.error});
 
   final TaskFeedSnapshot? snapshot;
   final Object? error;
@@ -588,6 +673,21 @@ class _FakeTaskFlowHomeController extends TaskFlowHomeController {
       throw error!;
     }
     return snapshot!;
+  }
+}
+
+/// 首页降级提示替身只服务控制器测试，避免把失败路径绑到真实系统能力状态。
+final class _FakeDegradationHintSource
+    implements TaskFlowDegradationHintSource {
+  const _FakeDegradationHintSource({
+    required List<TaskFlowDegradationHint> Function() onLoad,
+  }) : _onLoad = onLoad;
+
+  final List<TaskFlowDegradationHint> Function() _onLoad;
+
+  @override
+  Future<List<TaskFlowDegradationHint>> loadHints() async {
+    return _onLoad();
   }
 }
 

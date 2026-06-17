@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/router/app_router.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
@@ -38,6 +39,15 @@ class ScreenNoteApp extends HookConsumerWidget {
           themeMode: _themeModeFromPreference(preferences.themeModePreference),
           locale: _localeFromPreference(preferences.languagePreference),
           routerConfig: router,
+          builder: (BuildContext context, Widget? child) {
+            // 系统栏样式统一收口在根应用，避免 feature 页面各自决定图标明暗与透明背景。
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value: _systemUiOverlayStyleForBrightness(
+                Theme.of(context).brightness,
+              ),
+              child: child ?? const SizedBox.shrink(),
+            );
+          },
         );
       },
     );
@@ -58,5 +68,22 @@ class ScreenNoteApp extends HookConsumerWidget {
       SettingsLanguagePreference.zh => const Locale('zh'),
       SettingsLanguagePreference.en => const Locale('en'),
     };
+  }
+
+  /// 根应用统一根据当前主题亮度映射系统栏图标颜色，保证 edge-to-edge 下的可读性稳定。
+  SystemUiOverlayStyle _systemUiOverlayStyleForBrightness(
+    Brightness brightness,
+  ) {
+    final bool isDark = brightness == Brightness.dark;
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+      statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+      systemNavigationBarIconBrightness: isDark
+          ? Brightness.light
+          : Brightness.dark,
+    );
   }
 }

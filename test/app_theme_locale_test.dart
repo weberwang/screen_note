@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -53,6 +54,46 @@ void main() {
     expect(app.themeMode, ThemeMode.dark);
     expect(app.locale, const Locale('en'));
     expect(find.text('Settings Center'), findsOneWidget);
+  });
+
+  testWidgets('根应用会提供透明系统栏样式宿主', (WidgetTester tester) async {
+    final SettingsPreferencesRepository preferencesRepository =
+        _InMemorySettingsPreferencesRepository(
+          initial: const SettingsCenterPreferences(),
+        );
+    final GoRouter router = GoRouter(
+      routes: <RouteBase>[
+        GoRoute(
+          path: '/',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appRouterProvider.overrideWithValue(router),
+          settingsPreferencesRepositoryProvider.overrideWithValue(
+            preferencesRepository,
+          ),
+        ],
+        child: const ScreenNoteApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final AnnotatedRegion<SystemUiOverlayStyle> overlayRegion = tester.widget(
+      find.byWidgetPredicate(
+        (Widget widget) => widget is AnnotatedRegion<SystemUiOverlayStyle>,
+      ),
+    );
+
+    expect(overlayRegion.value.statusBarColor, Colors.transparent);
+    expect(overlayRegion.value.systemNavigationBarColor, Colors.transparent);
   });
 }
 

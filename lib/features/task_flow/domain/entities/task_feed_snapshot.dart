@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
+import 'package:screen_note/features/task_flow/domain/entities/task_flow_degradation_hint.dart';
 
 part 'task_feed_snapshot.freezed.dart';
 
@@ -16,5 +17,7 @@ abstract class TaskFeedSnapshot with _$TaskFeedSnapshot {
     required int activeCount,
     required int completedCount,
     required int deletedCount,
+    @Default(<TaskFlowDegradationHint>[])
+    List<TaskFlowDegradationHint> degradationHints,
   }) = _TaskFeedSnapshot;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/app.dart';
 import 'package:screen_note/app/bootstrap/local_notifications_bootstrap.dart';
@@ -16,6 +17,7 @@ import 'package:screen_note/features/widget_bridge/infrastructure/widget_snapsho
 Future<void> bootstrapAndRunApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureGlobalErrorHandling();
+  await configureEdgeToEdgeSystemUi();
   await initializeScreenNoteLocalNotifications();
   final WidgetLaunchBridge launchBridge = await loadSafeWidgetLaunchBridge();
   runApp(
@@ -38,6 +40,11 @@ Future<void> bootstrapAndRunApp() async {
       child: const ScreenNoteApp(),
     ),
   );
+}
+
+/// 启动阶段统一切到 edge-to-edge，避免系统栏模式分散到页面层各自维护。
+Future<void> configureEdgeToEdgeSystemUi() async {
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 }
 
 /// 配置全局错误展示与上报入口。

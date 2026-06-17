@@ -9,6 +9,7 @@ import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart'
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
 import 'package:screen_note/features/task_flow/presentation/widgets/home_history_status_panel.dart';
 import 'package:screen_note/features/task_flow/presentation/widgets/priority_task_card.dart';
+import 'package:screen_note/features/task_flow/presentation/widgets/task_flow_home_status_notice.dart';
 import 'package:screen_note/features/task_flow/presentation/widgets/task_queue_row.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
@@ -85,12 +86,13 @@ class TaskFlowHomePage extends HookConsumerWidget {
                     SizedBox(height: 14.h),
                     _HomeContextChip(label: localizations.homeTodayChip),
                     SizedBox(height: 28.h),
+                    TaskFlowHomeStatusNotice(hints: snapshot.degradationHints),
+                    if (snapshot.degradationHints.isNotEmpty)
+                      SizedBox(height: 20.h),
                     PriorityTaskCard(
                       task: priorityTask,
-                      onTap: () => _openTaskEditor(
-                        context,
-                        taskId: priorityTask?.id,
-                      ),
+                      onTap: () =>
+                          _openTaskEditor(context, taskId: priorityTask?.id),
                     ),
                     if (overdueTasks.isNotEmpty) ...<Widget>[
                       SizedBox(height: 34.h),
@@ -165,12 +167,9 @@ class TaskFlowHomePage extends HookConsumerWidget {
       ...snapshot.overdueTasks.map((TaskEntity task) => task.id),
     };
 
-    return <TaskEntity>[
-      ...snapshot.todayTasks,
-      ...snapshot.otherTasks,
-    ].where((TaskEntity task) => !excludedTaskIds.contains(task.id)).toList(
-      growable: false,
-    );
+    return <TaskEntity>[...snapshot.todayTasks, ...snapshot.otherTasks]
+        .where((TaskEntity task) => !excludedTaskIds.contains(task.id))
+        .toList(growable: false);
   }
 
   /// 队列行之间统一插入轻分隔线，保持行式结构而不重新引入卡片堆叠感。
@@ -303,10 +302,7 @@ final class _HomeContextChip extends StatelessWidget {
 /// 首页分区标题统一收口，避免每个分区各自发明层级和颜色节奏。
 final class _TaskFlowSectionTitle extends StatelessWidget {
   /// 创建分区标题。
-  const _TaskFlowSectionTitle({
-    required this.title,
-    this.color,
-  });
+  const _TaskFlowSectionTitle({required this.title, this.color});
 
   /// 分区标题文案。
   final String title;
@@ -354,10 +350,7 @@ final class _TaskFlowHomeLoadingState extends StatelessWidget {
         children: <Widget>[
           _TaskFlowBrandHeader(appTitle: AppLocalizations.of(context).appTitle),
           SizedBox(height: 32.h),
-          Text(
-            greetingTitle,
-            style: theme.textTheme.displaySmall,
-          ),
+          Text(greetingTitle, style: theme.textTheme.displaySmall),
           SizedBox(height: 14.h),
           _HomeContextChip(label: todayLabel),
           SizedBox(height: 28.h),

@@ -168,6 +168,18 @@
   "@taskFlowUpNextSectionTitle": {
     "description": "首页非逾期事项队列分区标题。"
   },
+  "taskFlowHomeDegradationTitle": "部分能力已降级",
+  "@taskFlowHomeDegradationTitle": {
+    "description": "首页内联降级提示标题。"
+  },
+  "taskFlowHomePermissionDegradationBody": "通知权限当前不可用，但事项仍可继续创建、编辑和完成。",
+  "@taskFlowHomePermissionDegradationBody": {
+    "description": "首页通知权限受限时的轻量提示文案。"
+  },
+  "taskFlowHomeRefreshDegradationBody": "首页已保留上次快照，稍后重试即可恢复最新状态。",
+  "@taskFlowHomeRefreshDegradationBody": {
+    "description": "首页刷新失败但已保留旧快照时的轻量提示文案。"
+  },
   "taskEditorTitle": "编辑事项",
   "@taskEditorTitle": {
     "description": "事项编辑页标题。"
