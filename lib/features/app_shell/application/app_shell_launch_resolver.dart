@@ -7,7 +7,7 @@ const String defaultAppShellLocation = RoutePaths.home;
 /// 事项编辑页路由统一由这里组装，避免不同入口手写 query 拼接规则。
 String buildTaskEditorLocation(String taskId) {
   return Uri(
-    path: '${RoutePaths.home}${RoutePaths.taskEditor}',
+    path: RoutePaths.taskEditor,
     queryParameters: <String, String>{
       'taskId': taskId,
     },
@@ -57,7 +57,7 @@ final class AppShellLaunchResolver {
   /// 事项编辑落点只接受精确编辑页路径和非空白 taskId，避免未知子路径混入安全入口。
   AppShellLaunchIntent? _resolveTaskEditor(String rawLocation) {
     final Uri uri = Uri.parse(rawLocation);
-    if (uri.path != '/${RoutePaths.taskEditor}') {
+    if (uri.path != RoutePaths.taskEditor) {
       return null;
     }
 

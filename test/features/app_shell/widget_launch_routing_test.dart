@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:screen_note/app/app.dart';
 import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/app/startup/widget_launch_bridge.dart';
-import 'package:screen_note/features/app_shell/presentation/pages/app_shell_page.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
@@ -24,6 +23,10 @@ void main() {
   testWidgets('收到安全 task-editor 回流后会自动进入任务编辑页', (
     WidgetTester tester,
   ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1170, 2532);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     SharedPreferences.setMockInitialValues(<String, Object>{});
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     final TaskFlowDatabase database = TaskFlowDatabase.test(
@@ -67,10 +70,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    controller.add('${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42');
+    controller.add('${RoutePaths.taskEditor}?taskId=task-42');
     await tester.pumpAndSettle();
 
-    expect(find.byType(AppShellPage), findsOneWidget);
     expect(find.byType(TaskFlowEditorPage), findsOneWidget);
 
     final TextField titleField = tester.widget<TextField>(

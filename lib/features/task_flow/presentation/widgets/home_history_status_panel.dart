@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
 /// 首页历史状态概览面板，只承接轻量计数与历史入口，不把完整历史列表重新塞回首页。
@@ -26,6 +27,7 @@ class HomeHistoryStatusPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
     final bool isEmpty = completedCount == 0 && deletedCount == 0;
 
     return Material(
@@ -46,30 +48,31 @@ class HomeHistoryStatusPanel extends StatelessWidget {
                     label: localizations.homeHistoryCompletedCount(
                       completedCount,
                     ),
-                    foregroundColor: const Color(0xFF4D8B52),
-                    backgroundColor: const Color(0xFFE4F0E0),
+                    foregroundColor: theme.colorScheme.primary,
+                    backgroundColor: palette.surfaceMuted,
                   ),
                   _HistoryStatusChip(
                     icon: Icons.delete_outline_rounded,
                     label: localizations.homeHistoryDeletedCount(
                       deletedCount,
                     ),
-                    foregroundColor: const Color(0xFFB56A5A),
-                    backgroundColor: const Color(0xFFF6E6E1),
+                    foregroundColor: const Color(0xFFB95C4C),
+                    backgroundColor: const Color(0xFFF7E5DE),
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 18.h),
               Text(
                 isEmpty
                     ? localizations.homeHistoryEmptyBody
                     : localizations.homeHistorySummaryBody,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.textTheme.bodyMedium?.color,
+                  color: palette.inkSecondary,
                 ),
               ),
               SizedBox(height: 18.h),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
                     localizations.homeHistoryAction,
@@ -95,7 +98,7 @@ class HomeHistoryStatusPanel extends StatelessWidget {
 }
 
 /// 首页历史状态胶囊，只负责渲染单个语义计数，避免页面层手写重复装饰。
-class _HistoryStatusChip extends StatelessWidget {
+final class _HistoryStatusChip extends StatelessWidget {
   /// 创建首页历史状态胶囊。
   const _HistoryStatusChip({
     required this.icon,
@@ -120,29 +123,31 @@ class _HistoryStatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(999.r),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(
-            icon,
-            size: 16.sp,
-            color: foregroundColor,
-          ),
-          SizedBox(width: 8.w),
-          Text(
-            label,
-            style: theme.textTheme.labelLarge?.copyWith(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              icon,
+              size: 16.sp,
               color: foregroundColor,
-              fontWeight: FontWeight.w700,
             ),
-          ),
-        ],
+            SizedBox(width: 8.w),
+            Text(
+              label,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: foregroundColor,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

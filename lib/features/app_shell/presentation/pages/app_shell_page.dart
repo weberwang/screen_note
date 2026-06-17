@@ -35,9 +35,7 @@ class AppShellPage extends HookConsumerWidget {
       appShellUiStateControllerProvider.notifier,
     );
     final WidgetLaunchBridge launchBridge = ref.watch(widgetLaunchBridgeProvider);
-    final bool isTaskEditorRoute = currentLocation.endsWith(
-      '/${RoutePaths.taskEditor}',
-    );
+    final bool isTaskEditorRoute = currentLocation == RoutePaths.taskEditor;
     const AppShellLaunchResolver launchResolver = AppShellLaunchResolver();
 
     useEffect(() {
@@ -126,7 +124,7 @@ class AppShellPage extends HookConsumerWidget {
 
                 // Quick add 只负责把用户带进正式编辑页，新建事项仍由 task-flow 页面承接。
                 if (shouldOpenEditor && context.mounted) {
-                  await context.push('${RoutePaths.home}${RoutePaths.taskEditor}');
+                  await context.push(RoutePaths.taskEditor);
                 }
               },
               child: const Icon(Icons.add_rounded),

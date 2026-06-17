@@ -1,4 +1,5 @@
 import 'package:drift/native.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,10 @@ void main() {
   testWidgets('启动桥给出 settings 落点时会稳定进入设置页', (
     WidgetTester tester,
   ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1170, 2532);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     final _LaunchTestHarness harness = await _createHarness(
       rawLaunchLocation: RoutePaths.settings,
     );
@@ -39,8 +44,12 @@ void main() {
   testWidgets('启动桥给出 task-editor 安全落点时会进入任务编辑页', (
     WidgetTester tester,
   ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1170, 2532);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     final _LaunchTestHarness harness = await _createHarness(
-      rawLaunchLocation: '${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42',
+      rawLaunchLocation: '${RoutePaths.taskEditor}?taskId=task-42',
     );
     addTearDown(harness.dispose);
 
@@ -52,11 +61,15 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(AppShellPage), findsOneWidget);
+    expect(find.byType(AppShellPage), findsNothing);
     expect(find.byType(TaskFlowEditorPage), findsOneWidget);
   });
 
   testWidgets('启动桥给出非法落点时会保守回退到首页', (WidgetTester tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1170, 2532);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     final _LaunchTestHarness harness = await _createHarness(
       rawLaunchLocation: '/launch?source=shortcut&target=unknown-target',
     );

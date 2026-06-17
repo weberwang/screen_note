@@ -122,7 +122,8 @@ void main() {
 
       expect(titleField.controller?.text, '原始标题');
       expect(noteField.controller?.text, '原始备注');
-      expect(find.byType(SwitchListTile), findsNWidgets(2));
+      expect(find.text('截止日期'), findsOneWidget);
+      expect(find.text('隐私'), findsOneWidget);
     });
 
     testWidgets('保存既有事项不会新增第二条事项', (WidgetTester tester) async {

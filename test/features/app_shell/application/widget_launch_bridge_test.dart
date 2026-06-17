@@ -31,7 +31,7 @@ void main() {
 
       expect(
         bridge.rawLaunchLocation,
-        '${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42',
+        '${RoutePaths.taskEditor}?taskId=task-42',
       );
     });
 
@@ -47,7 +47,7 @@ void main() {
         bridge.launchLocations,
         emitsInOrder(<Object>[
           RoutePaths.home,
-          '${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42',
+          '${RoutePaths.taskEditor}?taskId=task-42',
           RoutePaths.home,
           emitsDone,
         ]),

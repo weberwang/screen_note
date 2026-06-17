@@ -11,6 +11,8 @@ import 'package:screen_note/features/task_flow/presentation/widgets/home_history
 import 'package:screen_note/features/task_flow/presentation/widgets/priority_task_card.dart';
 import 'package:screen_note/features/task_flow/presentation/widgets/task_queue_row.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
 /// 首页任务流页面只消费稳定快照，不直接改库也不重复推导业务优先级。
 class TaskFlowHomePage extends HookConsumerWidget {
@@ -21,26 +23,49 @@ class TaskFlowHomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
     final AsyncValue<TaskFeedSnapshot> snapshotAsync = ref.watch(
       taskFlowHomeControllerProvider,
     );
 
     return SafeArea(
       child: snapshotAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (Object error, StackTrace stackTrace) => Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Text(
-              localizations.taskFlowHomeLoadFailed,
-              style: theme.textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
+        loading: () => _TaskFlowHomeLoadingState(
+          greetingTitle: localizations.homeGreetingTitle,
+          todayLabel: localizations.homeTodayChip,
+        ),
+        error: (Object error, StackTrace stackTrace) => Padding(
+          padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 120.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _TaskFlowBrandHeader(appTitle: localizations.appTitle),
+              SizedBox(height: 28.h),
+              Text(
+                localizations.homeGreetingTitle,
+                style: theme.textTheme.displaySmall,
+              ),
+              SizedBox(height: 14.h),
+              _HomeContextChip(label: localizations.homeTodayChip),
+              SizedBox(height: 28.h),
+              ScreenNotePanel(
+                child: Text(
+                  localizations.taskFlowHomeLoadFailed,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: palette.inkSecondary,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         data: (TaskFeedSnapshot snapshot) {
           final TaskEntity? priorityTask = _selectPriorityTask(snapshot);
-          final List<TaskEntity> urgentQueue = _buildUrgentQueue(
+          final List<TaskEntity> overdueTasks = _buildOverdueQueue(
+            snapshot: snapshot,
+            priorityTask: priorityTask,
+          );
+          final List<TaskEntity> upcomingTasks = _buildUpcomingQueue(
             snapshot: snapshot,
             priorityTask: priorityTask,
           );
@@ -48,58 +73,55 @@ class TaskFlowHomePage extends HookConsumerWidget {
           return CustomScrollView(
             slivers: <Widget>[
               SliverPadding(
-                padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 120.h),
+                padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 132.h),
                 sliver: SliverList.list(
                   children: <Widget>[
+                    _TaskFlowBrandHeader(appTitle: localizations.appTitle),
+                    SizedBox(height: 32.h),
                     Text(
                       localizations.homeGreetingTitle,
                       style: theme.textTheme.displaySmall,
                     ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      localizations.homeGreetingSubtitle,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.textTheme.bodyMedium?.color,
-                      ),
-                    ),
+                    SizedBox(height: 14.h),
+                    _HomeContextChip(label: localizations.homeTodayChip),
                     SizedBox(height: 28.h),
                     PriorityTaskCard(
                       task: priorityTask,
-                      onTap: priorityTask == null
-                          ? null
-                          : () => _openTaskEditor(
-                              context,
-                              taskId: priorityTask.id,
-                            ),
+                      onTap: () => _openTaskEditor(
+                        context,
+                        taskId: priorityTask?.id,
+                      ),
                     ),
-                    SizedBox(height: 32.h),
-                    Text(
-                      localizations.homeQueueTitle,
-                      style: theme.textTheme.titleLarge,
+                    if (overdueTasks.isNotEmpty) ...<Widget>[
+                      SizedBox(height: 34.h),
+                      _TaskFlowSectionTitle(
+                        title: localizations.taskFlowOverdueSectionTitle,
+                        color: theme.colorScheme.error,
+                      ),
+                      SizedBox(height: 12.h),
+                      ..._buildQueueRows(
+                        context: context,
+                        tasks: overdueTasks,
+                        isOverdue: true,
+                      ),
+                    ],
+                    if (upcomingTasks.isNotEmpty) ...<Widget>[
+                      SizedBox(height: 26.h),
+                      _TaskFlowSectionTitle(
+                        title: localizations.taskFlowUpNextSectionTitle,
+                      ),
+                      SizedBox(height: 12.h),
+                      ..._buildQueueRows(
+                        context: context,
+                        tasks: upcomingTasks,
+                        isOverdue: false,
+                      ),
+                    ],
+                    SizedBox(height: 28.h),
+                    _TaskFlowSectionTitle(
+                      title: localizations.homeHistoryTitle,
                     ),
-                    SizedBox(height: 16.h),
-                    ...urgentQueue.map((TaskEntity task) {
-                      final bool isOverdue = snapshot.overdueTasks.any(
-                        (TaskEntity item) => item.id == task.id,
-                      );
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 12.h),
-                        child: TaskQueueRow(
-                          task: task,
-                          isOverdue: isOverdue,
-                          onTap: () => _openTaskEditor(
-                            context,
-                            taskId: task.id,
-                          ),
-                        ),
-                      );
-                    }),
-                    SizedBox(height: 20.h),
-                    Text(
-                      localizations.homeHistoryTitle,
-                      style: theme.textTheme.titleLarge,
-                    ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 14.h),
                     HomeHistoryStatusPanel(
                       completedCount: snapshot.completedCount,
                       deletedCount: snapshot.deletedCount,
@@ -123,26 +145,62 @@ class TaskFlowHomePage extends HookConsumerWidget {
         snapshot.otherTasks.firstOrNull;
   }
 
-  /// 紧急队列只展示次级高优先项，并去掉已占据主卡片的那一条，避免首页重复朗读同一事项。
-  List<TaskEntity> _buildUrgentQueue({
+  /// 逾期队列只保留除主事项外的逾期任务，保证逾期区标题与语义保持单一。
+  List<TaskEntity> _buildOverdueQueue({
     required TaskFeedSnapshot snapshot,
     required TaskEntity? priorityTask,
   }) {
-    final List<TaskEntity> urgentQueue = <TaskEntity>[
-      ...snapshot.overdueTasks,
-      ...snapshot.todayTasks,
-    ];
-    if (priorityTask == null) {
-      return urgentQueue;
-    }
-    return urgentQueue
-        .where((TaskEntity task) => task.id != priorityTask.id)
+    return snapshot.overdueTasks
+        .where((TaskEntity task) => task.id != priorityTask?.id)
         .toList(growable: false);
+  }
+
+  /// 后续队列汇总今日和普通任务，但去掉已经进入主卡片或逾期区的事项。
+  List<TaskEntity> _buildUpcomingQueue({
+    required TaskFeedSnapshot snapshot,
+    required TaskEntity? priorityTask,
+  }) {
+    final Set<String> excludedTaskIds = <String>{
+      if (priorityTask != null) priorityTask.id,
+      ...snapshot.overdueTasks.map((TaskEntity task) => task.id),
+    };
+
+    return <TaskEntity>[
+      ...snapshot.todayTasks,
+      ...snapshot.otherTasks,
+    ].where((TaskEntity task) => !excludedTaskIds.contains(task.id)).toList(
+      growable: false,
+    );
+  }
+
+  /// 队列行之间统一插入轻分隔线，保持行式结构而不重新引入卡片堆叠感。
+  List<Widget> _buildQueueRows({
+    required BuildContext context,
+    required List<TaskEntity> tasks,
+    required bool isOverdue,
+  }) {
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    final List<Widget> rows = <Widget>[];
+
+    for (var index = 0; index < tasks.length; index += 1) {
+      final TaskEntity task = tasks[index];
+      rows.add(
+        TaskQueueRow(
+          task: task,
+          isOverdue: isOverdue,
+          onTap: () => _openTaskEditor(context, taskId: task.id),
+        ),
+      );
+      if (index != tasks.length - 1) {
+        rows.add(Divider(height: 1, color: palette.lineSoft));
+      }
+    }
+    return rows;
   }
 
   /// 首页入口统一走共享子路由进入编辑页，避免卡片、列表和 quick add 各自拼接不同路径。
   void _openTaskEditor(BuildContext context, {String? taskId}) {
-    final String baseLocation = '${RoutePaths.home}${RoutePaths.taskEditor}';
+    final String baseLocation = RoutePaths.taskEditor;
     final String location = taskId == null
         ? baseLocation
         : '$baseLocation?taskId=$taskId';
@@ -152,5 +210,171 @@ class TaskFlowHomePage extends HookConsumerWidget {
   /// 首页历史状态入口统一切到历史中心分支，避免局部组件各自拼接导航目标。
   void _openHistoryCenter(BuildContext context) {
     context.go(RoutePaths.history);
+  }
+}
+
+/// 首页品牌轻头部只负责表达产品归属，不承接额外业务信息。
+final class _TaskFlowBrandHeader extends StatelessWidget {
+  /// 创建品牌轻头部。
+  const _TaskFlowBrandHeader({required this.appTitle});
+
+  /// 应用标题。
+  final String appTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 48.w,
+          height: 48.w,
+          decoration: BoxDecoration(
+            color: palette.surfaceMuted,
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.eco_rounded,
+            color: theme.colorScheme.primary,
+            size: 24.sp,
+          ),
+        ),
+        SizedBox(width: 14.w),
+        Text(
+          appTitle,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 首页顶部上下文胶囊只负责表达当前时间语义，不参与业务状态推导。
+final class _HomeContextChip extends StatelessWidget {
+  /// 创建顶部上下文胶囊。
+  const _HomeContextChip({required this.label});
+
+  /// 胶囊文案。
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: palette.surfaceMuted,
+        borderRadius: BorderRadius.circular(999.r),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: 14.w,
+              height: 14.w,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary,
+                shape: BoxShape.circle,
+              ),
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              label,
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 首页分区标题统一收口，避免每个分区各自发明层级和颜色节奏。
+final class _TaskFlowSectionTitle extends StatelessWidget {
+  /// 创建分区标题。
+  const _TaskFlowSectionTitle({
+    required this.title,
+    this.color,
+  });
+
+  /// 分区标题文案。
+  final String title;
+
+  /// 可选强调色。
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Text(
+      title,
+      style: theme.textTheme.headlineLarge?.copyWith(
+        fontSize: 21.sp,
+        color: color ?? theme.textTheme.headlineLarge?.color,
+      ),
+    );
+  }
+}
+
+/// 首页加载态保留主要结构锚点，避免加载时页面骨架完全换形。
+final class _TaskFlowHomeLoadingState extends StatelessWidget {
+  /// 创建首页加载态。
+  const _TaskFlowHomeLoadingState({
+    required this.greetingTitle,
+    required this.todayLabel,
+  });
+
+  /// 问候标题。
+  final String greetingTitle;
+
+  /// 顶部时间胶囊文案。
+  final String todayLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 120.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _TaskFlowBrandHeader(appTitle: AppLocalizations.of(context).appTitle),
+          SizedBox(height: 32.h),
+          Text(
+            greetingTitle,
+            style: theme.textTheme.displaySmall,
+          ),
+          SizedBox(height: 14.h),
+          _HomeContextChip(label: todayLabel),
+          SizedBox(height: 28.h),
+          ScreenNotePanel(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 18.h),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 26.h),
+          Divider(height: 1, color: palette.lineSoft),
+        ],
+      ),
+    );
   }
 }

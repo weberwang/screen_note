@@ -24,7 +24,8 @@ class ScreenNotePanel extends StatelessWidget {
       padding: padding ?? EdgeInsets.all(24.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(32.r),
+        // 统一把共享卡片圆角收口到 26，和当前冻结原型中的 settings-center 分组表面对齐。
+        borderRadius: BorderRadius.circular(26.r),
         border: Border.all(color: Theme.of(context).dividerColor),
         boxShadow: [
           BoxShadow(
@@ -38,4 +39,3 @@ class ScreenNotePanel extends StatelessWidget {
     );
   }
 }
-

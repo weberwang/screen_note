@@ -67,7 +67,7 @@ void main() {
 
       expect(find.text('完成首页真实快照接入'), findsOneWidget);
       expect(find.text('补齐紧急队列展示'), findsOneWidget);
-      expect(find.text('紧急队列'), findsOneWidget);
+      expect(find.text('逾期待处理'), findsOneWidget);
     });
 
     testWidgets('空态时会展示最小提示', (WidgetTester tester) async {
@@ -414,13 +414,11 @@ Future<void> _pumpHomeRouter(
         path: RoutePaths.home,
         builder: (BuildContext context, GoRouterState state) =>
             const Scaffold(body: TaskFlowHomePage()),
-        routes: <RouteBase>[
-          GoRoute(
-            path: RoutePaths.taskEditor,
-            builder: (BuildContext context, GoRouterState state) =>
-                const TaskFlowEditorPage(),
-          ),
-        ],
+      ),
+      GoRoute(
+        path: RoutePaths.taskEditor,
+        builder: (BuildContext context, GoRouterState state) =>
+            const TaskFlowEditorPage(),
       ),
     ],
   );

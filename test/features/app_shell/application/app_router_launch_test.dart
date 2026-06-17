@@ -21,7 +21,7 @@ void main() {
     test('keeps supported task editor raw locations as task editor route', () {
       expect(
         _buildInitialLocation('/task-editor?taskId=task-42'),
-        '${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42',
+        '${RoutePaths.taskEditor}?taskId=task-42',
       );
     });
 

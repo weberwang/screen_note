@@ -40,14 +40,6 @@ GoRouter appRouter(Ref ref) {
               GoRoute(
                 path: RoutePaths.home,
                 builder: (context, state) => const TaskFlowHomePage(),
-                routes: [
-                  GoRoute(
-                    path: RoutePaths.taskEditor,
-                    builder: (context, state) => TaskFlowEditorPage(
-                      taskId: state.uri.queryParameters['taskId'],
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -68,6 +60,12 @@ GoRouter appRouter(Ref ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: RoutePaths.taskEditor,
+        builder: (context, state) => TaskFlowEditorPage(
+          taskId: state.uri.queryParameters['taskId'],
+        ),
       ),
     ],
   );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 历史分区头组件，统一收口最近完成与最近删除的语义色和结构。
 class HistorySectionHeader extends StatelessWidget {
@@ -20,31 +21,49 @@ class HistorySectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _HistorySectionToneStyle style = _tone.resolveStyle();
+    final ThemeData theme = Theme.of(context);
+    final _HistorySectionToneStyle style = _tone.resolveStyle(context);
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+    return DecoratedBox(
       decoration: BoxDecoration(
-        color: style.backgroundColor,
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: <Color>[
+            style.backgroundColor,
+            style.backgroundColor.withValues(alpha: 0.35),
+          ],
+        ),
         borderRadius: BorderRadius.circular(18.r),
       ),
-      child: Row(
-        children: <Widget>[
-          Icon(style.icon, size: 18.sp, color: style.foregroundColor),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: style.foregroundColor,
-                fontWeight: FontWeight.w600,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 34.w,
+              height: 34.w,
+              decoration: BoxDecoration(
+                color: style.iconBackgroundColor,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Icon(style.icon, size: 18.sp, color: style.foregroundColor),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontSize: 17.sp,
+                  color: style.foregroundColor,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -52,32 +71,37 @@ class HistorySectionHeader extends StatelessWidget {
 
 enum _HistorySectionTone { completed, deleted }
 
-/// 分区语义样式只在组件内部使用，避免把轻量视觉常量扩散到页面层。
+/// 分区语义样式只在组件内部使用，避免把视觉常量扩散到页面层。
 final class _HistorySectionToneStyle {
   const _HistorySectionToneStyle({
     required this.icon,
     required this.backgroundColor,
     required this.foregroundColor,
+    required this.iconBackgroundColor,
   });
 
   final IconData icon;
   final Color backgroundColor;
   final Color foregroundColor;
+  final Color iconBackgroundColor;
 }
 
 extension on _HistorySectionTone {
-  /// 根据分区类型解析最小语义样式，保持完成与删除一眼可辨但不过度喧闹。
-  _HistorySectionToneStyle resolveStyle() {
+  /// 根据分区类型解析语义样式，保持完成与删除一眼可辨但不过度喧闹。
+  _HistorySectionToneStyle resolveStyle(BuildContext context) {
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
     return switch (this) {
-      _HistorySectionTone.completed => const _HistorySectionToneStyle(
-        icon: Icons.check_circle_outline_rounded,
-        backgroundColor: Color(0xFFEAF4EB),
-        foregroundColor: Color(0xFF4D8B52),
+      _HistorySectionTone.completed => _HistorySectionToneStyle(
+        icon: Icons.check_rounded,
+        backgroundColor: const Color(0xFFEAF4EB),
+        foregroundColor: palette.statusDone,
+        iconBackgroundColor: palette.statusDone.withValues(alpha: 0.16),
       ),
-      _HistorySectionTone.deleted => const _HistorySectionToneStyle(
-        icon: Icons.restore_from_trash_rounded,
-        backgroundColor: Color(0xFFFBEDE9),
-        foregroundColor: Color(0xFFE96A5A),
+      _HistorySectionTone.deleted => _HistorySectionToneStyle(
+        icon: Icons.delete_outline_rounded,
+        backgroundColor: const Color(0xFFFBEDE9),
+        foregroundColor: palette.statusPrivate,
+        iconBackgroundColor: palette.statusPrivate.withValues(alpha: 0.12),
       ),
     };
   }

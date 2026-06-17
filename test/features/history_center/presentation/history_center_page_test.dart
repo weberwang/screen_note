@@ -1,9 +1,11 @@
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
+import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/features/history_center/application/providers/history_center_runtime_providers.dart';
 import 'package:screen_note/features/history_center/domain/entities/history_center_snapshot.dart';
 import 'package:screen_note/features/history_center/presentation/pages/history_center_page.dart';
@@ -14,9 +16,11 @@ import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mod
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_repository_impl.dart';
+import 'package:screen_note/features/task_flow/presentation/pages/task_flow_editor_page.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
 void main() {
   testWidgets('历史页会展示最近完成和最近删除分区', (WidgetTester tester) async {
@@ -56,11 +60,25 @@ void main() {
 
     await _pumpHistoryPage(tester, runtime: runtime);
 
-    expect(find.text('Your history is clear for now.'), findsOneWidget);
+    expect(find.text('No history yet'), findsOneWidget);
     expect(
-      find.textContaining('nothing vanished unexpectedly'),
+      find.textContaining('appear here when you need them'),
       findsOneWidget,
     );
+    expect(find.byType(ScreenNotePanel), findsNothing);
+    expect(find.byKey(const Key('history-empty-add-button')), findsOneWidget);
+  });
+
+  testWidgets('历史页空态点击加号会进入事项编辑页新建态', (WidgetTester tester) async {
+    final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+    addTearDown(runtime.dispose);
+
+    await _pumpHistoryPage(tester, runtime: runtime);
+
+    await tester.tap(find.byKey(const Key('history-empty-add-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TextField), findsNWidgets(2));
   });
 
   testWidgets('恢复后会移除已删除事项并写入共享反馈', (WidgetTester tester) async {
@@ -264,6 +282,23 @@ Future<void> _pumpHistoryPage(
   WidgetTester tester, {
   required _TaskFlowTestRuntime runtime,
 }) async {
+  final GoRouter router = GoRouter(
+    initialLocation: RoutePaths.history,
+    routes: <RouteBase>[
+      GoRoute(
+        path: RoutePaths.history,
+        builder: (BuildContext context, GoRouterState state) =>
+            const Scaffold(body: HistoryCenterPage()),
+      ),
+      GoRoute(
+        path: RoutePaths.taskEditor,
+        builder: (BuildContext context, GoRouterState state) =>
+            const TaskFlowEditorPage(),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
@@ -276,13 +311,13 @@ Future<void> _pumpHistoryPage(
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return MaterialApp(
+          return MaterialApp.router(
             locale: const Locale('en'),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             theme: ScreenNoteTheme.light(),
             darkTheme: ScreenNoteTheme.dark(),
-            home: const Scaffold(body: HistoryCenterPage()),
+            routerConfig: router,
           );
         },
       ),

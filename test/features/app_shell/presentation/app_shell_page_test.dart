@@ -106,9 +106,13 @@ void main() {
 
       expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
 
-      await tester.ensureVisible(find.byType(FilledButton));
+      final Finder quickAddContinueButton = find.descendant(
+        of: find.byType(AppShellQuickAddSheet),
+        matching: find.byType(FilledButton),
+      );
+      await tester.ensureVisible(quickAddContinueButton);
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(FilledButton));
+      await tester.tap(quickAddContinueButton);
       await tester.pumpAndSettle();
 
       expect(find.byType(AppShellQuickAddSheet), findsNothing);
@@ -143,13 +147,41 @@ void main() {
 
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.byType(FilledButton));
+      final Finder quickAddContinueButton = find.descendant(
+        of: find.byType(AppShellQuickAddSheet),
+        matching: find.byType(FilledButton),
+      );
+      await tester.ensureVisible(quickAddContinueButton);
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(FilledButton));
+      await tester.tap(quickAddContinueButton);
       await tester.pumpAndSettle();
 
       expect(find.byType(TextField), findsNWidgets(2));
       expect(find.byType(FloatingActionButton), findsNothing);
+    });
+
+    testWidgets('进入编辑页后不应继续展示壳层底栏', (tester) async {
+      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+      addTearDown(runtime.dispose);
+      await _pumpAppShell(tester, runtime: runtime);
+      final AppLocalizations localizations = _localizations(tester);
+
+      expect(find.text(localizations.homeTabLabel), findsOneWidget);
+
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+      final Finder quickAddContinueButton = find.descendant(
+        of: find.byType(AppShellQuickAddSheet),
+        matching: find.byType(FilledButton),
+      );
+      await tester.ensureVisible(quickAddContinueButton);
+      await tester.pumpAndSettle();
+      await tester.tap(quickAddContinueButton);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TextField), findsNWidgets(2));
+      expect(find.text(localizations.homeTabLabel), findsNothing);
+      expect(find.byType(NavigationBar), findsNothing);
     });
 
     testWidgets('运行中点击 widget 事项会推入编辑页', (
@@ -176,7 +208,7 @@ void main() {
         ),
       );
 
-      controller.add('${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42');
+      controller.add('${RoutePaths.taskEditor}?taskId=task-42');
       await tester.pumpAndSettle();
 
       final TextField titleField = tester.widget<TextField>(
@@ -219,7 +251,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
 
-      controller.add('${RoutePaths.home}${RoutePaths.taskEditor}?taskId=task-42');
+      controller.add('${RoutePaths.taskEditor}?taskId=task-42');
       await tester.pumpAndSettle();
 
       final TextField titleField = tester.widget<TextField>(
