@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Flow Prototype</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <style>
+      :root {
+        --bg: #fbfaf7;
+        --bg-top: #fefdf9;
+        --bg-bottom: #f4f1e9;
+        --surface: #ffffff;
+        --surface-soft: #f4f5ef;
+        --surface-warm: #fcf8ee;
+        --line: #e4e8e0;
+        --line-soft: rgba(228, 232, 224, 0.92);
+        --text: #1f2328;
+        --text-soft: #657068;
+        --text-muted: #8b938d;
+        --green: #4d8b52;
+        --green-soft: #dfe9d7;
+        --orange: #f08a32;
+        --coral: #e96a5a;
+        --blue: #5a9fe0;
+        --shadow-soft: 0 24px 60px rgba(24, 34, 26, 0.08);
+        --shadow-float: 0 20px 40px rgba(77, 139, 82, 0.22);
+        --radius-xl: 36px;
+        --radius-lg: 28px;
+        --radius-md: 20px;
+        --radius-sm: 16px;
+        --radius-pill: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        color: var(--text);
+        font-family: "SF Pro Text", "PingFang SC", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top, #ffffff 0%, var(--bg-top) 50%, var(--bg-bottom) 100%);
+      }
+
+      .workspace {
+        display: grid;
+        gap: 20px;
+        justify-items: center;
+      }
+
+      .prototype-toggle {
+        display: inline-flex;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-pill);
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 10px 24px rgba(31, 35, 40, 0.05);
+      }
+
+      .prototype-tab {
+        border: 0;
+        border-radius: var(--radius-pill);
+        background: transparent;
+        color: var(--text-soft);
+        padding: 10px 18px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .prototype-tab.active {
+        background: var(--green);
+        color: #ffffff;
+      }
+
+      .phone {
+        width: 390px;
+        min-height: 844px;
+        border-radius: 42px;
+        overflow: hidden;
+        position: relative;
+        background: var(--bg);
+        box-shadow: 0 30px 80px rgba(20, 28, 23, 0.14);
+      }
+
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 24px 8px;
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .status-icons {
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+      }
+
+      .signal,
+      .wifi,
+      .battery {
+        display: inline-block;
+      }
+
+      .signal {
+        width: 18px;
+        height: 12px;
+        border-left: 3px solid var(--text);
+        border-right: 3px solid var(--text);
+        position: relative;
+      }
+
+      .signal::before,
+      .signal::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 3px;
+        background: var(--text);
+      }
+
+      .signal::before {
+        left: 4px;
+        height: 8px;
+      }
+
+      .signal::after {
+        right: 4px;
+        height: 10px;
+      }
+
+      .wifi {
+        width: 16px;
+        height: 12px;
+        border: 3px solid var(--text);
+        border-color: var(--text) transparent transparent transparent;
+        border-radius: 50%;
+        transform: translateY(2px);
+      }
+
+      .battery {
+        width: 24px;
+        height: 12px;
+        border: 2px solid var(--text);
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .battery::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        right: -4px;
+        width: 2px;
+        height: 6px;
+        background: var(--text);
+        border-radius: 2px;
+      }
+
+      .battery::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        background: var(--text);
+        border-radius: 2px;
+      }
+
+      .screen {
+        display: none;
+        padding: 0 24px 124px;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .home-brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+      }
+
+      .brand-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .brand-badge {
+        width: 48px;
+        height: 48px;
+        border-radius: 18px;
+        border: 2px solid rgba(77, 139, 82, 0.24);
+        display: grid;
+        place-items: center;
+        color: var(--green);
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        background:
+          radial-gradient(circle at 50% 30%, #fbf5ef 0%, #d8d1c8 40%, #c4baae 100%);
+        border: 1px solid rgba(228, 232, 224, 0.92);
+      }
+
+      .home-headline {
+        margin-top: 34px;
+      }
+
+      .home-headline h1,
+      .editor-header h1 {
+        margin: 0;
+        font-size: 38px;
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+      }
+
+      .home-headline p,
+      .editor-header p,
+      .field-hint,
+      .privacy-copy,
+      .support-copy {
+        margin: 10px 0 0;
+        color: var(--text-soft);
+        line-height: 1.55;
+        font-size: 16px;
+      }
+
+      .priority-eyebrow,
+      .section-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 26px;
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .priority-card,
+      .editor-card {
+        margin-top: 10px;
+        border: 1px solid rgba(228, 232, 224, 0.84);
+        border-radius: var(--radius-xl);
+        background:
+          linear-gradient(180deg, rgba(252, 248, 238, 0.98) 0%, rgba(249, 245, 235, 0.98) 100%);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+      }
+
+      .priority-card {
+        position: relative;
+        padding: 22px 0 0;
+      }
+
+      .priority-card::before,
+      .editor-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 34%),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%);
+        pointer-events: none;
+      }
+
+      .priority-bar {
+        position: absolute;
+        top: 18px;
+        bottom: 18px;
+        left: 0;
+        width: 16px;
+        border-radius: 0 18px 18px 0;
+        background: linear-gradient(180deg, var(--green) 0%, rgba(77, 139, 82, 0.78) 100%);
+      }
+
+      .priority-card-body {
+        padding: 0 26px 24px 30px;
+        position: relative;
+      }
+
+      .priority-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: var(--radius-pill);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .pill.success {
+        color: var(--green);
+        background: rgba(223, 233, 215, 0.92);
+      }
+
+      .pill.warning {
+        color: var(--coral);
+        background: rgba(252, 236, 233, 0.92);
+      }
+
+      .icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        border: 1px solid rgba(228, 232, 224, 0.84);
+        background: rgba(255, 255, 255, 0.76);
+        display: grid;
+        place-items: center;
+        color: var(--green);
+      }
+
+      .priority-title {
+        margin: 28px 0 16px;
+        max-width: 278px;
+        font-size: 34px;
+        line-height: 1.12;
+        letter-spacing: -0.04em;
+        font-weight: 800;
+      }
+
+      .priority-copy {
+        margin: 0;
+        max-width: 286px;
+        color: var(--text-soft);
+        font-size: 17px;
+        line-height: 1.55;
+      }
+
+      .priority-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 28px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(218, 221, 212, 0.9);
+      }
+
+      .meta-item {
+        flex: 1;
+        color: var(--green);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .meta-item strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--orange);
+        font-size: 15px;
+      }
+
+      .meta-cta {
+        width: 62px;
+        height: 62px;
+        border-radius: 999px;
+        border: 0;
+        background: rgba(77, 139, 82, 0.14);
+        color: var(--green);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .queue-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 34px;
+      }
+
+      .queue-header h2 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: #4c5550;
+      }
+
+      .queue-link {
+        border: 0;
+        background: none;
+        color: var(--green);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .queue-list {
+        margin-top: 14px;
+        border-top: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+        border-radius: 28px;
+        overflow: hidden;
+        border: 1px solid rgba(228, 232, 224, 0.84);
+      }
+
+      .queue-row {
+        display: grid;
+        grid-template-columns: 44px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        width: 100%;
+        padding: 22px 20px;
+        border: 0;
+        border-bottom: 1px solid rgba(228, 232, 224, 0.72);
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .queue-row:last-child {
+        border-bottom: 0;
+      }
+
+      .queue-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+      }
+
+      .queue-dot.overdue {
+        background: linear-gradient(180deg, #ff7665 0%, var(--coral) 100%);
+      }
+
+      .queue-dot.today {
+        background: linear-gradient(180deg, #ffb35f 0%, var(--orange) 100%);
+      }
+
+      .queue-dot.future {
+        background: linear-gradient(180deg, #c8ced0 0%, #aab2b5 100%);
+      }
+
+      .queue-title {
+        margin: 0 0 6px;
+        font-size: 17px;
+        font-weight: 600;
+      }
+
+      .queue-sub {
+        color: var(--text-soft);
+        font-size: 14px;
+      }
+
+      .queue-time {
+        text-align: right;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .queue-time.urgent {
+        color: var(--coral);
+      }
+
+      .editor-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .ghost-button {
+        border: 0;
+        background: none;
+        color: var(--green);
+        font: inherit;
+        font-size: 17px;
+        cursor: pointer;
+      }
+
+      .editor-header {
+        margin-top: 26px;
+        text-align: center;
+      }
+
+      .editor-card {
+        position: relative;
+        margin-top: 26px;
+        padding: 22px 22px 24px;
+      }
+
+      .field-group {
+        margin-bottom: 22px;
+      }
+
+      .field-label {
+        margin-bottom: 10px;
+        color: #6d756f;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .text-input,
+      .text-area,
+      .date-row,
+      .support-row {
+        width: 100%;
+        border: 1px solid rgba(214, 220, 211, 0.94);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .text-input {
+        padding: 20px 18px;
+        font: inherit;
+        font-size: 18px;
+      }
+
+      .date-row,
+      .support-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 18px;
+      }
+
+      .chip-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .chip-option {
+        border: 1px solid rgba(214, 220, 211, 0.94);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.92);
+        padding: 14px 10px;
+        font: inherit;
+        font-size: 14px;
+        color: #404844;
+        cursor: pointer;
+      }
+
+      .chip-option.active.green {
+        border-color: rgba(77, 139, 82, 0.8);
+        color: var(--green);
+      }
+
+      .chip-option.active.orange {
+        border-color: rgba(240, 138, 50, 0.82);
+        color: var(--orange);
+      }
+
+      .chip-option.active.coral {
+        border-color: rgba(233, 106, 90, 0.82);
+        color: var(--coral);
+      }
+
+      .chip-option.active.blue {
+        border-color: rgba(90, 159, 224, 0.82);
+        color: var(--blue);
+      }
+
+      .privacy-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .privacy-main {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .privacy-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 999px;
+        background: rgba(223, 233, 215, 0.56);
+        color: var(--green);
+        display: grid;
+        place-items: center;
+      }
+
+      .switch {
+        position: relative;
+        width: 62px;
+        height: 34px;
+        border-radius: 999px;
+        background: #d5dbd2;
+        cursor: pointer;
+        transition: background 180ms ease;
+      }
+
+      .switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: #ffffff;
+        box-shadow: 0 6px 16px rgba(31, 35, 40, 0.16);
+        transition: transform 180ms ease;
+      }
+
+      .switch.active {
+        background: var(--green);
+      }
+
+      .switch.active::after {
+        transform: translateX(28px);
+      }
+
+      .text-area {
+        min-height: 140px;
+        padding: 18px;
+        font: inherit;
+        font-size: 16px;
+        line-height: 1.6;
+        resize: none;
+      }
+
+      .field-footer {
+        margin-top: 8px;
+        text-align: right;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .support-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .save-bar {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 22px;
+      }
+
+      .save-button {
+        width: 100%;
+        border: 0;
+        border-radius: var(--radius-pill);
+        background: linear-gradient(180deg, #4f9a4e 0%, #3f883f 100%);
+        color: #ffffff;
+        padding: 18px 20px;
+        font: inherit;
+        font-size: 17px;
+        font-weight: 700;
+        box-shadow: var(--shadow-float);
+        cursor: pointer;
+      }
+
+      .home-fab {
+        position: absolute;
+        left: 50%;
+        bottom: 104px;
+        transform: translateX(-50%);
+        width: 94px;
+        height: 94px;
+        border-radius: 999px;
+        border: 4px solid rgba(255, 255, 255, 0.92);
+        background: linear-gradient(180deg, #4f9a71 0%, var(--green) 100%);
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        box-shadow: var(--shadow-float);
+        cursor: pointer;
+      }
+
+      .bottom-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 108px;
+        background: rgba(255, 255, 255, 0.95);
+        border-top: 1px solid rgba(228, 232, 224, 0.95);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 24px 24px;
+      }
+
+      .nav-item {
+        border: 0;
+        background: none;
+        display: grid;
+        place-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+        font: inherit;
+      }
+
+      .nav-item.active {
+        color: var(--green);
+      }
+
+      .nav-item span:last-child {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .material-symbols-rounded {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="workspace">
+      <div class="prototype-toggle" aria-label="Task flow prototype view switch">
+        <button class="prototype-tab active" type="button" data-screen-tab="home">Home Surface</button>
+        <button class="prototype-tab" type="button" data-screen-tab="editor">Editor Surface</button>
+      </div>
+
+      <section class="phone" aria-label="Task flow high-fidelity prototype">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons" aria-hidden="true">
+            <span class="signal"></span>
+            <span class="wifi"></span>
+            <span class="battery"></span>
+          </div>
+        </div>
+
+        <section id="screen-home" class="screen active" aria-label="Task flow home surface">
+          <div class="home-brand">
+            <div class="brand-title">
+              <span class="brand-badge material-symbols-rounded">edit_note</span>
+              <span>Screen Note</span>
+            </div>
+            <div class="avatar" aria-hidden="true"></div>
+          </div>
+
+          <div class="home-headline">
+            <h1>Good morning, Alex</h1>
+            <p>Focus on what matters most.</p>
+          </div>
+
+          <div class="priority-eyebrow">
+            <span class="material-symbols-rounded" style="font-size: 18px">star</span>
+            <span>Top Priority</span>
+          </div>
+
+          <article class="priority-card">
+            <div class="priority-bar" aria-hidden="true"></div>
+            <div class="priority-card-body">
+              <div class="priority-top">
+                <div class="pill warning">
+                  <span style="width: 12px; height: 12px; border-radius: 999px; background: currentColor; opacity: 0.72"></span>
+                  <span>Due Today</span>
+                </div>
+                <button class="icon-circle" type="button" data-open-editor="priority" aria-label="Edit priority task">
+                  <span class="material-symbols-rounded">push_pin</span>
+                </button>
+              </div>
+
+              <h2 class="priority-title" id="priority-title">Capture Flutter module freeze visual evidence</h2>
+              <p class="priority-copy" id="priority-copy">
+                Reproduce the freeze issue on Android, then collect screen recording, key logs, and the final summary for review.
+              </p>
+
+              <div class="priority-meta">
+                <div class="meta-item">
+                  Due today
+                  <strong>2:30 PM</strong>
+                </div>
+                <div class="meta-item">
+                  Focus
+                  <strong id="priority-status-label">Pinned</strong>
+                </div>
+                <button class="meta-cta" type="button" data-open-editor="priority" aria-label="Open task editor">
+                  <span class="material-symbols-rounded" style="font-size: 28px">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <div class="queue-header">
+            <h2>Urgent Queue</h2>
+            <button class="queue-link" type="button" data-open-editor="priority">View all</button>
+          </div>
+
+          <div class="queue-list" role="list">
+            <button class="queue-row" type="button" role="listitem" data-open-editor="row-1">
+              <span class="queue-dot overdue" aria-hidden="true"></span>
+              <span>
+                <span class="queue-title">Add freeze guard in module loader</span>
+                <span class="queue-sub">Bug fix</span>
+              </span>
+              <span class="queue-time urgent">Today<br />11:00 AM</span>
+            </button>
+            <button class="queue-row" type="button" role="listitem" data-open-editor="row-2">
+              <span class="queue-dot today" aria-hidden="true"></span>
+              <span>
+                <span class="queue-title">Validate on low-end Android devices</span>
+                <span class="queue-sub">QA verification</span>
+              </span>
+              <span class="queue-time">Today<br />4:00 PM</span>
+            </button>
+            <button class="queue-row" type="button" role="listitem" data-open-editor="row-3">
+              <span class="queue-dot future" aria-hidden="true"></span>
+              <span>
+                <span class="queue-title">Update freeze troubleshooting docs</span>
+                <span class="queue-sub">Documentation</span>
+              </span>
+              <span class="queue-time">Tomorrow<br />10:00 AM</span>
+            </button>
+          </div>
+        </section>
+
+        <section id="screen-editor" class="screen" aria-label="Task flow editor surface">
+          <div class="editor-toolbar">
+            <button class="ghost-button" type="button" data-screen-tab="home">Cancel</button>
+            <button class="ghost-button" type="button" aria-label="More actions">
+              <span class="material-symbols-rounded">more_horiz</span>
+            </button>
+          </div>
+
+          <div class="editor-header">
+            <h1>Edit Task</h1>
+            <p>Update the details for this reminder.</p>
+          </div>
+
+          <article class="editor-card">
+            <div class="field-group">
+              <div class="field-label">Task Title</div>
+              <input
+                id="task-title-input"
+                class="text-input"
+                type="text"
+                value="Capture Flutter module freeze visual evidence"
+              />
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Due Date</div>
+              <div class="date-row">
+                <span style="display: inline-flex; align-items: center; gap: 12px">
+                  <span class="material-symbols-rounded" style="color: var(--green)">calendar_month</span>
+                  <span>Thu, May 29, 2025</span>
+                </span>
+                <span class="pill success">10:00 AM</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Priority</div>
+              <div class="chip-grid" id="priority-chip-group">
+                <button class="chip-option green" type="button" data-priority="Low">Low</button>
+                <button class="chip-option orange" type="button" data-priority="Medium">Medium</button>
+                <button class="chip-option coral active" type="button" data-priority="High">High</button>
+                <button class="chip-option coral" type="button" data-priority="Urgent">Urgent</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Status</div>
+              <div class="chip-grid" id="status-chip-group">
+                <button class="chip-option green active" type="button" data-status="To Do">To Do</button>
+                <button class="chip-option blue" type="button" data-status="In Progress">In Progress</button>
+                <button class="chip-option orange" type="button" data-status="Waiting">Waiting</button>
+                <button class="chip-option green" type="button" data-status="Done">Done</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="privacy-row">
+                <div class="privacy-main">
+                  <div class="privacy-icon">
+                    <span class="material-symbols-rounded">shield_lock</span>
+                  </div>
+                  <div>
+                    <div style="font-size: 18px; font-weight: 700">Privacy Safe</div>
+                    <p class="privacy-copy">Hide sensitive details in screenshots and widgets.</p>
+                  </div>
+                </div>
+                <button id="privacy-switch" class="switch active" type="button" aria-label="Toggle privacy safe"></button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Notes</div>
+              <textarea id="task-note-input" class="text-area">Capture the current task-flow home surface and editor state for the module freeze. Keep the first-screen task path obvious and avoid crowding the viewport.</textarea>
+              <div class="field-footer"><span id="note-count">145</span>/500</div>
+            </div>
+          </article>
+
+          <div class="support-list">
+            <div class="support-row">
+              <span>
+                <div style="font-size: 17px; font-weight: 700">Attachments</div>
+                <p class="support-copy">1 file attached</p>
+              </span>
+              <span class="material-symbols-rounded" style="color: var(--text-muted)">chevron_right</span>
+            </div>
+            <div class="support-row">
+              <span>
+                <div style="font-size: 17px; font-weight: 700">Reminder</div>
+                <p class="support-copy">15 minutes before</p>
+              </span>
+              <span class="material-symbols-rounded" style="color: var(--text-muted)">chevron_right</span>
+            </div>
+          </div>
+
+          <div class="save-bar">
+            <button id="save-button" class="save-button" type="button">Save Task</button>
+          </div>
+        </section>
+
+        <button class="home-fab" id="quick-add-button" type="button" aria-label="Create a new task">
+          <span class="material-symbols-rounded" style="font-size: 40px">add</span>
+        </button>
+
+        <nav class="bottom-nav" aria-label="Shared shell navigation">
+          <button class="nav-item active" type="button">
+            <span class="material-symbols-rounded">home</span>
+            <span>Home</span>
+          </button>
+          <button class="nav-item" type="button">
+            <span class="material-symbols-rounded">history</span>
+            <span>History</span>
+          </button>
+          <button class="nav-item" type="button">
+            <span class="material-symbols-rounded">settings</span>
+            <span>Settings</span>
+          </button>
+        </nav>
+      </section>
+    </main>
+
+    <script>
+      const screens = {
+        home: document.getElementById("screen-home"),
+        editor: document.getElementById("screen-editor"),
+      };
+      const screenTabs = Array.from(document.querySelectorAll("[data-screen-tab]"));
+      const openEditorButtons = Array.from(document.querySelectorAll("[data-open-editor]"));
+      const quickAddButton = document.getElementById("quick-add-button");
+      const titleInput = document.getElementById("task-title-input");
+      const noteInput = document.getElementById("task-note-input");
+      const noteCount = document.getElementById("note-count");
+      const priorityStatusLabel = document.getElementById("priority-status-label");
+      const privacySwitch = document.getElementById("privacy-switch");
+      const saveButton = document.getElementById("save-button");
+      const priorityChipGroup = document.getElementById("priority-chip-group");
+      const statusChipGroup = document.getElementById("status-chip-group");
+
+      const editorPresets = {
+        priority: {
+          title: "Capture Flutter module freeze visual evidence",
+          note:
+            "Capture the current task-flow home surface and editor state for the module freeze. Keep the first-screen task path obvious and avoid crowding the viewport.",
+        },
+        "row-1": {
+          title: "Add freeze guard in module loader",
+          note:
+            "Guard the freeze-prone loading branch, keep the fallback copy calm, and log the degraded path without blocking task entry.",
+        },
+        "row-2": {
+          title: "Validate on low-end Android devices",
+          note:
+            "Run the real low-end verification pass and confirm the loading, empty, and error downgrade states stay readable on the primary screen.",
+        },
+        "row-3": {
+          title: "Update freeze troubleshooting docs",
+          note:
+            "Document the reproduction path, expected downgrade behavior, and the exact rollback message without leaking sensitive task content.",
+        },
+        create: {
+          title: "New reminder",
+          note: "Describe the next thing you cannot afford to forget.",
+        },
+      };
+
+      // 中文注释：统一切换模块原型的 Home 与 Editor 两个高保真页面，保证确认后的结构回放有稳定落点。
+      function showScreen(screenName) {
+        Object.entries(screens).forEach(([name, element]) => {
+          element.classList.toggle("active", name === screenName);
+        });
+        screenTabs.forEach((button) => {
+          button.classList.toggle("active", button.dataset.screenTab === screenName);
+        });
+        quickAddButton.style.display = screenName === "home" ? "grid" : "none";
+      }
+
+      // 中文注释：从首页主卡、队列行或快速新增入口回填编辑页，模拟 task-flow 的“查看当前任务 / 新建任务”主链路。
+      function hydrateEditor(presetKey) {
+        const preset = editorPresets[presetKey] ?? editorPresets.priority;
+        titleInput.value = preset.title;
+        noteInput.value = preset.note;
+        updateNoteCount();
+        showScreen("editor");
+      }
+
+      // 中文注释：备注字数即时反馈只服务于可读性，不引入额外流程判断，避免原型把编辑页做成复杂校验中心。
+      function updateNoteCount() {
+        noteCount.textContent = String(noteInput.value.length);
+      }
+
+      // 中文注释：编辑页的单选 chip 只保留一处激活态，便于验证状态层级而不扩展到完整业务规则。
+      function activateChip(group, target) {
+        Array.from(group.querySelectorAll(".chip-option")).forEach((button) => {
+          button.classList.toggle("active", button === target);
+        });
+      }
+
+      screenTabs.forEach((button) => {
+        button.addEventListener("click", () => showScreen(button.dataset.screenTab));
+      });
+
+      openEditorButtons.forEach((button) => {
+        button.addEventListener("click", () => hydrateEditor(button.dataset.openEditor));
+      });
+
+      quickAddButton.addEventListener("click", () => hydrateEditor("create"));
+
+      noteInput.addEventListener("input", updateNoteCount);
+
+      privacySwitch.addEventListener("click", () => {
+        privacySwitch.classList.toggle("active");
+      });
+
+      priorityChipGroup.addEventListener("click", (event) => {
+        const button = event.target.closest(".chip-option");
+        if (!button) {
+          return;
+        }
+        activateChip(priorityChipGroup, button);
+        priorityStatusLabel.textContent = button.dataset.priority;
+      });
+
+      statusChipGroup.addEventListener("click", (event) => {
+        const button = event.target.closest(".chip-option");
+        if (!button) {
+          return;
+        }
+        activateChip(statusChipGroup, button);
+      });
+
+      saveButton.addEventListener("click", () => {
+        showScreen("home");
+      });
+
+      updateNoteCount();
+    </script>
+  </body>
+</html>

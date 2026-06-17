@@ -2,6 +2,7 @@ import 'package:drift/native.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/app.dart';
 import 'package:screen_note/app/router/route_paths.dart';
@@ -14,6 +15,11 @@ import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mod
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_repository_impl.dart';
+import 'package:screen_note/features/task_flow/presentation/pages/task_flow_editor_page.dart';
+import 'package:screen_note/features/task_flow/presentation/pages/task_flow_home_page.dart';
+import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 void main() {
   group('TaskFlowEditorPage', () {
@@ -60,7 +66,9 @@ void main() {
       await tester.tap(find.byType(FilledButton));
       await tester.pumpAndSettle();
 
-      final tasks = await runtime.repository.loadTasksByStatus(TaskStatus.active);
+      final List<TaskEntity> tasks = await runtime.repository.loadTasksByStatus(
+        TaskStatus.active,
+      );
 
       expect(find.byType(TextField), findsNothing);
       expect(find.text('补齐编辑页保存链路'), findsOneWidget);
@@ -157,6 +165,31 @@ void main() {
       expect(find.text('新标题'), findsOneWidget);
     });
 
+    testWidgets('深链进入 editor 后保存会自动回到首页并刷新任务列表', (WidgetTester tester) async {
+      final _TestRuntime runtime = _TestRuntime.create();
+      addTearDown(runtime.dispose);
+
+      await _pumpEditorRouteApp(
+        tester,
+        runtime: runtime,
+        initialLocation: '/${RoutePaths.taskEditor}',
+      );
+
+      await tester.enterText(find.byType(TextField).first, '深链保存后回到首页');
+      await tester.tap(find.byType(FilledButton));
+      await tester.pumpAndSettle();
+
+      final List<TaskEntity> tasks = await runtime.repository.loadTasksByStatus(
+        TaskStatus.active,
+      );
+
+      expect(find.byType(TextField), findsNothing);
+      expect(find.byType(TaskFlowHomePage), findsOneWidget);
+      expect(find.text('深链保存后回到首页'), findsOneWidget);
+      expect(tasks, hasLength(1));
+      expect(tasks.single.title, '深链保存后回到首页');
+    });
+
     testWidgets('refresh 失败不会误报保存失败或重复创建事项', (WidgetTester tester) async {
       final _TestRuntime runtime = _TestRuntime.create();
       addTearDown(runtime.dispose);
@@ -216,7 +249,7 @@ final class _TestRuntime {
   Future<void> dispose() => database.close();
 }
 
-/// 统一泵起真实应用壳层，并把 task-flow 真源替换成内存实现，保证路由测试可重复。
+/// 统一拉起真实应用壳层，并把 task-flow 真源替换成内存实现，保证路由测试可重复。
 Future<void> _pumpApp(
   WidgetTester tester, {
   required _TestRuntime runtime,
@@ -242,6 +275,64 @@ Future<void> _pumpApp(
           ),
       ],
       child: const ScreenNoteApp(),
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+/// 仅为深链保存回流场景构建最小 GoRouter 测试壳，并保持和正式路由一致的父子结构。
+Future<void> _pumpEditorRouteApp(
+  WidgetTester tester, {
+  required _TestRuntime runtime,
+  required String initialLocation,
+}) async {
+  final GoRouter router = GoRouter(
+    initialLocation: initialLocation,
+    routes: <RouteBase>[
+      GoRoute(
+        path: RoutePaths.home,
+        builder: (BuildContext context, GoRouterState state) =>
+            const TaskFlowHomePage(),
+        routes: <RouteBase>[
+          GoRoute(
+            path: RoutePaths.taskEditor,
+            builder: (BuildContext context, GoRouterState state) =>
+                const TaskFlowEditorPage(),
+          ),
+        ],
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  tester.view.devicePixelRatio = 1;
+  tester.view.physicalSize = const Size(1170, 2532);
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        taskFlowDatabaseProvider.overrideWithValue(runtime.database),
+        taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+        taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
+      ],
+      child: ScreenNoteScreenUtilContract(
+        designSize: screenNoteDesignSize,
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (BuildContext context, Widget? _) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            locale: const Locale('zh'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: ScreenNoteTheme.light(),
+            darkTheme: ScreenNoteTheme.dark(),
+            routerConfig: router,
+          );
+        },
+      ),
     ),
   );
   await tester.pumpAndSettle();
