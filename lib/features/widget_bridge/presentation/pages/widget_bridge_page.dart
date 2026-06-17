@@ -40,7 +40,7 @@ class WidgetBridgePage extends ConsumerWidget {
             return _WidgetBridgeContent(snapshot: snapshot);
           },
           loading: () => const _LoadingCard(),
-          error: (Object _, StackTrace __) => _ErrorCard(
+          error: (Object _, StackTrace _) => _ErrorCard(
             onRetry: () => ref.invalidate(widgetBridgeControllerProvider),
           ),
         ),

@@ -7,10 +7,10 @@ import 'package:screen_note/features/settings_center/domain/entities/settings_sy
 
 part 'settings_center_snapshot.freezed.dart';
 
-/// 设置中心快照，统一聚合页面渲染所需的稳定事实。
+/// 设置页稳定快照统一收口系统能力状态、偏好和值得展示的次级入口状态。
 @freezed
 abstract class SettingsCenterSnapshot with _$SettingsCenterSnapshot {
-  /// 创建设置中心快照。
+  /// 创建设置页快照。
   const factory SettingsCenterSnapshot({
     required NotificationPermissionStatus notificationPermissionStatus,
     required SettingsCenterPreferences preferences,

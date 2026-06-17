@@ -187,7 +187,7 @@ void main() {
 
       final subscription = container.listen<AsyncValue<HistoryCenterSnapshot>>(
         historyCenterSnapshotProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       addTearDown(subscription.close);

@@ -253,7 +253,7 @@ void main() {
         database: database,
       );
       final Completer<void> refreshGate = Completer<void>();
-      final TaskRepository delayedRepository = _DelayedTaskRepository(
+      final TaskMutationRepository delayedRepository = _DelayedTaskRepository(
         delegate: repository,
         gate: refreshGate.future,
       );
@@ -379,7 +379,7 @@ void main() {
 
       final subscription = container.listen<AsyncValue<TaskFeedSnapshot>>(
         taskFlowHomeSnapshotProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       addTearDown(subscription.close);
@@ -525,14 +525,14 @@ TaskEntity _buildTask({
 }
 
 /// 刷新延迟仓储只服务控制器测试，确保能稳定观察刷新进行中的中间态。
-final class _DelayedTaskRepository implements TaskRepository {
+final class _DelayedTaskRepository implements TaskMutationRepository {
   const _DelayedTaskRepository({
-    required TaskRepository delegate,
+    required TaskMutationRepository delegate,
     required Future<void> gate,
   }) : _delegate = delegate,
        _gate = gate;
 
-  final TaskRepository _delegate;
+  final TaskMutationRepository _delegate;
   final Future<void> _gate;
 
   @override
@@ -543,6 +543,14 @@ final class _DelayedTaskRepository implements TaskRepository {
   @override
   Future<void> createTask(TaskEntity task) {
     return _delegate.createTask(task);
+  }
+
+  @override
+  Future<void> createTaskWithEvent({
+    required TaskEntity task,
+    required TaskEventEntity event,
+  }) {
+    return _delegate.createTaskWithEvent(task: task, event: event);
   }
 
   @override
@@ -558,13 +566,11 @@ final class _DelayedTaskRepository implements TaskRepository {
   }
 
   @override
-  Future<void> updateTask(TaskEntity task) {
-    return _delegate.updateTask(task);
-  }
-
-  @override
-  Future<void> appendEvent(TaskEventEntity event) {
-    return _delegate.appendEvent(event);
+  Future<void> updateTaskWithEvent({
+    required TaskEntity task,
+    required TaskEventEntity event,
+  }) {
+    return _delegate.updateTaskWithEvent(task: task, event: event);
   }
 }
 

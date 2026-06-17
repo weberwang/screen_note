@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskEventEntity {
 
- String get id; String get taskId; TaskEventType get type; DateTime get occurredAt;
+ String get id; String get taskId; String get type; TaskStatus get fromStatus; TaskStatus get toStatus; DateTime get occurredAt;
 /// Create a copy of TaskEventEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TaskEventEntityCopyWith<TaskEventEntity> get copyWith => _$TaskEventEntityCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskEventEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.type, type) || other.type == type)&&(identical(other.occurredAt, occurredAt) || other.occurredAt == occurredAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskEventEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.type, type) || other.type == type)&&(identical(other.fromStatus, fromStatus) || other.fromStatus == fromStatus)&&(identical(other.toStatus, toStatus) || other.toStatus == toStatus)&&(identical(other.occurredAt, occurredAt) || other.occurredAt == occurredAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,taskId,type,occurredAt);
+int get hashCode => Object.hash(runtimeType,id,taskId,type,fromStatus,toStatus,occurredAt);
 
 @override
 String toString() {
-  return 'TaskEventEntity(id: $id, taskId: $taskId, type: $type, occurredAt: $occurredAt)';
+  return 'TaskEventEntity(id: $id, taskId: $taskId, type: $type, fromStatus: $fromStatus, toStatus: $toStatus, occurredAt: $occurredAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TaskEventEntityCopyWith<$Res>  {
   factory $TaskEventEntityCopyWith(TaskEventEntity value, $Res Function(TaskEventEntity) _then) = _$TaskEventEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, String taskId, TaskEventType type, DateTime occurredAt
+ String id, String taskId, String type, TaskStatus fromStatus, TaskStatus toStatus, DateTime occurredAt
 });
 
 
@@ -62,12 +62,14 @@ class _$TaskEventEntityCopyWithImpl<$Res>
 
 /// Create a copy of TaskEventEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? taskId = null,Object? type = null,Object? occurredAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? taskId = null,Object? type = null,Object? fromStatus = null,Object? toStatus = null,Object? occurredAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as TaskEventType,occurredAt: null == occurredAt ? _self.occurredAt : occurredAt // ignore: cast_nullable_to_non_nullable
+as String,fromStatus: null == fromStatus ? _self.fromStatus : fromStatus // ignore: cast_nullable_to_non_nullable
+as TaskStatus,toStatus: null == toStatus ? _self.toStatus : toStatus // ignore: cast_nullable_to_non_nullable
+as TaskStatus,occurredAt: null == occurredAt ? _self.occurredAt : occurredAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -153,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String taskId,  TaskEventType type,  DateTime occurredAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String taskId,  String type,  TaskStatus fromStatus,  TaskStatus toStatus,  DateTime occurredAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskEventEntity() when $default != null:
-return $default(_that.id,_that.taskId,_that.type,_that.occurredAt);case _:
+return $default(_that.id,_that.taskId,_that.type,_that.fromStatus,_that.toStatus,_that.occurredAt);case _:
   return orElse();
 
 }
@@ -174,10 +176,10 @@ return $default(_that.id,_that.taskId,_that.type,_that.occurredAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String taskId,  TaskEventType type,  DateTime occurredAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String taskId,  String type,  TaskStatus fromStatus,  TaskStatus toStatus,  DateTime occurredAt)  $default,) {final _that = this;
 switch (_that) {
 case _TaskEventEntity():
-return $default(_that.id,_that.taskId,_that.type,_that.occurredAt);case _:
+return $default(_that.id,_that.taskId,_that.type,_that.fromStatus,_that.toStatus,_that.occurredAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +196,10 @@ return $default(_that.id,_that.taskId,_that.type,_that.occurredAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String taskId,  TaskEventType type,  DateTime occurredAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String taskId,  String type,  TaskStatus fromStatus,  TaskStatus toStatus,  DateTime occurredAt)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskEventEntity() when $default != null:
-return $default(_that.id,_that.taskId,_that.type,_that.occurredAt);case _:
+return $default(_that.id,_that.taskId,_that.type,_that.fromStatus,_that.toStatus,_that.occurredAt);case _:
   return null;
 
 }
@@ -209,12 +211,14 @@ return $default(_that.id,_that.taskId,_that.type,_that.occurredAt);case _:
 
 
 class _TaskEventEntity implements TaskEventEntity {
-  const _TaskEventEntity({required this.id, required this.taskId, required this.type, required this.occurredAt});
+  const _TaskEventEntity({required this.id, required this.taskId, required this.type, required this.fromStatus, required this.toStatus, required this.occurredAt});
   
 
 @override final  String id;
 @override final  String taskId;
-@override final  TaskEventType type;
+@override final  String type;
+@override final  TaskStatus fromStatus;
+@override final  TaskStatus toStatus;
 @override final  DateTime occurredAt;
 
 /// Create a copy of TaskEventEntity
@@ -227,16 +231,16 @@ _$TaskEventEntityCopyWith<_TaskEventEntity> get copyWith => __$TaskEventEntityCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskEventEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.type, type) || other.type == type)&&(identical(other.occurredAt, occurredAt) || other.occurredAt == occurredAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskEventEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.type, type) || other.type == type)&&(identical(other.fromStatus, fromStatus) || other.fromStatus == fromStatus)&&(identical(other.toStatus, toStatus) || other.toStatus == toStatus)&&(identical(other.occurredAt, occurredAt) || other.occurredAt == occurredAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,taskId,type,occurredAt);
+int get hashCode => Object.hash(runtimeType,id,taskId,type,fromStatus,toStatus,occurredAt);
 
 @override
 String toString() {
-  return 'TaskEventEntity(id: $id, taskId: $taskId, type: $type, occurredAt: $occurredAt)';
+  return 'TaskEventEntity(id: $id, taskId: $taskId, type: $type, fromStatus: $fromStatus, toStatus: $toStatus, occurredAt: $occurredAt)';
 }
 
 
@@ -247,7 +251,7 @@ abstract mixin class _$TaskEventEntityCopyWith<$Res> implements $TaskEventEntity
   factory _$TaskEventEntityCopyWith(_TaskEventEntity value, $Res Function(_TaskEventEntity) _then) = __$TaskEventEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String taskId, TaskEventType type, DateTime occurredAt
+ String id, String taskId, String type, TaskStatus fromStatus, TaskStatus toStatus, DateTime occurredAt
 });
 
 
@@ -264,12 +268,14 @@ class __$TaskEventEntityCopyWithImpl<$Res>
 
 /// Create a copy of TaskEventEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? taskId = null,Object? type = null,Object? occurredAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? taskId = null,Object? type = null,Object? fromStatus = null,Object? toStatus = null,Object? occurredAt = null,}) {
   return _then(_TaskEventEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as TaskEventType,occurredAt: null == occurredAt ? _self.occurredAt : occurredAt // ignore: cast_nullable_to_non_nullable
+as String,fromStatus: null == fromStatus ? _self.fromStatus : fromStatus // ignore: cast_nullable_to_non_nullable
+as TaskStatus,toStatus: null == toStatus ? _self.toStatus : toStatus // ignore: cast_nullable_to_non_nullable
+as TaskStatus,occurredAt: null == occurredAt ? _self.occurredAt : occurredAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }

@@ -7,9 +7,9 @@ import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mod
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
 
-/// 创建事项输入，收口首页快速添加与完整编辑页的共享最小合同。
+/// 创建事项输入，只暴露当前 Task 1 需要的最小字段集。
 final class CreateTaskInput {
-  /// 创建输入对象。
+  /// 创建创建事项输入。
   const CreateTaskInput({
     required this.title,
     required this.note,
@@ -26,7 +26,7 @@ final class CreateTaskInput {
   /// 备注。
   final String note;
 
-  /// 截止时间。
+  /// 到期时间。
   final DateTime? dueAt;
 
   /// 提醒时间。
@@ -35,36 +35,33 @@ final class CreateTaskInput {
   /// 是否置顶。
   final bool isPinned;
 
-  /// 是否隐私事项。
+  /// 是否私密。
   final bool isPrivate;
 
   /// 提醒模式。
   final TaskReminderMode reminderMode;
 }
 
-/// 创建事项用例，统一完成校验、落库、日志与副作用编排。
+/// 创建事项用例，负责校验输入、落库并写入首条操作日志。
 final class CreateTaskUseCase {
-  /// 创建用例。
+  /// 创建创建事项用例。
   const CreateTaskUseCase({
-    required TaskRepository repository,
+    required TaskMutationRepository repository,
     required TaskFlowSideEffectPort sideEffectPort,
     required Uuid uuid,
   }) : _repository = repository,
        _sideEffectPort = sideEffectPort,
        _uuid = uuid;
 
-  final TaskRepository _repository;
+  final TaskMutationRepository _repository;
   final TaskFlowSideEffectPort _sideEffectPort;
   final Uuid _uuid;
 
-  /// 执行创建逻辑；空白标题一律拒绝，避免无意义空事项污染排序。
-  Future<TaskEntity> execute(
-    CreateTaskInput input, {
-    DateTime? now,
-  }) async {
+  /// 执行创建。
+  Future<TaskEntity> execute(CreateTaskInput input, {DateTime? now}) async {
     final String normalizedTitle = input.title.trim();
     if (normalizedTitle.isEmpty) {
-      throw ArgumentError.value(input.title, 'title', '事项标题不能为空');
+      throw ArgumentError.value(input.title, 'title', '标题不能为空');
     }
 
     final DateTime timestamp = now ?? DateTime.now();
@@ -78,25 +75,22 @@ final class CreateTaskUseCase {
       isPrivate: input.isPrivate,
       status: TaskStatus.active,
       reminderMode: input.reminderMode,
-      createdAt: timestamp.toUtc(),
-      updatedAt: timestamp.toUtc(),
+      createdAt: timestamp,
+      updatedAt: timestamp,
       completedAt: null,
       deletedAt: null,
     );
+    final TaskEventEntity event = TaskEventEntity(
+      id: _uuid.v4(),
+      taskId: task.id,
+      type: 'created',
+      fromStatus: TaskStatus.active,
+      toStatus: TaskStatus.active,
+      occurredAt: timestamp,
+    );
 
-    await _repository.createTask(task);
-    await _repository.appendEvent(
-      TaskEventEntity(
-        id: _uuid.v4(),
-        taskId: task.id,
-        type: TaskEventType.created,
-        occurredAt: timestamp.toUtc(),
-      ),
-    );
-    await _sideEffectPort.handleTaskMutation(
-      task: task,
-      kind: TaskMutationKind.created,
-    );
+    await _repository.createTaskWithEvent(task: task, event: event);
+    await _sideEffectPort.onTaskCreated(task);
     return task;
   }
 }

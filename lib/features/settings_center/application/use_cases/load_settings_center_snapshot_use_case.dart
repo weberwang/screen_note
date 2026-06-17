@@ -4,9 +4,9 @@ import 'package:screen_note/features/settings_center/domain/entities/settings_sy
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 
-/// 设置中心快照读取用例，统一装配偏好、权限与占位扩展状态。
+/// 设置页快照加载用例，统一装配偏好、本地能力状态和次级入口边界。
 final class LoadSettingsCenterSnapshotUseCase {
-  /// 创建设置中心快照读取用例。
+  /// 创建设置页快照加载用例。
   const LoadSettingsCenterSnapshotUseCase({
     required SettingsPreferencesRepository preferencesRepository,
     required NotificationPermissionRepository notificationRepository,
@@ -16,13 +16,14 @@ final class LoadSettingsCenterSnapshotUseCase {
   final SettingsPreferencesRepository _preferencesRepository;
   final NotificationPermissionRepository _notificationRepository;
 
-  /// 读取设置页所需快照，保持页面只消费稳定聚合结果。
+  /// 加载设置页稳定快照。
   Future<SettingsCenterSnapshot> execute() async {
     final preferences = await _preferencesRepository.loadPreferences();
-    final permissionStatus = await _notificationRepository.readStatus();
+    final notificationPermissionStatus =
+        await _notificationRepository.readStatus();
 
     return SettingsCenterSnapshot(
-      notificationPermissionStatus: permissionStatus,
+      notificationPermissionStatus: notificationPermissionStatus,
       preferences: preferences,
       syncStatus: SettingsSyncStatus.localOnly,
       membershipState: SettingsMembershipState.available,

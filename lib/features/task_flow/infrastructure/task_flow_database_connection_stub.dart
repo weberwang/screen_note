@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-/// 默认兜底执行器；当前平台若未实现连接方式，则显式暴露能力缺口。
+/// 非原生平台暂不开放真实数据库，避免误接入不可用能力。
 QueryExecutor openTaskFlowDatabaseConnection() {
-  throw UnsupportedError('当前平台尚未配置 task-flow 数据库连接');
+  throw UnsupportedError('当前平台暂不支持 task-flow 原生数据库连接');
 }

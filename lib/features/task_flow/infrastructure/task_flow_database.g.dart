@@ -349,7 +349,7 @@ class $TaskRecordsTable extends TaskRecords
 }
 
 class TaskRecord extends DataClass implements Insertable<TaskRecord> {
-  /// 事项主键。
+  /// 事项 ID。
   final String id;
 
   /// 标题。
@@ -358,16 +358,16 @@ class TaskRecord extends DataClass implements Insertable<TaskRecord> {
   /// 备注。
   final String note;
 
-  /// 截止时间 UTC 毫秒。
+  /// 到期时间毫秒戳。
   final int? dueAtEpochMs;
 
-  /// 提醒时间 UTC 毫秒。
+  /// 提醒时间毫秒戳。
   final int? reminderAtEpochMs;
 
   /// 是否置顶。
   final bool isPinned;
 
-  /// 是否隐私事项。
+  /// 是否私密。
   final bool isPrivate;
 
   /// 持久状态。
@@ -376,16 +376,16 @@ class TaskRecord extends DataClass implements Insertable<TaskRecord> {
   /// 提醒模式。
   final TaskReminderMode reminderMode;
 
-  /// 创建时间 UTC 毫秒。
+  /// 创建时间毫秒戳。
   final int createdAtEpochMs;
 
-  /// 更新时间 UTC 毫秒。
+  /// 更新时间毫秒戳。
   final int updatedAtEpochMs;
 
-  /// 完成时间 UTC 毫秒。
+  /// 完成时间毫秒戳。
   final int? completedAtEpochMs;
 
-  /// 删除时间 UTC 毫秒。
+  /// 删除时间毫秒戳。
   final int? deletedAtEpochMs;
   const TaskRecord({
     required this.id,
@@ -862,6 +862,24 @@ class $TaskEventRecordsTable extends TaskEventRecords
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  @override
+  late final GeneratedColumnWithTypeConverter<TaskStatus, String> fromStatus =
+      GeneratedColumn<String>(
+        'from_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<TaskStatus>($TaskEventRecordsTable.$converterfromStatus);
+  @override
+  late final GeneratedColumnWithTypeConverter<TaskStatus, String> toStatus =
+      GeneratedColumn<String>(
+        'to_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<TaskStatus>($TaskEventRecordsTable.$convertertoStatus);
   static const VerificationMeta _occurredAtEpochMsMeta = const VerificationMeta(
     'occurredAtEpochMs',
   );
@@ -874,7 +892,14 @@ class $TaskEventRecordsTable extends TaskEventRecords
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, taskId, type, occurredAtEpochMs];
+  List<GeneratedColumn> get $columns => [
+    id,
+    taskId,
+    type,
+    fromStatus,
+    toStatus,
+    occurredAtEpochMs,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -940,6 +965,18 @@ class $TaskEventRecordsTable extends TaskEventRecords
         DriftSqlType.string,
         data['${effectivePrefix}type'],
       )!,
+      fromStatus: $TaskEventRecordsTable.$converterfromStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}from_status'],
+        )!,
+      ),
+      toStatus: $TaskEventRecordsTable.$convertertoStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}to_status'],
+        )!,
+      ),
       occurredAtEpochMs: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}occurred_at_epoch_ms'],
@@ -951,24 +988,37 @@ class $TaskEventRecordsTable extends TaskEventRecords
   $TaskEventRecordsTable createAlias(String alias) {
     return $TaskEventRecordsTable(attachedDatabase, alias);
   }
+
+  static JsonTypeConverter2<TaskStatus, String, String> $converterfromStatus =
+      const EnumNameConverter<TaskStatus>(TaskStatus.values);
+  static JsonTypeConverter2<TaskStatus, String, String> $convertertoStatus =
+      const EnumNameConverter<TaskStatus>(TaskStatus.values);
 }
 
 class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
-  /// 事件主键。
+  /// 事件 ID。
   final String id;
 
-  /// 关联事项主键。
+  /// 关联事项 ID。
   final String taskId;
 
   /// 事件类型。
   final String type;
 
-  /// 发生时间 UTC 毫秒。
+  /// 变化前状态。
+  final TaskStatus fromStatus;
+
+  /// 变化后状态。
+  final TaskStatus toStatus;
+
+  /// 发生时间毫秒戳。
   final int occurredAtEpochMs;
   const TaskEventRecord({
     required this.id,
     required this.taskId,
     required this.type,
+    required this.fromStatus,
+    required this.toStatus,
     required this.occurredAtEpochMs,
   });
   @override
@@ -977,6 +1027,16 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
     map['id'] = Variable<String>(id);
     map['task_id'] = Variable<String>(taskId);
     map['type'] = Variable<String>(type);
+    {
+      map['from_status'] = Variable<String>(
+        $TaskEventRecordsTable.$converterfromStatus.toSql(fromStatus),
+      );
+    }
+    {
+      map['to_status'] = Variable<String>(
+        $TaskEventRecordsTable.$convertertoStatus.toSql(toStatus),
+      );
+    }
     map['occurred_at_epoch_ms'] = Variable<int>(occurredAtEpochMs);
     return map;
   }
@@ -986,6 +1046,8 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
       id: Value(id),
       taskId: Value(taskId),
       type: Value(type),
+      fromStatus: Value(fromStatus),
+      toStatus: Value(toStatus),
       occurredAtEpochMs: Value(occurredAtEpochMs),
     );
   }
@@ -999,6 +1061,12 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
       id: serializer.fromJson<String>(json['id']),
       taskId: serializer.fromJson<String>(json['taskId']),
       type: serializer.fromJson<String>(json['type']),
+      fromStatus: $TaskEventRecordsTable.$converterfromStatus.fromJson(
+        serializer.fromJson<String>(json['fromStatus']),
+      ),
+      toStatus: $TaskEventRecordsTable.$convertertoStatus.fromJson(
+        serializer.fromJson<String>(json['toStatus']),
+      ),
       occurredAtEpochMs: serializer.fromJson<int>(json['occurredAtEpochMs']),
     );
   }
@@ -1009,6 +1077,12 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
       'id': serializer.toJson<String>(id),
       'taskId': serializer.toJson<String>(taskId),
       'type': serializer.toJson<String>(type),
+      'fromStatus': serializer.toJson<String>(
+        $TaskEventRecordsTable.$converterfromStatus.toJson(fromStatus),
+      ),
+      'toStatus': serializer.toJson<String>(
+        $TaskEventRecordsTable.$convertertoStatus.toJson(toStatus),
+      ),
       'occurredAtEpochMs': serializer.toJson<int>(occurredAtEpochMs),
     };
   }
@@ -1017,11 +1091,15 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
     String? id,
     String? taskId,
     String? type,
+    TaskStatus? fromStatus,
+    TaskStatus? toStatus,
     int? occurredAtEpochMs,
   }) => TaskEventRecord(
     id: id ?? this.id,
     taskId: taskId ?? this.taskId,
     type: type ?? this.type,
+    fromStatus: fromStatus ?? this.fromStatus,
+    toStatus: toStatus ?? this.toStatus,
     occurredAtEpochMs: occurredAtEpochMs ?? this.occurredAtEpochMs,
   );
   TaskEventRecord copyWithCompanion(TaskEventRecordsCompanion data) {
@@ -1029,6 +1107,10 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
       id: data.id.present ? data.id.value : this.id,
       taskId: data.taskId.present ? data.taskId.value : this.taskId,
       type: data.type.present ? data.type.value : this.type,
+      fromStatus: data.fromStatus.present
+          ? data.fromStatus.value
+          : this.fromStatus,
+      toStatus: data.toStatus.present ? data.toStatus.value : this.toStatus,
       occurredAtEpochMs: data.occurredAtEpochMs.present
           ? data.occurredAtEpochMs.value
           : this.occurredAtEpochMs,
@@ -1041,13 +1123,16 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
           ..write('id: $id, ')
           ..write('taskId: $taskId, ')
           ..write('type: $type, ')
+          ..write('fromStatus: $fromStatus, ')
+          ..write('toStatus: $toStatus, ')
           ..write('occurredAtEpochMs: $occurredAtEpochMs')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, taskId, type, occurredAtEpochMs);
+  int get hashCode =>
+      Object.hash(id, taskId, type, fromStatus, toStatus, occurredAtEpochMs);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1055,6 +1140,8 @@ class TaskEventRecord extends DataClass implements Insertable<TaskEventRecord> {
           other.id == this.id &&
           other.taskId == this.taskId &&
           other.type == this.type &&
+          other.fromStatus == this.fromStatus &&
+          other.toStatus == this.toStatus &&
           other.occurredAtEpochMs == this.occurredAtEpochMs);
 }
 
@@ -1062,12 +1149,16 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
   final Value<String> id;
   final Value<String> taskId;
   final Value<String> type;
+  final Value<TaskStatus> fromStatus;
+  final Value<TaskStatus> toStatus;
   final Value<int> occurredAtEpochMs;
   final Value<int> rowid;
   const TaskEventRecordsCompanion({
     this.id = const Value.absent(),
     this.taskId = const Value.absent(),
     this.type = const Value.absent(),
+    this.fromStatus = const Value.absent(),
+    this.toStatus = const Value.absent(),
     this.occurredAtEpochMs = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1075,16 +1166,22 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
     required String id,
     required String taskId,
     required String type,
+    required TaskStatus fromStatus,
+    required TaskStatus toStatus,
     required int occurredAtEpochMs,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        taskId = Value(taskId),
        type = Value(type),
+       fromStatus = Value(fromStatus),
+       toStatus = Value(toStatus),
        occurredAtEpochMs = Value(occurredAtEpochMs);
   static Insertable<TaskEventRecord> custom({
     Expression<String>? id,
     Expression<String>? taskId,
     Expression<String>? type,
+    Expression<String>? fromStatus,
+    Expression<String>? toStatus,
     Expression<int>? occurredAtEpochMs,
     Expression<int>? rowid,
   }) {
@@ -1092,6 +1189,8 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
       if (id != null) 'id': id,
       if (taskId != null) 'task_id': taskId,
       if (type != null) 'type': type,
+      if (fromStatus != null) 'from_status': fromStatus,
+      if (toStatus != null) 'to_status': toStatus,
       if (occurredAtEpochMs != null) 'occurred_at_epoch_ms': occurredAtEpochMs,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1101,6 +1200,8 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
     Value<String>? id,
     Value<String>? taskId,
     Value<String>? type,
+    Value<TaskStatus>? fromStatus,
+    Value<TaskStatus>? toStatus,
     Value<int>? occurredAtEpochMs,
     Value<int>? rowid,
   }) {
@@ -1108,6 +1209,8 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
       id: id ?? this.id,
       taskId: taskId ?? this.taskId,
       type: type ?? this.type,
+      fromStatus: fromStatus ?? this.fromStatus,
+      toStatus: toStatus ?? this.toStatus,
       occurredAtEpochMs: occurredAtEpochMs ?? this.occurredAtEpochMs,
       rowid: rowid ?? this.rowid,
     );
@@ -1125,6 +1228,16 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
     if (type.present) {
       map['type'] = Variable<String>(type.value);
     }
+    if (fromStatus.present) {
+      map['from_status'] = Variable<String>(
+        $TaskEventRecordsTable.$converterfromStatus.toSql(fromStatus.value),
+      );
+    }
+    if (toStatus.present) {
+      map['to_status'] = Variable<String>(
+        $TaskEventRecordsTable.$convertertoStatus.toSql(toStatus.value),
+      );
+    }
     if (occurredAtEpochMs.present) {
       map['occurred_at_epoch_ms'] = Variable<int>(occurredAtEpochMs.value);
     }
@@ -1140,6 +1253,8 @@ class TaskEventRecordsCompanion extends UpdateCompanion<TaskEventRecord> {
           ..write('id: $id, ')
           ..write('taskId: $taskId, ')
           ..write('type: $type, ')
+          ..write('fromStatus: $fromStatus, ')
+          ..write('toStatus: $toStatus, ')
           ..write('occurredAtEpochMs: $occurredAtEpochMs, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -1538,6 +1653,8 @@ typedef $$TaskEventRecordsTableCreateCompanionBuilder =
       required String id,
       required String taskId,
       required String type,
+      required TaskStatus fromStatus,
+      required TaskStatus toStatus,
       required int occurredAtEpochMs,
       Value<int> rowid,
     });
@@ -1546,6 +1663,8 @@ typedef $$TaskEventRecordsTableUpdateCompanionBuilder =
       Value<String> id,
       Value<String> taskId,
       Value<String> type,
+      Value<TaskStatus> fromStatus,
+      Value<TaskStatus> toStatus,
       Value<int> occurredAtEpochMs,
       Value<int> rowid,
     });
@@ -1573,6 +1692,18 @@ class $$TaskEventRecordsTableFilterComposer
     column: $table.type,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnWithTypeConverterFilters<TaskStatus, TaskStatus, String>
+  get fromStatus => $composableBuilder(
+    column: $table.fromStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<TaskStatus, TaskStatus, String> get toStatus =>
+      $composableBuilder(
+        column: $table.toStatus,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
 
   ColumnFilters<int> get occurredAtEpochMs => $composableBuilder(
     column: $table.occurredAtEpochMs,
@@ -1604,6 +1735,16 @@ class $$TaskEventRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get fromStatus => $composableBuilder(
+    column: $table.fromStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get toStatus => $composableBuilder(
+    column: $table.toStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get occurredAtEpochMs => $composableBuilder(
     column: $table.occurredAtEpochMs,
     builder: (column) => ColumnOrderings(column),
@@ -1627,6 +1768,15 @@ class $$TaskEventRecordsTableAnnotationComposer
 
   GeneratedColumn<String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<TaskStatus, String> get fromStatus =>
+      $composableBuilder(
+        column: $table.fromStatus,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<TaskStatus, String> get toStatus =>
+      $composableBuilder(column: $table.toStatus, builder: (column) => column);
 
   GeneratedColumn<int> get occurredAtEpochMs => $composableBuilder(
     column: $table.occurredAtEpochMs,
@@ -1674,12 +1824,16 @@ class $$TaskEventRecordsTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<String> taskId = const Value.absent(),
                 Value<String> type = const Value.absent(),
+                Value<TaskStatus> fromStatus = const Value.absent(),
+                Value<TaskStatus> toStatus = const Value.absent(),
                 Value<int> occurredAtEpochMs = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TaskEventRecordsCompanion(
                 id: id,
                 taskId: taskId,
                 type: type,
+                fromStatus: fromStatus,
+                toStatus: toStatus,
                 occurredAtEpochMs: occurredAtEpochMs,
                 rowid: rowid,
               ),
@@ -1688,12 +1842,16 @@ class $$TaskEventRecordsTableTableManager
                 required String id,
                 required String taskId,
                 required String type,
+                required TaskStatus fromStatus,
+                required TaskStatus toStatus,
                 required int occurredAtEpochMs,
                 Value<int> rowid = const Value.absent(),
               }) => TaskEventRecordsCompanion.insert(
                 id: id,
                 taskId: taskId,
                 type: type,
+                fromStatus: fromStatus,
+                toStatus: toStatus,
                 occurredAtEpochMs: occurredAtEpochMs,
                 rowid: rowid,
               ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
 
-/// 共享壳层快速添加弹层只负责把用户送进正式编辑页，不直接承接录入逻辑。
+/// 共享壳层快速添加弹层只承接当前阶段的占位说明，
+/// 正式录入仍回到 task-flow 编辑页，避免壳层直接承担业务写入。
 class AppShellQuickAddSheet extends StatelessWidget {
   /// 创建共享壳层快速添加弹层。
   const AppShellQuickAddSheet({super.key});

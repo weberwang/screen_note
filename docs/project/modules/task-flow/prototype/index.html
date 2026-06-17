@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Note Task Flow Prototype</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <style>
+      :root {
+        --background: #fbfaf7;
+        --surface: #ffffff;
+        --surface-warm: #fcf8ee;
+        --surface-soft: #f4f5f0;
+        --text-primary: #1f2328;
+        --text-secondary: #5f6762;
+        --green: #4d8b52;
+        --green-soft: #dfe9d7;
+        --coral: #e96a5a;
+        --orange-soft: rgba(233, 106, 90, 0.12);
+        --outline: #e4e8e0;
+        --shadow-soft: 0 22px 56px rgba(24, 34, 26, 0.08);
+        --radius-xl: 36px;
+        --radius-lg: 28px;
+        --radius-md: 18px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: linear-gradient(180deg, #fefdf9 0%, #f7f4ee 100%);
+        color: var(--text-primary);
+        font-family: "SF Pro Text", "Segoe UI", sans-serif;
+      }
+
+      .phone {
+        width: 390px;
+        min-height: 844px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 42px;
+        background: var(--background);
+        box-shadow: 0 28px 70px rgba(22, 30, 25, 0.12);
+      }
+
+      .screen {
+        min-height: 844px;
+        padding: 28px 24px 126px;
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        background: var(--green);
+        display: grid;
+        place-items: center;
+        color: white;
+      }
+
+      .brand-name {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .greeting {
+        margin: 18px 0 10px;
+        font-size: 28px;
+        line-height: 1.08;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-radius: var(--radius-full);
+        background: var(--green-soft);
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .priority-card {
+        margin-top: 26px;
+        padding: 30px 24px 22px;
+        border-radius: var(--radius-xl);
+        background:
+          radial-gradient(circle at top left, rgba(255, 255, 255, 0.88), transparent 42%),
+          linear-gradient(180deg, #fcf8ee 0%, #faf6eb 100%);
+        border: 1px solid rgba(228, 232, 224, 0.85);
+        box-shadow: var(--shadow-soft);
+        position: relative;
+      }
+
+      /* 中文注释：主事项卡片保留极轻纸感，只表达主优先级，不引入额外装饰语言。 */
+      .priority-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background:
+          radial-gradient(circle at 78% 14%, rgba(255, 255, 255, 0.22), transparent 28%),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 38%);
+        pointer-events: none;
+      }
+
+      .card-label {
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .card-title {
+        margin: 18px 0 16px;
+        font-size: 34px;
+        line-height: 1.08;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        max-width: 290px;
+      }
+
+      .card-copy {
+        margin: 0 0 26px;
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1.55;
+        max-width: 296px;
+      }
+
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(210, 216, 208, 0.9);
+      }
+
+      .card-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--green);
+      }
+
+      .meta-stack {
+        display: grid;
+        gap: 2px;
+      }
+
+      .meta-stack strong {
+        font-size: 16px;
+        line-height: 1.2;
+      }
+
+      .meta-stack span {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .primary-button {
+        border: 0;
+        border-radius: var(--radius-lg);
+        background: var(--green);
+        color: #fff;
+        min-width: 132px;
+        padding: 18px 22px;
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .section {
+        margin-top: 34px;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        color: var(--coral);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .queue {
+        border-top: 1px solid var(--outline);
+      }
+
+      .queue-row {
+        display: grid;
+        grid-template-columns: 52px 1fr auto;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--outline);
+      }
+
+      .queue-mark {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+        background: var(--orange-soft);
+        color: var(--coral);
+        display: grid;
+        place-items: center;
+      }
+
+      .queue-copy strong {
+        display: block;
+        font-size: 17px;
+        line-height: 1.28;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .queue-copy span {
+        color: var(--coral);
+        font-size: 15px;
+      }
+
+      .fab {
+        position: absolute;
+        right: 24px;
+        bottom: 122px;
+        width: 84px;
+        height: 84px;
+        border-radius: 999px;
+        border: 4px solid rgba(255, 255, 255, 0.92);
+        background: var(--green);
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 18px 36px rgba(77, 139, 82, 0.26);
+      }
+
+      .bottom-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 108px;
+        padding: 10px 24px 24px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-top: 1px solid rgba(228, 232, 224, 0.96);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .nav-item {
+        border: 0;
+        background: none;
+        display: grid;
+        gap: 8px;
+        place-items: center;
+        color: #8c958f;
+        font: inherit;
+      }
+
+      .nav-item.active {
+        color: var(--green);
+      }
+
+      .nav-item span:last-child {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .editor-screen .toolbar {
+        align-items: center;
+        margin-bottom: 28px;
+      }
+
+      .toolbar-button {
+        border: 0;
+        background: none;
+        color: var(--green);
+        font-size: 18px;
+        font-weight: 600;
+        padding: 0;
+      }
+
+      .editor-title {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .editor-card,
+      .field-group,
+      .notes-card {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(228, 232, 224, 0.92);
+        border-radius: var(--radius-xl);
+      }
+
+      .editor-card {
+        padding: 28px 22px 24px;
+        margin-bottom: 18px;
+      }
+
+      .editor-card h2 {
+        margin: 0;
+        font-size: 34px;
+        line-height: 1.16;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      .cursor {
+        color: var(--green);
+      }
+
+      .field-group {
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: 36px 1fr auto 18px;
+        gap: 14px;
+        align-items: center;
+        padding: 22px 20px;
+      }
+
+      .field-row + .field-row {
+        border-top: 1px solid var(--outline);
+      }
+
+      .field-label {
+        font-size: 17px;
+        font-weight: 500;
+      }
+
+      .field-value {
+        color: var(--green);
+        font-size: 17px;
+        font-weight: 500;
+      }
+
+      .notes-card {
+        padding: 22px 20px 110px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      .notes-card strong {
+        display: block;
+        color: #868f89;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 18px;
+      }
+
+      .save-bar {
+        margin-top: 28px;
+        width: 100%;
+        border: 0;
+        border-radius: 24px;
+        background: #416d43;
+        color: #ffffff;
+        padding: 22px;
+        font-size: 19px;
+        font-weight: 700;
+      }
+
+      .material-symbols-rounded {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="phone">
+      <section id="screen-home" class="screen active" aria-label="Task flow home page">
+        <div class="toolbar">
+          <div class="brand">
+            <div class="brand-mark">
+              <span class="material-symbols-rounded">keep</span>
+            </div>
+            <div class="brand-name">Screen Note</div>
+          </div>
+        </div>
+
+        <h1 class="greeting">Good morning</h1>
+        <div class="status-chip">
+          <span class="material-symbols-rounded">schedule</span>
+          <span>Today</span>
+        </div>
+
+        <article class="priority-card">
+          <div class="card-label">Priority task</div>
+          <h2 class="card-title">Flutter module freeze</h2>
+          <p class="card-copy">
+            Capture visual evidence and validate UI states before code freeze.
+          </p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <span class="material-symbols-rounded">calendar_month</span>
+              <div class="meta-stack">
+                <strong>Due today</strong>
+                <span>May 20, 2025</span>
+              </div>
+            </div>
+            <button id="open-editor" class="primary-button" type="button">Continue</button>
+          </div>
+        </article>
+
+        <section class="section">
+          <h3 class="section-title">Overdue</h3>
+          <div class="queue">
+            <button class="queue-row" type="button" data-open-editor>
+              <div class="queue-mark">
+                <span class="material-symbols-rounded">bug_report</span>
+              </div>
+              <div class="queue-copy">
+                <strong>Crash on login (iOS)</strong>
+                <span>Due May 18, 2025</span>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </button>
+            <button class="queue-row" type="button" data-open-editor>
+              <div class="queue-mark">
+                <span class="material-symbols-rounded">link_off</span>
+              </div>
+              <div class="queue-copy">
+                <strong>Deep link not opening</strong>
+                <span>Due May 17, 2025</span>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </button>
+            <button class="queue-row" type="button" data-open-editor>
+              <div class="queue-mark">
+                <span class="material-symbols-rounded">view_quilt</span>
+              </div>
+              <div class="queue-copy">
+                <strong>User profile layout shift</strong>
+                <span>Due May 16, 2025</span>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </button>
+            <button class="queue-row" type="button" data-open-editor>
+              <div class="queue-mark">
+                <span class="material-symbols-rounded">notifications</span>
+              </div>
+              <div class="queue-copy">
+                <strong>Push notification delay</strong>
+                <span>Due May 15, 2025</span>
+              </div>
+              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <section id="screen-editor" class="screen editor-screen" aria-label="Task editor page">
+        <div class="toolbar">
+          <button id="back-home" class="toolbar-button" type="button">
+            <span class="material-symbols-rounded" style="vertical-align: middle">arrow_back</span>
+          </button>
+          <div class="editor-title">Edit task</div>
+          <button class="toolbar-button" type="button">Save</button>
+        </div>
+
+        <article class="editor-card">
+          <h2>Follow up with design team on Screen Note flow<span class="cursor">|</span></h2>
+        </article>
+
+        <section class="field-group">
+          <div class="field-row">
+            <span class="material-symbols-rounded" style="color: var(--green)">calendar_month</span>
+            <div class="field-label">Due date</div>
+            <div class="field-value">Today</div>
+            <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+          </div>
+          <div class="field-row">
+            <span class="material-symbols-rounded" style="color: var(--green)">schedule</span>
+            <div class="field-label">Due time</div>
+            <div class="field-value">3:00 PM</div>
+            <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+          </div>
+        </section>
+
+        <section class="field-group">
+          <div class="field-row">
+            <span class="material-symbols-rounded" style="color: var(--green)">sell</span>
+            <div class="field-label">Category</div>
+            <div class="field-value">Work</div>
+            <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+          </div>
+          <div class="field-row">
+            <span class="material-symbols-rounded" style="color: var(--green)">lock</span>
+            <div class="field-label">Privacy</div>
+            <div class="field-value">Private</div>
+            <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
+          </div>
+        </section>
+
+        <section class="notes-card">
+          <strong>Notes (optional)</strong>
+          Add any extra details or context for this task...
+        </section>
+
+        <button class="save-bar" type="button">Save</button>
+      </section>
+
+      <button class="fab" type="button" aria-label="Open quick add">
+        <span class="material-symbols-rounded" style="font-size: 34px">add</span>
+      </button>
+
+      <nav class="bottom-nav" aria-label="Primary navigation">
+        <button class="nav-item active" type="button">
+          <span class="material-symbols-rounded">home</span>
+          <span>Home</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="material-symbols-rounded">history</span>
+          <span>History</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="material-symbols-rounded">settings</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+    </main>
+
+    <script>
+      const homeScreen = document.getElementById("screen-home");
+      const editorScreen = document.getElementById("screen-editor");
+      const openEditorButtons = document.querySelectorAll("[data-open-editor], #open-editor");
+      const backHomeButton = document.getElementById("back-home");
+
+      // 中文注释：原型只验证 task-flow 主链路，首页与编辑页之间的切换足以表达主任务继续处理路径。
+      function setScreen(name) {
+        const showHome = name === "home";
+        homeScreen.classList.toggle("active", showHome);
+        editorScreen.classList.toggle("active", !showHome);
+      }
+
+      openEditorButtons.forEach((button) => {
+        button.addEventListener("click", () => setScreen("editor"));
+      });
+
+      backHomeButton.addEventListener("click", () => setScreen("home"));
+    </script>
+  </body>
+</html>

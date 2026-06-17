@@ -36,9 +36,7 @@ Future<SharedPreferences> settingsSharedPreferences(Ref ref) async {
 /// 设置偏好仓储 Provider，统一暴露真实本地偏好入口，避免页面层直接碰 shared_preferences。
 @Riverpod(keepAlive: true)
 SettingsPreferencesRepository settingsPreferencesRepository(Ref ref) {
-  return SharedPreferencesSettingsPreferencesRepository(
-    loadSharedPreferences: () => ref.watch(settingsSharedPreferencesProvider.future),
-  );
+  return const SharedPreferencesSettingsPreferencesRepository();
 }
 
 /// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。

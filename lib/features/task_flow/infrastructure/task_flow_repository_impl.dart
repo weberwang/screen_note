@@ -6,9 +6,9 @@ import 'package:screen_note/features/task_flow/domain/entities/task_status.dart'
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
 import 'package:screen_note/features/task_flow/infrastructure/task_flow_database.dart';
 
-/// Drift 版事项仓储实现，统一屏蔽表结构与领域实体之间的映射。
-final class TaskFlowRepositoryImpl implements TaskRepository {
-  /// 创建 Drift 仓储。
+/// `drift` 仓储实现，统一维护事项真源与操作日志的本地落库。
+final class TaskFlowRepositoryImpl implements TaskMutationRepository {
+  /// 创建 `task-flow` 仓储实现。
   const TaskFlowRepositoryImpl({required TaskFlowDatabase database})
     : _database = database;
 
@@ -16,104 +16,134 @@ final class TaskFlowRepositoryImpl implements TaskRepository {
 
   @override
   Future<void> createTask(TaskEntity task) async {
-    await _database.into(_database.taskRecords).insert(_toCompanion(task));
+    await _insertTask(task);
   }
 
   @override
-  Future<void> updateTask(TaskEntity task) async {
-    await (_database.update(
-      _database.taskRecords,
-    )..where((table) => table.id.equals(task.id))).write(
-      _toCompanion(task),
-    );
+  Future<void> createTaskWithEvent({
+    required TaskEntity task,
+    required TaskEventEntity event,
+  }) async {
+    await _database.transaction(() async {
+      await _insertTask(task);
+      await _insertEvent(event);
+    });
+  }
+
+  @override
+  Future<void> updateTaskWithEvent({
+    required TaskEntity task,
+    required TaskEventEntity event,
+  }) async {
+    await _database.transaction(() async {
+      await _insertTask(task);
+      await _insertEvent(event);
+    });
   }
 
   @override
   Future<TaskEntity?> findTaskById(String id) async {
-    final TaskRecord? record =
-        await (_database.select(_database.taskRecords)
-              ..where((table) => table.id.equals(id)))
-            .getSingleOrNull();
-    return record == null ? null : _toEntity(record);
+    final TaskRecord? row = await (_database.select(
+      _database.taskRecords,
+    )..where((TaskRecords table) => table.id.equals(id))).getSingleOrNull();
+    return row == null ? null : _mapTaskRowToEntity(row);
   }
 
   @override
   Future<List<TaskEntity>> loadTasksByStatus(TaskStatus status) async {
-    // 当前 MVP 数据量较小，先统一拉取后按领域状态过滤，避免把枚举转换细节散落在查询层。
-    final List<TaskRecord> records =
+    final List<TaskRecord> rows =
         await (_database.select(_database.taskRecords)
-              ..orderBy(<OrderingTerm Function($TaskRecordsTable)>[
-                (table) => OrderingTerm.desc(table.updatedAtEpochMs),
+              ..where((TaskRecords table) => table.status.equals(status.name))
+              ..orderBy(<OrderingTerm Function(TaskRecords)>[
+                (TaskRecords table) =>
+                    OrderingTerm.desc(table.updatedAtEpochMs),
+                (TaskRecords table) =>
+                    OrderingTerm.desc(table.createdAtEpochMs),
               ]))
             .get();
-    return records
-        .where((TaskRecord record) => record.status == status)
-        .map(_toEntity)
-        .toList(growable: false);
+    return rows.map(_mapTaskRowToEntity).toList(growable: false);
   }
 
   @override
   Future<int> countTasksByStatus(TaskStatus status) async {
-    final List<TaskRecord> records = await _database
-        .select(_database.taskRecords)
-        .get();
-    return records.where((TaskRecord record) => record.status == status).length;
+    final Expression<int> countExpression = _database.taskRecords.id.count();
+    final TypedResult result =
+        await (_database.selectOnly(_database.taskRecords)
+              ..addColumns(<Expression<Object>>[countExpression])
+              ..where(_database.taskRecords.status.equals(status.name)))
+            .getSingle();
+    return result.read(countExpression) ?? 0;
   }
 
-  @override
-  Future<void> appendEvent(TaskEventEntity event) async {
-    await _database.into(_database.taskEventRecords).insert(
-      TaskEventRecordsCompanion.insert(
-        id: event.id,
-        taskId: event.taskId,
-        type: event.type.name,
-        occurredAtEpochMs: event.occurredAt.toUtc().millisecondsSinceEpoch,
-      ),
+  /// 统一事项写入路径，供事务和测试预置共用，避免 SQL 分散。
+  Future<void> _insertTask(TaskEntity task) async {
+    await _database
+        .into(_database.taskRecords)
+        .insert(
+          _mapTaskEntityToCompanion(task),
+          mode: InsertMode.insertOrReplace,
+        );
+  }
+
+  /// 统一事件写入路径，重复事件 ID 必须显式失败，才能触发事务回滚。
+  Future<void> _insertEvent(TaskEventEntity event) async {
+    await _database
+        .into(_database.taskEventRecords)
+        .insert(
+          TaskEventRecordsCompanion.insert(
+            id: event.id,
+            taskId: event.taskId,
+            type: event.type,
+            fromStatus: event.fromStatus,
+            toStatus: event.toStatus,
+            occurredAtEpochMs: event.occurredAt.millisecondsSinceEpoch,
+          ),
+        );
+  }
+
+  /// 把领域实体映射成持久化 companion，避免表结构泄露给应用层。
+  TaskRecordsCompanion _mapTaskEntityToCompanion(TaskEntity task) {
+    return TaskRecordsCompanion.insert(
+      id: task.id,
+      title: task.title,
+      note: Value<String>(task.note),
+      dueAtEpochMs: Value<int?>(task.dueAt?.millisecondsSinceEpoch),
+      reminderAtEpochMs: Value<int?>(task.reminderAt?.millisecondsSinceEpoch),
+      isPinned: Value<bool>(task.isPinned),
+      isPrivate: Value<bool>(task.isPrivate),
+      status: task.status,
+      reminderMode: task.reminderMode,
+      createdAtEpochMs: task.createdAt.millisecondsSinceEpoch,
+      updatedAtEpochMs: task.updatedAt.millisecondsSinceEpoch,
+      completedAtEpochMs: Value<int?>(task.completedAt?.millisecondsSinceEpoch),
+      deletedAtEpochMs: Value<int?>(task.deletedAt?.millisecondsSinceEpoch),
     );
   }
 
-  TaskEntity _toEntity(TaskRecord record) {
+  /// 从数据库行恢复领域实体，确保页面层永远只看到内部模型。
+  TaskEntity _mapTaskRowToEntity(TaskRecord row) {
     return TaskEntity(
-      id: record.id,
-      title: record.title,
-      note: record.note,
-      dueAt: _fromEpochMs(record.dueAtEpochMs),
-      reminderAt: _fromEpochMs(record.reminderAtEpochMs),
-      isPinned: record.isPinned,
-      isPrivate: record.isPrivate,
-      status: record.status,
-      reminderMode: record.reminderMode,
-      createdAt: _fromEpochMs(record.createdAtEpochMs)!,
-      updatedAt: _fromEpochMs(record.updatedAtEpochMs)!,
-      completedAt: _fromEpochMs(record.completedAtEpochMs),
-      deletedAt: _fromEpochMs(record.deletedAtEpochMs),
+      id: row.id,
+      title: row.title,
+      note: row.note,
+      dueAt: _fromEpochMs(row.dueAtEpochMs),
+      reminderAt: _fromEpochMs(row.reminderAtEpochMs),
+      isPinned: row.isPinned,
+      isPrivate: row.isPrivate,
+      status: row.status,
+      reminderMode: row.reminderMode,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(row.createdAtEpochMs),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(row.updatedAtEpochMs),
+      completedAt: _fromEpochMs(row.completedAtEpochMs),
+      deletedAt: _fromEpochMs(row.deletedAtEpochMs),
     );
   }
 
-  TaskRecordsCompanion _toCompanion(TaskEntity task) {
-    return TaskRecordsCompanion(
-      id: Value(task.id),
-      title: Value(task.title),
-      note: Value(task.note),
-      dueAtEpochMs: Value(task.dueAt?.toUtc().millisecondsSinceEpoch),
-      reminderAtEpochMs: Value(task.reminderAt?.toUtc().millisecondsSinceEpoch),
-      isPinned: Value(task.isPinned),
-      isPrivate: Value(task.isPrivate),
-      status: Value(task.status),
-      reminderMode: Value(task.reminderMode),
-      createdAtEpochMs: Value(task.createdAt.toUtc().millisecondsSinceEpoch),
-      updatedAtEpochMs: Value(task.updatedAt.toUtc().millisecondsSinceEpoch),
-      completedAtEpochMs: Value(
-        task.completedAt?.toUtc().millisecondsSinceEpoch,
-      ),
-      deletedAtEpochMs: Value(task.deletedAt?.toUtc().millisecondsSinceEpoch),
-    );
-  }
-
-  DateTime? _fromEpochMs(int? value) {
-    if (value == null) {
+  /// 数据库存的是毫秒戳，这里集中做时间恢复，避免映射散落。
+  DateTime? _fromEpochMs(int? epochMs) {
+    if (epochMs == null) {
       return null;
     }
-    return DateTime.fromMillisecondsSinceEpoch(value, isUtc: true);
+    return DateTime.fromMillisecondsSinceEpoch(epochMs);
   }
 }

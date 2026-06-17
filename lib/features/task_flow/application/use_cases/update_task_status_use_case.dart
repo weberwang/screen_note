@@ -6,93 +6,113 @@ import 'package:screen_note/features/task_flow/domain/entities/task_event_entity
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 import 'package:screen_note/features/task_flow/domain/repositories/task_repository.dart';
 
-/// 状态流转用例，统一收口完成、删除、恢复等关键状态修改。
+/// 状态流转用例，统一编排完成、删除、恢复三条关键状态链路。
 final class UpdateTaskStatusUseCase {
   /// 创建状态流转用例。
-  UpdateTaskStatusUseCase({
-    required TaskRepository repository,
+  const UpdateTaskStatusUseCase({
+    required TaskMutationRepository repository,
     required TaskFlowSideEffectPort sideEffectPort,
-    Uuid? uuid,
+    required Uuid uuid,
   }) : _repository = repository,
        _sideEffectPort = sideEffectPort,
-       _uuid = uuid ?? const Uuid();
+       _uuid = uuid;
 
-  final TaskRepository _repository;
+  final TaskMutationRepository _repository;
   final TaskFlowSideEffectPort _sideEffectPort;
   final Uuid _uuid;
 
-  /// 完成事项，并记录状态事件。
-  Future<TaskEntity> completeTask({
+  /// 标记完成。
+  Future<void> completeTask({
     required String taskId,
-    DateTime? occurredAt,
+    required DateTime occurredAt,
   }) async {
-    return _transition(
+    await _updateStatus(
       taskId: taskId,
       occurredAt: occurredAt,
-      targetStatus: TaskStatus.completed,
-      mutationKind: TaskMutationKind.completed,
-      eventType: TaskEventType.completed,
+      nextStatus: TaskStatus.completed,
+      eventType: 'completed',
+      completedAt: occurredAt,
+      deletedAt: null,
     );
   }
 
-  /// 软删除事项，并记录删除时间。
-  Future<TaskEntity> deleteTask({
+  /// 软删除事项。
+  Future<void> deleteTask({
     required String taskId,
-    DateTime? occurredAt,
+    required DateTime occurredAt,
   }) async {
-    return _transition(
+    await _updateStatus(
       taskId: taskId,
       occurredAt: occurredAt,
-      targetStatus: TaskStatus.deleted,
-      mutationKind: TaskMutationKind.deleted,
-      eventType: TaskEventType.deleted,
+      nextStatus: TaskStatus.deleted,
+      eventType: 'deleted',
+      completedAt: null,
+      deletedAt: occurredAt,
     );
   }
 
-  /// 恢复事项回到 active，不允许物理重建。
-  Future<TaskEntity> restoreTask({
+  /// 恢复已删除事项，并沿用原任务 ID。
+  Future<void> restoreTask({
     required String taskId,
-    DateTime? occurredAt,
+    required DateTime occurredAt,
   }) async {
-    return _transition(
+    await _updateStatus(
       taskId: taskId,
       occurredAt: occurredAt,
-      targetStatus: TaskStatus.active,
-      mutationKind: TaskMutationKind.restored,
-      eventType: TaskEventType.restored,
+      nextStatus: TaskStatus.active,
+      eventType: 'restored',
+      completedAt: null,
+      deletedAt: null,
     );
   }
 
-  Future<TaskEntity> _transition({
+  /// 统一状态更新与日志写入，避免页面层直接改库导致历史链路失真。
+  Future<void> _updateStatus({
     required String taskId,
-    required TaskStatus targetStatus,
-    required TaskMutationKind mutationKind,
-    required TaskEventType eventType,
-    DateTime? occurredAt,
+    required DateTime occurredAt,
+    required TaskStatus nextStatus,
+    required String eventType,
+    required DateTime? completedAt,
+    required DateTime? deletedAt,
   }) async {
-    final TaskEntity currentTask = await _repository.findTaskById(taskId) ??
-        (throw StateError('未找到待流转事项: $taskId'));
-    final DateTime timestamp = (occurredAt ?? DateTime.now()).toUtc();
+    final TaskEntity? currentTask = await _repository.findTaskById(taskId);
+    if (currentTask == null) {
+      throw StateError('未找到事项: $taskId');
+    }
+
+    _assertTransitionAllowed(currentTask.status, nextStatus);
+
     final TaskEntity updatedTask = currentTask.copyWith(
-      status: targetStatus,
-      updatedAt: timestamp,
-      completedAt: targetStatus == TaskStatus.completed ? timestamp : null,
-      deletedAt: targetStatus == TaskStatus.deleted ? timestamp : null,
+      status: nextStatus,
+      updatedAt: occurredAt,
+      completedAt: completedAt,
+      deletedAt: deletedAt,
+    );
+    final TaskEventEntity event = TaskEventEntity(
+      id: _uuid.v4(),
+      taskId: taskId,
+      type: eventType,
+      fromStatus: currentTask.status,
+      toStatus: nextStatus,
+      occurredAt: occurredAt,
     );
 
-    await _repository.updateTask(updatedTask);
-    await _repository.appendEvent(
-      TaskEventEntity(
-        id: _uuid.v4(),
-        taskId: updatedTask.id,
-        type: eventType,
-        occurredAt: timestamp,
-      ),
-    );
-    await _sideEffectPort.handleTaskMutation(
-      task: updatedTask,
-      kind: mutationKind,
-    );
-    return updatedTask;
+    await _repository.updateTaskWithEvent(task: updatedTask, event: event);
+    await _sideEffectPort.onTaskStatusChanged(task: updatedTask, event: event);
+  }
+
+  /// 只允许被业务明确定义的状态跳转，避免错误或无意义写入污染真源。
+  void _assertTransitionAllowed(TaskStatus current, TaskStatus next) {
+    final bool isAllowed = switch ((current, next)) {
+      (TaskStatus.active, TaskStatus.completed) => true,
+      (TaskStatus.active, TaskStatus.deleted) => true,
+      (TaskStatus.completed, TaskStatus.deleted) => true,
+      (TaskStatus.deleted, TaskStatus.active) => true,
+      _ => false,
+    };
+
+    if (!isAllowed) {
+      throw StateError('非法状态流转: ${current.name} -> ${next.name}');
+    }
   }
 }

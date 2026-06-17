@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Note Settings Center Prototype</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <style>
+      :root {
+        --background: #fbfaf7;
+        --surface: #ffffff;
+        --surface-soft: #f6f6f2;
+        --text-primary: #1f2328;
+        --text-secondary: #636c66;
+        --green: #4d8b52;
+        --green-soft: rgba(77, 139, 82, 0.14);
+        --coral: #e96a5a;
+        --coral-soft: rgba(233, 106, 90, 0.12);
+        --gold-soft: rgba(214, 182, 99, 0.16);
+        --outline: #e5e8e1;
+        --radius-xl: 36px;
+        --radius-lg: 24px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: linear-gradient(180deg, #fefdf9 0%, #f7f4ee 100%);
+        color: var(--text-primary);
+        font-family: "SF Pro Text", "Segoe UI", sans-serif;
+      }
+
+      .phone {
+        width: 390px;
+        min-height: 844px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 42px;
+        background: var(--background);
+        box-shadow: 0 28px 70px rgba(22, 30, 25, 0.12);
+      }
+
+      .screen {
+        min-height: 844px;
+        padding: 28px 24px 128px;
+      }
+
+      .page-title {
+        margin: 18px 0 10px;
+        font-size: 38px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      .page-subtitle {
+        margin: 0 0 28px;
+        color: var(--text-secondary);
+        font-size: 19px;
+        line-height: 1.48;
+      }
+
+      .group {
+        margin-bottom: 20px;
+      }
+
+      .group-label {
+        margin: 0 0 10px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #7b837e;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--outline);
+        border-radius: 26px;
+        overflow: hidden;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 52px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        padding: 18px 18px;
+        border-bottom: 1px solid rgba(229, 232, 225, 0.9);
+      }
+
+      .row:last-child {
+        border-bottom: none;
+      }
+
+      .row-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        background: var(--surface-soft);
+        color: var(--green);
+      }
+
+      .row-copy strong {
+        display: block;
+        font-size: 17px;
+        line-height: 1.26;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .row-copy span {
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .row-value {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .degradation {
+        display: grid;
+        grid-template-columns: 52px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        margin: 0 12px 12px;
+        padding: 16px 16px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #fff4ee 0%, #fff8f4 100%);
+        color: var(--coral);
+      }
+
+      .degradation .row-copy strong,
+      .degradation .row-copy span {
+        color: inherit;
+      }
+
+      .degradation .action {
+        border: 1px solid rgba(233, 106, 90, 0.36);
+        border-radius: 16px;
+        padding: 10px 14px;
+        font-size: 15px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .membership-card {
+        background: linear-gradient(180deg, #fffdf8 0%, #fbf6eb 100%);
+      }
+
+      .fab {
+        position: absolute;
+        right: 26px;
+        bottom: 112px;
+        width: 74px;
+        height: 74px;
+        border-radius: 999px;
+        border: 4px solid rgba(255, 255, 255, 0.94);
+        background: var(--green);
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 18px 36px rgba(77, 139, 82, 0.24);
+      }
+
+      .bottom-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 108px;
+        padding: 10px 24px 24px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-top: 1px solid rgba(228, 232, 224, 0.96);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .nav-item {
+        border: 0;
+        background: none;
+        display: grid;
+        gap: 8px;
+        place-items: center;
+        color: #8c958f;
+        font: inherit;
+      }
+
+      .nav-item.active {
+        color: var(--green);
+      }
+
+      .nav-item span:last-child {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .material-symbols-rounded {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="phone">
+      <section class="screen" aria-label="Settings center page">
+        <h1 class="page-title">Settings Center</h1>
+        <p class="page-subtitle">
+          Manage how Screen Note behaves across reminders, privacy, widgets, and recovery-safe system surfaces.
+        </p>
+
+        <section class="group">
+          <p class="group-label">Permissions & Alerts</p>
+          <div class="panel">
+            <div class="row">
+              <div class="row-icon">
+                <span class="material-symbols-rounded">notifications</span>
+              </div>
+              <div class="row-copy">
+                <strong>Notification Status</strong>
+                <span>Stay updated on reminders and task changes.</span>
+              </div>
+              <div class="row-value">
+                <span>Disabled</span>
+                <span class="material-symbols-rounded">chevron_right</span>
+              </div>
+            </div>
+            <div class="degradation">
+              <div class="row-icon" style="background: rgba(233, 106, 90, 0.12); color: var(--coral);">
+                <span class="material-symbols-rounded">warning</span>
+              </div>
+              <div class="row-copy">
+                <strong>Permission downgraded</strong>
+                <span>Notifications are off. Task creation still works, but reminders are reduced.</span>
+              </div>
+              <button class="action" type="button">Review</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="group">
+          <p class="group-label">Privacy</p>
+          <div class="panel">
+            <div class="row">
+              <div class="row-icon">
+                <span class="material-symbols-rounded">shield_lock</span>
+              </div>
+              <div class="row-copy">
+                <strong>Privacy Mode</strong>
+                <span>Protect task content in previews and widgets.</span>
+              </div>
+              <div class="row-value">
+                <span>On</span>
+                <span class="material-symbols-rounded">chevron_right</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="group">
+          <p class="group-label">Display</p>
+          <div class="panel">
+            <div class="row">
+              <div class="row-icon">
+                <span class="material-symbols-rounded">widgets</span>
+              </div>
+              <div class="row-copy">
+                <strong>Widget Display Mode</strong>
+                <span>Choose whether widgets show full content or safe preview text.</span>
+              </div>
+              <div class="row-value">
+                <span>Preview Only</span>
+                <span class="material-symbols-rounded">chevron_right</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="group">
+          <p class="group-label">Sync & Backup</p>
+          <div class="panel">
+            <div class="row">
+              <div class="row-icon">
+                <span class="material-symbols-rounded">cloud_done</span>
+              </div>
+              <div class="row-copy">
+                <strong>Sync Status</strong>
+                <span>Current build keeps a safe local source of truth and shows later sync entry points here.</span>
+              </div>
+              <div class="row-value">
+                <span>Local Only</span>
+                <span class="material-symbols-rounded">chevron_right</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="group">
+          <p class="group-label">Membership</p>
+          <div class="panel membership-card">
+            <div class="row">
+              <div class="row-icon" style="background: var(--gold-soft);">
+                <span class="material-symbols-rounded">workspace_premium</span>
+              </div>
+              <div class="row-copy">
+                <strong>Premium</strong>
+                <span>Membership stays visible but secondary to permissions, privacy, and display safety.</span>
+              </div>
+              <div class="row-value">
+                <span>Available</span>
+                <span class="material-symbols-rounded">chevron_right</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <button class="fab" type="button" aria-label="Open quick add">
+        <span class="material-symbols-rounded" style="font-size: 34px">add</span>
+      </button>
+
+      <nav class="bottom-nav" aria-label="Primary navigation">
+        <button class="nav-item" type="button">
+          <span class="material-symbols-rounded">home</span>
+          <span>Home</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="material-symbols-rounded">history</span>
+          <span>History</span>
+        </button>
+        <button class="nav-item active" type="button">
+          <span class="material-symbols-rounded">settings</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+    </main>
+  </body>
+</html>

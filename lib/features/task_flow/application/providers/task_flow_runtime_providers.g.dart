@@ -68,8 +68,13 @@ const taskFlowMutationRepositoryProvider =
 /// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
 
 final class TaskFlowMutationRepositoryProvider
-    extends $FunctionalProvider<TaskRepository, TaskRepository, TaskRepository>
-    with $Provider<TaskRepository> {
+    extends
+        $FunctionalProvider<
+          TaskMutationRepository,
+          TaskMutationRepository,
+          TaskMutationRepository
+        >
+    with $Provider<TaskMutationRepository> {
   /// 任务写仓储 Provider，显式暴露变更契约，避免在写用例装配时做向下转型。
   const TaskFlowMutationRepositoryProvider._()
     : super(
@@ -87,25 +92,26 @@ final class TaskFlowMutationRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<TaskRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $ProviderElement<TaskMutationRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
-  TaskRepository create(Ref ref) {
+  TaskMutationRepository create(Ref ref) {
     return taskFlowMutationRepository(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(TaskRepository value) {
+  Override overrideWithValue(TaskMutationRepository value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<TaskRepository>(value),
+      providerOverride: $SyncValueProvider<TaskMutationRepository>(value),
     );
   }
 }
 
 String _$taskFlowMutationRepositoryHash() =>
-    r'70a76123a597ac31c5428ab05bd1622a08572ed4';
+    r'2d9f93dfa0780efcc7e4dd003e7b2a013e32dea2';
 
 /// 任务只读仓储 Provider，首页和查询用例只依赖读契约，不接触写能力细节。
 

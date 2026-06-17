@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
-/// 统一展示初始化指标或能力开关的轻量统计块。
+/// 统一展示轻量指标或能力状态的统计卡，避免各页面重复拼装相同的视觉骨架。
 class ScreenNoteStatTile extends StatelessWidget {
-  /// 创建统计块。
+  /// 创建统计卡。
   const ScreenNoteStatTile({
-    super.key,
     required this.label,
     required this.value,
     required this.icon,
+    super.key,
   });
 
   /// 指标标签。

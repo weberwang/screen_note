@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// 设置区块标题组件，统一承接分组标题的层级与间距语义。
+/// 设置分区头组件，统一承接低噪音小节标签，避免页面层重复手写层级样式。
 class SettingsSectionHeader extends StatelessWidget {
-  /// 创建设置区块标题组件。
+  /// 创建设置分区头组件。
   const SettingsSectionHeader({
-    super.key,
     required this.title,
+    super.key,
   });
 
-  /// 分组标题文案。
   final String title;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        color: const Color(0xFF7B837E),
         fontWeight: FontWeight.w700,
+        letterSpacing: 0.8,
       ),
     );
   }

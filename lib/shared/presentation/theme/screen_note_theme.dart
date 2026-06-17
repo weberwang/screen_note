@@ -23,6 +23,9 @@ final class ScreenNoteTheme {
 
     return ThemeData(
       useMaterial3: true,
+      // 当前测试运行环境无法稳定加载 ink_sparkle shader，这里统一回退到原生涟漪，
+      // 既保留点击反馈，也避免把环境问题误判成页面回归。
+      splashFactory: InkRipple.splashFactory,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: const Color(0xFFFBFAF7),
       textTheme: TextTheme(
@@ -103,6 +106,8 @@ final class ScreenNoteTheme {
 
     return ThemeData(
       useMaterial3: true,
+      // 深色主题与浅色主题保持同一交互反馈来源，避免测试和运行时的点击反馈分裂。
+      splashFactory: InkRipple.splashFactory,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: const Color(0xFF111513),
       textTheme: TextTheme(
@@ -244,4 +249,3 @@ extension ScreenNoteThemeContext on BuildContext {
 ThemeData buildScreenNoteLightTheme() => ScreenNoteTheme.light();
 
 ThemeData buildScreenNoteDarkTheme() => ScreenNoteTheme.dark();
-

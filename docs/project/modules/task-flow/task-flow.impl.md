@@ -89,8 +89,13 @@
 ## 后续视觉与实现准备
 
 - module_effect_image_target: `task home and task editor priority flow`
+- module_effect_image_paths:
+  - `docs/project/modules/task-flow/task-flow-home.png`
+  - `docs/project/modules/task-flow/task-flow-editor.png`
 - high_fidelity_priority: `single priority card plus light list rhythm`
 - deferred_content_rule: `低优先级任务与高级配置下沉，不抢首屏`
+- frozen_design_source_packet: `docs/project/modules/task-flow/task-flow-design-source-packet.md`
+- freeze_decision_record: `docs/project/modules/task-flow/task-flow-freeze-decision.md`
 
 ## Provenance
 

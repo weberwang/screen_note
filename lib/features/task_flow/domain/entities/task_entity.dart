@@ -5,7 +5,7 @@ import 'package:screen_note/features/task_flow/domain/entities/task_status.dart'
 
 part 'task_entity.freezed.dart';
 
-/// 事项聚合根，统一承载标题、时间、隐私与状态事实。
+/// 事项聚合根，统一承载标题、提醒、隐私与三态持久事实。
 @freezed
 abstract class TaskEntity with _$TaskEntity {
   /// 创建事项实体。

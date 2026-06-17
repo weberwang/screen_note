@@ -1,5 +1,9 @@
 allprojects {
     repositories {
+        // 优先命中镜像仓库，官方源保留为兜底，避免单一镜像异常直接阻塞构建。
+        maven(url = "https://maven.aliyun.com/repository/google")
+        maven(url = "https://maven.aliyun.com/repository/central")
+        maven(url = "https://maven.aliyun.com/repository/gradle-plugin")
         google()
         mavenCentral()
     }

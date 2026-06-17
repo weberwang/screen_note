@@ -6,16 +6,17 @@ import 'package:screen_note/features/settings_center/domain/entities/widget_disp
 
 part 'settings_center_preferences.freezed.dart';
 
-/// 设置中心偏好实体，统一承接隐私、展示、主题与语言偏好。
+/// 设置中心偏好实体统一承载隐私模式与 Widget 展示模式。
 @freezed
 abstract class SettingsCenterPreferences with _$SettingsCenterPreferences {
   /// 创建设置中心偏好实体。
   const factory SettingsCenterPreferences({
-    @Default(false) bool privacyModeEnabled,
-    @Default(WidgetDisplayMode.previewOnly) WidgetDisplayMode widgetDisplayMode,
+    @Default(true) bool privacyModeEnabled,
+    @Default(WidgetDisplayMode.previewOnly)
+    WidgetDisplayMode widgetDisplayMode,
     @Default(SettingsThemeModePreference.system)
     SettingsThemeModePreference themeModePreference,
-    @Default(SettingsLanguagePreference.en)
+    @Default(SettingsLanguagePreference.zh)
     SettingsLanguagePreference languagePreference,
   }) = _SettingsCenterPreferences;
 }

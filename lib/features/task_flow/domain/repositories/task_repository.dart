@@ -2,23 +2,32 @@ import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart'
 import 'package:screen_note/features/task_flow/domain/entities/task_event_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
 
-/// 事项仓储接口，统一屏蔽底层 Drift 持久化实现。
+/// 任务只读仓储，统一屏蔽页面与查询用例对持久化细节的感知。
 abstract interface class TaskRepository {
-  /// 创建事项并持久化初始事实。
-  Future<void> createTask(TaskEntity task);
-
-  /// 更新事项主体字段或状态。
-  Future<void> updateTask(TaskEntity task);
-
-  /// 根据主键读取事项。
+  /// 按主键读取事项。
   Future<TaskEntity?> findTaskById(String id);
 
   /// 按持久状态读取事项集合。
   Future<List<TaskEntity>> loadTasksByStatus(TaskStatus status);
 
-  /// 统计某个状态下的事项数量。
+  /// 统计指定状态的事项数量。
   Future<int> countTasksByStatus(TaskStatus status);
+}
 
-  /// 追加事项事件日志。
-  Future<void> appendEvent(TaskEventEntity event);
+/// 任务变更仓储，所有关键状态写入都必须通过事务化入口提交事项与事件。
+abstract interface class TaskMutationRepository implements TaskRepository {
+  /// 事务化提交“创建事项 + 首条事件”，避免任务与日志写入分裂。
+  Future<void> createTaskWithEvent({
+    required TaskEntity task,
+    required TaskEventEntity event,
+  });
+
+  /// 事务化提交“更新事项 + 状态事件”，避免状态变化与日志失真。
+  Future<void> updateTaskWithEvent({
+    required TaskEntity task,
+    required TaskEventEntity event,
+  });
+
+  /// 新建测试或预置数据时直接写入事项。
+  Future<void> createTask(TaskEntity task);
 }

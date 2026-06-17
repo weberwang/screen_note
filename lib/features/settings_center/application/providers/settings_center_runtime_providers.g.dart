@@ -105,7 +105,7 @@ final class SettingsPreferencesRepositoryProvider
 }
 
 String _$settingsPreferencesRepositoryHash() =>
-    r'5a5374bd46fdab0375538296f956d0fd184fdfc3';
+    r'2874002c008a4c8bd235083539514fc75d7f1e94';
 
 /// 本地通知插件 Provider，供设置页统一读取或请求通知权限状态。
 
