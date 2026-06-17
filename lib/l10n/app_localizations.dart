@@ -320,6 +320,24 @@ abstract class AppLocalizations {
   /// **'Up next'**
   String get taskFlowUpNextSectionTitle;
 
+  /// Inline degradation notice title shown on the task-flow home page.
+  ///
+  /// In en, this message translates to:
+  /// **'Some capabilities are degraded'**
+  String get taskFlowHomeDegradationTitle;
+
+  /// Inline degradation notice body shown when notification permission is unavailable on the task-flow home page.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification access is currently unavailable, but tasks can still be created, edited, and completed.'**
+  String get taskFlowHomePermissionDegradationBody;
+
+  /// Inline degradation notice body shown when the task-flow home snapshot refresh fails but previous data is preserved.
+  ///
+  /// In en, this message translates to:
+  /// **'The home page kept the last snapshot. Retry later to restore the latest state.'**
+  String get taskFlowHomeRefreshDegradationBody;
+
   /// Title shown on the task editor page.
   ///
   /// In en, this message translates to:

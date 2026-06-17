@@ -59,3 +59,7 @@ app.*.map.json
 
 # FVM 本地 SDK 缓存目录
 .fvm/
+.codegraph/
+*.g.dart
+*.part.dart
+*freezed.dart

@@ -136,6 +136,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskFlowUpNextSectionTitle => 'Up next';
 
   @override
+  String get taskFlowHomeDegradationTitle => 'Some capabilities are degraded';
+
+  @override
+  String get taskFlowHomePermissionDegradationBody =>
+      'Notification access is currently unavailable, but tasks can still be created, edited, and completed.';
+
+  @override
+  String get taskFlowHomeRefreshDegradationBody =>
+      'The home page kept the last snapshot. Retry later to restore the latest state.';
+
+  @override
   String get taskEditorTitle => 'Edit task';
 
   @override

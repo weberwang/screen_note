@@ -128,6 +128,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskFlowUpNextSectionTitle => '接下来';
 
   @override
+  String get taskFlowHomeDegradationTitle => '部分能力已降级';
+
+  @override
+  String get taskFlowHomePermissionDegradationBody =>
+      '通知权限当前不可用，但事项仍可继续创建、编辑和完成。';
+
+  @override
+  String get taskFlowHomeRefreshDegradationBody => '首页已保留上次快照，稍后重试即可恢复最新状态。';
+
+  @override
   String get taskEditorTitle => '编辑事项';
 
   @override
