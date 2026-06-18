@@ -12,12 +12,12 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # 状态管理与页面导航覆盖输入、列表、历史与设置等核心流程。
-  # 这里统一对齐到 Riverpod 3.0.3 版本族，避免 hooks 与核心包漂移到不同大版本。
-  flutter_riverpod: ^3.0.3
+  # 状态管理与页面装配统一收口到 Riverpod 体系，覆盖输入、列表、历史与设置等核心流程。
+  # Riverpod 运行时依赖统一按同代稳定版对齐，避免 UI、hooks 与 provider 核心能力出现跨代错配。
+  flutter_riverpod: ^3.3.2
   flutter_hooks: ^0.21.3+1
   go_router: ^17.3.0
-  hooks_riverpod: ^3.0.3
+  hooks_riverpod: ^3.3.2
   flutter_screenutil: 5.9.3
 
   # 本地持久化用于保证任务、事件日志和最近删除在重启后仍能可靠保留。
@@ -41,28 +41,27 @@ dependencies:
   intl: ^0.20.2
   uuid: ^4.5.3
 
-  # 初始化基线补齐网络与代码生成注解，后续远程接口直接复用同一技术栈。
+  # 初始化基线补齐网络与代码生成注解，后续远程接口可直接复用同一技术栈。
   dio: ^5.9.2
   retrofit: ^4.9.2
   flutter_secure_storage: ^10.3.1
   logger: ^2.7.0
-  riverpod_annotation: ^3.0.3
+  riverpod_annotation: ^4.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-  # Riverpod 3.x 会把 test 约束引入依赖图，这里把代码生成链统一固定在 analyzer < 8 的兼容窗口，
-  # 避免与 flutter_test 固定的 test_api 版本发生求解冲突。
+  # 生成器和 lint 包跟随 Riverpod 主包一起升级，减少后续重新解锁时 analyzer 侧的约束分叉。
   build_runner: ^2.7.1
   drift_dev: ^2.29.0
   freezed: ^3.2.3
   json_serializable: ^6.11.2
   retrofit_generator: ^10.2.1
-  riverpod_generator: ^3.0.3
-  custom_lint: ^0.8.0
-  riverpod_lint: ^3.0.3
+  riverpod_generator: ^4.0.4
+  custom_lint: ^0.8.1
+  riverpod_lint: ^3.1.4
 
 flutter:
   generate: true
