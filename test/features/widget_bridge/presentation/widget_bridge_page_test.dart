@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
+import 'package:screen_note/features/settings_center/domain/entities/widget_pin_request_result.dart';
+import 'package:screen_note/features/settings_center/domain/repositories/widget_installation_repository.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mode.dart';
@@ -19,7 +22,7 @@ import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
-/// 验证 widget-bridge 会渲染真实快照预览，并把手动同步交给共享存储端口。
+/// 验证 `widget-bridge` 页面会渲染真实快照预览，并把页面动作交给共享能力端口。
 void main() {
   testWidgets('预览页会把隐私事项渲染成安全摘要并允许手动同步快照', (
     WidgetTester tester,
@@ -40,7 +43,7 @@ void main() {
     final DateTime now = DateTime.utc(2026, 6, 6, 8);
 
     await repository.createTask(
-      _task(id: 'pinned', title: '先处理置顶项', createdAt: now, isPinned: true),
+      _task(id: 'pinned', title: '优先处理置顶项', createdAt: now, isPinned: true),
     );
     await repository.createTask(
       _task(
@@ -59,7 +62,9 @@ void main() {
       ProviderScope(
         overrides: [
           taskFlowDatabaseProvider.overrideWithValue(database),
-          settingsSharedPreferencesProvider.overrideWith((ref) async => preferences),
+          settingsSharedPreferencesProvider.overrideWith(
+            (ref) async => preferences,
+          ),
           widgetSnapshotStoreProvider.overrideWithValue(snapshotStore),
         ],
         child: ScreenNoteScreenUtilContract(
@@ -98,9 +103,92 @@ void main() {
     expect(snapshotStore.savedSnapshots, hasLength(1));
     expect(find.text(_localizations(tester).widgetSyncSuccess), findsOneWidget);
   });
+
+  testWidgets('小组件页会触发添加到桌面请求', (WidgetTester tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1200, 2000);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'settings.maskPrivateContent': true,
+      'settings.widgetDisplayMode': 'list3',
+    });
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final TaskFlowDatabase database = TaskFlowDatabase.test(
+      NativeDatabase.memory(),
+    );
+    addTearDown(database.close);
+    final TaskFlowRepositoryImpl repository = TaskFlowRepositoryImpl(
+      database: database,
+    );
+    final _FakeWidgetSnapshotStore snapshotStore = _FakeWidgetSnapshotStore();
+    final _FakeWidgetInstallationRepository installationRepository =
+        _FakeWidgetInstallationRepository();
+    final ProviderContainer container = ProviderContainer(
+      overrides: [
+        taskFlowDatabaseProvider.overrideWithValue(database),
+        settingsSharedPreferencesProvider.overrideWith(
+          (ref) async => preferences,
+        ),
+        widgetSnapshotStoreProvider.overrideWithValue(snapshotStore),
+        widgetInstallationRepositoryProvider.overrideWithValue(
+          installationRepository,
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await repository.createTask(
+      _task(
+        id: 'task-1',
+        title: '桌面入口验证',
+        createdAt: DateTime.utc(2026, 6, 6, 8),
+      ),
+    );
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: ScreenNoteScreenUtilContract(
+          designSize: screenNoteDesignSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: buildScreenNoteLightTheme(),
+              darkTheme: buildScreenNoteDarkTheme(),
+              home: const Scaffold(body: WidgetBridgePage()),
+            );
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('widget-bridge-install-button')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    // 页面层级更完整后，再显式确保按钮进入可点击视口，避免点击命中屏幕外坐标。
+    await tester.ensureVisible(find.byKey(const Key('widget-bridge-install-button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('widget-bridge-install-button')));
+    await tester.pumpAndSettle();
+
+    expect(installationRepository.requestCount, 1);
+    expect(
+      container.read(appShellUiStateControllerProvider).feedback?.text,
+      'Widget request sent to the launcher.',
+    );
+  });
 }
 
-/// 读取当前页面的本地化实例，避免测试里硬编码提示文案。
+/// 读取当前页面的本地化实例，避免测试里硬编码反馈文案。
 AppLocalizations _localizations(WidgetTester tester) {
   return AppLocalizations.of(tester.element(find.byType(WidgetBridgePage)));
 }
@@ -116,7 +204,19 @@ final class _FakeWidgetSnapshotStore implements WidgetSnapshotStore {
   }
 }
 
-/// 测试任务构造器，统一生成用于 Widget 预览的 active 事项。
+/// 小组件安装假仓储，用于验证页面复用了既有安装链路，而不是自行拼平台逻辑。
+final class _FakeWidgetInstallationRepository
+    implements WidgetInstallationRepository {
+  int requestCount = 0;
+
+  @override
+  Future<WidgetPinRequestResult> requestPinWidget() async {
+    requestCount += 1;
+    return WidgetPinRequestResult.requested;
+  }
+}
+
+/// 测试任务构造器，统一生成用于 Widget 预览的 `active` 事项。
 TaskEntity _task({
   required String id,
   required String title,

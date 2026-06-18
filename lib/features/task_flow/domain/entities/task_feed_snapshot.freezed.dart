@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskFeedSnapshot {
 
- List<TaskEntity> get pinnedTasks; List<TaskEntity> get overdueTasks; List<TaskEntity> get todayTasks; List<TaskEntity> get otherTasks; int get activeCount; int get completedCount; int get deletedCount;
+ List<TaskEntity> get pinnedTasks; List<TaskEntity> get overdueTasks; List<TaskEntity> get todayTasks; List<TaskEntity> get otherTasks; int get activeCount; int get completedCount; int get deletedCount; List<TaskFlowDegradationHint> get degradationHints;
 /// Create a copy of TaskFeedSnapshot
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TaskFeedSnapshotCopyWith<TaskFeedSnapshot> get copyWith => _$TaskFeedSnapshotCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskFeedSnapshot&&const DeepCollectionEquality().equals(other.pinnedTasks, pinnedTasks)&&const DeepCollectionEquality().equals(other.overdueTasks, overdueTasks)&&const DeepCollectionEquality().equals(other.todayTasks, todayTasks)&&const DeepCollectionEquality().equals(other.otherTasks, otherTasks)&&(identical(other.activeCount, activeCount) || other.activeCount == activeCount)&&(identical(other.completedCount, completedCount) || other.completedCount == completedCount)&&(identical(other.deletedCount, deletedCount) || other.deletedCount == deletedCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskFeedSnapshot&&const DeepCollectionEquality().equals(other.pinnedTasks, pinnedTasks)&&const DeepCollectionEquality().equals(other.overdueTasks, overdueTasks)&&const DeepCollectionEquality().equals(other.todayTasks, todayTasks)&&const DeepCollectionEquality().equals(other.otherTasks, otherTasks)&&(identical(other.activeCount, activeCount) || other.activeCount == activeCount)&&(identical(other.completedCount, completedCount) || other.completedCount == completedCount)&&(identical(other.deletedCount, deletedCount) || other.deletedCount == deletedCount)&&const DeepCollectionEquality().equals(other.degradationHints, degradationHints));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(pinnedTasks),const DeepCollectionEquality().hash(overdueTasks),const DeepCollectionEquality().hash(todayTasks),const DeepCollectionEquality().hash(otherTasks),activeCount,completedCount,deletedCount);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(pinnedTasks),const DeepCollectionEquality().hash(overdueTasks),const DeepCollectionEquality().hash(todayTasks),const DeepCollectionEquality().hash(otherTasks),activeCount,completedCount,deletedCount,const DeepCollectionEquality().hash(degradationHints));
 
 @override
 String toString() {
-  return 'TaskFeedSnapshot(pinnedTasks: $pinnedTasks, overdueTasks: $overdueTasks, todayTasks: $todayTasks, otherTasks: $otherTasks, activeCount: $activeCount, completedCount: $completedCount, deletedCount: $deletedCount)';
+  return 'TaskFeedSnapshot(pinnedTasks: $pinnedTasks, overdueTasks: $overdueTasks, todayTasks: $todayTasks, otherTasks: $otherTasks, activeCount: $activeCount, completedCount: $completedCount, deletedCount: $deletedCount, degradationHints: $degradationHints)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TaskFeedSnapshotCopyWith<$Res>  {
   factory $TaskFeedSnapshotCopyWith(TaskFeedSnapshot value, $Res Function(TaskFeedSnapshot) _then) = _$TaskFeedSnapshotCopyWithImpl;
 @useResult
 $Res call({
- List<TaskEntity> pinnedTasks, List<TaskEntity> overdueTasks, List<TaskEntity> todayTasks, List<TaskEntity> otherTasks, int activeCount, int completedCount, int deletedCount
+ List<TaskEntity> pinnedTasks, List<TaskEntity> overdueTasks, List<TaskEntity> todayTasks, List<TaskEntity> otherTasks, int activeCount, int completedCount, int deletedCount, List<TaskFlowDegradationHint> degradationHints
 });
 
 
@@ -62,7 +62,7 @@ class _$TaskFeedSnapshotCopyWithImpl<$Res>
 
 /// Create a copy of TaskFeedSnapshot
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pinnedTasks = null,Object? overdueTasks = null,Object? todayTasks = null,Object? otherTasks = null,Object? activeCount = null,Object? completedCount = null,Object? deletedCount = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pinnedTasks = null,Object? overdueTasks = null,Object? todayTasks = null,Object? otherTasks = null,Object? activeCount = null,Object? completedCount = null,Object? deletedCount = null,Object? degradationHints = null,}) {
   return _then(_self.copyWith(
 pinnedTasks: null == pinnedTasks ? _self.pinnedTasks : pinnedTasks // ignore: cast_nullable_to_non_nullable
 as List<TaskEntity>,overdueTasks: null == overdueTasks ? _self.overdueTasks : overdueTasks // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,8 @@ as List<TaskEntity>,otherTasks: null == otherTasks ? _self.otherTasks : otherTas
 as List<TaskEntity>,activeCount: null == activeCount ? _self.activeCount : activeCount // ignore: cast_nullable_to_non_nullable
 as int,completedCount: null == completedCount ? _self.completedCount : completedCount // ignore: cast_nullable_to_non_nullable
 as int,deletedCount: null == deletedCount ? _self.deletedCount : deletedCount // ignore: cast_nullable_to_non_nullable
-as int,
+as int,degradationHints: null == degradationHints ? _self.degradationHints : degradationHints // ignore: cast_nullable_to_non_nullable
+as List<TaskFlowDegradationHint>,
   ));
 }
 
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<TaskEntity> pinnedTasks,  List<TaskEntity> overdueTasks,  List<TaskEntity> todayTasks,  List<TaskEntity> otherTasks,  int activeCount,  int completedCount,  int deletedCount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<TaskEntity> pinnedTasks,  List<TaskEntity> overdueTasks,  List<TaskEntity> todayTasks,  List<TaskEntity> otherTasks,  int activeCount,  int completedCount,  int deletedCount,  List<TaskFlowDegradationHint> degradationHints)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskFeedSnapshot() when $default != null:
-return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.otherTasks,_that.activeCount,_that.completedCount,_that.deletedCount);case _:
+return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.otherTasks,_that.activeCount,_that.completedCount,_that.deletedCount,_that.degradationHints);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.othe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<TaskEntity> pinnedTasks,  List<TaskEntity> overdueTasks,  List<TaskEntity> todayTasks,  List<TaskEntity> otherTasks,  int activeCount,  int completedCount,  int deletedCount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<TaskEntity> pinnedTasks,  List<TaskEntity> overdueTasks,  List<TaskEntity> todayTasks,  List<TaskEntity> otherTasks,  int activeCount,  int completedCount,  int deletedCount,  List<TaskFlowDegradationHint> degradationHints)  $default,) {final _that = this;
 switch (_that) {
 case _TaskFeedSnapshot():
-return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.otherTasks,_that.activeCount,_that.completedCount,_that.deletedCount);case _:
+return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.otherTasks,_that.activeCount,_that.completedCount,_that.deletedCount,_that.degradationHints);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.othe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<TaskEntity> pinnedTasks,  List<TaskEntity> overdueTasks,  List<TaskEntity> todayTasks,  List<TaskEntity> otherTasks,  int activeCount,  int completedCount,  int deletedCount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<TaskEntity> pinnedTasks,  List<TaskEntity> overdueTasks,  List<TaskEntity> todayTasks,  List<TaskEntity> otherTasks,  int activeCount,  int completedCount,  int deletedCount,  List<TaskFlowDegradationHint> degradationHints)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskFeedSnapshot() when $default != null:
-return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.otherTasks,_that.activeCount,_that.completedCount,_that.deletedCount);case _:
+return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.otherTasks,_that.activeCount,_that.completedCount,_that.deletedCount,_that.degradationHints);case _:
   return null;
 
 }
@@ -212,7 +213,7 @@ return $default(_that.pinnedTasks,_that.overdueTasks,_that.todayTasks,_that.othe
 
 
 class _TaskFeedSnapshot implements TaskFeedSnapshot {
-  const _TaskFeedSnapshot({required final  List<TaskEntity> pinnedTasks, required final  List<TaskEntity> overdueTasks, required final  List<TaskEntity> todayTasks, required final  List<TaskEntity> otherTasks, required this.activeCount, required this.completedCount, required this.deletedCount}): _pinnedTasks = pinnedTasks,_overdueTasks = overdueTasks,_todayTasks = todayTasks,_otherTasks = otherTasks;
+  const _TaskFeedSnapshot({required final  List<TaskEntity> pinnedTasks, required final  List<TaskEntity> overdueTasks, required final  List<TaskEntity> todayTasks, required final  List<TaskEntity> otherTasks, required this.activeCount, required this.completedCount, required this.deletedCount, final  List<TaskFlowDegradationHint> degradationHints = const <TaskFlowDegradationHint>[]}): _pinnedTasks = pinnedTasks,_overdueTasks = overdueTasks,_todayTasks = todayTasks,_otherTasks = otherTasks,_degradationHints = degradationHints;
   
 
  final  List<TaskEntity> _pinnedTasks;
@@ -246,6 +247,13 @@ class _TaskFeedSnapshot implements TaskFeedSnapshot {
 @override final  int activeCount;
 @override final  int completedCount;
 @override final  int deletedCount;
+ final  List<TaskFlowDegradationHint> _degradationHints;
+@override@JsonKey() List<TaskFlowDegradationHint> get degradationHints {
+  if (_degradationHints is EqualUnmodifiableListView) return _degradationHints;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_degradationHints);
+}
+
 
 /// Create a copy of TaskFeedSnapshot
 /// with the given fields replaced by the non-null parameter values.
@@ -257,16 +265,16 @@ _$TaskFeedSnapshotCopyWith<_TaskFeedSnapshot> get copyWith => __$TaskFeedSnapsho
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskFeedSnapshot&&const DeepCollectionEquality().equals(other._pinnedTasks, _pinnedTasks)&&const DeepCollectionEquality().equals(other._overdueTasks, _overdueTasks)&&const DeepCollectionEquality().equals(other._todayTasks, _todayTasks)&&const DeepCollectionEquality().equals(other._otherTasks, _otherTasks)&&(identical(other.activeCount, activeCount) || other.activeCount == activeCount)&&(identical(other.completedCount, completedCount) || other.completedCount == completedCount)&&(identical(other.deletedCount, deletedCount) || other.deletedCount == deletedCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskFeedSnapshot&&const DeepCollectionEquality().equals(other._pinnedTasks, _pinnedTasks)&&const DeepCollectionEquality().equals(other._overdueTasks, _overdueTasks)&&const DeepCollectionEquality().equals(other._todayTasks, _todayTasks)&&const DeepCollectionEquality().equals(other._otherTasks, _otherTasks)&&(identical(other.activeCount, activeCount) || other.activeCount == activeCount)&&(identical(other.completedCount, completedCount) || other.completedCount == completedCount)&&(identical(other.deletedCount, deletedCount) || other.deletedCount == deletedCount)&&const DeepCollectionEquality().equals(other._degradationHints, _degradationHints));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_pinnedTasks),const DeepCollectionEquality().hash(_overdueTasks),const DeepCollectionEquality().hash(_todayTasks),const DeepCollectionEquality().hash(_otherTasks),activeCount,completedCount,deletedCount);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_pinnedTasks),const DeepCollectionEquality().hash(_overdueTasks),const DeepCollectionEquality().hash(_todayTasks),const DeepCollectionEquality().hash(_otherTasks),activeCount,completedCount,deletedCount,const DeepCollectionEquality().hash(_degradationHints));
 
 @override
 String toString() {
-  return 'TaskFeedSnapshot(pinnedTasks: $pinnedTasks, overdueTasks: $overdueTasks, todayTasks: $todayTasks, otherTasks: $otherTasks, activeCount: $activeCount, completedCount: $completedCount, deletedCount: $deletedCount)';
+  return 'TaskFeedSnapshot(pinnedTasks: $pinnedTasks, overdueTasks: $overdueTasks, todayTasks: $todayTasks, otherTasks: $otherTasks, activeCount: $activeCount, completedCount: $completedCount, deletedCount: $deletedCount, degradationHints: $degradationHints)';
 }
 
 
@@ -277,7 +285,7 @@ abstract mixin class _$TaskFeedSnapshotCopyWith<$Res> implements $TaskFeedSnapsh
   factory _$TaskFeedSnapshotCopyWith(_TaskFeedSnapshot value, $Res Function(_TaskFeedSnapshot) _then) = __$TaskFeedSnapshotCopyWithImpl;
 @override @useResult
 $Res call({
- List<TaskEntity> pinnedTasks, List<TaskEntity> overdueTasks, List<TaskEntity> todayTasks, List<TaskEntity> otherTasks, int activeCount, int completedCount, int deletedCount
+ List<TaskEntity> pinnedTasks, List<TaskEntity> overdueTasks, List<TaskEntity> todayTasks, List<TaskEntity> otherTasks, int activeCount, int completedCount, int deletedCount, List<TaskFlowDegradationHint> degradationHints
 });
 
 
@@ -294,7 +302,7 @@ class __$TaskFeedSnapshotCopyWithImpl<$Res>
 
 /// Create a copy of TaskFeedSnapshot
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pinnedTasks = null,Object? overdueTasks = null,Object? todayTasks = null,Object? otherTasks = null,Object? activeCount = null,Object? completedCount = null,Object? deletedCount = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pinnedTasks = null,Object? overdueTasks = null,Object? todayTasks = null,Object? otherTasks = null,Object? activeCount = null,Object? completedCount = null,Object? deletedCount = null,Object? degradationHints = null,}) {
   return _then(_TaskFeedSnapshot(
 pinnedTasks: null == pinnedTasks ? _self._pinnedTasks : pinnedTasks // ignore: cast_nullable_to_non_nullable
 as List<TaskEntity>,overdueTasks: null == overdueTasks ? _self._overdueTasks : overdueTasks // ignore: cast_nullable_to_non_nullable
@@ -303,7 +311,8 @@ as List<TaskEntity>,otherTasks: null == otherTasks ? _self._otherTasks : otherTa
 as List<TaskEntity>,activeCount: null == activeCount ? _self.activeCount : activeCount // ignore: cast_nullable_to_non_nullable
 as int,completedCount: null == completedCount ? _self.completedCount : completedCount // ignore: cast_nullable_to_non_nullable
 as int,deletedCount: null == deletedCount ? _self.deletedCount : deletedCount // ignore: cast_nullable_to_non_nullable
-as int,
+as int,degradationHints: null == degradationHints ? _self._degradationHints : degradationHints // ignore: cast_nullable_to_non_nullable
+as List<TaskFlowDegradationHint>,
   ));
 }
 

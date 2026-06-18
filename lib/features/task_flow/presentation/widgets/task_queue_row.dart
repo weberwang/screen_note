@@ -10,6 +10,7 @@ class TaskQueueRow extends StatelessWidget {
   const TaskQueueRow({
     required this.task,
     required this.isOverdue,
+    this.showChevron = true,
     this.onTap,
     super.key,
   });
@@ -19,6 +20,9 @@ class TaskQueueRow extends StatelessWidget {
 
   /// 是否按逾期高风险样式展示。
   final bool isOverdue;
+
+  /// 尾部箭头只在需要强调可进入感时显示，普通后续列表可更克制。
+  final bool showChevron;
 
   /// 点击行后的导航由页面层决定，组件只暴露用户意图。
   final VoidCallback? onTap;
@@ -81,12 +85,14 @@ class TaskQueueRow extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 12.w),
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 24.sp,
-                color: palette.inkSecondary.withValues(alpha: 0.7),
-              ),
+              if (showChevron) ...<Widget>[
+                SizedBox(width: 12.w),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: 24.sp,
+                  color: palette.inkSecondary.withValues(alpha: 0.7),
+                ),
+              ],
             ],
           ),
         ),

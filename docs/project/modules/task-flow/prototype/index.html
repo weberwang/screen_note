@@ -67,35 +67,35 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 24px;
+        margin-bottom: 18px;
       }
 
       .brand {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
       }
 
       .brand-mark {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 14px;
-        background: var(--green);
+        background: var(--green-soft);
         display: grid;
         place-items: center;
-        color: white;
+        color: var(--green);
       }
 
       .brand-name {
-        font-size: 22px;
-        font-weight: 700;
+        font-size: 20px;
+        font-weight: 600;
         letter-spacing: -0.02em;
       }
 
       .greeting {
-        margin: 18px 0 10px;
-        font-size: 28px;
-        line-height: 1.08;
+        margin: 0 0 16px;
+        font-size: 36px;
+        line-height: 1.06;
         font-weight: 700;
         letter-spacing: -0.03em;
       }
@@ -104,12 +104,35 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 12px 18px;
+        padding: 9px 16px;
         border-radius: var(--radius-full);
         background: var(--green-soft);
         color: var(--green);
-        font-size: 15px;
+        font-size: 17px;
         font-weight: 600;
+      }
+
+      .state-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .state-pill {
+        border: 0;
+        border-radius: var(--radius-full);
+        background: rgba(223, 233, 215, 0.7);
+        color: var(--green);
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .state-pill.active {
+        background: var(--green);
+        color: #ffffff;
       }
 
       .priority-card {
@@ -159,6 +182,10 @@
         font-size: 16px;
         line-height: 1.55;
         max-width: 296px;
+      }
+
+      .card-copy.is-private {
+        max-width: 320px;
       }
 
       .card-footer {
@@ -215,6 +242,20 @@
         letter-spacing: -0.02em;
       }
 
+      .section-title.secondary {
+        color: var(--text-primary);
+        font-size: 20px;
+      }
+
+      .queue-panel {
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(228, 232, 224, 0.92);
+        border-radius: 28px;
+        box-shadow: 0 16px 36px rgba(24, 34, 26, 0.05);
+        overflow: hidden;
+        padding: 6px 18px;
+      }
+
       .queue {
         border-top: 1px solid var(--outline);
       }
@@ -249,6 +290,109 @@
       .queue-copy span {
         color: var(--coral);
         font-size: 15px;
+      }
+
+      .queue-row.no-chevron {
+        grid-template-columns: 52px 1fr auto;
+      }
+
+      .queue-row.no-chevron .queue-trailing {
+        font-size: 15px;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .queue-copy span.normal {
+        color: var(--text-secondary);
+      }
+
+      .queue-copy span.today {
+        color: var(--green);
+      }
+
+      .queue-mark.normal {
+        background: rgba(244, 245, 240, 0.82);
+        color: #9ca59f;
+      }
+
+      .queue-mark.today {
+        background: rgba(223, 233, 215, 0.72);
+        color: var(--green);
+      }
+
+      .queue-mark.private {
+        background: rgba(244, 240, 232, 0.88);
+        color: #978b76;
+      }
+
+      .queue-card {
+        margin-bottom: 12px;
+        padding: 2px 10px;
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(233, 106, 90, 0.12);
+        background: #fff6f2;
+        box-shadow: 0 10px 24px rgba(24, 34, 26, 0.05);
+      }
+
+      .queue-card:last-child {
+        margin-bottom: 0;
+      }
+
+      .history-panel {
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(228, 232, 224, 0.92);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 16px 36px rgba(24, 34, 26, 0.05);
+        padding: 18px 20px;
+      }
+
+      .history-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .history-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: var(--radius-full);
+        padding: 10px 14px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .history-chip.done {
+        color: var(--green);
+        background: var(--green-soft);
+      }
+
+      .history-chip.deleted {
+        color: #b95c4c;
+        background: #f7e5de;
+      }
+
+      .history-footer {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .history-copy {
+        flex: 1;
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .history-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 700;
       }
 
       .fab {
@@ -409,7 +553,7 @@
         <div class="toolbar">
           <div class="brand">
             <div class="brand-mark">
-              <span class="material-symbols-rounded">keep</span>
+              <span class="material-symbols-rounded">note_alt</span>
             </div>
             <div class="brand-name">Screen Note</div>
           </div>
@@ -420,68 +564,57 @@
           <span class="material-symbols-rounded">schedule</span>
           <span>Today</span>
         </div>
+        <div class="state-strip" aria-label="Home state variants">
+          <button class="state-pill active" type="button" data-home-state="ideal">Ideal</button>
+          <button class="state-pill" type="button" data-home-state="privateSafe">Private Safe</button>
+          <button class="state-pill" type="button" data-home-state="noUrgentTasks">No Urgent</button>
+          <button class="state-pill" type="button" data-home-state="longTitle">Long Title</button>
+          <button class="state-pill" type="button" data-home-state="shortTitle">Short Title</button>
+        </div>
 
-        <article class="priority-card">
-          <div class="card-label">Priority task</div>
-          <h2 class="card-title">Flutter module freeze</h2>
-          <p class="card-copy">
+        <article class="priority-card" id="home-priority-card">
+          <div class="card-label" id="home-card-label">Priority task</div>
+          <h2 class="card-title" id="home-card-title">Flutter module freeze</h2>
+          <p class="card-copy" id="home-card-copy">
             Capture visual evidence and validate UI states before code freeze.
           </p>
           <div class="card-footer">
             <div class="card-meta">
-              <span class="material-symbols-rounded">calendar_month</span>
+              <span class="material-symbols-rounded" id="home-card-meta-icon">calendar_month</span>
               <div class="meta-stack">
-                <strong>Due today</strong>
-                <span>May 20, 2025</span>
+                <strong id="home-card-meta-title">Due today</strong>
+                <span id="home-card-meta-value">May 20, 2025</span>
               </div>
             </div>
             <button id="open-editor" class="primary-button" type="button">Continue</button>
           </div>
         </article>
 
+        <section class="section" id="home-queue-section">
+          <h3 class="section-title" id="home-queue-title">Overdue</h3>
+          <div class="queue" id="home-queue"></div>
+        </section>
+
         <section class="section">
-          <h3 class="section-title">Overdue</h3>
-          <div class="queue">
-            <button class="queue-row" type="button" data-open-editor>
-              <div class="queue-mark">
-                <span class="material-symbols-rounded">bug_report</span>
+          <h3 class="section-title secondary">History status</h3>
+          <div class="history-panel">
+            <div class="history-chips">
+              <div class="history-chip done">
+                <span class="material-symbols-rounded">check_circle</span>
+                <span>Completed 3</span>
               </div>
-              <div class="queue-copy">
-                <strong>Crash on login (iOS)</strong>
-                <span>Due May 18, 2025</span>
+              <div class="history-chip deleted">
+                <span class="material-symbols-rounded">delete</span>
+                <span>Deleted 1</span>
               </div>
-              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
-            </button>
-            <button class="queue-row" type="button" data-open-editor>
-              <div class="queue-mark">
-                <span class="material-symbols-rounded">link_off</span>
+            </div>
+            <div class="history-footer">
+              <div class="history-copy">Completed and deleted items stay in history.</div>
+              <div class="history-action">
+                <span>View history</span>
+                <span class="material-symbols-rounded">chevron_right</span>
               </div>
-              <div class="queue-copy">
-                <strong>Deep link not opening</strong>
-                <span>Due May 17, 2025</span>
-              </div>
-              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
-            </button>
-            <button class="queue-row" type="button" data-open-editor>
-              <div class="queue-mark">
-                <span class="material-symbols-rounded">view_quilt</span>
-              </div>
-              <div class="queue-copy">
-                <strong>User profile layout shift</strong>
-                <span>Due May 16, 2025</span>
-              </div>
-              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
-            </button>
-            <button class="queue-row" type="button" data-open-editor>
-              <div class="queue-mark">
-                <span class="material-symbols-rounded">notifications</span>
-              </div>
-              <div class="queue-copy">
-                <strong>Push notification delay</strong>
-                <span>Due May 15, 2025</span>
-              </div>
-              <span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>
-            </button>
+            </div>
           </div>
         </section>
       </section>
@@ -560,8 +693,92 @@
     <script>
       const homeScreen = document.getElementById("screen-home");
       const editorScreen = document.getElementById("screen-editor");
+      const homeStateButtons = document.querySelectorAll("[data-home-state]");
+      const priorityCard = document.getElementById("home-priority-card");
+      const cardLabel = document.getElementById("home-card-label");
+      const cardTitle = document.getElementById("home-card-title");
+      const cardCopy = document.getElementById("home-card-copy");
+      const cardMetaIcon = document.getElementById("home-card-meta-icon");
+      const cardMetaTitle = document.getElementById("home-card-meta-title");
+      const cardMetaValue = document.getElementById("home-card-meta-value");
+      const queueSection = document.getElementById("home-queue-section");
+      const queueTitle = document.getElementById("home-queue-title");
+      const queueRoot = document.getElementById("home-queue");
       const openEditorButtons = document.querySelectorAll("[data-open-editor], #open-editor");
       const backHomeButton = document.getElementById("back-home");
+
+      const homeStates = {
+        ideal: {
+          label: "Priority task",
+          title: "Flutter module freeze",
+          copy: "Capture visual evidence and validate UI states before code freeze.",
+          metaIcon: "calendar_month",
+          metaTitle: "Due today",
+          metaValue: "May 20, 2025",
+          queueTitle: "Overdue",
+          queueItems: [
+            { icon: "bug_report", title: "Crash on login (iOS)", meta: "Due May 18, 2025", tone: "overdue" },
+            { icon: "link_off", title: "Deep link not opening", meta: "Due May 17, 2025", tone: "overdue" },
+            { icon: "view_quilt", title: "User profile layout shift", meta: "Due May 16, 2025", tone: "overdue" },
+            { icon: "notifications", title: "Push notification delay", meta: "Due May 15, 2025", tone: "overdue" },
+          ],
+        },
+        privateSafe: {
+          label: "Private task",
+          title: "Private task",
+          copy: "Content stays hidden on the home surface. Continue safely without revealing the note.",
+          metaIcon: "lock",
+          metaTitle: "Due today",
+          metaValue: "May 20, 2025",
+          queueTitle: "Up next",
+          queueItems: [
+            { icon: "lock", title: "Private task", meta: "Hidden on home", tone: "private" },
+            { icon: "description", title: "Prepare project update", meta: "Tomorrow", tone: "normal" },
+            { icon: "group", title: "Review team feedback", meta: "Fri, May 16", tone: "normal" },
+          ],
+        },
+        noUrgentTasks: {
+          label: "Priority task",
+          title: "Complete product requirements",
+          copy: "Clarify the core scope, confirm the task path, and move the release forward.",
+          metaIcon: "calendar_month",
+          metaTitle: "Due today",
+          metaValue: "May 20, 2025",
+          queueTitle: "Up next",
+          queueItems: [
+            { icon: "radio_button_unchecked", title: "Reply to product design review", meta: "May 20, 2025", trailing: "10:30", tone: "normal", showChevron: false },
+            { icon: "radio_button_unchecked", title: "Prepare weekly summary notes", meta: "May 20, 2025", trailing: "14:00", tone: "normal", showChevron: false },
+            { icon: "radio_button_unchecked", title: "Update project progress draft", meta: "May 20, 2025", trailing: "16:30", tone: "normal", showChevron: false },
+          ],
+        },
+        longTitle: {
+          label: "Priority task",
+          title: "Build a reliable long-term learning system and keep the progress easy to review",
+          copy: "Keep the card dominant while the due footer and continue action stay fully visible.",
+          metaIcon: "calendar_month",
+          metaTitle: "Due today",
+          metaValue: "May 20, 2025",
+          queueTitle: "Overdue",
+          queueItems: [
+            { icon: "bug_report", title: "Write project review summary", meta: "Due May 18, 2025", tone: "overdue" },
+            { icon: "link_off", title: "Finish demo script cleanup", meta: "Due May 17, 2025", tone: "overdue" },
+          ],
+        },
+        shortTitle: {
+          label: "Priority task",
+          title: "Review brief",
+          copy: "Confirm the next step and keep the card breathing room intact.",
+          metaIcon: "calendar_month",
+          metaTitle: "Due today",
+          metaValue: "May 20, 2025",
+          queueTitle: "Up next",
+          queueItems: [
+            { icon: "radio_button_unchecked", title: "Project outline", meta: "May 20, 2025", trailing: "11:00", tone: "normal", showChevron: false },
+            { icon: "radio_button_unchecked", title: "Design feedback", meta: "May 20, 2025", trailing: "14:00", tone: "normal", showChevron: false },
+            { icon: "radio_button_unchecked", title: "Buy groceries", meta: "May 20, 2025", trailing: "19:00", tone: "normal", showChevron: false },
+          ],
+        },
+      };
 
       // 中文注释：原型只验证 task-flow 主链路，首页与编辑页之间的切换足以表达主任务继续处理路径。
       function setScreen(name) {
@@ -570,11 +787,65 @@
         editorScreen.classList.toggle("active", !showHome);
       }
 
+      function renderQueueItem(item) {
+        const metaClass = item.tone === "overdue" ? "" : item.tone;
+        const markClass = item.tone === "overdue" ? "" : ` ${item.tone}`;
+        const trailing = item.trailing ?? "chevron_right";
+        const trailingMarkup = item.showChevron === false
+          ? `<span class="queue-trailing">${trailing}</span>`
+          : `<span class="material-symbols-rounded" style="color: #8c958f">chevron_right</span>`;
+        return `
+          <button class="queue-row${item.showChevron === false ? " no-chevron" : ""}" type="button" data-open-editor>
+            <div class="queue-mark${markClass}">
+              <span class="material-symbols-rounded">${item.icon}</span>
+            </div>
+            <div class="queue-copy">
+              <strong>${item.title}</strong>
+              <span class="${metaClass}">${item.meta}</span>
+            </div>
+            ${trailingMarkup}
+          </button>
+        `;
+      }
+
+      // 中文注释：原型状态切换统一只改首页快照语义，避免为每个状态复制一整棵页面结构。
+      function applyHomeState(stateKey) {
+        const state = homeStates[stateKey];
+        if (!state) {
+          return;
+        }
+        cardLabel.textContent = state.label;
+        cardTitle.textContent = state.title;
+        cardCopy.textContent = state.copy;
+        cardCopy.classList.toggle("is-private", stateKey === "privateSafe");
+        cardMetaIcon.textContent = state.metaIcon;
+        cardMetaTitle.textContent = state.metaTitle;
+        cardMetaValue.textContent = state.metaValue;
+        queueTitle.textContent = state.queueTitle;
+        queueRoot.className = state.queueTitle === "Up next" ? "queue-panel" : "queue";
+        queueRoot.innerHTML = state.queueItems
+          .map((item) => {
+            const row = renderQueueItem(item);
+            return item.tone === "overdue" ? `<div class="queue-card">${row}</div>` : row;
+          })
+          .join("");
+
+        homeStateButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.homeState === stateKey);
+        });
+      }
+
       openEditorButtons.forEach((button) => {
         button.addEventListener("click", () => setScreen("editor"));
       });
 
       backHomeButton.addEventListener("click", () => setScreen("home"));
+
+      homeStateButtons.forEach((button) => {
+        button.addEventListener("click", () => applyHomeState(button.dataset.homeState));
+      });
+
+      applyHomeState("ideal");
     </script>
   </body>
 </html>

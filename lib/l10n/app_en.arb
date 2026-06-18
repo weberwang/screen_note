@@ -90,11 +90,11 @@
       }
     }
   },
-  "homeHistorySummaryBody": "Completed and deleted tasks stay traceable in history so you can review or restore them later.",
+  "homeHistorySummaryBody": "Completed and deleted items stay in history.",
   "@homeHistorySummaryBody": {
     "description": "Supporting copy shown in the home history status summary when history is not empty."
   },
-  "homeHistoryEmptyBody": "No history yet. Once a task is completed or deleted, a traceable status will appear here.",
+  "homeHistoryEmptyBody": "No history yet.",
   "@homeHistoryEmptyBody": {
     "description": "Supporting copy shown in the home history status summary when history is empty."
   },

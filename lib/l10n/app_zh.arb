@@ -90,11 +90,11 @@
       }
     }
   },
-  "homeHistorySummaryBody": "完成或删除过的事项会留在历史里，方便你继续追溯或恢复。",
+  "homeHistorySummaryBody": "完成与删除记录会保留在历史里。",
   "@homeHistorySummaryBody": {
     "description": "首页历史状态概览在已有历史记录时展示的说明文案。"
   },
-  "homeHistoryEmptyBody": "当前还没有历史记录；完成或删除后，这里会保留可追溯线索。",
+  "homeHistoryEmptyBody": "还没有历史记录。",
   "@homeHistoryEmptyBody": {
     "description": "首页历史状态概览在历史为空时展示的说明文案。"
   },

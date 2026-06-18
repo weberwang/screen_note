@@ -73,10 +73,10 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get homeHistorySummaryBody => '完成或删除过的事项会留在历史里，方便你继续追溯或恢复。';
+  String get homeHistorySummaryBody => '完成与删除记录会保留在历史里。';
 
   @override
-  String get homeHistoryEmptyBody => '当前还没有历史记录；完成或删除后，这里会保留可追溯线索。';
+  String get homeHistoryEmptyBody => '还没有历史记录。';
 
   @override
   String get homeHistoryAction => '查看历史';

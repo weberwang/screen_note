@@ -7,8 +7,8 @@
 | `app-shell` | 共享壳层、顶级导航、全局快速添加、系统回流宿主 | `docs/project/modules/app-shell/app-shell.impl.md` | none | `task-flow`, `history-center`, `settings-center`, `widget-bridge` | `wave-1` | `stage-1` | 顶级壳层必须先落，其他模块依赖其路由与壳层契约 |
 | `task-flow` | 事项创建、编辑、完成、删除、恢复主链路 | `docs/project/modules/task-flow/task-flow.impl.md` | `app-shell` | `history-center`, `widget-bridge` | `wave-2` | `stage-2` | 核心业务真源模块，优先于历史与快照桥接 |
 | `history-center` | 最近完成、最近删除、恢复视图与交互 | `docs/project/modules/history-center/history-center.impl.md` | `app-shell`, `task-flow` | none | `wave-3` | `stage-3` | 依赖任务真源与日志链路，和设置中心可并行 |
-| `settings-center` | 通知、隐私、展示样式、同步、会员入口 | `docs/project/modules/settings-center/settings-center.impl.md` | `app-shell` | `widget-bridge` | `wave-3` | `stage-3` | 与历史中心可并行，但涉及展示模式配置时需对齐 widget-bridge |
-| `widget-bridge` | 稳定快照、Widget 共享数据、系统点击回流桥接 | `docs/project/modules/widget-bridge/widget-bridge.impl.md` | `app-shell`, `task-flow`, `settings-center` | none | `wave-4` | `stage-4` | 依赖任务真源与展示配置契约，适合在主链路稳定后接入 |
+| `settings-center` | 通知、隐私、展示样式、同步、会员入口 | `docs/project/modules/settings-center/settings-center.impl.md` | `app-shell` | `widget-bridge` | `wave-3` | `stage-3` | 与历史中心可并行，但涉及展示模式配置时需对齐 `widget-bridge` |
+| `widget-bridge` | 稳定快照、Widget 共享数据、安装引导页、系统点击回流桥接 | `docs/project/modules/widget-bridge/widget-bridge.impl.md` | `app-shell`, `task-flow`, `settings-center` | none | `wave-4` | `stage-4` | 依赖任务真源与展示配置契约，适合在主链路稳定后接入 |
 
 ## 依赖说明
 
@@ -28,7 +28,7 @@
 
 - `task-flow`
 
-### stage-3`
+### stage-3
 
 - `history-center`
 - `settings-center`

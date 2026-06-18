@@ -36,6 +36,7 @@ class HomeHistoryStatusPanel extends StatelessWidget {
         onTap: onTap,
         borderRadius: ScreenNoteRadii.largeSurface,
         child: ScreenNotePanel(
+          padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 18.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -59,31 +60,41 @@ class HomeHistoryStatusPanel extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 18.h),
-              Text(
-                isEmpty
-                    ? localizations.homeHistoryEmptyBody
-                    : localizations.homeHistorySummaryBody,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: palette.inkSecondary,
-                ),
-              ),
-              SizedBox(height: 18.h),
+              SizedBox(height: 14.h),
               Row(
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    localizations.homeHistoryAction,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
+                  Expanded(
+                    child: Text(
+                      isEmpty
+                          ? localizations.homeHistoryEmptyBody
+                          : localizations.homeHistorySummaryBody,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: palette.inkSecondary,
+                        height: 1.4,
+                      ),
                     ),
                   ),
-                  SizedBox(width: 4.w),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    size: 18.sp,
-                    color: theme.colorScheme.primary,
+                  SizedBox(width: 12.w),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        localizations.homeHistoryAction,
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        size: 18.sp,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ],
                   ),
                 ],
               ),

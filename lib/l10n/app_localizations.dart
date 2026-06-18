@@ -221,13 +221,13 @@ abstract class AppLocalizations {
   /// Supporting copy shown in the home history status summary when history is not empty.
   ///
   /// In en, this message translates to:
-  /// **'Completed and deleted tasks stay traceable in history so you can review or restore them later.'**
+  /// **'Completed and deleted items stay in history.'**
   String get homeHistorySummaryBody;
 
   /// Supporting copy shown in the home history status summary when history is empty.
   ///
   /// In en, this message translates to:
-  /// **'No history yet. Once a task is completed or deleted, a traceable status will appear here.'**
+  /// **'No history yet.'**
   String get homeHistoryEmptyBody;
 
   /// Action label shown at the bottom of the home history status summary.

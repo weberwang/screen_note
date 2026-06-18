@@ -9,11 +9,15 @@
         --bg: #fbfaf7;
         --surface: #ffffff;
         --surface-soft: #f6f4ee;
+        --surface-soft-2: #f4efe2;
         --line: #e4e8e0;
         --text: #1f2328;
         --text-soft: #657068;
         --green: #4d8b52;
+        --green-soft: #edf4ee;
         --orange: #f08a32;
+        --orange-soft: #fff3e4;
+        --shadow: 0 24px 48px rgba(31, 35, 40, 0.08);
       }
 
       * {
@@ -29,7 +33,7 @@
       }
 
       main {
-        max-width: 980px;
+        max-width: 1040px;
         margin: 0 auto;
         padding: 48px 24px 64px;
       }
@@ -46,6 +50,240 @@
         line-height: 1.6;
       }
 
+      .app-preview {
+        margin-top: 32px;
+        padding: 28px;
+        border: 1px solid rgba(228, 232, 224, 0.8);
+        border-radius: 36px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.96) 0%,
+          rgba(250, 247, 240, 0.92) 100%
+        );
+        box-shadow: var(--shadow);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--green-soft);
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .app-shell {
+        margin-top: 22px;
+        max-width: 430px;
+        border-radius: 44px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98) 0%,
+          rgba(251, 250, 247, 0.98) 100%
+        );
+        border: 1px solid rgba(228, 232, 224, 0.85);
+        box-shadow: 0 34px 60px rgba(31, 35, 40, 0.12);
+        overflow: hidden;
+      }
+
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 18px 22px 8px;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .page {
+        padding: 8px 18px 24px;
+      }
+
+      .page h2 {
+        margin: 0;
+        font-size: 34px;
+        line-height: 1.08;
+      }
+
+      .page-lead {
+        margin-top: 12px;
+        font-size: 17px;
+        color: var(--text-soft);
+        line-height: 1.55;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .metric-card {
+        padding: 14px;
+        border-radius: 22px;
+        border: 1px solid rgba(228, 232, 224, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .metric-label {
+        color: var(--text-soft);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .metric-value {
+        margin-top: 8px;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .panel {
+        margin-top: 16px;
+        padding: 18px;
+        border-radius: 28px;
+        border: 1px solid rgba(228, 232, 224, 0.9);
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 16px 30px rgba(31, 35, 40, 0.05);
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .mode-chip {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--surface-soft);
+        color: var(--text-soft);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .widget-frame {
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 24px;
+        border: 1px solid #efe7d5;
+        background: linear-gradient(180deg, #fffdf7 0%, var(--surface-soft) 100%);
+      }
+
+      .widget-frame-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--text-soft);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .widget-frame-card {
+        margin-top: 12px;
+        padding: 16px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.74);
+        border: 1px solid rgba(228, 232, 224, 0.85);
+      }
+
+      .widget-frame-card h3 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.12;
+      }
+
+      .widget-frame-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+        color: var(--text-soft);
+        font-size: 13px;
+      }
+
+      .button-row {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 54px;
+        border-radius: 18px;
+        font-size: 17px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        background: var(--green);
+        color: #fff;
+      }
+
+      .button.secondary {
+        border: 1px solid rgba(77, 139, 82, 0.24);
+        background: rgba(255, 255, 255, 0.96);
+        color: var(--green);
+      }
+
+      .info-card {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 14px;
+        align-items: start;
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 24px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98) 0%,
+          rgba(246, 244, 238, 0.88) 100%
+        );
+        border: 1px solid rgba(228, 232, 224, 0.88);
+      }
+
+      .info-icon {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: var(--surface-soft);
+        color: var(--green);
+        font-size: 22px;
+      }
+
+      .info-title {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .info-body {
+        margin-top: 6px;
+        color: var(--text-soft);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
       .grid {
         display: grid;
         gap: 24px;
@@ -58,7 +296,7 @@
         border: 1px solid var(--line);
         border-radius: 28px;
         background: var(--surface);
-        box-shadow: 0 22px 44px rgba(31, 35, 40, 0.08);
+        box-shadow: var(--shadow);
       }
 
       .widget-header {
@@ -100,13 +338,13 @@
         align-items: center;
         padding: 6px 12px;
         border-radius: 999px;
-        background: #fff3e4;
+        background: var(--orange-soft);
         color: var(--orange);
         font-weight: 600;
       }
 
       .chip.safe {
-        background: #edf4ee;
+        background: var(--green-soft);
         color: var(--green);
       }
 
@@ -128,7 +366,95 @@
   <body>
     <main>
       <h1>Widget Bridge Prototype</h1>
-      <p>共享设计源只覆盖稳定快照结构与安全回流语义，不把 Widget 扩写成完整 App 页面。</p>
+      <p>
+        共享设计源同时覆盖 App 内的安装引导页与 Widget 本体预览，前者负责安装、同步与隐私说明，后者负责稳定快照结构与安全回流语义。
+      </p>
+
+      <section class="app-preview">
+        <span class="eyebrow">App install guide</span>
+        <div class="app-shell" id="widget-bridge-install-guide">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>􀋦 􀙇 􀛨</span>
+          </div>
+          <div class="page">
+            <h2>Add Widget</h2>
+            <p class="page-lead">
+              Preview the current stable snapshot, sync it when needed, and pin Screen Note to the home screen on supported launchers.
+            </p>
+
+            <div class="metric-row">
+              <article class="metric-card">
+                <div class="metric-label">Mode</div>
+                <div class="metric-value">Preview</div>
+              </article>
+              <article class="metric-card">
+                <div class="metric-label">Visible</div>
+                <div class="metric-value">3</div>
+              </article>
+              <article class="metric-card">
+                <div class="metric-label">Private</div>
+                <div class="metric-value">1</div>
+              </article>
+            </div>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3 class="panel-title">Widget Preview</h3>
+                <span class="mode-chip">Blurred preview</span>
+              </div>
+              <div class="widget-frame">
+                <div class="widget-frame-head">
+                  <span>Screen Note</span>
+                  <span>Accessory</span>
+                </div>
+                <div class="widget-frame-card">
+                  <h3>Prepare meeting notes</h3>
+                  <div class="widget-frame-meta">
+                    <span class="chip">Today</span>
+                    <span>5:00 PM</span>
+                    <span>#1</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3 class="panel-title">Manual Sync</h3>
+                <span class="mode-chip">Fallback ready</span>
+              </div>
+              <p class="page-lead" style="margin-top: 10px; font-size: 15px;">
+                Keep the latest stable snapshot available before you return to the system widget surface.
+              </p>
+              <div class="button-row">
+                <a class="button primary" href="/">Sync Now</a>
+                <a class="button secondary" href="/">Add to Home Screen</a>
+              </div>
+            </section>
+
+            <article class="info-card">
+              <div class="info-icon">⌂</div>
+              <div>
+                <h3 class="info-title">Install on your home screen</h3>
+                <p class="info-body">
+                  On supported Android launchers you can request pinning here. Otherwise long press the home screen, open Widgets, and choose Screen Note.
+                </p>
+              </div>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">🔒</div>
+              <div>
+                <h3 class="info-title">Private content stays protected</h3>
+                <p class="info-body">
+                  Privacy mode always wins over display mode, so private reminders stay hidden in widgets and lock-screen previews.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
 
       <div class="grid">
         <section class="widget">
@@ -144,7 +470,7 @@
               <span>#1</span>
             </div>
           </div>
-          <div class="footer">点按后回到应用查看</div>
+          <div class="footer">Tap to open Screen Note</div>
         </section>
 
         <section class="widget">
@@ -153,10 +479,10 @@
             <span>Accessory Rectangular</span>
           </div>
           <div class="item">
-            <h2 class="item-title">隐私事项内容已隐藏</h2>
+            <h2 class="item-title">Content is hidden</h2>
             <div class="item-meta">
-              <span class="chip safe">受保护</span>
-              <span>点按后回到应用查看</span>
+              <span class="chip safe">Protected</span>
+              <span>Tap to view in app</span>
             </div>
           </div>
         </section>
@@ -167,11 +493,16 @@
             <span>Accessory Rectangular</span>
           </div>
           <div class="empty">
-            <h2 class="item-title" style="font-size: 22px">当前还没有可投影到 Widget 的事项</h2>
-            <p>新增或恢复一条事项后，这里会显示下一次稳定快照。</p>
+            <h2 class="item-title" style="font-size: 22px;">
+              No tasks are ready for projection
+            </h2>
+            <p>
+              After you create or restore a task, the next stable snapshot will
+              appear here.
+            </p>
           </div>
         </section>
       </div>
     </main>
   </body>
-  </html>
+</html>

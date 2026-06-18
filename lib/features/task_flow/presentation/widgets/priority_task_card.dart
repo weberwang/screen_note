@@ -221,6 +221,7 @@ final class _PriorityMetaIcon extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final IconData icon = switch (task) {
       null => Icons.add_task_rounded,
+      TaskEntity(:final isPrivate) when isPrivate => Icons.lock_outline_rounded,
       TaskEntity(:final isPinned, :final dueAt)
           when isPinned && dueAt == null =>
         Icons.push_pin_rounded,

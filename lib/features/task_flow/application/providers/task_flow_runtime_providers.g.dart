@@ -267,6 +267,62 @@ final class TaskFlowSideEffectPortProvider
 String _$taskFlowSideEffectPortHash() =>
     r'8028b9ab5508a56528e87a8b77f0e3885b17d33f';
 
+/// 首页降级提示来源默认先接通知权限状态，后续其他能力降级仍可沿这个入口继续汇总。
+
+@ProviderFor(taskFlowDegradationHintSource)
+const taskFlowDegradationHintSourceProvider =
+    TaskFlowDegradationHintSourceProvider._();
+
+/// 首页降级提示来源默认先接通知权限状态，后续其他能力降级仍可沿这个入口继续汇总。
+
+final class TaskFlowDegradationHintSourceProvider
+    extends
+        $FunctionalProvider<
+          TaskFlowDegradationHintSource,
+          TaskFlowDegradationHintSource,
+          TaskFlowDegradationHintSource
+        >
+    with $Provider<TaskFlowDegradationHintSource> {
+  /// 首页降级提示来源默认先接通知权限状态，后续其他能力降级仍可沿这个入口继续汇总。
+  const TaskFlowDegradationHintSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'taskFlowDegradationHintSourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$taskFlowDegradationHintSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<TaskFlowDegradationHintSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  TaskFlowDegradationHintSource create(Ref ref) {
+    return taskFlowDegradationHintSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TaskFlowDegradationHintSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TaskFlowDegradationHintSource>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$taskFlowDegradationHintSourceHash() =>
+    r'b2833a3d7b6ad3bd55787920b64536fc416e5f76';
+
 /// 创建事项用例 Provider，供后续编辑页或快捷入口直接读取，不把构造细节散落到展示层。
 
 @ProviderFor(createTaskUseCase)
@@ -370,7 +426,7 @@ final class LoadTaskFeedUseCaseProvider
 }
 
 String _$loadTaskFeedUseCaseHash() =>
-    r'05f75827c90189916a0bdca88e0d5b57753782cf';
+    r'1c5dae21289a32d0082548944563488083bb2ab2';
 
 /// 单事项读取 Provider，供编辑页按身份读取既有任务并预填，避免页面层直接碰仓储。
 
@@ -635,7 +691,7 @@ final class TaskFlowHomeControllerProvider
 }
 
 String _$taskFlowHomeControllerHash() =>
-    r'0e7af69adf0bcbb828244c67fa5e79301c059b08';
+    r'4aa2890565e841ad2462af2d7e12ec2c79472a82';
 
 /// 首页控制器统一承接快照刷新与后续写后刷新入口，避免页面直接操心失效策略。
 

@@ -13,9 +13,9 @@ import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_stat_tile.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_toast.dart';
 
-/// Widget 桥接正式页，负责展示当前稳定快照预览并触发手动同步。
+/// 小组件桥接页，负责承接安装引导、稳定快照预览与手动同步动作。
 class WidgetBridgePage extends ConsumerWidget {
-  /// 创建 Widget 桥接页。
+  /// 创建小组件桥接页。
   const WidgetBridgePage({super.key});
 
   @override
@@ -36,7 +36,7 @@ class WidgetBridgePage extends ConsumerWidget {
       ),
       children: <Widget>[
         _HeaderCard(
-          title: localizations.widgetSettingsTitle,
+          title: localizations.settingsWidgetInstallTitle,
           subtitle: localizations.widgetSettingsSubtitle,
         ),
         const SizedBox(height: ScreenNoteSpacing.sectionGap),
@@ -51,6 +51,8 @@ class WidgetBridgePage extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         _ActionCard(
+          body: localizations.widgetSettingsSubtitle,
+          canRequestPinWidget: canRequestPinWidget,
           onSync: () async {
             final bool synced = await ref
                 .read(widgetBridgeControllerProvider.notifier)
@@ -58,7 +60,7 @@ class WidgetBridgePage extends ConsumerWidget {
             if (!context.mounted) {
               return;
             }
-            // 同步反馈统一走全局 Toast，避免 Widget 页退回到底部 SnackBar 造成交互风格割裂。
+            // 同步反馈统一走全局 Toast，避免桥接页出现和壳层不一致的提示样式。
             ScreenNoteToast.show(
               context,
               synced
@@ -66,7 +68,6 @@ class WidgetBridgePage extends ConsumerWidget {
                   : localizations.widgetSyncFailed,
             );
           },
-          canRequestPinWidget: canRequestPinWidget,
           onRequestPin: () => ref
               .read(settingsCenterControllerProvider.notifier)
               .requestPinWidget(
@@ -86,7 +87,7 @@ class WidgetBridgePage extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         _InfoCard(
-          title: localizations.widgetSnapshotPrivateTitle,
+          title: localizations.settingsPrivacyModeTitle,
           body: localizations.settingsPrivacyModeBody,
           icon: Icons.lock_outline_rounded,
         ),
@@ -95,9 +96,9 @@ class WidgetBridgePage extends ConsumerWidget {
   }
 }
 
-/// 页首说明卡，固定预览页的阅读起点与范围边界。
+/// 页面头部说明区，负责固定安装引导页的阅读起点。
 class _HeaderCard extends StatelessWidget {
-  /// 创建头部卡片。
+  /// 创建头部说明区。
   const _HeaderCard({required this.title, required this.subtitle});
 
   /// 标题。
@@ -122,12 +123,12 @@ class _HeaderCard extends StatelessWidget {
   }
 }
 
-/// 预览页主体内容，统一承接指标概览和真实锁屏快照预览。
+/// 页面主内容区，统一承接指标概览和真实小组件预览。
 class _WidgetBridgeContent extends StatelessWidget {
-  /// 创建主体内容。
+  /// 创建主内容区。
   const _WidgetBridgeContent({required this.snapshot});
 
-  /// 当前快照。
+  /// 当前稳定快照。
   final WidgetSnapshot snapshot;
 
   @override
@@ -136,13 +137,16 @@ class _WidgetBridgeContent extends StatelessWidget {
     final int privateItemCount = snapshot.items
         .where((item) => item.isPrivate)
         .length;
+    final String previewSupportText = snapshot.hasFallbackContent
+        ? snapshot.fallbackHint
+        : localizations.widgetSnapshotOpenInApp;
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final bool useCompactGrid = constraints.maxWidth < 400;
         final bool useStackedHeader = constraints.maxWidth < 360;
 
-        // 预览页既要服务桌面宽度，也要保证手机宽度下指标卡和模式标签不溢出。
+        // 指标卡和模式标签会在窄宽度下自动收紧，避免安装页视觉层级被挤散。
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -216,13 +220,14 @@ class _WidgetBridgeContent extends StatelessWidget {
                     ),
                   const SizedBox(height: 14),
                   _WidgetPreviewFrame(snapshot: snapshot),
-                  if (snapshot.hasFallbackContent) ...<Widget>[
-                    const SizedBox(height: 12),
-                    Text(
-                      snapshot.fallbackHint,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                  const SizedBox(height: 12),
+                  Text(
+                    previewSupportText,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: context.screenNotePalette.statusDone,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
+                  ),
                 ],
               ),
             ),
@@ -232,7 +237,7 @@ class _WidgetBridgeContent extends StatelessWidget {
     );
   }
 
-  /// 统一映射展示模式文案，避免页面散落枚举 switch。
+  /// 统一映射展示模式文案，避免页面散落多处判断。
   String _modeLabel(AppLocalizations localizations, WidgetDisplayMode mode) {
     return switch (mode) {
       WidgetDisplayMode.single => localizations.widgetDisplayModeSingle,
@@ -248,7 +253,7 @@ class _WidgetBridgeContent extends StatelessWidget {
   }
 }
 
-/// 预览框，用于在 App 内模拟当前锁屏小组件的阅读结构。
+/// 预览框，用于在 App 内模拟当前小组件的阅读结构。
 class _WidgetPreviewFrame extends StatelessWidget {
   /// 创建预览框。
   const _WidgetPreviewFrame({required this.snapshot});
@@ -302,15 +307,15 @@ class _WidgetPreviewFrame extends StatelessWidget {
   }
 }
 
-/// 单条预览项，用于模拟锁屏组件中的标题、状态和序号层级。
+/// 单条预览行，用于模拟小组件中的标题、状态和序号层级。
 class _PreviewItemRow extends StatelessWidget {
-  /// 创建预览项。
+  /// 创建单条预览行。
   const _PreviewItemRow({required this.item, this.emphasize = false});
 
   /// 快照项。
   final WidgetSnapshotItem item;
 
-  /// 是否作为主焦点项强调显示。
+  /// 是否作为主焦点项强调展示。
   final bool emphasize;
 
   @override
@@ -391,22 +396,26 @@ class _PreviewEmptyState extends StatelessWidget {
   }
 }
 
-/// 操作卡片，统一承接手动同步动作与同步失败时的保守说明。
+/// 操作卡，统一承接手动同步动作与安装请求。
 class _ActionCard extends StatelessWidget {
-  /// 创建操作卡片。
+  /// 创建操作卡。
   const _ActionCard({
+    required this.body,
     required this.onSync,
     required this.canRequestPinWidget,
     required this.onRequestPin,
   });
 
+  /// 操作说明文案。
+  final String body;
+
   /// 手动同步回调。
   final Future<void> Function() onSync;
 
-  /// 只有 Android launcher 支持应用内发起 pin 请求，其他平台只保留安装说明。
+  /// 是否允许请求添加小组件。
   final bool canRequestPinWidget;
 
-  /// 添加到桌面的动作统一复用设置层用例，避免页面直接接触插件细节。
+  /// 请求添加小组件的动作。
   final Future<void> Function() onRequestPin;
 
   @override
@@ -422,24 +431,27 @@ class _ActionCard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          Text(
-            localizations.widgetSnapshotFallbackHint,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          Text(body, style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 16),
-          FilledButton.icon(
-            key: const Key('widget-bridge-sync-button'),
-            onPressed: onSync,
-            icon: const Icon(Icons.sync_rounded),
-            label: Text(localizations.widgetSyncAction),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              key: const Key('widget-bridge-sync-button'),
+              onPressed: onSync,
+              icon: const Icon(Icons.sync_rounded),
+              label: Text(localizations.widgetSyncAction),
+            ),
           ),
           if (canRequestPinWidget) ...<Widget>[
             const SizedBox(height: 12),
-            OutlinedButton.icon(
-              key: const Key('widget-bridge-install-button'),
-              onPressed: onRequestPin,
-              icon: const Icon(Icons.add_home_outlined),
-              label: Text(localizations.settingsWidgetInstallAction),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                key: const Key('widget-bridge-install-button'),
+                onPressed: onRequestPin,
+                icon: const Icon(Icons.add_home_outlined),
+                label: Text(localizations.settingsWidgetInstallAction),
+              ),
             ),
           ],
         ],
@@ -448,9 +460,9 @@ class _ActionCard extends StatelessWidget {
   }
 }
 
-/// 辅助信息卡片，统一呈现安装和隐私说明。
+/// 信息卡，用于承接安装说明与隐私说明这类次级提示。
 class _InfoCard extends StatelessWidget {
-  /// 创建信息卡片。
+  /// 创建信息卡。
   const _InfoCard({
     required this.title,
     required this.body,
@@ -501,7 +513,7 @@ class _InfoCard extends StatelessWidget {
   }
 }
 
-/// 模式标签，弱化呈现当前展示模式而不让其压过真实预览本身。
+/// 模式标签，用于弱化呈现当前展示模式而不压过预览主体。
 class _ModeChip extends StatelessWidget {
   /// 创建模式标签。
   const _ModeChip({required this.label});
@@ -526,7 +538,7 @@ class _ModeChip extends StatelessWidget {
   }
 }
 
-/// 预览加载态，保持页面结构稳定。
+/// 加载态卡片，保持页面结构稳定。
 class _LoadingCard extends StatelessWidget {
   /// 创建加载态卡片。
   const _LoadingCard();
@@ -542,7 +554,7 @@ class _LoadingCard extends StatelessWidget {
   }
 }
 
-/// 预览错误态，允许用户停留当前页重试。
+/// 错误态卡片，允许用户留在当前页重试。
 class _ErrorCard extends StatelessWidget {
   /// 创建错误态卡片。
   const _ErrorCard({required this.onRetry});

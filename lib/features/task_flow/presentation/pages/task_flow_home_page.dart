@@ -91,14 +91,17 @@ class TaskFlowHomePage extends HookConsumerWidget {
                 sliver: SliverList.list(
                   children: <Widget>[
                     _TaskFlowBrandHeader(appTitle: localizations.appTitle),
-                    SizedBox(height: 32.h),
+                    SizedBox(height: 26.h),
                     Text(
                       localizations.homeGreetingTitle,
-                      style: theme.textTheme.displaySmall,
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        fontSize: 36.sp,
+                        height: 1.06,
+                      ),
                     ),
-                    SizedBox(height: 14.h),
+                    SizedBox(height: 16.h),
                     _HomeContextChip(label: localizations.homeTodayChip),
-                    SizedBox(height: 28.h),
+                    SizedBox(height: 24.h),
                     TaskFlowHomeStatusNotice(hints: snapshot.degradationHints),
                     if (snapshot.degradationHints.isNotEmpty)
                       SizedBox(height: 20.h),
@@ -109,31 +112,20 @@ class TaskFlowHomePage extends HookConsumerWidget {
                     ),
                     if (overdueTasks.isNotEmpty) ...<Widget>[
                       SizedBox(height: 34.h),
-                      _TaskFlowSectionTitle(
-                        title: localizations.taskFlowOverdueSectionTitle,
-                        color: theme.colorScheme.error,
-                      ),
-                      SizedBox(height: 12.h),
-                      ..._buildQueueRows(
+                      ..._buildOverdueSection(
                         context: context,
                         tasks: overdueTasks,
-                        isOverdue: true,
                       ),
                     ],
                     if (upcomingTasks.isNotEmpty) ...<Widget>[
                       SizedBox(height: 26.h),
-                      _TaskFlowSectionTitle(
-                        title: localizations.taskFlowUpNextSectionTitle,
-                      ),
-                      SizedBox(height: 12.h),
-                      ..._buildQueueRows(
+                      ..._buildUpcomingSection(
                         context: context,
                         tasks: upcomingTasks,
-                        isOverdue: false,
                       ),
                     ],
                     SizedBox(height: 28.h),
-                    _TaskFlowSectionTitle(
+                    _TaskFlowSecondarySectionTitle(
                       title: localizations.homeHistoryTitle,
                     ),
                     SizedBox(height: 14.h),
@@ -185,11 +177,63 @@ class TaskFlowHomePage extends HookConsumerWidget {
         .toList(growable: false);
   }
 
-  /// 队列行之间统一插入轻分隔线，保持行式结构而不重新引入卡片堆叠感。
+  /// “接下来” 区域收进整块浅白面板，贴近效果图里的单组任务容器。
+  List<Widget> _buildUpcomingSection({
+    required BuildContext context,
+    required List<TaskEntity> tasks,
+  }) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    return <Widget>[
+      _TaskFlowSectionTitle(title: localizations.taskFlowUpNextSectionTitle),
+      SizedBox(height: 12.h),
+      ScreenNotePanel(
+        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 6.h),
+        child: Column(
+          children: _buildQueueRows(
+            context: context,
+            tasks: tasks,
+            isOverdue: false,
+            showChevron: false,
+          ),
+        ),
+      ),
+    ];
+  }
+
+  /// “逾期” 区域保持高风险识别度，每行独立成浅红卡片以拉开层级。
+  List<Widget> _buildOverdueSection({
+    required BuildContext context,
+    required List<TaskEntity> tasks,
+  }) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final List<Widget> widgets = <Widget>[
+      _TaskFlowSectionTitle(
+        title: localizations.taskFlowOverdueSectionTitle,
+        color: Theme.of(context).colorScheme.error,
+      ),
+      SizedBox(height: 12.h),
+    ];
+
+    for (var index = 0; index < tasks.length; index += 1) {
+      widgets.add(
+        _TaskFlowOverdueQueueCard(
+          task: tasks[index],
+          onTap: () => _openTaskEditor(context, taskId: tasks[index].id),
+        ),
+      );
+      if (index != tasks.length - 1) {
+        widgets.add(SizedBox(height: 12.h));
+      }
+    }
+    return widgets;
+  }
+
+  /// 队列行之间统一插入轻分隔线，保持行式结构并按区块需要控制箭头强度。
   List<Widget> _buildQueueRows({
     required BuildContext context,
     required List<TaskEntity> tasks,
     required bool isOverdue,
+    required bool showChevron,
   }) {
     final ScreenNoteThemePalette palette = context.screenNotePalette;
     final List<Widget> rows = <Widget>[];
@@ -200,6 +244,7 @@ class TaskFlowHomePage extends HookConsumerWidget {
         TaskQueueRow(
           task: task,
           isOverdue: isOverdue,
+          showChevron: showChevron,
           onTap: () => _openTaskEditor(context, taskId: task.id),
         ),
       );
@@ -241,26 +286,26 @@ final class _TaskFlowBrandHeader extends StatelessWidget {
     return Row(
       children: <Widget>[
         Container(
-          width: 48.w,
-          height: 48.w,
+          width: 44.w,
+          height: 44.w,
           decoration: BoxDecoration(
             color: palette.surfaceMuted,
-            borderRadius: ScreenNoteRadii.small,
+            borderRadius: ScreenNoteRadii.insetSurface,
           ),
           alignment: Alignment.center,
           child: Icon(
             // 首页品牌锚点改为更接近设计源的便签图标，避免误读成自然/健康类应用。
             Icons.note_alt_rounded,
             color: theme.colorScheme.primary,
-            size: 24.sp,
+            size: 22.sp,
           ),
         ),
-        SizedBox(width: 14.w),
+        SizedBox(width: 12.w),
         Text(
           appTitle,
           style: theme.textTheme.titleLarge?.copyWith(
-            fontSize: 22.sp,
-            fontWeight: FontWeight.w700,
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
@@ -287,19 +332,21 @@ final class _HomeContextChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(
               Icons.schedule_rounded,
-              size: 16.sp,
+              size: 15.sp,
               color: theme.colorScheme.primary,
             ),
-            SizedBox(width: 10.w),
+            SizedBox(width: 8.w),
             Text(
               label,
               style: theme.textTheme.titleMedium?.copyWith(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600,
                 color: theme.colorScheme.primary,
               ),
             ),
@@ -336,6 +383,70 @@ final class _TaskFlowSectionTitle extends StatelessWidget {
 }
 
 /// 首页加载态保留主要结构锚点，避免加载时页面骨架完全换形。
+/// 首页历史状态分区维持次级层级，避免和主任务分区争夺第一屏阅读优先级。
+final class _TaskFlowSecondarySectionTitle extends StatelessWidget {
+  /// 创建次级分区标题。
+  const _TaskFlowSecondarySectionTitle({required this.title});
+
+  /// 次级分区标题文案。
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
+    return Text(
+      title,
+      style: theme.textTheme.titleLarge?.copyWith(
+        color: palette.inkPrimary,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+}
+
+/// 首页逾期行独立成浅色风险卡片，避免和普通“接下来”列表混成同一层级。
+final class _TaskFlowOverdueQueueCard extends StatelessWidget {
+  /// 创建首页逾期队列卡片。
+  const _TaskFlowOverdueQueueCard({required this.task, this.onTap});
+
+  /// 当前逾期事项。
+  final TaskEntity task;
+
+  /// 点击后进入事项编辑。
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    final ThemeData theme = Theme.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: theme.brightness == Brightness.dark
+            ? theme.colorScheme.error.withValues(alpha: 0.12)
+            : const Color(0xFFFFF6F2),
+        borderRadius: ScreenNoteRadii.largeSurface,
+        border: Border.all(
+          color: theme.colorScheme.error.withValues(alpha: 0.12),
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: palette.shadowSoft,
+            blurRadius: 24,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+        child: TaskQueueRow(task: task, isOverdue: true, onTap: onTap),
+      ),
+    );
+  }
+}
+
 final class _TaskFlowHomeLoadingState extends StatelessWidget {
   /// 创建首页加载态。
   const _TaskFlowHomeLoadingState({
@@ -365,11 +476,17 @@ final class _TaskFlowHomeLoadingState extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _TaskFlowBrandHeader(appTitle: AppLocalizations.of(context).appTitle),
-          SizedBox(height: 32.h),
-          Text(greetingTitle, style: theme.textTheme.displaySmall),
-          SizedBox(height: 14.h),
+          SizedBox(height: 26.h),
+          Text(
+            greetingTitle,
+            style: theme.textTheme.displaySmall?.copyWith(
+              fontSize: 36.sp,
+              height: 1.06,
+            ),
+          ),
+          SizedBox(height: 16.h),
           _HomeContextChip(label: todayLabel),
-          SizedBox(height: 28.h),
+          SizedBox(height: 24.h),
           ScreenNotePanel(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 18.h),

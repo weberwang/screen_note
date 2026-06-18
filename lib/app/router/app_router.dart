@@ -9,6 +9,7 @@ import 'package:screen_note/features/history_center/presentation/pages/history_c
 import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
 import 'package:screen_note/features/task_flow/presentation/pages/task_flow_editor_page.dart';
 import 'package:screen_note/features/task_flow/presentation/pages/task_flow_home_page.dart';
+import 'package:screen_note/features/widget_bridge/presentation/pages/widget_bridge_page.dart';
 
 part 'app_router.g.dart';
 
@@ -63,9 +64,12 @@ GoRouter appRouter(Ref ref) {
       ),
       GoRoute(
         path: RoutePaths.taskEditor,
-        builder: (context, state) => TaskFlowEditorPage(
-          taskId: state.uri.queryParameters['taskId'],
-        ),
+        builder: (context, state) =>
+            TaskFlowEditorPage(taskId: state.uri.queryParameters['taskId']),
+      ),
+      GoRoute(
+        path: RoutePaths.widgetBridge,
+        builder: (context, state) => const WidgetBridgePage(),
       ),
     ],
   );

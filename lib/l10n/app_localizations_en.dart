@@ -77,11 +77,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeHistorySummaryBody =>
-      'Completed and deleted tasks stay traceable in history so you can review or restore them later.';
+      'Completed and deleted items stay in history.';
 
   @override
-  String get homeHistoryEmptyBody =>
-      'No history yet. Once a task is completed or deleted, a traceable status will appear here.';
+  String get homeHistoryEmptyBody => 'No history yet.';
 
   @override
   String get homeHistoryAction => 'View history';

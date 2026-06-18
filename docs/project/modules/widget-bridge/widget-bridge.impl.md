@@ -13,7 +13,7 @@
 
 ## 模块目标与边界
 
-`widget-bridge` 负责把应用内稳定任务结果投影到 Widget / 锁屏共享层，并承接系统点击回流。它不负责复杂业务推导，只消费稳定快照。
+`widget-bridge` 负责把应用内稳定任务结果投影到 Widget / 锁屏共享层，并承接系统点击回流。它不负责复杂业务推导，只消费稳定快照。本轮同时把 App 内的安装引导页也收口到本模块，保持“入口在设置，页面归 bridge”。
 
 ## 业务能力
 
@@ -22,9 +22,11 @@
 - 在刷新失败时保留最后一次有效快照
 - 读取展示模式与隐私配置
 - 处理 Widget 点击后的回流参数
+- 承接 App 内安装与预览页
 
 ## 页面与状态范围
 
+- App 内安装与预览页
 - Widget / 锁屏展示快照
 - 空快照态
 - 私密快照态
@@ -32,7 +34,7 @@
 
 ## Product Design Clarification Packet 继承
 
-- core_user_journeys：看见当前最重要事项并继续处理；权限或系统能力降级后继续使用
+- core_user_journeys：看见当前最重要事项并继续处理；能力降级后仍可继续使用
 - page_families：`shared_shell`, `home`
 - critical_states：`widget_refresh_failed`, `private_safe`, `no_urgent_tasks`
 - platform_identifier：`ios_device`
@@ -40,10 +42,11 @@
 
 ## 状态与交互边界
 
-- 只展示稳定快照，不直接承载数据库查询或复杂排序
-- 刷新失败必须保留最后有效结果
-- 私密事项不得泄露正文
-- 点击回流必须回到共享壳层安全落点
+- 只展示稳定快照，不直接承载数据库查询或复杂排序。
+- 刷新失败时必须保留最后一次有效结果。
+- 私密事项不得泄露正文。
+- Widget 点击回流必须回到共享壳层安全落点。
+- 设置页里的“添加桌面小组件”只负责跳转，本模块负责完整页面体验。
 
 ## 数据与依赖边界
 
@@ -62,22 +65,24 @@
 ## 测试范围
 
 - 稳定快照投影
-- 空状态 / 私密态
+- 空状态 / 私密状态
 - 刷新失败保底
 - 点击回流参数解析
+- 安装页主动作与降级提示
 
 ## 实现约束
 
-- Widget 读取层必须尽量简单
-- 不能把状态推导和排序逻辑搬进共享层
-- 降级策略必须稳定高于“尝试炫技刷新”
+- Widget 读取层必须尽量简单。
+- 不能把状态推导和排序逻辑搬进共享层。
+- 降级策略必须稳定高于“尝试炫技刷新”。
+- 安装页首屏必须先呈现预览和动作，而不是长说明文案。
 
-## 后续视觉与实现准备
+## 后续视觉与实现准据
 
-- module_effect_image_target: `widget snapshot representations for priority and privacy-safe states`
-- high_fidelity_priority: `snapshot clarity and privacy discipline over decorative styling`
+- module_effect_image_target: `widget snapshot representations plus in-app install guide page`
+- high_fidelity_priority: `snapshot clarity, action clarity, and privacy discipline over decorative styling`
 
 ## Provenance
 
 - superpowers_refinement_status: `not_executed`
-- superpowers_refinement_notes: `当前为 orchestrator 自动推进下的模块实现文档初稿，后续实现执行仍需显式进入 @superpowers`
+- superpowers_refinement_notes: `当前由 orchestrator 自动推进生成模块实现文档初稿，后续真实实现执行仍需显式进入 @superpowers`

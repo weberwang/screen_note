@@ -16,8 +16,9 @@
 ### 3. Privacy And Widget Group
 
 - 第二主区块先展示隐私模式，再展示 Widget 展示模式。
-- 隐私设置优先级高于展示花样，因为它直接影响锁屏、小组件和预览的安全边界。
-- Widget 展示模式负责说明“展示完整内容 / 安全预览 / 模糊预览”等可见策略，但不应演化成复杂编辑器。
+- 隐私设置优先级高于展示样式，因为它直接影响锁屏、小组件和预览的安全边界。
+- Widget 展示模式负责说明“显示完整内容 / 安全预览 / 模糊预览”等可见策略，但不应演化成复杂编辑器。
+- “添加桌面小组件”在这里是入口层，不在本页展开完整安装说明；完整页面属于 `widget-bridge`。
 
 ### 4. Sync And Membership Group
 
@@ -36,10 +37,11 @@
 - 通知状态行可进入权限说明或系统设置引导。
 - 隐私模式可切换，且应明确影响锁屏与 Widget 预览。
 - Widget 展示模式可切换，但不能绕开隐私规则。
-- 同步状态只说明当前状态与后续入口，不在当前模块实现复杂账号流。
+- “添加桌面小组件”入口只负责把用户带到 `widget-bridge`。
+- 同步状态只说明当前状态与后续入口，不在当前模块实现复杂账户流。
 - 会员入口保留存在，但必须维持克制次级权重。
 
-## Please confirm before high-fidelity prototype build
+## Please Confirm Before High-Fidelity Prototype Build
 
 - 当前播放稿覆盖 `settings-center` 的单一页面族：`settings_center`。
-- 下一步将以 `settings-center-settings.png` 为视觉基线，生成模块 HTML 高保真原型和冻结包。
+- 下一步仍以 `settings-center-settings.png` 为视觉基线生成模块 HTML 高保真原型与冻结包；安装引导页证据不在本模块内重复生成。
