@@ -10,16 +10,15 @@ import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/app/startup/widget_launch_bridge.dart';
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
 import 'package:screen_note/features/app_shell/presentation/pages/app_shell_page.dart';
-import 'package:screen_note/features/app_shell/presentation/widgets/app_shell_quick_add_sheet.dart';
 import 'package:screen_note/features/history_center/presentation/pages/history_center_page.dart';
-import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
-import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_preferences.dart';
+import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
-import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
+import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
+import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_reminder_mode.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_status.dart';
@@ -71,96 +70,57 @@ void main() {
       expect(find.byType(SettingsCenterPage), findsOneWidget);
     });
 
-    testWidgets('does not stack quick add sheets on repeated fab trigger', (
-      tester,
-    ) async {
+    testWidgets('浮动添加按钮只在首页显示', (tester) async {
       final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
       addTearDown(runtime.dispose);
       await _pumpAppShell(tester, runtime: runtime);
+      final AppLocalizations localizations = _localizations(tester);
 
-      expect(find.byType(AppShellQuickAddSheet), findsNothing);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
 
-      await tester.tap(find.byType(FloatingActionButton));
+      await tester.tap(find.text(localizations.historyTabLabel));
       await tester.pumpAndSettle();
 
-      expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
+      expect(find.byType(HistoryCenterPage), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsNothing);
 
-      final fab = tester.widget<FloatingActionButton>(
-        find.byType(FloatingActionButton),
-      );
-      fab.onPressed!.call();
+      await tester.tap(find.text(localizations.settingsTabLabel));
       await tester.pumpAndSettle();
 
-      expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
+      expect(find.byType(SettingsCenterPage), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsNothing);
+
+      await tester.tap(find.text(localizations.homeTabLabel));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FloatingActionButton), findsOneWidget);
     });
 
-    testWidgets('quick add 主按钮会把用户带到事项编辑页', (
-      tester,
-    ) async {
+    testWidgets('首页浮动添加按钮会直接进入事项编辑页', (tester) async {
       final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
       addTearDown(runtime.dispose);
       await _pumpAppShell(tester, runtime: runtime);
 
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
-
-      final Finder quickAddContinueButton = find.descendant(
-        of: find.byType(AppShellQuickAddSheet),
-        matching: find.byType(FilledButton),
-      );
-      await tester.ensureVisible(quickAddContinueButton);
-      await tester.pumpAndSettle();
-      await tester.tap(quickAddContinueButton);
-      await tester.pumpAndSettle();
-
-      expect(find.byType(AppShellQuickAddSheet), findsNothing);
-      expect(find.byType(TextField), findsNWidgets(2));
-    });
-
-    testWidgets('quick add 通过蒙层关闭时只会收起 sheet', (
-      tester,
-    ) async {
-      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
-      addTearDown(runtime.dispose);
-      await _pumpAppShell(tester, runtime: runtime);
-
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
-
-      await tester.tapAt(const Offset(20, 20));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(AppShellQuickAddSheet), findsNothing);
-      expect(find.byType(TextField), findsNothing);
-    });
-
-    testWidgets('编辑态不会继续展示全局 quick add', (
-      tester,
-    ) async {
-      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
-      addTearDown(runtime.dispose);
-      await _pumpAppShell(tester, runtime: runtime);
-
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-      final Finder quickAddContinueButton = find.descendant(
-        of: find.byType(AppShellQuickAddSheet),
-        matching: find.byType(FilledButton),
-      );
-      await tester.ensureVisible(quickAddContinueButton);
-      await tester.pumpAndSettle();
-      await tester.tap(quickAddContinueButton);
       await tester.pumpAndSettle();
 
       expect(find.byType(TextField), findsNWidgets(2));
       expect(find.byType(FloatingActionButton), findsNothing);
     });
 
-    testWidgets('进入编辑页后不应继续展示壳层底栏', (tester) async {
+    testWidgets('编辑态不会继续展示全局 quick add', (tester) async {
+      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+      addTearDown(runtime.dispose);
+      await _pumpAppShell(tester, runtime: runtime);
+
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TextField), findsNWidgets(2));
+      expect(find.byType(FloatingActionButton), findsNothing);
+    });
+
+    testWidgets('进入编辑页后不应继续显示壳层底栏', (tester) async {
       final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
       addTearDown(runtime.dispose);
       await _pumpAppShell(tester, runtime: runtime);
@@ -170,23 +130,13 @@ void main() {
 
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
-      final Finder quickAddContinueButton = find.descendant(
-        of: find.byType(AppShellQuickAddSheet),
-        matching: find.byType(FilledButton),
-      );
-      await tester.ensureVisible(quickAddContinueButton);
-      await tester.pumpAndSettle();
-      await tester.tap(quickAddContinueButton);
-      await tester.pumpAndSettle();
 
       expect(find.byType(TextField), findsNWidgets(2));
       expect(find.text(localizations.homeTabLabel), findsNothing);
       expect(find.byType(NavigationBar), findsNothing);
     });
 
-    testWidgets('运行中点击 widget 事项会推入编辑页', (
-      tester,
-    ) async {
+    testWidgets('运行中点击 widget 事项会推入编辑页', (tester) async {
       final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
       addTearDown(runtime.dispose);
       await runtime.repository.createTask(
@@ -218,9 +168,7 @@ void main() {
       expect(titleField.controller?.text, '来自小组件');
     });
 
-    testWidgets('quick add 打开时收到 widget click 会先收口再进入编辑页', (
-      tester,
-    ) async {
+    testWidgets('编辑页打开后收到 widget click 会继续跳到对应事项编辑页', (tester) async {
       final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
       addTearDown(runtime.dispose);
       await runtime.repository.createTask(
@@ -241,15 +189,10 @@ void main() {
         ),
       );
       addTearDown(container.dispose);
-      await _pumpAppShell(
-        tester,
-        runtime: runtime,
-        container: container,
-      );
+      await _pumpAppShell(tester, runtime: runtime, container: container);
 
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
 
       controller.add('${RoutePaths.taskEditor}?taskId=task-42');
       await tester.pumpAndSettle();
@@ -258,11 +201,38 @@ void main() {
         find.byType(TextField).first,
       );
       expect(titleField.controller?.text, '来自小组件');
-      expect(find.byType(AppShellQuickAddSheet), findsNothing);
       expect(find.byType(FloatingActionButton), findsNothing);
+    });
+
+    testWidgets('壳层反馈会自动消失并清空共享反馈状态', (tester) async {
+      final _TaskFlowTestRuntime runtime = _TaskFlowTestRuntime.create();
+      addTearDown(runtime.dispose);
+      final ProviderContainer container = _createAppShellTestContainer(
+        runtime: runtime,
+      );
+      addTearDown(container.dispose);
+
+      await _pumpAppShell(tester, runtime: runtime, container: container);
+
+      container
+          .read(appShellUiStateControllerProvider.notifier)
+          .showFeedback(
+            const AppShellFeedbackMessage(
+              level: AppShellFeedbackLevel.info,
+              text: '设置已更新',
+            ),
+          );
+      await tester.pump();
+
+      expect(find.text('设置已更新'), findsOneWidget);
+
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
+
+      expect(find.text('设置已更新'), findsNothing);
       expect(
-        container.read(appShellUiStateControllerProvider).quickAddSheetOpen,
-        isFalse,
+        container.read(appShellUiStateControllerProvider).feedback,
+        isNull,
       );
     });
   });
@@ -330,10 +300,7 @@ ProviderContainer _createAppShellTestContainer({
 
 /// 壳层测试统一复用内存 task-flow 真源，避免首页真实 Provider 读取本地数据库导致超时。
 final class _TaskFlowTestRuntime {
-  _TaskFlowTestRuntime({
-    required this.database,
-    required this.repository,
-  });
+  _TaskFlowTestRuntime({required this.database, required this.repository});
 
   final TaskFlowDatabase database;
   final TaskFlowRepositoryImpl repository;
@@ -517,10 +484,6 @@ final class _TestShellLeaf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(title),
-      ),
-    );
+    return Scaffold(body: Center(child: Text(title)));
   }
 }

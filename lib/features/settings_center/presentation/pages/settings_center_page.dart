@@ -6,6 +6,8 @@ import 'package:screen_note/features/settings_center/domain/entities/notificatio
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_membership_state.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_sync_status.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_degradation_notice.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_option_row.dart';
@@ -98,7 +100,9 @@ class SettingsCenterPage extends HookConsumerWidget {
                     localizations: localizations,
                   ),
                   SizedBox(height: 20.h),
-                  SettingsSectionHeader(title: localizations.settingsSyncSection),
+                  SettingsSectionHeader(
+                    title: localizations.settingsSyncSection,
+                  ),
                   SizedBox(height: 10.h),
                   _buildSyncGroup(
                     snapshot: snapshot,
@@ -236,32 +240,92 @@ class SettingsCenterPage extends HookConsumerWidget {
   }) {
     return ScreenNotePanel(
       padding: EdgeInsets.all(0.w),
-      child: SettingsOptionRow(
-        icon: Icons.widgets_outlined,
-        title: localizations.settingsWidgetDisplayModeTitle,
-        description: localizations.settingsWidgetDisplayModeBody,
-        trailing: _ValueTrailing(
-          valueText: _widgetDisplayModeText(
-            snapshot.preferences.widgetDisplayMode,
-            localizations,
-          ),
-        ),
-        onTap: () async {
-          final WidgetDisplayMode? selection = await _pickWidgetDisplayMode(
-            context: context,
-            currentMode: snapshot.preferences.widgetDisplayMode,
-            localizations: localizations,
-          );
-          if (selection == null || !context.mounted) {
-            return;
-          }
-          await ref
-              .read(settingsCenterControllerProvider.notifier)
-              .updateWidgetDisplayMode(
-                mode: selection,
-                feedbackText: localizations.settingsWidgetDisplayFeedback,
+      child: Column(
+        children: <Widget>[
+          SettingsOptionRow(
+            icon: Icons.widgets_outlined,
+            title: localizations.settingsWidgetDisplayModeTitle,
+            description: localizations.settingsWidgetDisplayModeBody,
+            trailing: _ValueTrailing(
+              valueText: _widgetDisplayModeText(
+                snapshot.preferences.widgetDisplayMode,
+                localizations,
+              ),
+            ),
+            onTap: () async {
+              final WidgetDisplayMode? selection = await _pickWidgetDisplayMode(
+                context: context,
+                currentMode: snapshot.preferences.widgetDisplayMode,
+                localizations: localizations,
               );
-        },
+              if (selection == null || !context.mounted) {
+                return;
+              }
+              await ref
+                  .read(settingsCenterControllerProvider.notifier)
+                  .updateWidgetDisplayMode(
+                    mode: selection,
+                    feedbackText: localizations.settingsWidgetDisplayFeedback,
+                  );
+            },
+          ),
+          SettingsOptionRow(
+            icon: Icons.palette_outlined,
+            title: localizations.settingsThemeModeTitle,
+            description: localizations.settingsThemeModeBody,
+            trailing: _ValueTrailing(
+              valueText: _themeModeText(
+                snapshot.preferences.themeModePreference,
+                localizations,
+              ),
+            ),
+            onTap: () async {
+              final SettingsThemeModePreference? selection =
+                  await _pickThemeModePreference(
+                    context: context,
+                    currentMode: snapshot.preferences.themeModePreference,
+                    localizations: localizations,
+                  );
+              if (selection == null || !context.mounted) {
+                return;
+              }
+              await ref
+                  .read(settingsCenterControllerProvider.notifier)
+                  .updateThemeModePreference(
+                    mode: selection,
+                    feedbackText: localizations.settingsThemeModeFeedback,
+                  );
+            },
+          ),
+          SettingsOptionRow(
+            icon: Icons.translate_rounded,
+            title: localizations.settingsLanguageTitle,
+            description: localizations.settingsLanguageBody,
+            trailing: _ValueTrailing(
+              valueText: _languagePreferenceText(
+                snapshot.preferences.languagePreference,
+                localizations,
+              ),
+            ),
+            onTap: () async {
+              final SettingsLanguagePreference? selection =
+                  await _pickLanguagePreference(
+                    context: context,
+                    currentLanguage: snapshot.preferences.languagePreference,
+                    localizations: localizations,
+                  );
+              if (selection == null || !context.mounted) {
+                return;
+              }
+              await ref
+                  .read(settingsCenterControllerProvider.notifier)
+                  .updateLanguagePreference(
+                    language: selection,
+                    feedbackText: localizations.settingsLanguageFeedback,
+                  );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -378,6 +442,102 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
+  /// 主题切换沿用底部面板承接少量枚举选择，保持设置页行内密度稳定。
+  Future<SettingsThemeModePreference?> _pickThemeModePreference({
+    required BuildContext context,
+    required SettingsThemeModePreference currentMode,
+    required AppLocalizations localizations,
+  }) {
+    return showModalBottomSheet<SettingsThemeModePreference>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  localizations.settingsThemeModePickerTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                SizedBox(height: 12.h),
+                _ModeSheetTile(
+                  title: localizations.settingsThemeModeSystem,
+                  selected: currentMode == SettingsThemeModePreference.system,
+                  onTap: () => Navigator.of(
+                    context,
+                  ).pop(SettingsThemeModePreference.system),
+                ),
+                SizedBox(height: 8.h),
+                _ModeSheetTile(
+                  title: localizations.settingsThemeModeLight,
+                  selected: currentMode == SettingsThemeModePreference.light,
+                  onTap: () => Navigator.of(
+                    context,
+                  ).pop(SettingsThemeModePreference.light),
+                ),
+                SizedBox(height: 8.h),
+                _ModeSheetTile(
+                  title: localizations.settingsThemeModeDark,
+                  selected: currentMode == SettingsThemeModePreference.dark,
+                  onTap: () => Navigator.of(
+                    context,
+                  ).pop(SettingsThemeModePreference.dark),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// 语言切换当前只有中英两项，复用底部面板即可覆盖 MVP 选择场景。
+  Future<SettingsLanguagePreference?> _pickLanguagePreference({
+    required BuildContext context,
+    required SettingsLanguagePreference currentLanguage,
+    required AppLocalizations localizations,
+  }) {
+    return showModalBottomSheet<SettingsLanguagePreference>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  localizations.settingsLanguagePickerTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                SizedBox(height: 12.h),
+                _ModeSheetTile(
+                  title: localizations.settingsLanguageZh,
+                  selected: currentLanguage == SettingsLanguagePreference.zh,
+                  onTap: () =>
+                      Navigator.of(context).pop(SettingsLanguagePreference.zh),
+                ),
+                SizedBox(height: 8.h),
+                _ModeSheetTile(
+                  title: localizations.settingsLanguageEn,
+                  selected: currentLanguage == SettingsLanguagePreference.en,
+                  onTap: () =>
+                      Navigator.of(context).pop(SettingsLanguagePreference.en),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   /// 通知权限状态文案统一收口在页面层解析，避免业务层承载最终展示文本。
   String _notificationStatusText(
     NotificationPermissionStatus status,
@@ -410,6 +570,30 @@ class SettingsCenterPage extends HookConsumerWidget {
         localizations.settingsWidgetDisplayPreviewOnly,
       WidgetDisplayMode.fullContent =>
         localizations.settingsWidgetDisplayFullContent,
+    };
+  }
+
+  /// 主题偏好文案统一在页面层映射，避免领域层直接承载最终展示文本。
+  String _themeModeText(
+    SettingsThemeModePreference mode,
+    AppLocalizations localizations,
+  ) {
+    return switch (mode) {
+      SettingsThemeModePreference.system =>
+        localizations.settingsThemeModeSystem,
+      SettingsThemeModePreference.light => localizations.settingsThemeModeLight,
+      SettingsThemeModePreference.dark => localizations.settingsThemeModeDark,
+    };
+  }
+
+  /// 语言偏好文案统一在页面层映射，保证设置行和值面板使用同一套显示文本。
+  String _languagePreferenceText(
+    SettingsLanguagePreference language,
+    AppLocalizations localizations,
+  ) {
+    return switch (language) {
+      SettingsLanguagePreference.zh => localizations.settingsLanguageZh,
+      SettingsLanguagePreference.en => localizations.settingsLanguageEn,
     };
   }
 

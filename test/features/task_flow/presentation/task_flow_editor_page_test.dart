@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:screen_note/app/app.dart';
 import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/app/startup/widget_launch_bridge.dart';
-import 'package:screen_note/features/app_shell/presentation/widgets/app_shell_quick_add_sheet.dart';
 import 'package:screen_note/features/task_flow/application/providers/task_flow_runtime_providers.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_feed_snapshot.dart';
@@ -17,7 +16,7 @@ import 'package:screen_note/features/task_flow/infrastructure/task_flow_reposito
 
 void main() {
   group('TaskFlowEditorPage', () {
-    testWidgets('全局 quick add 会进入事项编辑页新建态', (WidgetTester tester) async {
+    testWidgets('全局添加入口会直接进入事项编辑页新建态', (WidgetTester tester) async {
       final _TestRuntime runtime = _TestRuntime.create();
       addTearDown(runtime.dispose);
 
@@ -26,17 +25,6 @@ void main() {
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
 
-      expect(find.byType(AppShellQuickAddSheet), findsOneWidget);
-
-      await tester.tap(
-        find.descendant(
-          of: find.byType(AppShellQuickAddSheet),
-          matching: find.byType(FilledButton),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.byType(AppShellQuickAddSheet), findsNothing);
       expect(find.byType(TextField), findsNWidgets(2));
     });
 
@@ -48,19 +36,14 @@ void main() {
 
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
-      await tester.tap(
-        find.descendant(
-          of: find.byType(AppShellQuickAddSheet),
-          matching: find.byType(FilledButton),
-        ),
-      );
-      await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField).first, '补齐编辑页保存链路');
       await tester.tap(find.byType(FilledButton));
       await tester.pumpAndSettle();
 
-      final tasks = await runtime.repository.loadTasksByStatus(TaskStatus.active);
+      final tasks = await runtime.repository.loadTasksByStatus(
+        TaskStatus.active,
+      );
 
       expect(find.byType(TextField), findsNothing);
       expect(find.text('补齐编辑页保存链路'), findsOneWidget);
@@ -74,13 +57,6 @@ void main() {
       await _pumpApp(tester, runtime: runtime);
 
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-      await tester.tap(
-        find.descendant(
-          of: find.byType(AppShellQuickAddSheet),
-          matching: find.byType(FilledButton),
-        ),
-      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(FilledButton));
@@ -162,20 +138,9 @@ void main() {
       final _TestRuntime runtime = _TestRuntime.create();
       addTearDown(runtime.dispose);
 
-      await _pumpApp(
-        tester,
-        runtime: runtime,
-        failRefresh: true,
-      );
+      await _pumpApp(tester, runtime: runtime, failRefresh: true);
 
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-      await tester.tap(
-        find.descendant(
-          of: find.byType(AppShellQuickAddSheet),
-          matching: find.byType(FilledButton),
-        ),
-      );
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField).first, 'refresh 失败也保存成功');
@@ -196,10 +161,7 @@ void main() {
 
 /// 测试运行时统一复用内存数据库，避免页面测试落到真实本地存储。
 final class _TestRuntime {
-  _TestRuntime({
-    required this.database,
-    required this.repository,
-  });
+  _TestRuntime({required this.database, required this.repository});
 
   final TaskFlowDatabase database;
   final TaskFlowRepositoryImpl repository;
@@ -217,7 +179,7 @@ final class _TestRuntime {
   Future<void> dispose() => database.close();
 }
 
-/// 统一泵起真实应用壳层，并把 task-flow 真源替换成内存实现，保证路由测试可重复。
+/// 统一拉起真实应用壳层，并把 task-flow 真源替换成内存实现，保证路由测试可重复。
 Future<void> _pumpApp(
   WidgetTester tester, {
   required _TestRuntime runtime,
@@ -235,7 +197,9 @@ Future<void> _pumpApp(
           const _FakeWidgetLaunchBridge(rawLaunchLocation: RoutePaths.home),
         ),
         taskFlowDatabaseProvider.overrideWithValue(runtime.database),
-        taskFlowMutationRepositoryProvider.overrideWithValue(runtime.repository),
+        taskFlowMutationRepositoryProvider.overrideWithValue(
+          runtime.repository,
+        ),
         taskFlowRepositoryProvider.overrideWithValue(runtime.repository),
         if (failRefresh)
           taskFlowHomeControllerProvider.overrideWith(
