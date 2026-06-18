@@ -15,7 +15,8 @@ import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
-const double _taskFlowHomeBottomInset = 96;
+/// 首页底部留白只交给外层安全区和壳层导航处理，这里不再额外叠加视觉空隙。
+const double _taskFlowHomeBottomInset = 0;
 
 /// 首页任务流页面只消费稳定快照，不直接改库也不重复推导业务优先级。
 class TaskFlowHomePage extends HookConsumerWidget {
@@ -248,7 +249,8 @@ final class _TaskFlowBrandHeader extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Icon(
-            Icons.eco_rounded,
+            // 首页品牌锚点改为更接近设计源的便签图标，避免误读成自然/健康类应用。
+            Icons.note_alt_rounded,
             color: theme.colorScheme.primary,
             size: 24.sp,
           ),
@@ -289,13 +291,10 @@ final class _HomeContextChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Container(
-              width: 14.w,
-              height: 14.w,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                shape: BoxShape.circle,
-              ),
+            Icon(
+              Icons.schedule_rounded,
+              size: 16.sp,
+              color: theme.colorScheme.primary,
             ),
             SizedBox(width: 10.w),
             Text(

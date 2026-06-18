@@ -25,6 +25,7 @@ import 'package:screen_note/features/task_flow/presentation/pages/task_flow_home
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
 void main() {
   group('TaskFlowHomePage', () {
@@ -391,6 +392,53 @@ void main() {
     expect(find.text('历史状态'), findsOneWidget);
     expect(find.text('已完成 3'), findsOneWidget);
     expect(find.text('已删除 1'), findsOneWidget);
+  });
+
+  testWidgets('首页滚动到底部时不会保留额外空隙', (WidgetTester tester) async {
+    await _pumpHomePage(
+      tester,
+      child: ProviderScope(
+        overrides: [
+          taskFlowHomeControllerProvider.overrideWith(
+            () => _FakeTaskFlowHomeController(
+              snapshot: TaskFeedSnapshot(
+                pinnedTasks: const <TaskEntity>[],
+                overdueTasks: const <TaskEntity>[],
+                todayTasks: const <TaskEntity>[],
+                otherTasks: List<TaskEntity>.generate(
+                  8,
+                  (int index) => _buildTask(
+                    id: 'task-$index',
+                    title: '事项 $index',
+                    createdAt: DateTime(2026, 6, 18, 8, index),
+                  ),
+                ),
+                activeCount: 8,
+                completedCount: 2,
+                deletedCount: 1,
+              ),
+            ),
+          ),
+        ],
+        child: const Scaffold(body: TaskFlowHomePage()),
+      ),
+    );
+
+    await tester.scrollUntilVisible(find.text('历史状态'), 200);
+    await tester.pumpAndSettle();
+
+    final ScrollableState scrollableState = tester.state(
+      find.byType(Scrollable).first,
+    );
+    scrollableState.position.jumpTo(scrollableState.position.maxScrollExtent);
+    await tester.pumpAndSettle();
+
+    final Rect lastPanelRect = tester.getRect(
+      find.byType(ScreenNotePanel).last,
+    );
+    final Rect viewportRect = tester.getRect(find.byType(Scrollable).first);
+
+    expect(viewportRect.bottom - lastPanelRect.bottom, lessThanOrEqualTo(24));
   });
 
   group('TaskFlowHomeController', () {
