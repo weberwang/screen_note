@@ -7,11 +7,7 @@ import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 /// 首页主事项卡片，只负责按冻结稿层级呈现当前最重要的一条事项。
 class PriorityTaskCard extends StatelessWidget {
   /// 创建主事项卡片。
-  const PriorityTaskCard({
-    required this.task,
-    this.onTap,
-    super.key,
-  });
+  const PriorityTaskCard({required this.task, this.onTap, super.key});
 
   /// 当前首页主事项；为空时展示最小空态提示。
   final TaskEntity? task;
@@ -25,23 +21,21 @@ class PriorityTaskCard extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final ScreenNoteThemePalette palette = context.screenNotePalette;
     final bool isEmpty = task == null;
+    final _PriorityMetaData metaData = _buildMetaData(context, localizations);
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(36.r),
+        borderRadius: ScreenNoteRadii.priorityCard,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(36.r),
+            borderRadius: ScreenNoteRadii.priorityCard,
             border: Border.all(color: palette.lineSoft),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: <Color>[
-                palette.surfaceRaised,
-                palette.surfaceCard,
-              ],
+              colors: <Color>[palette.surfaceRaised, palette.surfaceCard],
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -88,8 +82,8 @@ class PriorityTaskCard extends StatelessWidget {
                     SizedBox(width: 14.w),
                     Expanded(
                       child: _PriorityMetaCopy(
-                        title: localizations.taskEditorDueDateLabel,
-                        value: _buildDueLabel(context, localizations),
+                        title: metaData.title,
+                        value: metaData.value,
                       ),
                     ),
                     SizedBox(width: 16.w),
@@ -98,7 +92,7 @@ class PriorityTaskCard extends StatelessWidget {
                       style: FilledButton.styleFrom(
                         minimumSize: Size(132.w, 52.h),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
+                          borderRadius: ScreenNoteRadii.actionPill,
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                       ),
@@ -145,25 +139,47 @@ class PriorityTaskCard extends StatelessWidget {
     return localizations.taskFlowPriorityFallbackBody;
   }
 
-  /// 到期信息只做展示格式化，不在页面层引入新的业务排序或状态推导。
-  String _buildDueLabel(
+  /// 主卡片底部元信息统一在这里收口，确保今天到期态能同时保留状态语义和具体日期。
+  _PriorityMetaData _buildMetaData(
     BuildContext context,
     AppLocalizations localizations,
   ) {
     final TaskEntity? currentTask = task;
     if (currentTask == null) {
-      return localizations.taskEditorNoDueDate;
+      return _PriorityMetaData(
+        title: localizations.taskEditorDueDateLabel,
+        value: localizations.taskEditorNoDueDate,
+      );
     }
     final DateTime? dueAt = currentTask.dueAt;
     if (dueAt == null) {
-      return currentTask.isPinned
-          ? localizations.taskFlowPinnedLabel
-          : localizations.taskEditorNoDueDate;
+      return _PriorityMetaData(
+        title: localizations.taskEditorDueDateLabel,
+        value: currentTask.isPinned
+            ? localizations.taskFlowPinnedLabel
+            : localizations.taskEditorNoDueDate,
+      );
     }
-
+    final DateTime now = DateTime.now();
+    final bool isDueToday =
+        dueAt.year == now.year &&
+        dueAt.month == now.month &&
+        dueAt.day == now.day;
     final MaterialLocalizations materialLocalizations =
         MaterialLocalizations.of(context);
-    return materialLocalizations.formatMediumDate(dueAt);
+    final String formattedDate = materialLocalizations.formatMediumDate(dueAt);
+    // 首页主事项需要明确表达“今天到期”语义，避免今日事项退化成普通日期字符串。
+    if (isDueToday) {
+      return _PriorityMetaData(
+        title: localizations.taskFlowDueTodayLabel,
+        value: formattedDate,
+      );
+    }
+
+    return _PriorityMetaData(
+      title: localizations.taskEditorDueDateLabel,
+      value: formattedDate,
+    );
   }
 
   /// 小标签维持首页主卡片的第一视觉锚点，避免主事项层级被削弱。
@@ -174,7 +190,7 @@ class PriorityTaskCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: palette.surfaceMuted,
-        borderRadius: BorderRadius.circular(999.r),
+        borderRadius: BorderRadius.circular(999),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
@@ -216,14 +232,10 @@ final class _PriorityMetaIcon extends StatelessWidget {
       height: 46.w,
       decoration: BoxDecoration(
         color: palette.surfaceMuted,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: ScreenNoteRadii.insetSurface,
       ),
       alignment: Alignment.center,
-      child: Icon(
-        icon,
-        size: 20.sp,
-        color: theme.colorScheme.primary,
-      ),
+      child: Icon(icon, size: 20.sp, color: theme.colorScheme.primary),
     );
   }
 }
@@ -231,10 +243,7 @@ final class _PriorityMetaIcon extends StatelessWidget {
 /// 主事项卡片底部文案块，只负责展示当前截止信息，不承接交互。
 final class _PriorityMetaCopy extends StatelessWidget {
   /// 创建底部文案块。
-  const _PriorityMetaCopy({
-    required this.title,
-    required this.value,
-  });
+  const _PriorityMetaCopy({required this.title, required this.value});
 
   /// 元信息标题。
   final String title;
@@ -268,4 +277,16 @@ final class _PriorityMetaCopy extends StatelessWidget {
       ],
     );
   }
+}
+
+/// 主事项卡片底部元信息模型，只服务显示层组合，不把展示结构散落进 build 分支。
+final class _PriorityMetaData {
+  /// 创建主事项卡片底部元信息。
+  const _PriorityMetaData({required this.title, required this.value});
+
+  /// 元信息主标题。
+  final String title;
+
+  /// 元信息次级内容。
+  final String value;
 }

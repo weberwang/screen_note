@@ -283,23 +283,28 @@ class SettingsCenterController extends _$SettingsCenterController {
     final WidgetPinRequestResult result = await ref
         .read(requestPinWidgetUseCaseProvider)
         .execute();
-    _showFeedback(
-      switch (result) {
-        WidgetPinRequestResult.requested => requestedFeedbackText,
-        WidgetPinRequestResult.unsupported => unsupportedFeedbackText,
-        WidgetPinRequestResult.failed => failedFeedbackText,
-      },
-    );
+    _showFeedback(switch (result) {
+      WidgetPinRequestResult.requested => requestedFeedbackText,
+      WidgetPinRequestResult.unsupported => unsupportedFeedbackText,
+      WidgetPinRequestResult.failed => failedFeedbackText,
+    });
   }
 
   /// 统一复用共享壳层轻反馈宿主，避免设置页私自引入另一套提示系统。
   void _showFeedback(String text) {
-    ref.read(appShellUiStateControllerProvider.notifier).showFeedback(
-      AppShellFeedbackMessage(
-        level: AppShellFeedbackLevel.info,
-        text: text,
-      ),
-    );
+    ref
+        .read(appShellUiStateControllerProvider.notifier)
+        .showFeedback(
+          AppShellFeedbackMessage(
+            level: AppShellFeedbackLevel.info,
+            text: text,
+          ),
+        );
+  }
+
+  /// 显示纯提示型反馈，供设置页表达系统能力边界而不强行推进状态切换。
+  void showInfoFeedback(String text) {
+    _showFeedback(text);
   }
 
   /// 设置页更新偏好后直接同步根应用控制器，避免 MaterialApp 还要依赖一次额外异步重读。

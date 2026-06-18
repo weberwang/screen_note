@@ -45,7 +45,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeGreetingSubtitle => '先把今天最重要的事放在最前面。';
 
   @override
-  String get homeTodayChip => 'Today';
+  String get homeTodayChip => '今天';
 
   @override
   String get homePriorityLabel => '当前重点';
@@ -91,10 +91,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskFlowEmptyBody => '创建或恢复一条事项后，这里会出现新的关注列表。';
 
   @override
-  String get taskFlowPrivateTaskHint => '这条私密事项会在首页隐藏正文';
+  String get taskFlowPrivateTaskHint => '首页已隐藏内容';
 
   @override
-  String get taskFlowPriorityFallbackBody => '先继续推进下一步最有价值的动作。';
+  String get taskFlowPriorityFallbackBody => '继续处理下一步';
 
   @override
   String get taskFlowPriorityContinueAction => '继续处理';
@@ -117,12 +117,15 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get taskFlowDueTodayLabel => '今天截止';
+
+  @override
   String taskFlowOverdueAtLabel(String dateTime) {
     return '已逾期，原截止 $dateTime';
   }
 
   @override
-  String get taskFlowOverdueSectionTitle => '逾期待处理';
+  String get taskFlowOverdueSectionTitle => '逾期';
 
   @override
   String get taskFlowUpNextSectionTitle => '接下来';
@@ -264,7 +267,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTitle => '设置中心';
 
   @override
-  String get settingsSubtitle => '统一管理 Screen Note 在设备上的工作方式，并继续保护你的笔记安全。';
+  String get settingsSubtitle => '管理提醒、隐私和显示';
 
   @override
   String get settingsNotificationsSection => '通知';
@@ -282,22 +285,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsMembershipSection => '会员';
 
   @override
-  String get settingsNotificationStatusTitle => '通知状态';
+  String get settingsNotificationStatusTitle => '通知';
 
   @override
-  String get settingsNotificationStatusBody => '查看保存和同步动态是否仍能被正常送达。';
+  String get settingsNotificationStatusBody => '保存与同步提醒';
 
   @override
   String get settingsPrivacyModeTitle => '隐私模式';
 
   @override
-  String get settingsPrivacyModeBody => '在预览中隐藏敏感内容。';
+  String get settingsPrivacyModeBody => '隐藏预览内容';
 
   @override
   String get settingsWidgetDisplayModeTitle => 'Widget 展示模式';
 
   @override
-  String get settingsWidgetDisplayModeBody => '选择小组件中显示什么内容。';
+  String get settingsWidgetDisplayModeBody => '选择小组件内容';
 
   @override
   String get settingsWidgetInstallTitle => '添加桌面小组件';
@@ -333,13 +336,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsSyncStatusTitle => '同步状态';
 
   @override
-  String get settingsSyncStatusBody => '刚刚完成同步';
+  String get settingsSyncStatusBody => '刚刚同步';
 
   @override
   String get settingsMembershipTitle => 'Screen Note Pro';
 
   @override
-  String get settingsMembershipBody => '管理你的方案与权益。';
+  String get settingsMembershipBody => '管理方案与权益';
 
   @override
   String get settingsNotificationEnabled => '已开启';
@@ -354,7 +357,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsPermissionDowngradedTitle => '通知已关闭。';
 
   @override
-  String get settingsPermissionDowngradedBody => '你可能会错过与笔记相关的重要更新。';
+  String get settingsPermissionDowngradedBody => '你可能错过重要提醒';
 
   @override
   String get settingsReviewAction => '启用';
@@ -399,7 +402,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsPrivacyProtectionTitle => '隐私模式已开启。';
 
   @override
-  String get settingsPrivacyProtectionBody => '最近记录和小组件中的预览内容都会被模糊处理。';
+  String get settingsPrivacyProtectionBody => '最近项目和小组件会模糊显示';
 
   @override
   String get settingsPrivacyProtectionAction => '了解更多';
@@ -408,7 +411,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsMembershipSupportTitle => '你正在使用 Screen Note Pro';
 
   @override
-  String get settingsMembershipSupportBody => '感谢你支持更专注、更私密的笔记体验。';
+  String get settingsMembershipSupportBody => '感谢支持更专注的记录体验';
 
   @override
   String get settingsMembershipActive => '已激活';
@@ -439,6 +442,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsNotificationDeferredFeedback => '通知权限仍然受限';
+
+  @override
+  String get settingsNotificationDisableInSystemFeedback => '请在系统设置中关闭通知';
+
+  @override
+  String get settingsNotificationDisableDialogTitle => '关闭通知？';
+
+  @override
+  String get settingsNotificationDisableDialogBody => '通知需要在系统设置中关闭，是否现在前往？';
+
+  @override
+  String get settingsNotificationDisableDialogCancel => '取消';
+
+  @override
+  String get settingsNotificationDisableDialogConfirm => '前往设置';
+
+  @override
+  String get settingsNotificationOpenSettingsFailed => '无法打开系统设置，请稍后重试';
 
   @override
   String get settingsWidgetInstallRequestedFeedback => '已向桌面发出小组件添加请求';

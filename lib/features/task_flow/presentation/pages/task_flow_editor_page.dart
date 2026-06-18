@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,14 +8,12 @@ import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart'
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_toast.dart';
 
 /// 事项编辑页统一承接新建态输入与保存主链路，不在页面层直接碰持久化细节。
 class TaskFlowEditorPage extends HookConsumerWidget {
   /// 创建事项编辑页。
-  const TaskFlowEditorPage({
-    super.key,
-    this.taskId,
-  });
+  const TaskFlowEditorPage({super.key, this.taskId});
 
   /// 传入既有事项 ID 时进入编辑态；为空时走新建态。
   final String? taskId;
@@ -39,26 +34,29 @@ class TaskFlowEditorPage extends HookConsumerWidget {
     final TaskEntity? existingTask = existingTaskAsync.asData?.value;
     final bool isEditingExistingTask = taskId != null;
 
-    useEffect(() {
-      if (!isEditingExistingTask ||
-          existingTask == null ||
-          didHydrateExistingTask.value) {
-        return null;
-      }
+    useEffect(
+      () {
+        if (!isEditingExistingTask ||
+            existingTask == null ||
+            didHydrateExistingTask.value) {
+          return null;
+        }
 
-      // 既有事项只在首次进入编辑态时回填一次，避免异步重建覆盖用户正在输入的草稿。
-      titleController.text = existingTask.title;
-      noteController.text = existingTask.note;
-      isPinned.value = existingTask.isPinned;
-      isPrivate.value = existingTask.isPrivate;
-      dueAt.value = existingTask.dueAt;
-      didHydrateExistingTask.value = true;
-      return null;
-    }, <Object?>[
-      isEditingExistingTask,
-      existingTask,
-      didHydrateExistingTask.value,
-    ]);
+        // 既有事项只在首次进入编辑态时回填一次，避免异步重建覆盖用户正在输入的草稿。
+        titleController.text = existingTask.title;
+        noteController.text = existingTask.note;
+        isPinned.value = existingTask.isPinned;
+        isPrivate.value = existingTask.isPrivate;
+        dueAt.value = existingTask.dueAt;
+        didHydrateExistingTask.value = true;
+        return null;
+      },
+      <Object?>[
+        isEditingExistingTask,
+        existingTask,
+        didHydrateExistingTask.value,
+      ],
+    );
 
     Future<void> saveTask() async {
       final String normalizedTitle = titleController.text.trim();
@@ -70,26 +68,30 @@ class TaskFlowEditorPage extends HookConsumerWidget {
       isSaving.value = true;
       try {
         if (isEditingExistingTask) {
-          await ref.read(updateTaskUseCaseProvider).execute(
-            UpdateTaskInput(
-              taskId: taskId!,
-              title: normalizedTitle,
-              note: noteController.text,
-              dueAt: dueAt.value,
-              isPinned: isPinned.value,
-              isPrivate: isPrivate.value,
-            ),
-          );
+          await ref
+              .read(updateTaskUseCaseProvider)
+              .execute(
+                UpdateTaskInput(
+                  taskId: taskId!,
+                  title: normalizedTitle,
+                  note: noteController.text,
+                  dueAt: dueAt.value,
+                  isPinned: isPinned.value,
+                  isPrivate: isPrivate.value,
+                ),
+              );
         } else {
-          await ref.read(createTaskUseCaseProvider).execute(
-            CreateTaskInput(
-              title: normalizedTitle,
-              note: noteController.text,
-              dueAt: dueAt.value,
-              isPinned: isPinned.value,
-              isPrivate: isPrivate.value,
-            ),
-          );
+          await ref
+              .read(createTaskUseCaseProvider)
+              .execute(
+                CreateTaskInput(
+                  title: normalizedTitle,
+                  note: noteController.text,
+                  dueAt: dueAt.value,
+                  isPinned: isPinned.value,
+                  isPrivate: isPrivate.value,
+                ),
+              );
         }
 
         try {
@@ -207,14 +209,11 @@ class TaskFlowEditorPage extends HookConsumerWidget {
       body: SafeArea(
         child: existingTaskAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (Object error, StackTrace stackTrace) => Center(
-            child: Text(localizations.taskCreateFailed),
-          ),
+          error: (Object error, StackTrace stackTrace) =>
+              Center(child: Text(localizations.taskCreateFailed)),
           data: (TaskEntity? task) {
             if (isEditingExistingTask && task == null) {
-              return Center(
-                child: Text(localizations.taskCreateFailed),
-              );
+              return Center(child: Text(localizations.taskCreateFailed));
             }
 
             return Column(
@@ -286,8 +285,10 @@ class TaskFlowEditorPage extends HookConsumerWidget {
                                 label:
                                     localizations.taskEditorPrivacyFieldLabel,
                                 value: isPrivate.value
-                                    ? localizations.taskEditorPrivacyPrivateValue
-                                    : localizations.taskEditorPrivacyPublicValue,
+                                    ? localizations
+                                          .taskEditorPrivacyPrivateValue
+                                    : localizations
+                                          .taskEditorPrivacyPublicValue,
                                 leadingAccent: isPrivate.value,
                                 onTap: pickPrivacyState,
                               ),
@@ -304,7 +305,9 @@ class TaskFlowEditorPage extends HookConsumerWidget {
                                   Icon(
                                     Icons.notes_rounded,
                                     size: 22,
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
@@ -388,7 +391,7 @@ class TaskFlowEditorPage extends HookConsumerWidget {
 
   /// 统一展示表单页短反馈，避免输入校验和保存失败散落不同提示样式。
   void _showMessage(BuildContext context, String message) {
-    _TaskFlowCupertinoToast.show(context, message);
+    ScreenNoteToast.show(context, message);
   }
 }
 
@@ -431,15 +434,10 @@ final class _TaskEditorTopBar extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontSize: 22,
-              ),
+              style: theme.textTheme.titleLarge?.copyWith(fontSize: 22),
             ),
           ),
-          TextButton(
-            onPressed: onSave,
-            child: Text(saveLabel),
-          ),
+          TextButton(onPressed: onSave, child: Text(saveLabel)),
         ],
       ),
     );
@@ -468,7 +466,7 @@ final class _TaskEditorTitleSurface extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: ScreenNoteRadii.largeSurface,
         border: Border.all(color: Theme.of(context).dividerColor),
         boxShadow: <BoxShadow>[
           BoxShadow(
@@ -529,16 +527,12 @@ final class _TaskEditorValueRow extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(32),
+      borderRadius: ScreenNoteRadii.largeSurface,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         child: Row(
           children: <Widget>[
-            Icon(
-              icon,
-              size: 24,
-              color: theme.colorScheme.primary,
-            ),
+            Icon(icon, size: 24, color: theme.colorScheme.primary),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -566,10 +560,7 @@ final class _TaskEditorValueRow extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: palette.inkSecondary,
-            ),
+            Icon(Icons.chevron_right_rounded, color: palette.inkSecondary),
           ],
         ),
       ),
@@ -622,10 +613,7 @@ final class _TaskEditorOptionSheet<T> extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              title,
-              style: theme.textTheme.titleLarge,
-            ),
+            Text(title, style: theme.textTheme.titleLarge),
             const SizedBox(height: 12),
             for (final _TaskEditorOption<T> option in options) ...<Widget>[
               _TaskEditorOptionTile<T>(
@@ -644,10 +632,7 @@ final class _TaskEditorOptionSheet<T> extends StatelessWidget {
 /// 编辑页选项数据只承载值和文案，避免页面底部面板手写平行数组。
 final class _TaskEditorOption<T> {
   /// 创建选项数据。
-  const _TaskEditorOption({
-    required this.value,
-    required this.label,
-  });
+  const _TaskEditorOption({required this.value, required this.label});
 
   /// 实际值。
   final T value;
@@ -659,10 +644,7 @@ final class _TaskEditorOption<T> {
 /// 选项行只负责渲染当前值与选中态，不承接额外业务逻辑。
 final class _TaskEditorOptionTile<T> extends StatelessWidget {
   /// 创建选项行。
-  const _TaskEditorOptionTile({
-    required this.option,
-    required this.selected,
-  });
+  const _TaskEditorOptionTile({required this.option, required this.selected});
 
   /// 当前选项。
   final _TaskEditorOption<T> option;
@@ -673,7 +655,9 @@ final class _TaskEditorOptionTile<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      shape: RoundedRectangleBorder(
+        borderRadius: ScreenNoteRadii.compactSurface,
+      ),
       tileColor: selected ? const Color(0xFFEAF4EB) : const Color(0xFFF6F6F2),
       title: Text(option.label),
       trailing: selected
@@ -681,78 +665,5 @@ final class _TaskEditorOptionTile<T> extends StatelessWidget {
           : null,
       onTap: () => Navigator.of(context).pop(option.value),
     );
-  }
-}
-
-/// 编辑页短提示统一走 iOS 风格居中 HUD，避免校验反馈再回退到底部 SnackBar 语义。
-final class _TaskFlowCupertinoToast {
-  _TaskFlowCupertinoToast._();
-
-  static OverlayEntry? _activeEntry;
-  static Timer? _dismissTimer;
-
-  /// 展示居中轻提示；新提示会覆盖旧提示，避免连续点击时叠出多层浮层。
-  static void show(BuildContext context, String message) {
-    final OverlayState? overlay = Overlay.maybeOf(context, rootOverlay: true);
-    if (overlay == null) {
-      return;
-    }
-
-    _dismissCurrent();
-    _activeEntry = OverlayEntry(
-      builder: (BuildContext overlayContext) {
-        final Color backgroundColor = CupertinoDynamicColor.resolve(
-          CupertinoColors.systemGrey6,
-          overlayContext,
-        ).withValues(alpha: 0.94);
-        final Color textColor = CupertinoDynamicColor.resolve(
-          CupertinoColors.label,
-          overlayContext,
-        );
-
-        return IgnorePointer(
-          child: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: CupertinoPopupSurface(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 14,
-                      ),
-                      child: Text(
-                        message,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    overlay.insert(_activeEntry!);
-    _dismissTimer = Timer(const Duration(seconds: 2), _dismissCurrent);
-  }
-
-  /// 统一清理当前轻提示，避免旧定时器在下一条提示出现后误删新浮层。
-  static void _dismissCurrent() {
-    _dismissTimer?.cancel();
-    _dismissTimer = null;
-    _activeEntry?.remove();
-    _activeEntry = null;
   }
 }

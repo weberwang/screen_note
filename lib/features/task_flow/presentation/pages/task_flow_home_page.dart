@@ -15,6 +15,8 @@ import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
+const double _taskFlowHomeBottomInset = 96;
+
 /// 首页任务流页面只消费稳定快照，不直接改库也不重复推导业务优先级。
 class TaskFlowHomePage extends HookConsumerWidget {
   /// 创建首页页面。
@@ -36,7 +38,12 @@ class TaskFlowHomePage extends HookConsumerWidget {
           todayLabel: localizations.homeTodayChip,
         ),
         error: (Object error, StackTrace stackTrace) => Padding(
-          padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 120.h),
+          padding: EdgeInsets.fromLTRB(
+            24.w,
+            16.h,
+            24.w,
+            _taskFlowHomeBottomInset.h,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -74,7 +81,12 @@ class TaskFlowHomePage extends HookConsumerWidget {
           return CustomScrollView(
             slivers: <Widget>[
               SliverPadding(
-                padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 132.h),
+                padding: EdgeInsets.fromLTRB(
+                  24.w,
+                  16.h,
+                  24.w,
+                  _taskFlowHomeBottomInset.h,
+                ),
                 sliver: SliverList.list(
                   children: <Widget>[
                     _TaskFlowBrandHeader(appTitle: localizations.appTitle),
@@ -232,7 +244,7 @@ final class _TaskFlowBrandHeader extends StatelessWidget {
           height: 48.w,
           decoration: BoxDecoration(
             color: palette.surfaceMuted,
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: ScreenNoteRadii.small,
           ),
           alignment: Alignment.center,
           child: Icon(
@@ -270,7 +282,7 @@ final class _HomeContextChip extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: palette.surfaceMuted,
-        borderRadius: BorderRadius.circular(999.r),
+        borderRadius: BorderRadius.circular(999),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
@@ -344,7 +356,12 @@ final class _TaskFlowHomeLoadingState extends StatelessWidget {
     final ScreenNoteThemePalette palette = context.screenNotePalette;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 120.h),
+      padding: EdgeInsets.fromLTRB(
+        24.w,
+        16.h,
+        24.w,
+        _taskFlowHomeBottomInset.h,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

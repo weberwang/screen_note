@@ -302,6 +302,12 @@ abstract class AppLocalizations {
   /// **'Due {dateTime}'**
   String taskFlowDueAtLabel(String dateTime);
 
+  /// Home task status label shown when the task is due today.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get taskFlowDueTodayLabel;
+
   /// Home urgent queue label shown for overdue tasks.
   ///
   /// In en, this message translates to:
@@ -617,7 +623,7 @@ abstract class AppLocalizations {
   /// Title for the notification status row.
   ///
   /// In en, this message translates to:
-  /// **'Notification Status'**
+  /// **'Notifications'**
   String get settingsNotificationStatusTitle;
 
   /// Description for the notification status row.
@@ -925,6 +931,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification access is still limited.'**
   String get settingsNotificationDeferredFeedback;
+
+  /// Capability-boundary feedback shown when the user tries to disable notifications inside the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off notifications in system settings.'**
+  String get settingsNotificationDisableInSystemFeedback;
+
+  /// Confirmation title shown before sending the user to system settings to turn off notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off notifications?'**
+  String get settingsNotificationDisableDialogTitle;
+
+  /// Confirmation body shown before sending the user to system settings to turn off notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications can only be turned off in system settings. Open settings now?'**
+  String get settingsNotificationDisableDialogBody;
+
+  /// Cancel action in the notification disable confirmation dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get settingsNotificationDisableDialogCancel;
+
+  /// Confirm action in the notification disable confirmation dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get settingsNotificationDisableDialogConfirm;
+
+  /// Shared feedback shown when the app fails to open system settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open system settings. Try again later.'**
+  String get settingsNotificationOpenSettingsFailed;
 
   /// Shared feedback shown after requesting the launcher to pin the widget.
   ///

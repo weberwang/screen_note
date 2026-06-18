@@ -28,7 +28,7 @@ class ScreenNoteStatTile extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: palette.surfaceRaised,
-        borderRadius: ScreenNoteRadii.small,
+        borderRadius: ScreenNoteRadii.compactSurface,
         border: Border.all(color: palette.lineSoft),
       ),
       child: Padding(

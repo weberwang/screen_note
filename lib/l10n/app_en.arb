@@ -151,6 +151,10 @@
       }
     }
   },
+  "taskFlowDueTodayLabel": "Due today",
+  "@taskFlowDueTodayLabel": {
+    "description": "Home task status label shown when the task is due today."
+  },
   "taskFlowOverdueAtLabel": "Overdue since {dateTime}",
   "@taskFlowOverdueAtLabel": {
     "description": "Home urgent queue label shown for overdue tasks.",
@@ -379,7 +383,7 @@
   "@settingsMembershipSection": {
     "description": "Section title for membership entry."
   },
-  "settingsNotificationStatusTitle": "Notification Status",
+  "settingsNotificationStatusTitle": "Notifications",
   "@settingsNotificationStatusTitle": {
     "description": "Title for the notification status row."
   },
@@ -586,6 +590,30 @@
   "settingsNotificationDeferredFeedback": "Notification access is still limited.",
   "@settingsNotificationDeferredFeedback": {
     "description": "Shared feedback shown when notification permission remains limited after review."
+  },
+  "settingsNotificationDisableInSystemFeedback": "Turn off notifications in system settings.",
+  "@settingsNotificationDisableInSystemFeedback": {
+    "description": "Capability-boundary feedback shown when the user tries to disable notifications inside the app."
+  },
+  "settingsNotificationDisableDialogTitle": "Turn off notifications?",
+  "@settingsNotificationDisableDialogTitle": {
+    "description": "Confirmation title shown before sending the user to system settings to turn off notifications."
+  },
+  "settingsNotificationDisableDialogBody": "Notifications can only be turned off in system settings. Open settings now?",
+  "@settingsNotificationDisableDialogBody": {
+    "description": "Confirmation body shown before sending the user to system settings to turn off notifications."
+  },
+  "settingsNotificationDisableDialogCancel": "Cancel",
+  "@settingsNotificationDisableDialogCancel": {
+    "description": "Cancel action in the notification disable confirmation dialog."
+  },
+  "settingsNotificationDisableDialogConfirm": "Open Settings",
+  "@settingsNotificationDisableDialogConfirm": {
+    "description": "Confirm action in the notification disable confirmation dialog."
+  },
+  "settingsNotificationOpenSettingsFailed": "Couldn't open system settings. Try again later.",
+  "@settingsNotificationOpenSettingsFailed": {
+    "description": "Shared feedback shown when the app fails to open system settings."
   },
   "settingsWidgetInstallRequestedFeedback": "Widget request sent to the launcher.",
   "@settingsWidgetInstallRequestedFeedback": {

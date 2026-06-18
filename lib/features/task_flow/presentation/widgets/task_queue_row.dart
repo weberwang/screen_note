@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_entity.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
@@ -29,15 +28,13 @@ class TaskQueueRow extends StatelessWidget {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
     final ScreenNoteThemePalette palette = context.screenNotePalette;
-    final Color accentColor = isOverdue
-        ? theme.colorScheme.error
-        : theme.colorScheme.primary;
+    final Color accentColor = _buildAccentColor(context);
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: ScreenNoteRadii.queueRow,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 8.w),
           child: Row(
@@ -49,7 +46,7 @@ class TaskQueueRow extends StatelessWidget {
                   color: isOverdue
                       ? const Color(0xFFF7E5DE)
                       : palette.surfaceCard,
-                  borderRadius: BorderRadius.circular(18.r),
+                  borderRadius: ScreenNoteRadii.compactSurface,
                 ),
                 alignment: Alignment.center,
                 child: Icon(
@@ -108,14 +105,12 @@ class TaskQueueRow extends StatelessWidget {
     if (task.isPinned) {
       return Icons.push_pin_outlined;
     }
-    return Icons.notifications_none_rounded;
+    // 普通后续事项使用更克制的空心圆起点，避免视觉上误导成提醒告警。
+    return Icons.radio_button_unchecked_rounded;
   }
 
   /// 队列元信息只做展示文案拼装，避免页面层重复做状态分组判断。
-  String _buildMeta(
-    BuildContext context,
-    AppLocalizations localizations,
-  ) {
+  String _buildMeta(BuildContext context, AppLocalizations localizations) {
     if (task.isPrivate) {
       return localizations.taskFlowPrivateTaskHint;
     }
@@ -123,13 +118,43 @@ class TaskQueueRow extends StatelessWidget {
     if (dueAt == null) {
       return localizations.taskEditorNoDueDate;
     }
+    final DateTime now = DateTime.now();
+    final bool isDueToday =
+        dueAt.year == now.year &&
+        dueAt.month == now.month &&
+        dueAt.day == now.day;
+    // 队列行需要把“今天到期”和普通未来事项区分开，保证首页状态矩阵完整。
+    if (isDueToday) {
+      return localizations.taskFlowDueTodayLabel;
+    }
 
-    final String formatted = DateFormat(
-      'MMM d, yyyy',
-      localizations.localeName,
-    ).format(dueAt);
+    final MaterialLocalizations materialLocalizations =
+        MaterialLocalizations.of(context);
+    final String formatted = materialLocalizations.formatMediumDate(dueAt);
     return isOverdue
         ? localizations.taskFlowOverdueAtLabel(formatted)
-        : localizations.taskFlowDueAtLabel(formatted);
+        : formatted;
+  }
+
+  /// 队列色彩按风险强度递减，今天到期保留主色，普通后续回落到次级信息色。
+  Color _buildAccentColor(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+    if (isOverdue) {
+      return theme.colorScheme.error;
+    }
+    final DateTime? dueAt = task.dueAt;
+    if (dueAt == null) {
+      return palette.inkSecondary;
+    }
+    final DateTime now = DateTime.now();
+    final bool isDueToday =
+        dueAt.year == now.year &&
+        dueAt.month == now.month &&
+        dueAt.day == now.day;
+    if (isDueToday) {
+      return theme.colorScheme.primary;
+    }
+    return palette.inkSecondary;
   }
 }

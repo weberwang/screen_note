@@ -75,7 +75,7 @@ final class ScreenNoteTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(32.r),
+          borderRadius: ScreenNoteRadii.panel,
           side: const BorderSide(color: Color(0xFFE4E8E0)),
         ),
       ),
@@ -157,7 +157,7 @@ final class ScreenNoteTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(32.r),
+          borderRadius: ScreenNoteRadii.panel,
           side: const BorderSide(color: Color(0xFF28302B)),
         ),
       ),
@@ -172,7 +172,27 @@ abstract final class ScreenNoteSpacing {
 }
 
 abstract final class ScreenNoteRadii {
+  static const BorderRadius panel = BorderRadius.all(Radius.circular(22));
   static const BorderRadius small = BorderRadius.all(Radius.circular(16));
+  static const BorderRadius priorityCard = BorderRadius.all(
+    Radius.circular(28),
+  );
+  static const BorderRadius queueRow = BorderRadius.all(Radius.circular(20));
+  static const BorderRadius queueIcon = BorderRadius.all(Radius.circular(16));
+  static const BorderRadius actionPill = BorderRadius.all(Radius.circular(20));
+  static const BorderRadius actionSmall = BorderRadius.all(Radius.circular(16));
+  static const BorderRadius largeSurface = BorderRadius.all(
+    Radius.circular(28),
+  );
+  static const BorderRadius mediumSurface = BorderRadius.all(
+    Radius.circular(20),
+  );
+  static const BorderRadius compactSurface = BorderRadius.all(
+    Radius.circular(16),
+  );
+  static const BorderRadius insetSurface = BorderRadius.all(
+    Radius.circular(14),
+  );
 }
 
 final class ScreenNoteThemePalette {

@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/widget_bridge/application/providers/widget_bridge_runtime_providers.dart';
 import 'package:screen_note/features/widget_bridge/domain/entities/widget_snapshot.dart';
@@ -9,6 +11,7 @@ import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_stat_tile.dart';
+import 'package:screen_note/shared/presentation/widgets/screen_note_toast.dart';
 
 /// Widget 桥接正式页，负责展示当前稳定快照预览并触发手动同步。
 class WidgetBridgePage extends ConsumerWidget {
@@ -21,6 +24,8 @@ class WidgetBridgePage extends ConsumerWidget {
     final AsyncValue<WidgetSnapshot> snapshotAsync = ref.watch(
       widgetBridgeControllerProvider,
     );
+    final bool canRequestPinWidget =
+        !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -53,18 +58,25 @@ class WidgetBridgePage extends ConsumerWidget {
             if (!context.mounted) {
               return;
             }
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Text(
-                    synced
-                        ? localizations.widgetSyncSuccess
-                        : localizations.widgetSyncFailed,
-                  ),
-                ),
-              );
+            // 同步反馈统一走全局 Toast，避免 Widget 页退回到底部 SnackBar 造成交互风格割裂。
+            ScreenNoteToast.show(
+              context,
+              synced
+                  ? localizations.widgetSyncSuccess
+                  : localizations.widgetSyncFailed,
+            );
           },
+          canRequestPinWidget: canRequestPinWidget,
+          onRequestPin: () => ref
+              .read(settingsCenterControllerProvider.notifier)
+              .requestPinWidget(
+                requestedFeedbackText:
+                    localizations.settingsWidgetInstallRequestedFeedback,
+                unsupportedFeedbackText:
+                    localizations.settingsWidgetInstallUnsupportedFeedback,
+                failedFeedbackText:
+                    localizations.settingsWidgetInstallFailedFeedback,
+              ),
         ),
         const SizedBox(height: 16),
         _InfoCard(
@@ -176,7 +188,10 @@ class _WidgetBridgeContent extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: _ModeChip(
-                            label: _modeLabel(localizations, snapshot.displayMode),
+                            label: _modeLabel(
+                              localizations,
+                              snapshot.displayMode,
+                            ),
                           ),
                         ),
                       ],
@@ -192,7 +207,10 @@ class _WidgetBridgeContent extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         _ModeChip(
-                          label: _modeLabel(localizations, snapshot.displayMode),
+                          label: _modeLabel(
+                            localizations,
+                            snapshot.displayMode,
+                          ),
                         ),
                       ],
                     ),
@@ -245,7 +263,7 @@ class _WidgetPreviewFrame extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: palette.surfaceRaised,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: ScreenNoteRadii.panel,
         border: Border.all(color: palette.lineSoft),
       ),
       child: Padding(
@@ -376,10 +394,20 @@ class _PreviewEmptyState extends StatelessWidget {
 /// 操作卡片，统一承接手动同步动作与同步失败时的保守说明。
 class _ActionCard extends StatelessWidget {
   /// 创建操作卡片。
-  const _ActionCard({required this.onSync});
+  const _ActionCard({
+    required this.onSync,
+    required this.canRequestPinWidget,
+    required this.onRequestPin,
+  });
 
   /// 手动同步回调。
   final Future<void> Function() onSync;
+
+  /// 只有 Android launcher 支持应用内发起 pin 请求，其他平台只保留安装说明。
+  final bool canRequestPinWidget;
+
+  /// 添加到桌面的动作统一复用设置层用例，避免页面直接接触插件细节。
+  final Future<void> Function() onRequestPin;
 
   @override
   Widget build(BuildContext context) {
@@ -405,6 +433,15 @@ class _ActionCard extends StatelessWidget {
             icon: const Icon(Icons.sync_rounded),
             label: Text(localizations.widgetSyncAction),
           ),
+          if (canRequestPinWidget) ...<Widget>[
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              key: const Key('widget-bridge-install-button'),
+              onPressed: onRequestPin,
+              icon: const Icon(Icons.add_home_outlined),
+              label: Text(localizations.settingsWidgetInstallAction),
+            ),
+          ],
         ],
       ),
     );
@@ -442,7 +479,7 @@ class _InfoCard extends StatelessWidget {
             height: 44,
             decoration: BoxDecoration(
               color: palette.surfaceRaised,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: ScreenNoteRadii.insetSurface,
             ),
             alignment: Alignment.center,
             child: Icon(icon, color: palette.statusPrivate),

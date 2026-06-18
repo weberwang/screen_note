@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/domain/entities/notification_permission_status.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_center_snapshot.dart';
+import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_membership_state.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_sync_status.dart';
-import 'package:screen_note/features/settings_center/domain/entities/settings_language_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/settings_theme_mode_preference.dart';
 import 'package:screen_note/features/settings_center/domain/entities/widget_display_mode.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_degradation_notice.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_option_row.dart';
 import 'package:screen_note/features/settings_center/presentation/widgets/settings_section_header.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 import 'package:screen_note/shared/presentation/widgets/screen_note_panel.dart';
 
 /// 设置中心页面只消费稳定快照与设置意图，不直接感知插件或本地偏好存储细节。
 class SettingsCenterPage extends HookConsumerWidget {
   /// 创建设置中心页面。
-  const SettingsCenterPage({super.key});
+  const SettingsCenterPage({super.key, this.openAppSettingsOverride});
+
+  final Future<bool> Function()? openAppSettingsOverride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,16 +58,6 @@ class SettingsCenterPage extends HookConsumerWidget {
                     style: theme.textTheme.displaySmall?.copyWith(
                       fontSize: 28.sp,
                       height: 1.0,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    localizations.settingsSubtitle,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontSize: 14.sp,
-                      color: const Color(0xFF5F6762),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -114,7 +110,6 @@ class SettingsCenterPage extends HookConsumerWidget {
                   ),
                   SizedBox(height: 10.h),
                   _buildMembershipGroup(
-                    context: context,
                     snapshot: snapshot,
                     localizations: localizations,
                   ),
@@ -140,18 +135,37 @@ class SettingsCenterPage extends HookConsumerWidget {
         children: <Widget>[
           SettingsOptionRow(
             icon: Icons.notifications_none_rounded,
-            title: localizations.settingsNotificationStatusTitle,
-            description: localizations.settingsNotificationStatusBody,
-            trailing: _ValueTrailing(
-              valueText: _notificationStatusText(
-                snapshot.notificationPermissionStatus,
-                localizations,
-              ),
-              valueColor:
+            title: localizations.settingsNotificationsSection,
+            trailing: Switch.adaptive(
+              key: const Key('settings-notification-switch'),
+              value:
                   snapshot.notificationPermissionStatus ==
-                      NotificationPermissionStatus.enabled
-                  ? const Color(0xFF4D8B52)
-                  : const Color(0xFFE96A5A),
+                  NotificationPermissionStatus.enabled,
+              activeColor: Theme.of(context).colorScheme.primary,
+              onChanged: (bool enabled) async {
+                if (enabled) {
+                  await ref
+                      .read(settingsCenterControllerProvider.notifier)
+                      .reviewNotificationPermission(
+                        grantedFeedbackText:
+                            localizations.settingsNotificationGrantedFeedback,
+                        deferredFeedbackText:
+                            localizations.settingsNotificationDeferredFeedback,
+                      );
+                  return;
+                }
+
+                // 系统通知权限不能在应用内直接关闭，关闭动作只给出真实反馈，避免做成假切换。
+                final bool shouldOpenSettings =
+                    await _confirmOpenNotificationSettings(
+                      context: context,
+                      localizations: localizations,
+                    );
+                if (!shouldOpenSettings) {
+                  return;
+                }
+                await _openSystemSettings(ref, localizations);
+              },
             ),
           ),
           if (snapshot.notificationPermissionStatus !=
@@ -177,7 +191,52 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
-  /// 隐私分区保持“状态值行 + 说明块”结构，避免原生开关破坏冻结稿的行式节奏。
+  /// 隐私分区只保留状态行，避免把已知状态再次展开成解释卡片。
+  Future<bool> _confirmOpenNotificationSettings({
+    required BuildContext context,
+    required AppLocalizations localizations,
+  }) async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(localizations.settingsNotificationDisableDialogTitle),
+          content: Text(localizations.settingsNotificationDisableDialogBody),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(
+                localizations.settingsNotificationDisableDialogCancel,
+              ),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(
+                localizations.settingsNotificationDisableDialogConfirm,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    return confirmed ?? false;
+  }
+
+  Future<void> _openSystemSettings(
+    WidgetRef ref,
+    AppLocalizations localizations,
+  ) async {
+    final bool opened = await (openAppSettingsOverride ?? openAppSettings)();
+    if (!opened) {
+      ref
+          .read(settingsCenterControllerProvider.notifier)
+          .showInfoFeedback(
+            localizations.settingsNotificationOpenSettingsFailed,
+          );
+    }
+  }
+
   Widget _buildPrivacyGroup({
     required BuildContext context,
     required WidgetRef ref,
@@ -186,52 +245,25 @@ class SettingsCenterPage extends HookConsumerWidget {
   }) {
     return ScreenNotePanel(
       padding: EdgeInsets.all(0.w),
-      child: Column(
-        children: <Widget>[
-          SettingsOptionRow(
-            icon: Icons.shield_outlined,
-            title: localizations.settingsPrivacyModeTitle,
-            description: localizations.settingsPrivacyModeBody,
-            onTap: () => ref
-                .read(settingsCenterControllerProvider.notifier)
-                .updatePrivacyMode(
-                  enabled: !snapshot.preferences.privacyModeEnabled,
-                  feedbackText: localizations.settingsPrivacyFeedback,
-                ),
-            trailing: _ValueTrailing(
-              valueText: _privacyModeText(
-                enabled: snapshot.preferences.privacyModeEnabled,
-                localizations: localizations,
+      child: SettingsOptionRow(
+        icon: Icons.shield_outlined,
+        title: localizations.settingsPrivacyModeTitle,
+        trailing: Switch.adaptive(
+          key: const Key('settings-privacy-switch'),
+          value: snapshot.preferences.privacyModeEnabled,
+          activeColor: Theme.of(context).colorScheme.primary,
+          onChanged: (bool enabled) => ref
+              .read(settingsCenterControllerProvider.notifier)
+              .updatePrivacyMode(
+                enabled: enabled,
+                feedbackText: localizations.settingsPrivacyFeedback,
               ),
-            ),
-          ),
-          if (snapshot.preferences.privacyModeEnabled)
-            Padding(
-              padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 12.h),
-              child: _buildSupportNotice(
-                context: context,
-                icon: Icons.visibility_off_outlined,
-                title: localizations.settingsPrivacyProtectionTitle,
-                body: localizations.settingsPrivacyProtectionBody,
-                surfaceColor: const Color(0xFFF1F8F0),
-                iconSurfaceColor: const Color(0xFFE5F3E5),
-                accentColor: const Color(0xFF4D8B52),
-                trailing: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF4D8B52),
-                    side: const BorderSide(color: Color(0x334D8B52)),
-                  ),
-                  child: Text(localizations.settingsPrivacyProtectionAction),
-                ),
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }
 
-  /// 小组件分区只保留冻结稿里的单一展示模式入口，避免继续堆叠额外设置项。
+  /// 显示分区保留必要入口，不再堆叠额外解释块。
   Widget _buildDisplayGroup({
     required BuildContext context,
     required WidgetRef ref,
@@ -243,9 +275,17 @@ class SettingsCenterPage extends HookConsumerWidget {
       child: Column(
         children: <Widget>[
           SettingsOptionRow(
+            icon: Icons.add_home_outlined,
+            title: localizations.settingsWidgetInstallTitle,
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () {
+              // 小组件能力集中收口到独立页，避免设置首页继续堆叠安装说明和同步逻辑。
+              context.push(RoutePaths.widgetBridge);
+            },
+          ),
+          SettingsOptionRow(
             icon: Icons.widgets_outlined,
             title: localizations.settingsWidgetDisplayModeTitle,
-            description: localizations.settingsWidgetDisplayModeBody,
             trailing: _ValueTrailing(
               valueText: _widgetDisplayModeText(
                 snapshot.preferences.widgetDisplayMode,
@@ -272,7 +312,6 @@ class SettingsCenterPage extends HookConsumerWidget {
           SettingsOptionRow(
             icon: Icons.palette_outlined,
             title: localizations.settingsThemeModeTitle,
-            description: localizations.settingsThemeModeBody,
             trailing: _ValueTrailing(
               valueText: _themeModeText(
                 snapshot.preferences.themeModePreference,
@@ -300,7 +339,6 @@ class SettingsCenterPage extends HookConsumerWidget {
           SettingsOptionRow(
             icon: Icons.translate_rounded,
             title: localizations.settingsLanguageTitle,
-            description: localizations.settingsLanguageBody,
             trailing: _ValueTrailing(
               valueText: _languagePreferenceText(
                 snapshot.preferences.languagePreference,
@@ -330,7 +368,7 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
-  /// 同步分区当前跟随冻结截图展示已同步状态，但仍不在当前模块扩展真实账号链路。
+  /// 同步分区只保留当前状态，不再附加额外解释组件。
   Widget _buildSyncGroup({
     required SettingsCenterSnapshot snapshot,
     required AppLocalizations localizations,
@@ -340,7 +378,6 @@ class SettingsCenterPage extends HookConsumerWidget {
       child: SettingsOptionRow(
         icon: Icons.cloud_outlined,
         title: localizations.settingsSyncStatusTitle,
-        description: localizations.settingsSyncStatusBody,
         trailing: _ValueTrailing(
           valueText: _syncStatusText(snapshot.syncStatus, localizations),
         ),
@@ -348,58 +385,27 @@ class SettingsCenterPage extends HookConsumerWidget {
     );
   }
 
-  /// 会员分区保留主入口 + 次级感谢说明，但整体权重必须低于系统能力设置主链路。
+  /// 会员分区只保留主入口，避免感谢型说明长期占据首屏空间。
   Widget _buildMembershipGroup({
-    required BuildContext context,
     required SettingsCenterSnapshot snapshot,
     required AppLocalizations localizations,
   }) {
     return ScreenNotePanel(
       padding: EdgeInsets.all(0.w),
-      child: Column(
-        children: <Widget>[
-          SettingsOptionRow(
-            icon: Icons.workspace_premium_outlined,
-            title: localizations.settingsMembershipTitle,
-            description: localizations.settingsMembershipBody,
-            trailing: _ValueTrailing(
-              valueText: _membershipStateText(
-                snapshot.membershipState,
-                localizations,
-              ),
-            ),
+      child: SettingsOptionRow(
+        icon: Icons.workspace_premium_outlined,
+        title: localizations.settingsMembershipTitle,
+        trailing: _ValueTrailing(
+          valueText: _membershipStateText(
+            snapshot.membershipState,
+            localizations,
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 12.h),
-            child: _buildSupportNotice(
-              context: context,
-              icon: Icons.verified_rounded,
-              title: localizations.settingsMembershipSupportTitle,
-              body: localizations.settingsMembershipSupportBody,
-              surfaceColor: const Color(0xFFFFFAF1),
-              iconSurfaceColor: const Color(0xFFF8F0D9),
-              accentColor: const Color(0xFF4D8B52),
-              trailing: Container(
-                width: 44.w,
-                height: 44.w,
-                decoration: const BoxDecoration(
-                  color: Color(0x224D8B52),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.military_tech_rounded,
-                  color: const Color(0xFF4D8B52),
-                  size: 22.sp,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  /// 通过底部面板承接展示模式切换，避免设置页行内挤入过多控件破坏分区节奏。
+  /// 通过底部面板承接显示模式切换，避免设置页行内挤入过多控件破坏分区节奏。
   Future<WidgetDisplayMode?> _pickWidgetDisplayMode({
     required BuildContext context,
     required WidgetDisplayMode currentMode,
@@ -629,72 +635,6 @@ class SettingsCenterPage extends HookConsumerWidget {
       SettingsMembershipState.active => localizations.settingsMembershipActive,
     };
   }
-
-  /// 截图中的绿色和暖色说明块共用同一结构，这里只抽布局骨架，不改变各自的语义归属。
-  Widget _buildSupportNotice({
-    required BuildContext context,
-    required IconData icon,
-    required String title,
-    required String body,
-    required Color surfaceColor,
-    required Color iconSurfaceColor,
-    required Color accentColor,
-    required Widget trailing,
-  }) {
-    final ThemeData theme = Theme.of(context);
-
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: surfaceColor,
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: 52.w,
-            height: 52.w,
-            decoration: BoxDecoration(
-              color: iconSurfaceColor,
-              borderRadius: BorderRadius.circular(18.r),
-            ),
-            child: Icon(icon, color: accentColor, size: 24.sp),
-          ),
-          SizedBox(width: 14.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontSize: 14.sp,
-                    color: accentColor,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  body,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 11.sp,
-                    color: accentColor.withValues(alpha: 0.86),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: 12.w),
-          trailing,
-        ],
-      ),
-    );
-  }
 }
 
 /// 右侧值组件统一维持当前值加进入箭头的次级结构，避免每个设置行重复手写。
@@ -753,12 +693,22 @@ final class _ModeSheetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ScreenNoteThemePalette palette = context.screenNotePalette;
+
     return ListTile(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.r)),
-      tileColor: selected ? const Color(0xFFEAF4EB) : const Color(0xFFF6F6F2),
-      title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: ScreenNoteRadii.queueIcon),
+      tileColor: selected ? palette.surfaceMuted : theme.cardTheme.color,
+      title: Text(
+        title,
+        style: theme.textTheme.bodyLarge?.copyWith(
+          color: selected
+              ? theme.colorScheme.primary
+              : theme.colorScheme.onSurface,
+        ),
+      ),
       trailing: selected
-          ? const Icon(Icons.check_rounded, color: Color(0xFF4D8B52))
+          ? Icon(Icons.check_rounded, color: theme.colorScheme.primary)
           : null,
       onTap: onTap,
     );

@@ -69,7 +69,7 @@ void main() {
 
       expect(find.text('完成首页真实快照接入'), findsOneWidget);
       expect(find.text('补齐紧急队列展示'), findsOneWidget);
-      expect(find.text('逾期待处理'), findsOneWidget);
+      expect(find.text('逾期'), findsOneWidget);
     });
 
     testWidgets('空态时会展示最小提示', (WidgetTester tester) async {
@@ -86,6 +86,89 @@ void main() {
       );
 
       expect(find.text('还没有待处理事项'), findsOneWidget);
+    });
+
+    testWidgets('今天到期的主事项会展示明确状态文案', (WidgetTester tester) async {
+      final DateTime now = DateTime.now();
+
+      await _pumpHomePage(
+        tester,
+        child: ProviderScope(
+          overrides: [
+            taskFlowHomeControllerProvider.overrideWith(
+              () => _FakeTaskFlowHomeController(
+                snapshot: TaskFeedSnapshot(
+                  pinnedTasks: const <TaskEntity>[],
+                  overdueTasks: const <TaskEntity>[],
+                  todayTasks: <TaskEntity>[
+                    _buildTask(
+                      id: 'today-priority',
+                      title: '今天收尾首页状态',
+                      createdAt: now.subtract(const Duration(hours: 1)),
+                      dueAt: now.add(const Duration(hours: 2)),
+                    ),
+                  ],
+                  otherTasks: const <TaskEntity>[],
+                  activeCount: 1,
+                  completedCount: 0,
+                  deletedCount: 0,
+                ),
+              ),
+            ),
+          ],
+          child: const Scaffold(body: TaskFlowHomePage()),
+        ),
+      );
+
+      final BuildContext context = tester.element(
+        find.byType(TaskFlowHomePage),
+      );
+      final String expectedDate = MaterialLocalizations.of(
+        context,
+      ).formatMediumDate(now.add(const Duration(hours: 2)));
+      expect(find.text('今天收尾首页状态'), findsOneWidget);
+      expect(find.text('今天截止'), findsOneWidget);
+      expect(find.text(expectedDate), findsOneWidget);
+    });
+
+    testWidgets('仅剩普通事项时会展示后续队列而不是逾期分区', (WidgetTester tester) async {
+      await _pumpHomePage(
+        tester,
+        child: ProviderScope(
+          overrides: [
+            taskFlowHomeControllerProvider.overrideWith(
+              () => _FakeTaskFlowHomeController(
+                snapshot: TaskFeedSnapshot(
+                  pinnedTasks: const <TaskEntity>[],
+                  overdueTasks: const <TaskEntity>[],
+                  todayTasks: const <TaskEntity>[],
+                  otherTasks: <TaskEntity>[
+                    _buildTask(
+                      id: 'normal-priority-task',
+                      title: '普通主事项',
+                      createdAt: DateTime(2026, 6, 14, 9),
+                    ),
+                    _buildTask(
+                      id: 'normal-task',
+                      title: '普通后续事项',
+                      createdAt: DateTime(2026, 6, 14, 8),
+                    ),
+                  ],
+                  activeCount: 1,
+                  completedCount: 0,
+                  deletedCount: 0,
+                ),
+              ),
+            ),
+          ],
+          child: const Scaffold(body: TaskFlowHomePage()),
+        ),
+      );
+
+      expect(find.text('接下来'), findsOneWidget);
+      expect(find.text('普通主事项'), findsOneWidget);
+      expect(find.text('普通后续事项'), findsOneWidget);
+      expect(find.text('逾期'), findsNothing);
     });
 
     testWidgets('错误时会展示最小失败提示', (WidgetTester tester) async {
@@ -140,6 +223,77 @@ void main() {
 
       expect(find.text('保留主事项卡片'), findsOneWidget);
       expect(find.text('部分能力已降级'), findsOneWidget);
+    });
+
+    testWidgets('私密事项会在首页使用安全占位而不泄露正文', (WidgetTester tester) async {
+      final DateTime now = DateTime.now();
+
+      await _pumpHomePage(
+        tester,
+        child: ProviderScope(
+          overrides: [
+            taskFlowHomeControllerProvider.overrideWith(
+              () => _FakeTaskFlowHomeController(
+                snapshot: TaskFeedSnapshot(
+                  pinnedTasks: const <TaskEntity>[],
+                  overdueTasks: const <TaskEntity>[],
+                  todayTasks: <TaskEntity>[
+                    _buildTask(
+                      id: 'private-today',
+                      title: '不该在首页露出的正文',
+                      createdAt: now.subtract(const Duration(hours: 1)),
+                      dueAt: now.add(const Duration(hours: 1)),
+                      isPrivate: true,
+                    ),
+                  ],
+                  otherTasks: const <TaskEntity>[],
+                  activeCount: 1,
+                  completedCount: 0,
+                  deletedCount: 0,
+                ),
+              ),
+            ),
+          ],
+          child: const Scaffold(body: TaskFlowHomePage()),
+        ),
+      );
+
+      expect(find.text('私密事项'), findsOneWidget);
+      expect(find.text('不该在首页露出的正文'), findsNothing);
+      expect(find.text('首页已隐藏内容'), findsOneWidget);
+    });
+
+    testWidgets('长标题主事项时继续处理动作仍然可见', (WidgetTester tester) async {
+      await _pumpHomePage(
+        tester,
+        child: ProviderScope(
+          overrides: [
+            taskFlowHomeControllerProvider.overrideWith(
+              () => _FakeTaskFlowHomeController(
+                snapshot: TaskFeedSnapshot(
+                  pinnedTasks: const <TaskEntity>[],
+                  overdueTasks: const <TaskEntity>[],
+                  todayTasks: const <TaskEntity>[],
+                  otherTasks: <TaskEntity>[
+                    _buildTask(
+                      id: 'long-title-task',
+                      title: '这是一个为了验证首页主事项长标题状态依然不会挤掉继续处理动作而准备的超长事项标题',
+                      createdAt: DateTime(2026, 6, 14, 8),
+                    ),
+                  ],
+                  activeCount: 1,
+                  completedCount: 0,
+                  deletedCount: 0,
+                ),
+              ),
+            ),
+          ],
+          child: const Scaffold(body: TaskFlowHomePage()),
+        ),
+      );
+
+      expect(find.text('继续处理'), findsOneWidget);
+      expect(find.textContaining('这是一个为了验证首页主事项长标题状态'), findsOneWidget);
     });
 
     testWidgets('点击主事项卡片会进入事项编辑页', (WidgetTester tester) async {
@@ -592,6 +746,7 @@ TaskEntity _buildTask({
   required DateTime createdAt,
   DateTime? dueAt,
   bool isPinned = false,
+  bool isPrivate = false,
 }) {
   return TaskEntity(
     id: id,
@@ -600,7 +755,7 @@ TaskEntity _buildTask({
     dueAt: dueAt,
     reminderAt: null,
     isPinned: isPinned,
-    isPrivate: false,
+    isPrivate: isPrivate,
     status: TaskStatus.active,
     reminderMode: TaskReminderMode.normal,
     createdAt: createdAt,

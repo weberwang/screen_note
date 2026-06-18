@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:screen_note/features/task_flow/domain/entities/task_flow_degradation_hint.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 首页状态提示只表达非阻断降级信息，保持主事项与队列结构继续可见。
 class TaskFlowHomeStatusNotice extends StatelessWidget {
@@ -25,7 +26,7 @@ class TaskFlowHomeStatusNotice extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: const Color(0xFFFFF4EE),
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: ScreenNoteRadii.queueRow,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +36,7 @@ class TaskFlowHomeStatusNotice extends StatelessWidget {
             height: 48.w,
             decoration: BoxDecoration(
               color: const Color(0xFFFFECE4),
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: ScreenNoteRadii.compactSurface,
             ),
             child: Icon(
               Icons.warning_amber_rounded,

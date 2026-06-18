@@ -125,6 +125,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get taskFlowDueTodayLabel => 'Due today';
+
+  @override
   String taskFlowOverdueAtLabel(String dateTime) {
     return 'Overdue since $dateTime';
   }
@@ -297,7 +300,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsMembershipSection => 'MEMBERSHIP';
 
   @override
-  String get settingsNotificationStatusTitle => 'Notification Status';
+  String get settingsNotificationStatusTitle => 'Notifications';
 
   @override
   String get settingsNotificationStatusBody =>
@@ -464,6 +467,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsNotificationDeferredFeedback =>
       'Notification access is still limited.';
+
+  @override
+  String get settingsNotificationDisableInSystemFeedback =>
+      'Turn off notifications in system settings.';
+
+  @override
+  String get settingsNotificationDisableDialogTitle =>
+      'Turn off notifications?';
+
+  @override
+  String get settingsNotificationDisableDialogBody =>
+      'Notifications can only be turned off in system settings. Open settings now?';
+
+  @override
+  String get settingsNotificationDisableDialogCancel => 'Cancel';
+
+  @override
+  String get settingsNotificationDisableDialogConfirm => 'Open Settings';
+
+  @override
+  String get settingsNotificationOpenSettingsFailed =>
+      'Couldn\'t open system settings. Try again later.';
 
   @override
   String get settingsWidgetInstallRequestedFeedback =>

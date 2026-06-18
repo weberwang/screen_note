@@ -34,7 +34,7 @@ class HomeHistoryStatusPanel extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(32.r),
+        borderRadius: ScreenNoteRadii.largeSurface,
         child: ScreenNotePanel(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,9 +53,7 @@ class HomeHistoryStatusPanel extends StatelessWidget {
                   ),
                   _HistoryStatusChip(
                     icon: Icons.delete_outline_rounded,
-                    label: localizations.homeHistoryDeletedCount(
-                      deletedCount,
-                    ),
+                    label: localizations.homeHistoryDeletedCount(deletedCount),
                     foregroundColor: const Color(0xFFB95C4C),
                     backgroundColor: const Color(0xFFF7E5DE),
                   ),
@@ -133,11 +131,7 @@ final class _HistoryStatusChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(
-              icon,
-              size: 16.sp,
-              color: foregroundColor,
-            ),
+            Icon(icon, size: 16.sp, color: foregroundColor),
             SizedBox(width: 8.w),
             Text(
               label,

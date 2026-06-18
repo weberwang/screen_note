@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 共享面板组件用于承接当前 bootstrap 阶段的统一表面语言，
 /// 避免各个占位页各自发明容器样式。
 class ScreenNotePanel extends StatelessWidget {
   /// 创建共享面板组件。
-  const ScreenNotePanel({
-    required this.child,
-    super.key,
-    this.padding,
-  });
+  const ScreenNotePanel({required this.child, super.key, this.padding});
 
   /// 面板主体内容。
   final Widget child;
@@ -25,7 +22,7 @@ class ScreenNotePanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         // 统一把共享卡片圆角收口到 26，和当前冻结原型中的 settings-center 分组表面对齐。
-        borderRadius: BorderRadius.circular(26.r),
+        borderRadius: ScreenNoteRadii.panel,
         border: Border.all(color: Theme.of(context).dividerColor),
         boxShadow: [
           BoxShadow(

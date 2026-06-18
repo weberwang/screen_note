@@ -48,7 +48,7 @@
   "@homeGreetingSubtitle": {
     "description": "首页问候区副标题。"
   },
-  "homeTodayChip": "Today",
+  "homeTodayChip": "今天",
   "@homeTodayChip": {
     "description": "首页问候区下方的时间语义胶囊文案。"
   },
@@ -114,11 +114,11 @@
   "@taskFlowEmptyBody": {
     "description": "首页主事项卡片在空态时展示的最小补充说明。"
   },
-  "taskFlowPrivateTaskHint": "这条私密事项会在首页隐藏正文",
+  "taskFlowPrivateTaskHint": "首页已隐藏内容",
   "@taskFlowPrivateTaskHint": {
     "description": "首页展示私密事项时使用的安全占位文案。"
   },
-  "taskFlowPriorityFallbackBody": "先继续推进下一步最有价值的动作。",
+  "taskFlowPriorityFallbackBody": "继续处理下一步",
   "@taskFlowPriorityFallbackBody": {
     "description": "主事项没有可展示备注时使用的补充说明文案。"
   },
@@ -151,6 +151,10 @@
       }
     }
   },
+  "taskFlowDueTodayLabel": "今天截止",
+  "@taskFlowDueTodayLabel": {
+    "description": "首页事项在今天到期时展示的状态文案。"
+  },
   "taskFlowOverdueAtLabel": "已逾期，原截止 {dateTime}",
   "@taskFlowOverdueAtLabel": {
     "description": "首页紧急队列展示逾期事项时使用的时间文案。",
@@ -160,7 +164,7 @@
       }
     }
   },
-  "taskFlowOverdueSectionTitle": "逾期待处理",
+  "taskFlowOverdueSectionTitle": "逾期",
   "@taskFlowOverdueSectionTitle": {
     "description": "首页逾期事项分区标题。"
   },
@@ -355,7 +359,7 @@
   "@settingsTitle": {
     "description": "设置中心页面主标题。"
   },
-  "settingsSubtitle": "统一管理 Screen Note 在设备上的工作方式，并继续保护你的笔记安全。",
+  "settingsSubtitle": "管理提醒、隐私和显示",
   "@settingsSubtitle": {
     "description": "设置中心标题下的辅助说明文案。"
   },
@@ -379,11 +383,11 @@
   "@settingsMembershipSection": {
     "description": "会员入口分区标题。"
   },
-  "settingsNotificationStatusTitle": "通知状态",
+  "settingsNotificationStatusTitle": "通知",
   "@settingsNotificationStatusTitle": {
     "description": "通知状态设置行标题。"
   },
-  "settingsNotificationStatusBody": "查看保存和同步动态是否仍能被正常送达。",
+  "settingsNotificationStatusBody": "保存与同步提醒",
   "@settingsNotificationStatusBody": {
     "description": "通知状态设置行说明文案。"
   },
@@ -391,7 +395,7 @@
   "@settingsPrivacyModeTitle": {
     "description": "隐私模式设置行标题。"
   },
-  "settingsPrivacyModeBody": "在预览中隐藏敏感内容。",
+  "settingsPrivacyModeBody": "隐藏预览内容",
   "@settingsPrivacyModeBody": {
     "description": "隐私模式设置行说明文案。"
   },
@@ -399,7 +403,7 @@
   "@settingsWidgetDisplayModeTitle": {
     "description": "Widget 展示模式设置行标题。"
   },
-  "settingsWidgetDisplayModeBody": "选择小组件中显示什么内容。",
+  "settingsWidgetDisplayModeBody": "选择小组件内容",
   "@settingsWidgetDisplayModeBody": {
     "description": "Widget 展示模式设置行说明文案。"
   },
@@ -443,7 +447,7 @@
   "@settingsSyncStatusTitle": {
     "description": "同步状态设置行标题。"
   },
-  "settingsSyncStatusBody": "刚刚完成同步",
+  "settingsSyncStatusBody": "刚刚同步",
   "@settingsSyncStatusBody": {
     "description": "同步状态设置行说明文案。"
   },
@@ -451,7 +455,7 @@
   "@settingsMembershipTitle": {
     "description": "会员入口设置行标题。"
   },
-  "settingsMembershipBody": "管理你的方案与权益。",
+  "settingsMembershipBody": "管理方案与权益",
   "@settingsMembershipBody": {
     "description": "会员入口设置行说明文案。"
   },
@@ -471,7 +475,7 @@
   "@settingsPermissionDowngradedTitle": {
     "description": "通知权限降级提示块标题。"
   },
-  "settingsPermissionDowngradedBody": "你可能会错过与笔记相关的重要更新。",
+  "settingsPermissionDowngradedBody": "你可能错过重要提醒",
   "@settingsPermissionDowngradedBody": {
     "description": "通知权限降级提示块正文。"
   },
@@ -528,7 +532,7 @@
   "@settingsPrivacyProtectionTitle": {
     "description": "隐私模式说明块标题，用于说明当前安全预览保护已经生效。"
   },
-  "settingsPrivacyProtectionBody": "最近记录和小组件中的预览内容都会被模糊处理。",
+  "settingsPrivacyProtectionBody": "最近项目和小组件会模糊显示",
   "@settingsPrivacyProtectionBody": {
     "description": "隐私模式说明块正文，用于解释当前预览保护的具体效果。"
   },
@@ -540,7 +544,7 @@
   "@settingsMembershipSupportTitle": {
     "description": "会员分区次级说明块标题，用于表达当前 Pro 状态。"
   },
-  "settingsMembershipSupportBody": "感谢你支持更专注、更私密的笔记体验。",
+  "settingsMembershipSupportBody": "感谢支持更专注的记录体验",
   "@settingsMembershipSupportBody": {
     "description": "会员分区次级说明块正文，用于表达感谢但不抢主链路。"
   },
@@ -586,6 +590,30 @@
   "settingsNotificationDeferredFeedback": "通知权限仍然受限",
   "@settingsNotificationDeferredFeedback": {
     "description": "复查通知权限后仍受限时展示的共享反馈文案。"
+  },
+  "settingsNotificationDisableInSystemFeedback": "请在系统设置中关闭通知",
+  "@settingsNotificationDisableInSystemFeedback": {
+    "description": "用户尝试在应用内关闭通知时展示的能力边界反馈。"
+  },
+  "settingsNotificationDisableDialogTitle": "关闭通知？",
+  "@settingsNotificationDisableDialogTitle": {
+    "description": "通知开关准备跳转系统设置前的确认框标题。"
+  },
+  "settingsNotificationDisableDialogBody": "通知需要在系统设置中关闭，是否现在前往？",
+  "@settingsNotificationDisableDialogBody": {
+    "description": "通知开关准备跳转系统设置前的确认框正文。"
+  },
+  "settingsNotificationDisableDialogCancel": "取消",
+  "@settingsNotificationDisableDialogCancel": {
+    "description": "通知关闭确认框取消按钮文案。"
+  },
+  "settingsNotificationDisableDialogConfirm": "前往设置",
+  "@settingsNotificationDisableDialogConfirm": {
+    "description": "通知关闭确认框确认按钮文案。"
+  },
+  "settingsNotificationOpenSettingsFailed": "无法打开系统设置，请稍后重试",
+  "@settingsNotificationOpenSettingsFailed": {
+    "description": "系统设置跳转失败时展示的共享反馈文案。"
   },
   "settingsWidgetInstallRequestedFeedback": "已向桌面发出小组件添加请求",
   "@settingsWidgetInstallRequestedFeedback": {

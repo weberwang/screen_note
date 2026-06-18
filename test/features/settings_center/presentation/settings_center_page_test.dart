@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:screen_note/app/router/route_paths.dart';
 import 'package:screen_note/features/app_shell/application/providers/app_shell_ui_state.dart';
 import 'package:screen_note/features/settings_center/application/providers/settings_center_runtime_providers.dart';
 import 'package:screen_note/features/settings_center/application/use_cases/load_settings_center_snapshot_use_case.dart';
@@ -18,6 +20,7 @@ import 'package:screen_note/features/settings_center/domain/entities/widget_disp
 import 'package:screen_note/features/settings_center/domain/repositories/notification_permission_repository.dart';
 import 'package:screen_note/features/settings_center/domain/repositories/settings_preferences_repository.dart';
 import 'package:screen_note/features/settings_center/presentation/pages/settings_center_page.dart';
+import 'package:screen_note/features/widget_bridge/presentation/pages/widget_bridge_page.dart';
 import 'package:screen_note/l10n/app_localizations.dart';
 import 'package:screen_note/shared/presentation/screen_note_screenutil_contract.dart';
 import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
@@ -39,6 +42,12 @@ void main() {
     );
 
     expect(find.text('Settings Center'), findsOneWidget);
+    expect(
+      find.text(
+        'Manage how Screen Note works across your device and keep your notes safe.',
+      ),
+      findsNothing,
+    );
     await tester.scrollUntilVisible(find.text('Theme'), 120);
     expect(find.text('Theme'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Language'), 120);
@@ -93,8 +102,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.scrollUntilVisible(find.text('Privacy Mode'), 120);
-    await tester.tap(find.text('Privacy Mode'));
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('settings-privacy-switch')),
+      120,
+    );
+    await tester.tap(find.byKey(const Key('settings-privacy-switch')));
     await tester.pumpAndSettle();
 
     final stored = await preferencesRepository.loadPreferences();
@@ -280,8 +292,10 @@ void main() {
 
     expect(find.text('Notifications are turned off.'), findsOneWidget);
 
-    await tester.ensureVisible(find.text('Enable'));
-    await tester.tap(find.text('Enable'));
+    await tester.ensureVisible(
+      find.byKey(const Key('settings-notification-switch')),
+    );
+    await tester.tap(find.byKey(const Key('settings-notification-switch')));
     await tester.pumpAndSettle();
 
     expect(find.text('Notifications are turned off.'), findsNothing);
@@ -292,6 +306,57 @@ void main() {
           .notificationPermissionStatus,
       NotificationPermissionStatus.enabled,
     );
+  });
+
+  testWidgets('关闭通知时会先弹确认框，确认后跳转系统设置', (tester) async {
+    _prepareTestViewport(tester);
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+    var openSettingsCalled = false;
+
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+      locale: const Locale('zh'),
+      openAppSettingsOverride: () async {
+        openSettingsCalled = true;
+        return true;
+      },
+    );
+
+    await tester.tap(find.byKey(const Key('settings-notification-switch')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('关闭通知？'), findsOneWidget);
+    expect(find.text('通知需要在系统设置中关闭，是否现在前往？'), findsOneWidget);
+
+    await tester.tap(find.text('前往设置'));
+    await tester.pumpAndSettle();
+
+    expect(openSettingsCalled, isTrue);
+  });
+
+  testWidgets('设置页不会继续展示隐私与会员说明卡片', (tester) async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(privacyModeEnabled: true),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+
+    await _pumpSettingsPage(
+      tester,
+      preferencesRepository: preferencesRepository,
+      notificationRepository: notificationRepository,
+    );
+
+    expect(find.text('Privacy mode is on.'), findsNothing);
+    expect(find.text('You\'re using Screen Note Pro'), findsNothing);
   });
 
   test('refresh 不应依赖 settingsCenterSnapshotProvider 的二次失效重读', () async {
@@ -468,6 +533,69 @@ void main() {
 
     expect(viewportRect.bottom - lastPanelRect.bottom, lessThanOrEqualTo(56));
   });
+
+  testWidgets('设置页会导航到小组件页', (tester) async {
+    final preferencesRepository = _InMemorySettingsPreferencesRepository(
+      initial: const SettingsCenterPreferences(),
+    );
+    final notificationRepository = _FakeNotificationPermissionRepository(
+      initialStatus: NotificationPermissionStatus.enabled,
+    );
+
+    _prepareTestViewport(tester);
+    final GoRouter router = GoRouter(
+      initialLocation: RoutePaths.settings,
+      routes: <RouteBase>[
+        GoRoute(
+          path: RoutePaths.settings,
+          builder: (context, state) =>
+              const Scaffold(body: SettingsCenterPage()),
+        ),
+        GoRoute(
+          path: RoutePaths.widgetBridge,
+          builder: (context, state) => const Scaffold(body: WidgetBridgePage()),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsPreferencesRepositoryProvider.overrideWithValue(
+            preferencesRepository,
+          ),
+          notificationPermissionRepositoryProvider.overrideWithValue(
+            notificationRepository,
+          ),
+        ],
+        child: ScreenNoteScreenUtilContract(
+          designSize: screenNoteDesignSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp.router(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: ScreenNoteTheme.light(),
+              darkTheme: ScreenNoteTheme.dark(),
+              routerConfig: router,
+            );
+          },
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    await tester.scrollUntilVisible(find.text('Add Home Widget'), 120);
+    await tester.tap(find.text('Add Home Widget'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byType(WidgetBridgePage), findsOneWidget);
+  });
 }
 
 /// 构造测试快照，统一提供设置页控制器所需的最小稳定数据。
@@ -488,6 +616,7 @@ Future<void> _pumpSettingsPage(
   WidgetTester tester, {
   required SettingsPreferencesRepository preferencesRepository,
   required NotificationPermissionRepository notificationRepository,
+  Future<bool> Function()? openAppSettingsOverride,
   TargetPlatform platform = TargetPlatform.android,
   Locale locale = const Locale('en'),
   Size viewportSize = const Size(390, 844),
@@ -521,7 +650,11 @@ Future<void> _pumpSettingsPage(
               splashFactory: NoSplash.splashFactory,
               platform: platform,
             ),
-            home: const Scaffold(body: SettingsCenterPage()),
+            home: Scaffold(
+              body: SettingsCenterPage(
+                openAppSettingsOverride: openAppSettingsOverride,
+              ),
+            ),
           );
         },
       ),

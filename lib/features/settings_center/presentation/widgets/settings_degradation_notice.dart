@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:screen_note/shared/presentation/theme/screen_note_theme.dart';
 
 /// 设置降级提示组件，统一表达权限或平台能力不足，但不把页面升级成错误页。
 class SettingsDegradationNotice extends StatelessWidget {
@@ -25,7 +26,7 @@ class SettingsDegradationNotice extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: const Color(0xFFFFF4EE),
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: ScreenNoteRadii.queueRow,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +36,7 @@ class SettingsDegradationNotice extends StatelessWidget {
             height: 52.w,
             decoration: BoxDecoration(
               color: const Color(0xFFFFECE4),
-              borderRadius: BorderRadius.circular(18.r),
+              borderRadius: ScreenNoteRadii.compactSurface,
             ),
             child: Icon(
               Icons.warning_amber_rounded,
